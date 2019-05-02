@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<comment>Loupe Properties</comment>
+	<entry key="Listener.AutoTraceRegistration">false</entry>
+	<entry key="Listener.EnableConsole">false</entry>
+	<entry key="Listener.EnableNetworkEvents">false</entry>
+	<entry key="Listener.EndSessionOnTraceClose">false</entry>
+	<entry key="SessionFile.Enabled">false</entry>
+	<entry key="SessionFile.AutoFlushInterval">42</entry>
+	<entry key="SessionFile.IndexUpdateInterval">42</entry>
+	<entry key="SessionFile.MaxFileSize">42</entry>
+	<entry key="SessionFile.MaxFileDuration">42</entry>
+	<entry key="SessionFile.EnableFilePruning">false</entry>
+	<entry key="SessionFile.MaxLocalDiskUsage">42</entry>
+	<entry key="SessionFile.MaxLocalFileAge">42</entry>
+	<entry key="SessionFile.MinimumFreeDisk">42</entry>
+	<entry key="SessionFile.ForceSynchronous">true</entry>
+	<entry key="SessionFile.MaxQueueLength">42</entry>
+	<entry key="SessionFile.Folder">C:\Temp</entry>
+	<entry key="Packager.HotKey">Ctrl-Alt-F5</entry>
+	<entry key="Packager.AllowFile">false</entry>
+	<entry key="Packager.AllowRemovableMedia">false</entry>
+	<entry key="Packager.AllowEmail">false</entry>
+	<entry key="Packager.AllowServer">false</entry>
+	<entry key="Packager.FromEmailAddress">mark@rendlelabs.com</entry>
+	<entry key="Packager.DestinationEmailAddress">mark@rendlelabs.com</entry>
+	<entry key="Packager.ProductName">Sample</entry>
+	<entry key="Packager.ApplicationName">Loupe</entry>
+	<entry key="Publisher.ProductName">Sample</entry>
+	<entry key="Publisher.ApplicationDescription">Sample App</entry>
+	<entry key="Publisher.ApplicationName">Loupe</entry>
+	<entry key="Publisher.ApplicationType">ASP_NET</entry>
+	<entry key="Publisher.ApplicationVersionNumber">42.0.0</entry>
+	<entry key="Publisher.EnvironmentName">Development</entry>
+	<entry key="Publisher.PromotionLevelName">QA</entry>
+	<entry key="Publisher.ForceSynchronous">true</entry>
+	<entry key="Publisher.MaxQueueLength">10</entry>
+	<entry key="Publisher.EnableAnonymousMode">true</entry>
+	<entry key="Publisher.EnableDebugMode">true</entry>
+	<entry key="Server.Enabled">false</entry>
+	<entry key="Server.AutoSendSessions">true</entry>
+	<entry key="Server.AutoSendOnError">false</entry>
+	<entry key="Server.SendAllApplications">true</entry>
+	<entry key="Server.PurgeSentSessions">true</entry>
+	<entry key="Server.CustomerName">RendleLabs</entry>
+	<entry key="Server.UseGibraltarService">true</entry>
+	<entry key="Server.UseSsl">true</entry>
+	<entry key="Server.Server">onloupe.com</entry>
+	<entry key="Server.Port">81</entry>
+	<entry key="Server.ApplicationBaseDirectory">C:\inetpub\foo</entry>
+	<entry key="Server.Repository">quux</entry>
+	<entry key="NetworkViewer.AllowLocalClients">false</entry>
+	<entry key="NetworkViewer.AllowRemoteClients">true</entry>
+	<entry key="NetworkViewer.MaxQueueLength">10</entry>
+	<entry key="NetworkViewer.Enabled">false</entry>
+	<entry key="Foo">Bar</entry>
+	<entry key="Bar">baz</entry>
+</properties>
