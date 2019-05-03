@@ -422,7 +422,7 @@ C:\ProgramData\Gibraltar\Local Logs
 If the common application data folder is unavailable, the local data folder will be attempted:
 
 ```
-C:\Users\<user name>\AppData
+C:\Users\<user name>\AppData\Gibraltar\Local Logs
 ```
 
 Failing both of these, the Java tmp io directory will be used.
