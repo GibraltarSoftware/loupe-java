@@ -50,20 +50,4 @@ public enum UserType
 		return intValue;
 	}
 
-	//TODO: rkelliher: figure this out later
-//	public static UserType forValue(int value)
-//	{
-//		synchronized (UserType.class)
-//		{
-//			UserType enumObj = getMappings().get(value);
-//			if (enumObj == null)
-//			{
-//				return new UserType(value);
-//			}
-//			else
-//			{
-//				return enumObj;
-//			}
-//		}
-//	}
 }

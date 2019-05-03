@@ -368,22 +368,6 @@ public class Publisher implements Closeable {
 				// stamp the packet, and all of its dependent packets (this sets the sequence
 				// number)
 				stampPacket(packet, packet.getTimestamp());
-
-				GibraltarPacket gibraltarPacket = packet instanceof GibraltarPacket ? (GibraltarPacket) packet : null;
-/*
-				// and now fire our MessageDispatching event.
-				try {
-					// TODO RKELLIHER comment for now
-//					PacketEventHandler messageDispatching = (Object sender, PacketEventArgs e) -> messageDispatching
-//							.invoke(sender, e);
-//					if (messageDispatching != null) {
-//						messageDispatching.invoke(this, new PacketEventArgs(packet));
-//					}
-				} catch (RuntimeException e) {
-					// Log.//debugBreak(); // Catch this in the debugger, but otherwise swallow any
-					// errors.
-				}
-*/
 			}
 			// If this is a header packet we want to put it in the header list now - that
 			// way
@@ -498,14 +482,8 @@ public class Publisher implements Closeable {
 		}
 	}
 
-	// TODO RKELLIHER commenting until we can fix the static observer behavior in
-	// Notifier
 	private void queueToNotifier(IMessengerPacket packet) {
-//		LogMessageNotifyEventHandler notifyEvent = (Object sender, LogMessageNotifyEventArgs e) -> logMessageNotify
-//				.invoke(sender, e);
-//		if (notifyEvent != null) {
-//			notifyEvent.invoke(this, new LogMessageNotifyEventArgs(packet));
-//		}
+
 	}
 
 	/**

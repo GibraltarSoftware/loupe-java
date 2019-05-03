@@ -197,7 +197,6 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 	public byte[] uploadFile(String relativeUrl, String contentType, String sourceFileNamePath, Integer timeout)
 			throws URISyntaxException, IOException {
 		try (RandomAccessFile file = new RandomAccessFile(sourceFileNamePath, "r")) {
-			// TODO RKELLIHER not sure if this will be an issue, discuss
 			byte[] data = new byte[(int) file.length()];
 			file.readFully(data);
 			return uploadData(relativeUrl, contentType, data, null, timeout);

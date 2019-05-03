@@ -118,8 +118,6 @@ public final class PacketDefinitionList implements java.lang.Iterable<PacketDefi
 	public void rollback() {
 		if (this.list.size() > this.committedListSize) {
 			int count = this.list.size() - this.committedListSize;
-			// TODO RKELLIHER review
-			// KM: Pretty sure this won't work because it's iterating forward doing a remove, not backwords.
 			for (int i = count; i < this.list.size(); i++) {
 				this.list.remove(i);
 			}

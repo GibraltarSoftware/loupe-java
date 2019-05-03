@@ -317,7 +317,6 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 		}
 	}
 
-	// TODO RKELLIHER should this truncate?
 	private void updateProgressTrackingFile() throws IOException {
 		try (RandomAccessFile file = new RandomAccessFile(this.tempSessionProgressFileNamePath, "rw")) {
 			file.write(this.bytesWritten);

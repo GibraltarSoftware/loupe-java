@@ -103,33 +103,7 @@ public class Notifier {
 		{
 			return; // Bail if this packet doesn't meet the minimum severity we care about.
 		}
-		return; // TODO RKELLIHER KMILLER bypassing until we can fix it
-//		synchronized (_MessageQueueLock) {
-////			if (notificationEvent == null) // Check for unsubscribe race condition.
-////			{
-////				return; // Don't add it to the queue if there are no subscribers.
-////			}
-//
-//			int messageQueueLength = _MessageQueue.size();
-//			if (messageQueueLength < _MessageQueueMaxLength) {
-//				if (messageQueueLength <= 0) // First new one: Wait for a burst to collect.
-//				{
-//					_BurstCollectionWait = TimeConversion.MIN; // Clear it so we'll reset the wait clock.
-//				}
-//
-//				_MessageQueue.offer(packet);
-//
-//				// If there were already messages in our queue, it's waiting on a timeout, so
-//				// don't bother pulsing it.
-//				// But if there were no messages in the queue, we need to make sure it's not
-//				// waiting forever!
-//				if (messageQueueLength <= 0 || !OffsetDateTime.now().isBefore(_NextNotifyAfter)) {
-//					_MessageQueueLock.notifyAll();
-//				}
-//			}
-//		}
-//
-//		ensureNotificationThreadIsValid();
+		return;
 	}
 
 	private void ensureNotificationThreadIsValid() {

@@ -280,25 +280,4 @@ public final class EventMetricSample {
 		return equals(otherMetricSample); // Just have type-specific Equals do the check (it even handles null)
 	}
 
-	/**
-	 * Provides a representative hash code for objects of this type to spread out
-	 * distribution in hash tables.
-	 * 
-	 * Objects which consider themselves to be Equal (a.Equals(b) returns true) are
-	 * expected to have the same hash code. Objects which are not Equal may have the
-	 * same hash code, but minimizing such overlaps helps with efficient operation
-	 * of hash tables.
-	 * 
-	 * @return An int representing the hash code calculated for the contents of this
-	 *         object.
-	 * 
-	 */
-	//TODO RKELLIHER core type does not implement this.
-//	@Override
-//	public int hashCode() {
-//		int myHash = this._WrappedSample.hashCode(); // Equals just defers to the WrappedSample
-//
-//		return myHash;
-//	}
-
 }
