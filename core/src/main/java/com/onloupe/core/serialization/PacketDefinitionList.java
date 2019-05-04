@@ -116,9 +116,8 @@ public final class PacketDefinitionList implements java.lang.Iterable<PacketDefi
 	 * data that will not be available to the IPacketReader reading the stream.
 	 */
 	public void rollback() {
-		if (this.list.size() > this.committedListSize) {
-			int count = this.list.size() - this.committedListSize;
-			for (int i = count; i < this.list.size(); i++) {
+		if (this.list.size() > this.committedListSize) {			
+			for (int i = this.list.size() - 1; i >= this.committedListSize; i--) {
 				this.list.remove(i);
 			}
 		}
