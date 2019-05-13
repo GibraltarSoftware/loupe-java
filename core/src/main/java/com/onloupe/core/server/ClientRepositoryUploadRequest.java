@@ -81,7 +81,6 @@ public class ClientRepositoryUploadRequest extends WebChannelRequestBase {
 			repositoryXml.setcurrentSessionsVersion(
 					Long.valueOf(clientRepositoryElement.getAttribute("currentSessionsVersion")));
 			repositoryXml.setstatus(ClientRepositoryStatusXml.valueOf(clientRepositoryElement.getAttribute("status")));
-			// TODO rkelliher figure out dates...
 			setResponseRepository(repositoryXml);
 		} catch (SAXException | IOException | ParserConfigurationException e) {
 			throw e;

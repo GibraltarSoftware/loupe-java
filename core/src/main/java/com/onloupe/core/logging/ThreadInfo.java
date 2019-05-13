@@ -85,7 +85,6 @@ public class ThreadInfo extends Observable implements IDisplayable {
 			StringBuilder buffer = new StringBuilder();
 			// Threads are either foreground, background, or threadpool (which are a subset
 			// of background)
-			// TODO RKELLIHER look into this, since all java threads are background
 			if (this.packet.isBackground()) {
 				buffer.append(this.packet.isThreadPoolThread() ? "ThreadPool Thread " : "Background Thread ");
 			} else {
@@ -375,7 +374,6 @@ public class ThreadInfo extends Observable implements IDisplayable {
 				}
 			}
 			if (alive) {
-				// TODO RKELLIHER review isenqueued vs isalive
 				alive = (reference != null && reference.isEnqueued());
 			}
 

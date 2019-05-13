@@ -379,9 +379,6 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 		} else if (type == UUID.class) {
 			bestType = FieldType.GUID;
 		} else {
-			// TODO Kendall: We may want to presume only our (loupe) enums and serialize
-			// them as numbers to match .NET.
-			// TODO RKELLIHER discuss this
 			Class baseType = type.getSuperclass();
 			if (baseType.isEnum() || baseType == Enum[].class) {
 				bestType = tryGetSerializableType(baseType);

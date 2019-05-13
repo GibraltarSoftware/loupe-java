@@ -566,7 +566,6 @@ public class HubConnection implements Closeable {
 																								// offset length to
 																								// start position
 				} else if (fullHubUrl.endsWith("HUB/")) {
-					// TODO RKELLIHER these the same?
 					fullHubUrl = CodeConversionHelpers.substring(fullHubUrl, 0, fullHubUrl.length() - 4); // -3 for HUB/, -1
 																								// to offset length
 																								// to start position

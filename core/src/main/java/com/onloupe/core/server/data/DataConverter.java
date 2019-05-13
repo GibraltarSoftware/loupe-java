@@ -491,7 +491,6 @@ public final class DataConverter {
 		Element dateTimeOffsetElement = parent.getOwnerDocument().createElement(elementName);
 		parent.appendChild(dateTimeOffsetElement);
 
-		// RKELLIHER TODO format
 		dateTimeOffsetElement.setAttribute("DateTime", dateTimeOffsetXml.getDateTime().toString());
 		dateTimeOffsetElement.setAttribute("Offset", String.valueOf(dateTimeOffsetXml.getOffset()));
 	}

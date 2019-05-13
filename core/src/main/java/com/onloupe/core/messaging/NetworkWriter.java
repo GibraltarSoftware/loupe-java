@@ -221,9 +221,6 @@ public class NetworkWriter extends NetworkClient {
 		} while (nextPacket != null);
 	}
 
-	// TODO KM:  IT appears the .NET implementation this should be retriable using the default backoff.
-
-	// TODO RKELLIHER Define...
 	@Override
 	protected boolean canRetry() {
 		// TODO Auto-generated method stub

@@ -32,9 +32,7 @@ public class UserResolutionNotifier implements Closeable {
 	 */
 	public UserResolutionNotifier(boolean anonymousMode) {
 		if (!anonymousMode) {
-			// TODO RKELLIHER commented until we can fix the static observer problem
-//			Publisher.MessageDispatching.addListener("PublisherOnMessageDispatching",
-//					(Object sender, PacketEventArgs e) -> PublisherOnMessageDispatching(sender, e));
+
 		}
 	}
 
@@ -46,8 +44,6 @@ public class UserResolutionNotifier implements Closeable {
 	 */
 	@Override
 	public final void close() throws IOException {
-		// TODO RKELLIHER commented until we can fix the static observer problem
-		// Publisher.MessageDispatching.removeListener("PublisherOnMessageDispatching");
 
 	}
 
@@ -99,12 +95,9 @@ public class UserResolutionNotifier implements Closeable {
 			ThreadLocal<Boolean> threadLocalBoolean = new ThreadLocal<Boolean>();
 			try {
 				threadLocalBoolean.set(true);
-				// TODO RKELLIHER commented until we can fix the static observer problem
-				// tempEvent.Invoke(null, resolveEventArgs);
 			} catch (Exception ex) {
 				// we can't log this because that would create an infinite loop (ignoring our
 				// protection for same)
-				// TODO RKELLIHER assuming it belongs here...
 				threadLocalBoolean.set(false);
 			} finally {
 				tInResolveUserEvent = threadLocalBoolean;

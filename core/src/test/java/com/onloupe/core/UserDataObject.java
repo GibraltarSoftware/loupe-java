@@ -191,7 +191,6 @@ public class UserDataObject {
 		this.longValue = Long.MIN_VALUE + ((Long.MAX_VALUE / (maxSamples / 2)) * (sample / 2))
 				+ ((Long.MAX_VALUE / (maxSamples / 2)) * (sample / 2));
 
-		// TODO RKELLIHER review this...
 		this.decimal = BigDecimal.valueOf(Long.MIN_VALUE).add(BigDecimal.valueOf(Long.MAX_VALUE)
 				.divide((BigDecimal.valueOf(maxSamples).divide(BigDecimal.valueOf(2))))
 				.multiply(((BigDecimal.valueOf(sample).divide(BigDecimal.valueOf(2)))).add(BigDecimal
