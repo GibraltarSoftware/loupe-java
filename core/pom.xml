@@ -11,9 +11,48 @@
 		<version>1.0</version>
 	</parent>
 	
-	<name>core</name>
 	<artifactId>core</artifactId>
+
+	<name>Loupe Core</name>
+	<description>Core functionality of Loupe.</description>
+	<url>https://onloupe.com/</url>
 	
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	
+	<developers>
+		<developer>
+			<name>Ryan Kelliher</name>
+			<email>ryan@gibraltarsoftware.com</email>
+			<roles>
+				<role>Principal Software Development Engineer</role>
+			</roles>
+			<organization>Gibraltar Software, Inc.</organization>
+			<organizationUrl>https://onloupe.com/</organizationUrl>
+		</developer>
+		<developer>
+			<name>Kendall Miller</name>
+			<email>kendall@gibraltarsoftware.com</email>
+			<roles>
+				<role>Chief Executive Officer</role>
+				<role>Chief Software Architect</role>
+				<role>Grand Technical Poo Bah</role>
+			</roles>
+			<organization>Gibraltar Software, Inc.</organization>
+			<organizationUrl>https://onloupe.com/</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/GibraltarSoftware/loupe-java.git</connection>
+		<developerConnection>scm:git:ssh://github.com:GibraltarSoftware/loupe-java.git</developerConnection>
+		<url>http://github.com/GibraltarSoftware/loupe-java/tree/master</url>
+	</scm>
+		
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
