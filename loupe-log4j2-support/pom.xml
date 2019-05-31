@@ -3,17 +3,16 @@
   <parent>
     <groupId>com.onloupe</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
   <artifactId>loupe-log4j2-support</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
   
   <dependencies>
   		<dependency>
 			<groupId>com.onloupe</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 			<scope>compile</scope>
 		</dependency>
 	    <dependency>

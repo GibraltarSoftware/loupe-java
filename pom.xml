@@ -6,16 +6,16 @@
 	<groupId>com.onloupe</groupId>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0-SNAPSHOT</version>
-	<name>loupe-java-agent</name>
-	<url>https://onloupe.com/</url>
+	<version>1.0</version>
 
+	<name>Loupe</name>
+	<description>Core Loupe functionality for logging and monitoring, including custom appenders for popular logging frameworks.</description>
+	<url>https://onloupe.com/</url>
 
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
 		</license>
 	</licenses>
 	
@@ -26,7 +26,7 @@
 			<roles>
 				<role>Principal Software Development Engineer</role>
 			</roles>
-			<organization>Gibraltar Software Inc</organization>
+			<organization>Gibraltar Software, Inc.</organization>
 			<organizationUrl>https://onloupe.com/</organizationUrl>
 		</developer>
 		<developer>
@@ -37,11 +37,17 @@
 				<role>Chief Software Architect</role>
 				<role>Grand Technical Poo Bah</role>
 			</roles>
-			<organization>Gibraltar Software Inc</organization>
+			<organization>Gibraltar Software, Inc.</organization>
 			<organizationUrl>https://onloupe.com/</organizationUrl>
 		</developer>
 	</developers>
-	
+
+	<scm>
+		<connection>scm:git:git://github.com/GibraltarSoftware/loupe-java.git</connection>
+		<developerConnection>scm:git:ssh://github.com:GibraltarSoftware/loupe-java.git</developerConnection>
+		<url>http://github.com/GibraltarSoftware/loupe-java/tree/master</url>
+	</scm>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
