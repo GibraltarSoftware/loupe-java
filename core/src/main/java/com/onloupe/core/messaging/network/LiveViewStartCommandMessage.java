@@ -9,17 +9,30 @@ import java.util.UUID;
 import com.onloupe.core.data.BinarySerializer;
 import com.onloupe.model.system.Version;
 
+// TODO: Auto-generated Javadoc
 /**
- * Requests a new live view stream
+ * Requests a new live view stream.
  */
 public class LiveViewStartCommandMessage extends NetworkMessage {
+	
+	/** The lock. */
 	private final Object lock = new Object();
 
+	/** The repository id. */
 	private UUID repositoryId;
+	
+	/** The sequence offset. */
 	private long sequenceOffset;
+	
+	/** The session id. */
 	private UUID sessionId;
+	
+	/** The channel id. */
 	private UUID channelId;
 
+	/**
+	 * Instantiates a new live view start command message.
+	 */
 	public LiveViewStartCommandMessage() {
 		synchronized (this.lock) {
 			setTypeCode(NetworkMessageTypeCode.LIVE_VIEW_START_COMMAND);
@@ -29,13 +42,12 @@ public class LiveViewStartCommandMessage extends NetworkMessage {
 
 	/**
 	 * Create a new message with the specified session id and optionally sequence
-	 * offset
-	 * 
+	 * offset.
+	 *
 	 * @param repositoryId   The unique Id of the client for all related activities
+	 * @param sessionId      The session that is being requested to live view
 	 * @param channelId      A unique id for this request to identify a conversation
 	 *                       pair
-	 * @param sessionId      The session that is being requested to live view
-	 * @param sequenceOffset The packet index to start at
 	 */
 
 	public LiveViewStartCommandMessage(java.util.UUID repositoryId, java.util.UUID sessionId,
@@ -43,6 +55,14 @@ public class LiveViewStartCommandMessage extends NetworkMessage {
 		this(repositoryId, sessionId, channelId, 0);
 	}
 
+	/**
+	 * Instantiates a new live view start command message.
+	 *
+	 * @param repositoryId the repository id
+	 * @param sessionId the session id
+	 * @param channelId the channel id
+	 * @param sequenceOffset the sequence offset
+	 */
 	public LiveViewStartCommandMessage(UUID repositoryId, UUID sessionId, UUID channelId, long sequenceOffset) {
 		this();
 		synchronized (this.lock) {
@@ -55,7 +75,9 @@ public class LiveViewStartCommandMessage extends NetworkMessage {
 	}
 
 	/**
-	 * A unique id for this request to identify a conversation pair
+	 * A unique id for this request to identify a conversation pair.
+	 *
+	 * @return the channel id
 	 */
 	public final UUID getChannelId() {
 		synchronized (this.lock) {
@@ -65,7 +87,9 @@ public class LiveViewStartCommandMessage extends NetworkMessage {
 
 	/**
 	 * The last sequence number that was received previously to enable restart at
-	 * the right point in the stream
+	 * the right point in the stream.
+	 *
+	 * @return the sequence offset
 	 */
 	public final long getSequenceOffset() {
 		synchronized (this.lock) {
@@ -74,7 +98,9 @@ public class LiveViewStartCommandMessage extends NetworkMessage {
 	}
 
 	/**
-	 * The Id of the session to be viewed
+	 * The Id of the session to be viewed.
+	 *
+	 * @return the session id
 	 */
 	public final UUID getSessionId() {
 		synchronized (this.lock) {
@@ -83,7 +109,9 @@ public class LiveViewStartCommandMessage extends NetworkMessage {
 	}
 
 	/**
-	 * The unique Id of the client for all related activities
+	 * The unique Id of the client for all related activities.
+	 *
+	 * @return the repository id
 	 */
 	public final UUID getRepositoryId() {
 		synchronized (this.lock) {
@@ -92,7 +120,7 @@ public class LiveViewStartCommandMessage extends NetworkMessage {
 	}
 
 	/**
-	 * Verify the command is fully populated and
+	 * Verify the command is fully populated and.
 	 */
 	public final void validate() {
 		synchronized (this.lock) {
@@ -108,9 +136,10 @@ public class LiveViewStartCommandMessage extends NetworkMessage {
 	}
 
 	/**
-	 * Write the packet to the stream
-	 * 
-	 * @throws IOException
+	 * Write the packet to the stream.
+	 *
+	 * @param stream the stream
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void onWrite(OutputStream stream) throws IOException {
@@ -123,9 +152,10 @@ public class LiveViewStartCommandMessage extends NetworkMessage {
 	}
 
 	/**
-	 * Read packet data from the stream
-	 * 
-	 * @throws IOException
+	 * Read packet data from the stream.
+	 *
+	 * @param stream the stream
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void onRead(InputStream stream) throws IOException {

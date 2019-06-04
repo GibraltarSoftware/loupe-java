@@ -9,6 +9,7 @@ import com.onloupe.core.serialization.monitor.EventMetricValueDefinitionPacket;
 import com.onloupe.core.util.OutObject;
 import com.onloupe.core.util.TypeUtils;
 
+// TODO: Auto-generated Javadoc
 /**
  * A collection of event values for the parent event metric definition.
  * 
@@ -16,18 +17,29 @@ import com.onloupe.core.util.TypeUtils;
  * accessible through the Values property.
  */
 public final class EventMetricValueDefinitionCollection {
+	
+	/** The dictionary. */
 	private final Map<String, EventMetricValueDefinition> dictionary = new HashMap<String, EventMetricValueDefinition>();
+	
+	/** The list. */
 	private final List<EventMetricValueDefinition> list = new ArrayList<EventMetricValueDefinition>();
+	
+	/** The definition. */
 	private EventMetricDefinition definition;
 
 
+	/**
+	 * Gets the list.
+	 *
+	 * @return the list
+	 */
 	public List<EventMetricValueDefinition> getList() {
 		return list;
 	}
 
 	/**
-	 * Create a new values dictionary for the specified metric definition
-	 * 
+	 * Create a new values dictionary for the specified metric definition.
+	 *
 	 * @param definition The parent metric definition object that will own this
 	 *                   dictionary.
 	 */
@@ -59,7 +71,7 @@ public final class EventMetricValueDefinitionCollection {
 	 * Internally, only simple type are supported. Any non-numeric,
 	 * non-DateTimeOffset type will be converted to a string using the default
 	 * ToString capability when it is recorded.
-	 * 
+	 *
 	 * @param name            The unique name for this value definition.
 	 * @param type            The simple type of this value.
 	 * @param summaryFunction The default way that individual samples of this value
@@ -71,9 +83,6 @@ public final class EventMetricValueDefinitionCollection {
 	 * @param caption         The end-user display caption for this value.
 	 * @param description     The end-user description for this value.
 	 * @return The newly created value definition.
-	 * @exception ArgumentNullException The provided name or type are null.
-	 * @exception ArgumentException     There is already a definition with the
-	 *                                  provided name
 	 */
 	public EventMetricValueDefinition add(String name, java.lang.Class type, SummaryFunction summaryFunction,
 			String unitCaption, String caption, String description) {
@@ -117,6 +126,8 @@ public final class EventMetricValueDefinitionCollection {
 
 	/**
 	 * The metric definition this value is associated with.
+	 *
+	 * @return the definition
 	 */
 	public EventMetricDefinition getDefinition() {
 		return this.definition;
@@ -163,10 +174,10 @@ public final class EventMetricValueDefinitionCollection {
 	}
 
 	/**
-	 * Retrieve metric object by its name
-	 * 
-	 * @param name
-	 * @return
+	 * Retrieve metric object by its name.
+	 *
+	 * @param name the name
+	 * @return the event metric value definition
 	 */
 	public EventMetricValueDefinition get(String name) {
 		synchronized (this.definition.getLock()) {
@@ -176,9 +187,9 @@ public final class EventMetricValueDefinitionCollection {
 	
 	/**
 	 * Retrieve the metric definition by numeric index in collection.
-	 * 
-	 * @param index
-	 * @return
+	 *
+	 * @param index the index
+	 * @return the event metric value definition
 	 */
 	public final EventMetricValueDefinition get(int index) {
 		if (isReadOnly()) // Don't need the lock once we're read-only.
@@ -247,15 +258,11 @@ public final class EventMetricValueDefinitionCollection {
 	/////////////////////////////////////////////////////
 
 	/**
-	 * Add an existing value definition item to this collection
-	 * 
+	 * Add an existing value definition item to this collection.
+	 *
 	 * @param item An existing value definition item associated with our metric
 	 *             definition
-	 * @exception ArgumentNullException The provided item was null.
-	 * @exception ArgumentException     The provided value definition item is not
-	 *                                  associated with our metric definition -or-
-	 *                                  there is already a value definition with the
-	 *                                  same name as the provided item.
+	 * @return true, if successful
 	 */
 	public final boolean add(EventMetricValueDefinition item) {
 		// we can't do the read-only check here because we use this method to add
@@ -291,9 +298,6 @@ public final class EventMetricValueDefinitionCollection {
 	 * 
 	 * This method is implemented only for ICollection interface support and will
 	 * throw an exception if called.
-	 * 
-	 * @exception InvalidOperationException The definition has been committed and is
-	 *                                      now read-only
 	 */
 	public void clear() {
 		synchronized (this.definition.getLock()) {
@@ -384,6 +388,8 @@ public final class EventMetricValueDefinitionCollection {
 
 	/**
 	 * The number of items currently in the dictionary.
+	 *
+	 * @return the int
 	 */
 	public int size() {
 		return this.dictionary.size();
@@ -391,6 +397,8 @@ public final class EventMetricValueDefinitionCollection {
 
 	/**
 	 * The number of items currently in the dictionary.
+	 *
+	 * @return the count
 	 */
 	public int getCount() {
 		return size();
@@ -398,6 +406,8 @@ public final class EventMetricValueDefinitionCollection {
 	
 	/**
 	 * Indicates if the dictionary is considered read only.
+	 *
+	 * @return true, if is read only
 	 */
 	public boolean isReadOnly() {
 		return this.definition.isReadOnly();
@@ -410,8 +420,9 @@ public final class EventMetricValueDefinitionCollection {
 	 * 
 	 * This method is implemented only for ICollection interface support and will
 	 * throw an exception if called.
-	 * 
+	 *
 	 * @param item The EventMetricValueDefinition item to remove.
+	 * @return true, if successful
 	 */
 	public final boolean remove(EventMetricValueDefinition item) {
 		boolean itemRemoved = false;
@@ -462,6 +473,11 @@ public final class EventMetricValueDefinitionCollection {
 		}
 	}
 	
+	/**
+	 * Gets the event metric value definitions.
+	 *
+	 * @return the event metric value definitions
+	 */
 	public List<EventMetricValueDefinition> getEventMetricValueDefinitions() {
 		return this.list;
 	}

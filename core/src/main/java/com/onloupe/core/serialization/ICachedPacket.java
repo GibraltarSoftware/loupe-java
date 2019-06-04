@@ -2,6 +2,7 @@ package com.onloupe.core.serialization;
 
 import java.util.UUID;
 
+// TODO: Auto-generated Javadoc
 /**
  * Implemented on invariant packets that can be cached
  * 
@@ -10,8 +11,11 @@ import java.util.UUID;
  * 
  */
 public interface ICachedPacket extends IPacket {
+	
 	/**
-	 * The unique Id of the packet
+	 * The unique Id of the packet.
+	 *
+	 * @return the id
 	 */
 	UUID getID();
 }

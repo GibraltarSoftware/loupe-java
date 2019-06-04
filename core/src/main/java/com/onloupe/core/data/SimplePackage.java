@@ -27,6 +27,7 @@ import com.onloupe.model.exception.GibraltarException;
 import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.session.SessionStatus;
 
+// TODO: Auto-generated Javadoc
 /**
  * A very simple implementation of the Package type for use within the agent
  * 
@@ -34,21 +35,32 @@ import com.onloupe.model.session.SessionStatus;
  * merge session fragments.
  */
 public class SimplePackage implements Closeable {
+	
+	/** The Constant LOG_CATEGORY. */
 	private static final String LOG_CATEGORY = "Loupe.Repository.Package";
+	
+	/** The Constant FRAGMENTS_FOLDER. */
 	private static final String FRAGMENTS_FOLDER = "SessionFragments";
 
+	/** The Sessions. */
 	private final Map<UUID, SessionFileInfo<ZipEntry>> _Sessions = new HashMap<UUID, SessionFileInfo<ZipEntry>>();
 
+	/** The raw file. */
 	private File rawFile;
+	
+	/** The zip output stream. */
 	private ZipOutputStream zipOutputStream;
 
+	/** The caption. */
 	private String caption;
+	
+	/** The description. */
 	private String description;
 
 	/**
 	 * Create a new, empty package.
-	 * 
-	 * @throws IOException
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public SimplePackage() throws IOException {
 		// we are a new package, don't know what we are yet
@@ -65,15 +77,22 @@ public class SimplePackage implements Closeable {
 		this.zipOutputStream = new ZipOutputStream(rawFileStream);
 	}
 
+	/**
+	 * Instantiates a new simple package.
+	 *
+	 * @param destinationFileNamePath the destination file name path
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public SimplePackage(String destinationFileNamePath) throws IOException {
 		this(new File(destinationFileNamePath));
 	}
 
 	/**
 	 * Create a new, empty package written to the provided file (which will be
-	 * overwritten)
-	 * 
-	 * @throws IOException
+	 * overwritten).
+	 *
+	 * @param destinationFile the destination file
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public SimplePackage(File destinationFile) throws IOException {
 		// we are a new package, don't know what we are yet
@@ -94,7 +113,9 @@ public class SimplePackage implements Closeable {
 	 * Performs application-defined tasks associated with freeing, releasing, or
 	 * resetting unmanaged resources.
 	 * 
-	 * <filterpriority>2</filterpriority>
+	 * 
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void close() throws IOException {
@@ -123,7 +144,9 @@ public class SimplePackage implements Closeable {
 	/**
 	 * Adds the provided session fragment file to the package if it doesn't already
 	 * exist.
-	 * 
+	 *
+	 * @param sessionFile the session file
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void addSession(RandomAccessFile sessionFile) throws IOException {
 		GLFReader glfReader = new GLFReader(sessionFile);
@@ -172,28 +195,43 @@ public class SimplePackage implements Closeable {
 	}
 
 	/**
-	 * The display caption for the package
+	 * The display caption for the package.
+	 *
+	 * @return the caption
 	 */
 	public final String getCaption() {
 		return this.caption;
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	public final void setCaption(String value) {
 		this.caption = value;
 	}
 
 	/**
-	 * The end user display description for the package
+	 * The end user display description for the package.
+	 *
+	 * @return the description
 	 */
 	public final String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * Sets the description.
+	 *
+	 * @param value the new description
+	 */
 	public final void setDescription(String value) {
 		this.description = value;
 	}
 
 	/**
+	 * Length.
 	 *
 	 * @return The length of the package in bytes
 	 */
@@ -203,14 +241,17 @@ public class SimplePackage implements Closeable {
 
 	/**
 	 * The current full path to the package.
+	 *
+	 * @return the absolute path
 	 */
 	public final String getAbsolutePath() {
 		return this.rawFile.getAbsolutePath();
 	}
 
 	/**
-	 * Get summary statistics about the sessions in the repository
-	 * 
+	 * Get summary statistics about the sessions in the repository.
+	 *
+	 * @return the stats
 	 */
 	public final PackageStats getStats() {
 		int sessions = this._Sessions.size();
@@ -230,9 +271,9 @@ public class SimplePackage implements Closeable {
 	}
 
 	/**
-	 * Get the set of all of the session headers in the package
-	 * 
-	 * @return
+	 * Get the set of all of the session headers in the package.
+	 *
+	 * @return the sessions
 	 */
 	public final List<SessionHeader> getSessions() {
 		ArrayList<SessionHeader> sessionList = new ArrayList<SessionHeader>(this._Sessions.size());
@@ -244,6 +285,12 @@ public class SimplePackage implements Closeable {
 		return sessionList;
 	}
 
+	/**
+	 * Adds the session header to index.
+	 *
+	 * @param sessionHeader the session header
+	 * @param sessionFragment the session fragment
+	 */
 	private void addSessionHeaderToIndex(SessionHeader sessionHeader, ZipEntry sessionFragment) {
 		SessionFileInfo<ZipEntry> sessionFileInfo = this._Sessions.get(sessionHeader.getId());
 		if (sessionFileInfo != null) {
@@ -256,6 +303,12 @@ public class SimplePackage implements Closeable {
 		}
 	}
 
+	/**
+	 * Generate fragment path.
+	 *
+	 * @param fileId the file id
+	 * @return the string
+	 */
 	private static String generateFragmentPath(UUID fileId) {
 		return String.format("%s/%s.%s", FRAGMENTS_FOLDER, fileId, Log.LOG_EXTENSION);
 	}

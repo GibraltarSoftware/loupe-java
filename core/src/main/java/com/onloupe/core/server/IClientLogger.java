@@ -2,12 +2,16 @@ package com.onloupe.core.server;
 
 import com.onloupe.model.log.LogMessageSeverity;
 
+// TODO: Auto-generated Javadoc
 /**
- * HTTP Client logging interface
+ * HTTP Client logging interface.
  */
 public interface IClientLogger {
+	
 	/**
-	 * Indicates if only minimal logging should be performed
+	 * Indicates if only minimal logging should be performed.
+	 *
+	 * @return the silent mode
 	 */
 	boolean getSilentMode();
 

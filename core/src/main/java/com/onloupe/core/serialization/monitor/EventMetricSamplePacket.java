@@ -11,6 +11,7 @@ import com.onloupe.core.serialization.SerializedPacket;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * One raw data sample of an event metric
  * 
@@ -19,11 +20,13 @@ import java.util.List;
  * information are captured during construction).
  */
 public class EventMetricSamplePacket extends MetricSamplePacket implements IDynamicPacket, java.lang.Comparable<EventMetricSamplePacket> {
+	
+	/** The value definitions. */
 	private EventMetricValueDefinitionCollection valueDefinitions;
 
 	/**
-	 * Create an event metric sample packet for live data collection
-	 * 
+	 * Create an event metric sample packet for live data collection.
+	 *
 	 * @param metric The metric this sample is for
 	 */
 	public EventMetricSamplePacket(EventMetric metric) {
@@ -41,10 +44,10 @@ public class EventMetricSamplePacket extends MetricSamplePacket implements IDyna
 	}
 
 	/**
-	 * Compare this object to another to determine sort order
-	 * 
-	 * @param other
-	 * @return
+	 * Compare this object to another to determine sort order.
+	 *
+	 * @param other the other
+	 * @return the int
 	 */
 	@Override
 	public final int compareTo(EventMetricSamplePacket other) {
@@ -55,11 +58,10 @@ public class EventMetricSamplePacket extends MetricSamplePacket implements IDyna
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -103,10 +105,20 @@ public class EventMetricSamplePacket extends MetricSamplePacket implements IDyna
 	 */
 	private Object[] values;
 
+	/**
+	 * Gets the values.
+	 *
+	 * @return the values
+	 */
 	public final Object[] getValues() {
 		return this.values;
 	}
 
+	/**
+	 * Sets the values.
+	 *
+	 * @param value the new values
+	 */
 	private void setValues(Object[] value) {
 		this.values = value;
 	}
@@ -117,6 +129,7 @@ public class EventMetricSamplePacket extends MetricSamplePacket implements IDyna
 	// serialization methods know to recurse object
 	// structures looking for the interface.
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -130,6 +143,9 @@ public class EventMetricSamplePacket extends MetricSamplePacket implements IDyna
 		return super.getRequiredPackets();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricSamplePacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -144,6 +160,9 @@ public class EventMetricSamplePacket extends MetricSamplePacket implements IDyna
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricSamplePacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -155,18 +174,28 @@ public class EventMetricSamplePacket extends MetricSamplePacket implements IDyna
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricSamplePacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");
 	}
 
+	/** The dynamic type name. */
 	private String dynamicTypeName;
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.IDynamicPacket#getDynamicTypeName()
+	 */
 	@Override
 	public final String getDynamicTypeName() {
 		return this.dynamicTypeName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.IDynamicPacket#setDynamicTypeName(java.lang.String)
+	 */
 	@Override
 	public final void setDynamicTypeName(String value) {
 		this.dynamicTypeName = value;

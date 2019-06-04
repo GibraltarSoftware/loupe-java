@@ -12,27 +12,42 @@ import com.onloupe.core.data.BinarySerializer;
 import com.onloupe.core.util.TimeConversion;
 import com.onloupe.model.system.Version;
 
+// TODO: Auto-generated Javadoc
 /**
- * Used to determine the latency and relative clock drift of a connection
+ * Used to determine the latency and relative clock drift of a connection.
  */
 public class ClockDriftMessage extends NetworkMessage {
+	
+	/** The id. */
 	private UUID id;
+	
+	/** The originator timestamp. */
 	private Optional<OffsetDateTime> originatorTimestamp = Optional.empty();
+	
+	/** The destination timestamp. */
 	private Optional<OffsetDateTime> destinationTimestamp = Optional.empty();
+	
+	/** The deserialization timestamp. */
 	private OffsetDateTime deserializationTimestamp;
 
+	/** The clock drift. */
 	private Duration clockDrift;
+	
+	/** The latency. */
 	private Duration latency;
 
+	/**
+	 * Instantiates a new clock drift message.
+	 */
 	public ClockDriftMessage() {
 		setTypeCode(NetworkMessageTypeCode.CLOCK_DRIFT);
 		setVersion(new Version(1, 0));
 	}
 
 	/**
-	 * Create a new clock drift message for the specified agent
-	 * 
-	 * @param id
+	 * Create a new clock drift message for the specified agent.
+	 *
+	 * @param id the id
 	 */
 	public ClockDriftMessage(UUID id) {
 		this();
@@ -40,47 +55,72 @@ public class ClockDriftMessage extends NetworkMessage {
 	}
 
 	/**
-	 * The session Id of the endpoint we're identifying clock drift for
+	 * The session Id of the endpoint we're identifying clock drift for.
+	 *
+	 * @return the id
 	 */
 	public final UUID getId() {
 		return this.id;
 	}
 
+	/**
+	 * Sets the id.
+	 *
+	 * @param value the new id
+	 */
 	public final void setId(UUID value) {
 		this.id = value;
 	}
 
 	/**
-	 * The timestamp the original request was created on the source end
+	 * The timestamp the original request was created on the source end.
+	 *
+	 * @return the originator timestamp
 	 */
 	public final Optional<OffsetDateTime> getOriginatorTimestamp() {
 		return this.originatorTimestamp;
 	}
 
+	/**
+	 * Sets the originator timestamp.
+	 *
+	 * @param value the new originator timestamp
+	 */
 	public final void setOriginatorTimestamp(Optional<OffsetDateTime> value) {
 		this.originatorTimestamp = value;
 	}
 
 	/**
-	 * The timestamp of the destination when it received the message
+	 * The timestamp of the destination when it received the message.
+	 *
+	 * @return the destination timestamp
 	 */
 	public final Optional<OffsetDateTime> getDestinationTimestamp() {
 		return this.destinationTimestamp;
 	}
 
+	/**
+	 * Sets the destination timestamp.
+	 *
+	 * @param value the new destination timestamp
+	 */
 	public final void setDestinationTimestamp(Optional<OffsetDateTime> value) {
 		this.destinationTimestamp = value;
 	}
 
 	/**
-	 * The clock drift between the agent and the server, discounting latency
+	 * The clock drift between the agent and the server, discounting latency.
+	 *
+	 * @return the clock drift
 	 */
 	public final Duration getClockDrift() {
 		return this.clockDrift;
 	}
 
 	/**
-	 * The estimated latency in the connection (used to calculate true clock drift)
+	 * The estimated latency in the connection (used to calculate true clock drift).
+	 *
+	 * @return the latency
 	 */
 	public final Duration getLatency() {
 		return this.latency;
@@ -106,9 +146,10 @@ public class ClockDriftMessage extends NetworkMessage {
 	}
 
 	/**
-	 * Write the packet to the stream
-	 * 
-	 * @throws IOException
+	 * Write the packet to the stream.
+	 *
+	 * @param stream the stream
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void onWrite(OutputStream stream) throws IOException {
@@ -123,9 +164,10 @@ public class ClockDriftMessage extends NetworkMessage {
 	}
 
 	/**
-	 * Read packet data from the stream
-	 * 
-	 * @throws IOException
+	 * Read packet data from the stream.
+	 *
+	 * @param stream the stream
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void onRead(InputStream stream) throws IOException {

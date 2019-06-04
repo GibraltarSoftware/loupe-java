@@ -10,17 +10,31 @@ import java.util.UUID;
 
 import com.onloupe.core.util.TypeUtils;
 
+// TODO: Auto-generated Javadoc
 /**
- * A (sorted) collection of Application User objects
+ * A (sorted) collection of Application User objects.
  */
 public final class ApplicationUserCollection {
+	
+	/** The application user by guid. */
 	private final Map<UUID, ApplicationUser> applicationUserByGuid = new HashMap<UUID, ApplicationUser>();
+	
+	/** The application user by key. */
 	private final Map<String, ApplicationUser> applicationUserByKey = new HashMap<String, ApplicationUser>();
+	
+	/** The application user by user name. */
 	private final Map<String, ApplicationUser> applicationUserByUserName = new HashMap<String, ApplicationUser>();
+	
+	/** The sorted application user. */
 	private final List<ApplicationUser> sortedApplicationUser = new ArrayList<ApplicationUser>();
+	
+	/** The lock. */
 	private final Object lock = new Object();
 
+	/** The sort needed. */
 	private boolean sortNeeded;
+	
+	/** The cached application user. */
 	private ApplicationUser cachedApplicationUser; // this is a tetchy little performance optimization to save us
 													// thread info lookup time
 
@@ -46,9 +60,9 @@ public final class ApplicationUserCollection {
 
 	/**
 	 * Adds an item to the ApplicationUserCollection.
-	 * 
+	 *
 	 * @param item The ApplicationUser item to add.
-	 * @return
+	 * @return true, if successful
 	 */
 	public boolean add(ApplicationUser item) {
 		if (item == null) {
@@ -109,8 +123,8 @@ public final class ApplicationUserCollection {
 	/**
 	 * Determines whether a given ApplicationUser item is already present in the
 	 * ApplicationUserCollection.
-	 * 
-	 * @param item The ApplicationUser item of interest.
+	 *
+	 * @param objectValue the object value
 	 * @return True if present, false if not.
 	 */
 	public boolean contains(Object objectValue) {
@@ -188,6 +202,8 @@ public final class ApplicationUserCollection {
 
 	/**
 	 * Gets the number of ApplicationUser items in the ApplicationUserCollection.
+	 *
+	 * @return the int
 	 */
 	public int size() {
 		synchronized (this.lock) {
@@ -207,8 +223,8 @@ public final class ApplicationUserCollection {
 
 	/**
 	 * Removes a specified ApplicationUser item from the ApplicationUserCollection.
-	 * 
-	 * @param item The ApplicationUser item to remove.
+	 *
+	 * @param objectValue the object value
 	 * @return True if item was found and removed from the
 	 *         ApplicationUserCollection, false if not found.
 	 */
@@ -238,12 +254,10 @@ public final class ApplicationUserCollection {
 	/**
 	 * Determines the index of a specific ApplicationUser in the
 	 * ApplicationUserCollection (in sorted order).
-	 * 
-	 * @param item The ApplicationUser item to locate in the
-	 *             ApplicationUserCollection.
+	 *
+	 * @param objectValue the object value
 	 * @return The index of the ApplicationUser item if found in the list;
 	 *         otherwise, -1.
-	 * 
 	 */
 	public int indexOf(Object objectValue) {
 		ApplicationUser item = (ApplicationUser) objectValue;
@@ -255,9 +269,9 @@ public final class ApplicationUserCollection {
 
 	/**
 	 * ApplicationUserCollection is sorted and does not support direct modification.
-	 * 
-	 * @param index
-	 * @param item
+	 *
+	 * @param index the index
+	 * @param item the item
 	 */
 	public void add(int index, ApplicationUser item) {
 		throw new UnsupportedOperationException(
@@ -267,10 +281,10 @@ public final class ApplicationUserCollection {
 	/**
 	 * Remove the ApplicationUser item found at a specified index in the
 	 * ApplicationUserCollection (in sorted order). (Supported but not recommended.)
-	 * 
+	 *
 	 * @param index The index (in the sorted order) of a ApplicationUser item to
 	 *              remove.
-	 * @return
+	 * @return the application user
 	 */
 	public ApplicationUser remove(int index) {
 		synchronized (this.lock) {
@@ -281,6 +295,13 @@ public final class ApplicationUserCollection {
 		}
 	}
 
+	/**
+	 * Sets the.
+	 *
+	 * @param sortIndex the sort index
+	 * @param value the value
+	 * @return the application user
+	 */
 	public ApplicationUser set(int sortIndex, ApplicationUser value) {
 		throw new UnsupportedOperationException(
 				"ApplicationUserCollection is sorted and does not support direct modification.");
@@ -321,10 +342,8 @@ public final class ApplicationUserCollection {
 
 	/**
 	 * Get the ApplicationUser with a specified Guid ID.
-	 * 
+	 *
 	 * @param id              The Guid ID of the desired ApplicationUser.
-	 * @param applicationUser Gets the ApplicationUser with the specified Guid ID if
-	 *                        it exists in the ApplicationUserCollection.
 	 * @return True if found, false if not found.
 	 */
 	public ApplicationUser tryGetValue(UUID id) {
@@ -336,10 +355,8 @@ public final class ApplicationUserCollection {
 	/**
 	 * Get the ApplicationUser with a specified Key. (Use TryFindUserName() to look
 	 * up by fully qualified user name.)
-	 * 
+	 *
 	 * @param key             The unique key of the desired ApplicationUser.
-	 * @param applicationUser Gets the ApplicationUser with the specified key if it
-	 *                        exists in the ApplicationUserCollection.
 	 * @return True if found, false if not found.
 	 */
 	public ApplicationUser tryGetValue(String key) {
@@ -366,11 +383,9 @@ public final class ApplicationUserCollection {
 
 	/**
 	 * Get the ApplicationUser with a specified fully qualified user name.
-	 * 
+	 *
 	 * @param userName        The fully qualified user name of the desired
 	 *                        ApplicationUser.
-	 * @param applicationUser Gets the ApplicationUser with the specified user name
-	 *                        if it exists in the ApplicationUserCollection.
 	 * @return True if found, false if not found.
 	 */
 	public ApplicationUser tryFindUserName(String userName) {
@@ -385,10 +400,10 @@ public final class ApplicationUserCollection {
 
 	/**
 	 * Set the specified value as a cached user if that user isn't present,
-	 * returning the correct user from the collection
-	 * 
-	 * @param user
-	 * @return
+	 * returning the correct user from the collection.
+	 *
+	 * @param user the user
+	 * @return the application user
 	 */
 	public ApplicationUser trySetValue(ApplicationUser user) {
 		if (user == null) {

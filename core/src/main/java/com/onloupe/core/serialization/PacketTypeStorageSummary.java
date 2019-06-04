@@ -1,50 +1,71 @@
 package com.onloupe.core.serialization;
 
+// TODO: Auto-generated Javadoc
 /**
  * Records a summary of packet count and aggregate size for one specific packet
- * type
+ * type.
  */
 public class PacketTypeStorageSummary implements java.lang.Comparable {
-	/**
-	 * Qualified type name from the related PacketDefinition
-	 */
+	
+	/** Qualified type name from the related PacketDefinition. */
 	private String qualifiedTypeName;
 
+	/**
+	 * Gets the qualified type name.
+	 *
+	 * @return the qualified type name
+	 */
 	public final String getQualifiedTypeName() {
 		return this.qualifiedTypeName;
 	}
 
+	/**
+	 * Sets the qualified type name.
+	 *
+	 * @param value the new qualified type name
+	 */
 	private void setQualifiedTypeName(String value) {
 		this.qualifiedTypeName = value;
 	}
 
-	/**
-	 * Short type name from the related PacketDefinition
-	 * 
-	 * 
-	 * In particular, there can be many instances of EventMetricSamplePacket that
-	 * vary only by QualifiedTypeName
-	 * 
-	 */
+	/** Short type name from the related PacketDefinition   In particular, there can be many instances of EventMetricSamplePacket that vary only by QualifiedTypeName. */
 	private String typeName;
 
+	/**
+	 * Gets the type name.
+	 *
+	 * @return the type name
+	 */
 	public final String getTypeName() {
 		return this.typeName;
 	}
 
+	/**
+	 * Sets the type name.
+	 *
+	 * @param value the new type name
+	 */
 	private void setTypeName(String value) {
 		this.typeName = value;
 	}
 
-	/**
-	 * Number of packets of this type that were read
-	 */
+	/** Number of packets of this type that were read. */
 	private int packetCount;
 
+	/**
+	 * Gets the packet count.
+	 *
+	 * @return the packet count
+	 */
 	public final int getPacketCount() {
 		return this.packetCount;
 	}
 
+	/**
+	 * Sets the packet count.
+	 *
+	 * @param value the new packet count
+	 */
 	public final void setPacketCount(int value) {
 		this.packetCount = value;
 	}
@@ -60,16 +81,28 @@ public class PacketTypeStorageSummary implements java.lang.Comparable {
 	 */
 	private long packetSize;
 
+	/**
+	 * Gets the packet size.
+	 *
+	 * @return the packet size
+	 */
 	public final long getPacketSize() {
 		return this.packetSize;
 	}
 
+	/**
+	 * Sets the packet size.
+	 *
+	 * @param value the new packet size
+	 */
 	public final void setPacketSize(long value) {
 		this.packetSize = value;
 	}
 
 	/**
-	 * Returns the average number of bytes per packet (rounded up)
+	 * Returns the average number of bytes per packet (rounded up).
+	 *
+	 * @return the average packet size
 	 */
 	public final long getAveragePacketSize() {
 		if (getPacketCount() <= 0) {
@@ -80,7 +113,9 @@ public class PacketTypeStorageSummary implements java.lang.Comparable {
 	}
 
 	/**
-	 * Create a storage summary instance referencing a particualr PacketDefinition
+	 * Create a storage summary instance referencing a particualr PacketDefinition.
+	 *
+	 * @param packetDefinition the packet definition
 	 */
 	public PacketTypeStorageSummary(PacketDefinition packetDefinition) {
 		setQualifiedTypeName(packetDefinition.getQualifiedTypeName());
@@ -90,7 +125,10 @@ public class PacketTypeStorageSummary implements java.lang.Comparable {
 	}
 
 	/**
-	 * Default sort is descending by PacketCount within descending PacketSize
+	 * Default sort is descending by PacketCount within descending PacketSize.
+	 *
+	 * @param obj the obj
+	 * @return the int
 	 */
 	@Override
 	public final int compareTo(Object obj) {

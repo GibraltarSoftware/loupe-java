@@ -11,26 +11,41 @@ import com.onloupe.agent.logging.MessageSourceProvider;
 import com.onloupe.core.util.CodeConversionHelpers;
 import com.onloupe.core.util.TypeUtils;
 
+// TODO: Auto-generated Javadoc
 /**
  * A static class to hold central logic for common file and OS operations needed
  * by various projects.
  */
 public final class CommonCentralLogic {
+	
+	/** The silent mode. */
 	private static boolean silentMode = false;
+	
+	/** The breakpoint enable. */
 	volatile private static boolean breakpointEnable = false; // Can be changed in the debugger
 
+	/** The g session ending. */
 	// Basic log implementation.
 	volatile private static boolean gSessionEnding; // Session end triggered. False until set to true.
+	
+	/** The g session ended. */
 	volatile private static boolean gSessionEnded; // Session end completed. False until set to true.
 
 	/**
 	 * Indicates if the logging system should be running in silent mode (for example
 	 * when running in the agent).
+	 *
+	 * @return the silent mode
 	 */
 	public static boolean getSilentMode() {
 		return silentMode;
 	}
 
+	/**
+	 * Sets the silent mode.
+	 *
+	 * @param value the new silent mode
+	 */
 	public static void setSilentMode(boolean value) {
 		silentMode = value;
 	}
@@ -41,17 +56,26 @@ public final class CommonCentralLogic {
 	 * 
 	 * True enables breakpointing, false disables. This should probably be replaced
 	 * with an enum to support multiple modes, assuming the basic usage works out.
+	 *
+	 * @return the break point enable
 	 */
 	public static boolean getBreakPointEnable() {
 		return breakpointEnable;
 	}
 
+	/**
+	 * Sets the break point enable.
+	 *
+	 * @param value the new break point enable
+	 */
 	public static void setBreakPointEnable(boolean value) {
 		breakpointEnable = value;
 	}
 
 	/**
 	 * Reports whether EndSession() has been called to formally end the session.
+	 *
+	 * @return true, if is session ending
 	 */
 	public static boolean isSessionEnding() {
 		return gSessionEnding;
@@ -60,6 +84,8 @@ public final class CommonCentralLogic {
 	/**
 	 * Reports whether EndSession() has completed flushing the end-session command
 	 * to the log.
+	 *
+	 * @return true, if is session ended
 	 */
 	public static boolean isSessionEnded() {
 		return gSessionEnded;
@@ -80,18 +106,43 @@ public final class CommonCentralLogic {
 		gSessionEnded = true;
 	}
 
+	/**
+	 * Find message source.
+	 *
+	 * @return the message source provider
+	 */
 	public static MessageSourceProvider findMessageSource() {
 		return findMessageSource(2);
 	}
 	
+	/**
+	 * Find message source.
+	 *
+	 * @param skipFrames the skip frames
+	 * @return the message source provider
+	 */
 	public static MessageSourceProvider findMessageSource(int skipFrames) {
 		return findMessageSource(skipFrames + 1, null, null);
 	}
 
+	/**
+	 * Find message source.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @return the message source provider
+	 */
 	public static MessageSourceProvider findMessageSource(int skipFrames, Set<String> exclusions) {
 		return findMessageSource(skipFrames + 1, null, exclusions);
 	}
 	
+	/**
+	 * Find message source.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param throwable the throwable
+	 * @return the message source provider
+	 */
 	public static MessageSourceProvider findMessageSource(int skipFrames, Throwable throwable) {
 		return findMessageSource(skipFrames + 1, throwable, null);
 	}
@@ -104,24 +155,13 @@ public final class CommonCentralLogic {
 	 * caller to specify a log message as being of local origin, so Gibraltar stack
 	 * frames will not be automatically skipped over when determining the originator
 	 * for internally-issued log messages.
-	 * 
+	 *
 	 * @param skipFrames      The number of stack frames to skip over to find the
 	 *                        first candidate to be identified as the source of the
 	 *                        log message. (Should generally use 0 if exception
 	 *                        parameter is not null.)
-	 * @param trustSkipFrames True if logging a message originating in Gibraltar
-	 *                        code (or to just trust skipFrames). False if logging a
-	 *                        message from the client application and Gibraltar
-	 *                        frames should be explicitly skipped over.
-	 * @param exception       An exception declared as the source of this log
-	 *                        message (or null for normal call stack source).
-	 * @param className       The class name of the identified source (usually
-	 *                        available).
-	 * @param methodName      The method name of the identified source (usually
-	 *                        available).
-	 * @param fileName        The file name of the identified source (if available).
-	 * @param lineNumber      The line number of the identified source (if
-	 *                        available).
+	 * @param throwable the throwable
+	 * @param exclusions the exclusions
 	 * @return The index of the stack frame chosen
 	 */
 	public static MessageSourceProvider findMessageSource(int skipFrames, Throwable throwable, Set<String> exclusions) {
@@ -221,6 +261,13 @@ public final class CommonCentralLogic {
 		return provider;
 	}
 	
+	/**
+	 * Checks if is excluded.
+	 *
+	 * @param fqcn the fqcn
+	 * @param exclusions the exclusions
+	 * @return true, if is excluded
+	 */
 	private static boolean isExcluded(String fqcn, Set<String> exclusions) {
 		// no exclusions defined, therefore exclude nothing.
 		if (exclusions == null || exclusions.isEmpty())
@@ -240,10 +287,8 @@ public final class CommonCentralLogic {
 	 * create a string (intended as a log message) error message containing the
 	 * original format string and a representation of the args supplied, to attempt
 	 * to preserve meaningful information despite the user's mistake.
-	 * 
-	 * @param formatProvider An IFormatProvider (such as a CultureInfo) to use,
-	 *                       where applicable. (may be null, indicating the current
-	 *                       culture)
+	 *
+	 * @param locale the locale
 	 * @param format         The desired format string, as used by string.Format().
 	 * @param args           An array of args, as used by string.Format() after the
 	 *                       format string.
@@ -354,12 +399,19 @@ public final class CommonCentralLogic {
 		return resultString;
 	}
 
+	/** The Constant resolvedEscapes. */
 	private static final char[] resolvedEscapes = new char[] { '\r', '\n', '\t', '\"', '\\' };
+	
+	/** The Constant literalEscapes. */
 	private static final String[] literalEscapes = new String[] { "\\r", "\\n", "\\t", "\\\"", "\\\\" };
+	
+	/** The Constant escapeMap. */
 	private static final HashMap<Character, String> escapeMap = initEscapeMap();
 
 	/**
 	 * Initializes the EscapeMap dictionary.
+	 *
+	 * @return the hash map
 	 */
 	private static HashMap<Character, String> initEscapeMap() {
 		// Allocate and initialize our mapping of special resolved-escape characters to
@@ -430,9 +482,8 @@ public final class CommonCentralLogic {
 
 	/**
 	 * Try to expand an object to a string, handling exceptions which might occur.
-	 * 
-	 * @param formatProvider An IFormatProvider (such as a CultureInfo). (may be
-	 *                       null to indicate the current culture)
+	 *
+	 * @param locale the locale
 	 * @param forDisplay     The object for display into a string.
 	 * @param reverseEscapes Whether to convert null and strings back to appearance
 	 *                       as in code.

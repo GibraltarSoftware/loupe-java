@@ -1,18 +1,23 @@
 package com.onloupe.core.serialization;
 
+// TODO: Auto-generated Javadoc
 /**
  * FieldDefinition is only used internally by PacketDefinition to hold the name
- * and type of a field
+ * and type of a field.
  */
 public class FieldDefinition {
+	
+	/** The field type. */
 	private FieldType fieldType;
+	
+	/** The field name. */
 	private String fieldName;
 
 	/**
 	 * Create a new field definition.
-	 * 
-	 * @param fieldName
-	 * @param fieldType
+	 *
+	 * @param fieldName the field name
+	 * @param fieldType the field type
 	 */
 	public FieldDefinition(String fieldName, FieldType fieldType) {
 		this.fieldName = fieldName;
@@ -20,14 +25,18 @@ public class FieldDefinition {
 	}
 
 	/**
-	 * The exact serializable field type of the field
+	 * The exact serializable field type of the field.
+	 *
+	 * @return the field type
 	 */
 	public final FieldType getFieldType() {
 		return this.fieldType;
 	}
 
 	/**
-	 * The unique name of this field within the packet
+	 * The unique name of this field within the packet.
+	 *
+	 * @return the name
 	 */
 	public final String getName() {
 		return this.fieldName;

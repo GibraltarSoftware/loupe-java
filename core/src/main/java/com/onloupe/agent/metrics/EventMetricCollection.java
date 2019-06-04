@@ -7,13 +7,22 @@ import java.util.UUID;
 import com.onloupe.core.util.OutObject;
 import com.onloupe.core.util.TypeUtils;
 
+// TODO: Auto-generated Javadoc
 /**
  * The collection of event metrics for a given event metric definition.
  */
 public class EventMetricCollection {
+    
+    /** The dictionary by name. */
     private final Map<String, EventMetric> dictionaryByName = new HashMap<String, EventMetric>();
+    
+    /** The dictionary. */
     private final Map<UUID, EventMetric> dictionary = new HashMap<UUID, EventMetric>();
+    
+    /** The lock. */
     private final Object lock = new Object();
+    
+    /** The metric definition. */
     private final EventMetricDefinition metricDefinition;
     
 	/**
@@ -55,8 +64,8 @@ public class EventMetricCollection {
 
 	/**
 	 * Create a new metric object with the provided instance name and add it to the
-	 * collection
-	 * 
+	 * collection.
+	 *
 	 * @param instanceName The instance name to use, or blank or null for the
 	 *                     default metric.
 	 * @return The new metric object that was added to the collection
@@ -128,6 +137,8 @@ public class EventMetricCollection {
 
 	/**
 	 * The definition of all of the metrics in this collection.
+	 *
+	 * @return the definition
 	 */
 	public final EventMetricDefinition getDefinition() {
 		return this.metricDefinition;
@@ -177,10 +188,10 @@ public class EventMetricCollection {
 	}
 
 	/**
-	 * Retrieve event metric object by its Id
-	 * 
-	 * @param Id
-	 * @return
+	 * Retrieve event metric object by its Id.
+	 *
+	 * @param id the id
+	 * @return the event metric
 	 */
 	public final EventMetric get(UUID id) {
 		synchronized (this.lock) {
@@ -189,10 +200,10 @@ public class EventMetricCollection {
 	}
 
 	/**
-	 * Retrieve event metric object by its name
-	 * 
-	 * @param key
-	 * @return
+	 * Retrieve event metric object by its name.
+	 *
+	 * @param key the key
+	 * @return the event metric
 	 */
 	public final EventMetric get(String key) {
 		synchronized (this.lock) {
@@ -202,6 +213,8 @@ public class EventMetricCollection {
 
 	/**
 	 * Object Change Locking object.
+	 *
+	 * @return the lock
 	 */
 	public final Object getLock() {
 		return this.lock;

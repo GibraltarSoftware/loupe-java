@@ -15,34 +15,79 @@ import com.onloupe.core.server.HubStatus;
 import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.TimeConversion;
 
+// TODO: Auto-generated Javadoc
 /**
  * Performs constant, background publishing of sessions from the repository.
  */
 public class RepositoryPublishEngine {
+	
+	/** The Constant BASE_MULTIPROCESS_LOCK_NAME. */
 	private static final String BASE_MULTIPROCESS_LOCK_NAME = "repositoryPublish";
+	
+	/** The Constant BACKGROUND_STARTUP_DELAY. */
 	private static final int BACKGROUND_STARTUP_DELAY = 5000; // 5 seconds
+	
+	/** The Constant SHORT_CHECK_INTERVAL_SECONDS. */
 	private static final int SHORT_CHECK_INTERVAL_SECONDS = 60;
+	
+	/** The Constant LONG_CHECK_INTERVAL_SECONDS. */
 	private static final int LONG_CHECK_INTERVAL_SECONDS = 1800;
+	
+	/** The Constant EXPIRED_CHECK_INTERVAL_SECONDS. */
 	private static final int EXPIRED_CHECK_INTERVAL_SECONDS = 3600;
 
+	/** The session publish thread lock. */
 	private final Object sessionPublishThreadLock = new Object();
+	
+	/** The publisher. */
 	private Publisher publisher;
+	
+	/** The configuration. */
 	private AgentConfiguration configuration;
+	
+	/** The repository folder. */
 	private String repositoryFolder; // used to coordinate where to coordinate locks
+	
+	/** The multiprocess lock name. */
 	private String multiprocessLockName; // used to establish our unique publisher lock.
 
+	/** The initialized. */
 	private volatile boolean initialized; // designed to enable us to do our initialization in the background.
+											
+											/** The stop requested. */
 											// PROTECTED BY THREADLOCK
 	private volatile boolean stopRequested;
+	
+	/** The session publish thread failed. */
 	private volatile boolean sessionPublishThreadFailed; // PROTECTED BY THREADLOCK
+	
+	/** The session publish thread. */
 	private Thread sessionPublishThread; // PROTECTED BY THREADLOCK
+	
+	/** The client. */
 	private RepositoryPublishClient client; // PROTECTED BY THREADLOCK
+	
+	/** The force check. */
 	private boolean forceCheck; // PROTECTED BY THREADLOCK
+	
+	/** The last check. */
 	private OffsetDateTime lastCheck = TimeConversion.MIN; // PROTECTED BY THREADLOCK
+	
+	/** The check interval. */
 	private Duration checkInterval = Duration.ofMinutes(1); // PROTECTED BY THREADLOCK
+	
+	/** The multiprocess lock check interval. */
 	private Duration multiprocessLockCheckInterval = Duration.ofMinutes(5);
+	
+	/** The failed attempts. */
 	private int failedAttempts; // PROTECTED BY THREADLOCK
 
+	/**
+	 * Instantiates a new repository publish engine.
+	 *
+	 * @param publisher the publisher
+	 * @param configuration the configuration
+	 */
 	public RepositoryPublishEngine(Publisher publisher, AgentConfiguration configuration) {
 		this.publisher = publisher;
 		this.configuration = configuration;
@@ -66,6 +111,8 @@ public class RepositoryPublishEngine {
 
 	/**
 	 * Indicates if the publisher has a valid configuration and is running.
+	 *
+	 * @return true, if is active
 	 */
 	public final boolean isActive() {
 		return (this.initialized && !this.sessionPublishThreadFailed); // protected by volatile
@@ -80,11 +127,10 @@ public class RepositoryPublishEngine {
 	}
 
 	/**
-	 * Stop publishing sessions
-	 * 
+	 * Stop publishing sessions.
+	 *
 	 * @param waitForStop Indicates if the caller wants to wait for the engine to
 	 *                    stop before returning
-	 * 
 	 */
 	public final void stop(boolean waitForStop) {
 		if (isActive()) {
@@ -108,6 +154,9 @@ public class RepositoryPublishEngine {
 		}
 	}
 
+	/**
+	 * Creates the message dispatch thread.
+	 */
 	private void createMessageDispatchThread() {
 		synchronized (this.sessionPublishThreadLock) {
 			// clear the dispatch thread failed flag so no one else tries to create our
@@ -132,6 +181,9 @@ public class RepositoryPublishEngine {
 		}
 	}
 
+	/**
+	 * Repository publish main.
+	 */
 	private void repositoryPublishMain() {
 		// before we get going, lets stall for a few seconds. We aren't a critical
 		// operation, and I don't
@@ -188,8 +240,8 @@ public class RepositoryPublishEngine {
 	/**
 	 * Called when we're the one true publisher for our data to have us poll for
 	 * data to push and push as soon as available.
-	 * 
-	 * @throws IOException
+	 *
+	 * @throws Exception the exception
 	 */
 	private void repositoryPublishLoop() throws Exception {
 		// Now we need to make sure we're initialized.
@@ -242,6 +294,9 @@ public class RepositoryPublishEngine {
 		}
 	}
 
+	/**
+	 * Ensure initialized.
+	 */
 	private void ensureInitialized() {
 		if (!this.initialized) {
 			synchronized (this.sessionPublishThreadLock) {
@@ -298,16 +353,21 @@ public class RepositoryPublishEngine {
 
 	/**
 	 * Get a multiprocess lock for the subscription engine.
-	 * 
-	 * @param timeout
-	 * @return
-	 * @throws IOException
+	 *
+	 * @param timeout the timeout
+	 * @return the lock
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private InterprocessLock getLock(int timeout) throws IOException {
 		return InterprocessLockManager.getInstance().lock(this, this.repositoryFolder, this.multiprocessLockName,
 				timeout);
 	}
 
+	/**
+	 * Sleep until next check.
+	 *
+	 * @param checkInterval the check interval
+	 */
 	private void sleepUntilNextCheck(Duration checkInterval) {
 		synchronized (this.sessionPublishThreadLock) {
 			// time to sleep.

@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.onloupe.core.util.TypeUtils;
 
+// TODO: Auto-generated Javadoc
 /**
  * Performs repository level maintenance such as purging for size. Should be
  * used with collection repositories only.
@@ -17,18 +18,26 @@ public class RepositoryMaintenance implements Closeable {
 	 */
 	public static final String MUTIPROCESS_LOCK_NAME = "Maintenance";
 
+	/** The lock. */
 	private final Object lock = new Object();
+	
+	/** The repository path. */
 	private String repositoryPath;
 
+	/** The performing maintenance. */
 	private volatile boolean performingMaintenance; // locked by _Lock.
+	
+	/** The closed. */
 	private boolean closed;
+	
+	/** The logging enabled. */
 	private boolean loggingEnabled;
 
 	/**
 	 * Create a repository maintenance object for the provided repository without
 	 * the ability to perform pruning.
-	 * 
-	 * @param repositoryPath
+	 *
+	 * @param repositoryPath the repository path
 	 * @param loggingEnabled Indicates if the maintenance process should log its
 	 *                       actions.
 	 */
@@ -82,7 +91,9 @@ public class RepositoryMaintenance implements Closeable {
 	 * Performs application-defined tasks associated with freeing, releasing, or
 	 * resetting unmanaged resources.
 	 * 
-	 * <filterpriority>2</filterpriority>
+	 * 
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void close() throws IOException {
@@ -117,10 +128,20 @@ public class RepositoryMaintenance implements Closeable {
 	 */
 	private String productName;
 
+	/**
+	 * Gets the product name.
+	 *
+	 * @return the product name
+	 */
 	public final String getProductName() {
 		return this.productName;
 	}
 
+	/**
+	 * Sets the product name.
+	 *
+	 * @param value the new product name
+	 */
 	private void setProductName(String value) {
 		this.productName = value;
 	}
@@ -130,16 +151,28 @@ public class RepositoryMaintenance implements Closeable {
 	 */
 	private String applicationName;
 
+	/**
+	 * Gets the application name.
+	 *
+	 * @return the application name
+	 */
 	public final String getApplicationName() {
 		return this.applicationName;
 	}
 
+	/**
+	 * Sets the application name.
+	 *
+	 * @param value the new application name
+	 */
 	private void setApplicationName(String value) {
 		this.applicationName = value;
 	}
 
 	/**
-	 * The full path to the base of the repository that is being maintained
+	 * The full path to the base of the repository that is being maintained.
+	 *
+	 * @return the repository path
 	 */
 	public final String getRepositoryPath() {
 		return this.repositoryPath;
@@ -151,23 +184,41 @@ public class RepositoryMaintenance implements Closeable {
 	 */
 	private int maxAgeDays;
 
+	/**
+	 * Gets the max age days.
+	 *
+	 * @return the max age days
+	 */
 	public final int getMaxAgeDays() {
 		return this.maxAgeDays;
 	}
 
+	/**
+	 * Sets the max age days.
+	 *
+	 * @param value the new max age days
+	 */
 	public final void setMaxAgeDays(int value) {
 		this.maxAgeDays = value;
 	}
 
-	/**
-	 * The maximum number of megabytes of session fragments to keep
-	 */
+	/** The maximum number of megabytes of session fragments to keep. */
 	private int maxSizeMegabytes;
 
+	/**
+	 * Gets the max size megabytes.
+	 *
+	 * @return the max size megabytes
+	 */
 	public final int getMaxSizeMegabytes() {
 		return this.maxSizeMegabytes;
 	}
 
+	/**
+	 * Sets the max size megabytes.
+	 *
+	 * @param value the new max size megabytes
+	 */
 	public final void setMaxSizeMegabytes(int value) {
 		this.maxSizeMegabytes = value;
 	}
@@ -177,23 +228,37 @@ public class RepositoryMaintenance implements Closeable {
 	 */
 	private OffsetDateTime lastMaintenanceRunDateTime;
 
+	/**
+	 * Gets the last maintenance run date time.
+	 *
+	 * @return the last maintenance run date time
+	 */
 	public final OffsetDateTime getLastMaintenanceRunDateTime() {
 		return this.lastMaintenanceRunDateTime;
 	}
 
 	/**
 	 * Indicates if the database should log operations to Gibraltar or not.
+	 *
+	 * @return true, if is logging enabled
 	 */
 	public final boolean isLoggingEnabled() {
 		return this.loggingEnabled;
 	}
 
+	/**
+	 * Sets the checks if is logging enabled.
+	 *
+	 * @param value the new checks if is logging enabled
+	 */
 	public final void setIsLoggingEnabled(boolean value) {
 		this.loggingEnabled = value;
 	}
 
 	/**
 	 * Indicates whether maintenance is currently being performed on the repository.
+	 *
+	 * @return the performing maintenance
 	 */
 	public final boolean getPerformingMaintenance() {
 		// marked as volatile so we'll have a very current value, but we're just
@@ -203,9 +268,6 @@ public class RepositoryMaintenance implements Closeable {
 
 	/**
 	 * Run the maintenance cycle.
-	 * 
-	 * @param asyncronous True to have maintenance performed on a background thread,
-	 *                    allowing the current process to continue.
 	 */
 	public final void performMaintenance() {
 		// if we're currently performing maintenance, return immediately.

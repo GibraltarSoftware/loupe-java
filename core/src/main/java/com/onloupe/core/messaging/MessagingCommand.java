@@ -1,5 +1,6 @@
 package com.onloupe.core.messaging;
 
+// TODO: Auto-generated Javadoc
 /**
  * Different types of commands.
  */
@@ -9,14 +10,10 @@ public enum MessagingCommand {
 	 */
 	NONE(0),
 
-	/**
-	 * Flush the queue
-	 */
+	/** Flush the queue. */
 	FLUSH(1),
 
-	/**
-	 * Close the current file (and open a new one because the session isn't ending)
-	 */
+	/** Close the current file (and open a new one because the session isn't ending). */
 	CLOSE_FILE(2),
 
 	/**
@@ -40,16 +37,23 @@ public enum MessagingCommand {
 	 */
 	SHOW_LIVE_VIEW(5),
 
-	/**
-	 * Causes the network messenger to connect out to a remote viewer
-	 */
+	/** Causes the network messenger to connect out to a remote viewer. */
 	OPEN_REMOTE_VIEWER(6);
 
+	/** The Constant SIZE. */
 	public static final int SIZE = java.lang.Integer.SIZE;
 
+	/** The int value. */
 	private int intValue;
+	
+	/** The mappings. */
 	private static java.util.HashMap<Integer, MessagingCommand> mappings;
 
+	/**
+	 * Gets the mappings.
+	 *
+	 * @return the mappings
+	 */
 	private static java.util.HashMap<Integer, MessagingCommand> getMappings() {
 		if (mappings == null) {
 			synchronized (MessagingCommand.class) {
@@ -61,15 +65,31 @@ public enum MessagingCommand {
 		return mappings;
 	}
 
+	/**
+	 * Instantiates a new messaging command.
+	 *
+	 * @param value the value
+	 */
 	private MessagingCommand(int value) {
 		this.intValue = value;
 		getMappings().put(value, this);
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return this.intValue;
 	}
 
+	/**
+	 * For value.
+	 *
+	 * @param value the value
+	 * @return the messaging command
+	 */
 	public static MessagingCommand forValue(int value) {
 		return getMappings().get(value);
 	}

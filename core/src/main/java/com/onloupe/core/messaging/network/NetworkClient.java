@@ -27,53 +27,91 @@ import com.onloupe.core.util.SystemUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
+// TODO: Auto-generated Javadoc
 /**
  * The base class for different network clients that talk to a server.
  */
 public abstract class NetworkClient extends Observable implements Closeable {
-	/**
-	 * The log category used for network client operations
-	 */
+	
+	/** The log category used for network client operations. */
 	public static final String LOG_CATEGORY = "Loupe.Network.Client";
 	
+	/** The Constant SECURITY_PROTOCOLS. */
 	private static final String[] SECURITY_PROTOCOLS = new String[] {"SSLv2Hello", "TLSv1", "TLSv1.1", "TLSv1.2"};
 
+	/** The Constant NETWORK_READ_BUFFER_LENGTH. */
 	private static final int NETWORK_READ_BUFFER_LENGTH = 10240;
 
+	/** The options. */
 	private NetworkConnectionOptions options;
+	
+	/** The retry connections. */
 	private boolean retryConnections;
+	
+	/** The major version. */
 	private int majorVersion;
+	
+	/** The minor version. */
 	private int minorVersion;
+	
+	/** The lock. */
 	private final Object lock = new Object();
 
+	/** The single socket. */
 	private boolean singleSocket;
+	
+	/** The connected. */
 	private boolean connected = false; // PROTECTED BY LOCK
+	
+	/** The connection failed. */
 	private boolean connectionFailed = false; // PROTECTED BY LOCK
+	
+	/** The closed. */
 	private volatile boolean closed; // PROTECTED BY LOCK //Volatile so we can peek at it.
+	
+	/** The has corrupt data. */
 	private boolean hasCorruptData;
+	
+	/** The packets lost count. */
 	private int packetsLostCount;
+	
+	/** The status string. */
 	private String statusString;
 
 	// these serializers are conversation-specific and have to be replaced every
+	/** The network serializer. */
 	// time we connect.
 	private NetworkSerializer networkSerializer;
+	
+	/** The network input stream. */
 	private BufferedInputStream networkInputStream;
+	
+	/** The network output stream. */
 	private BufferedOutputStream networkOutputStream;
 
+	/** The background reader. */
 	private Thread backgroundReader;
 
+	/** The packet reader. */
 	private PacketReader packetReader;
+	
+	/** The packet writer. */
 	private PacketWriter packetWriter;
+	
+	/** The tcp client. */
 	private Socket tcpClient; // only used when we were given a specific TCP client, not when we connect
 								// ourselves.
 	
-	private SSLContext sslContext;
+	/** The ssl context. */
+								private SSLContext sslContext;
+	
+	/** The ssl socket factory. */
 	private SSLSocketFactory sslSocketFactory;
 
 	/**
-	 * Create a new network client to the specified endpoint
-	 * 
-	 * @param options
+	 * Create a new network client to the specified endpoint.
+	 *
+	 * @param options the options
 	 * @param retryConnections If true then network connections will automatically
 	 *                         be retried (instead of the client being considered
 	 *                         failed)
@@ -132,16 +170,14 @@ public abstract class NetworkClient extends Observable implements Closeable {
 	}
 
 	/**
-	 * Start the network client
+	 * Start the network client.
 	 */
 	public final void start() {
 		initialize();
 	}
 
 	/**
-	 * Stop reading from the network and prepare to exit
-	 * 
-	 * @throws IOException
+	 * Stop reading from the network and prepare to exit.
 	 */
 	@Override
 	public final void close() {
@@ -160,13 +196,17 @@ public abstract class NetworkClient extends Observable implements Closeable {
 
 	/**
 	 * Indicates if the remote viewer is currently connected.
+	 *
+	 * @return true, if is connected
 	 */
 	public final boolean isConnected() {
 		return this.connected;
 	}
 
 	/**
-	 * Indicates if the writer experienced a network failure
+	 * Indicates if the writer experienced a network failure.
+	 *
+	 * @return true, if successful
 	 */
 	public final boolean connectionFailed() {
 		return this.connectionFailed;
@@ -174,6 +214,8 @@ public abstract class NetworkClient extends Observable implements Closeable {
 
 	/**
 	 * Indicates if the writer was explicitly closed.
+	 *
+	 * @return true, if is closed
 	 */
 	public final boolean isClosed() {
 		return this.closed;
@@ -182,6 +224,8 @@ public abstract class NetworkClient extends Observable implements Closeable {
 	/**
 	 * Indicates whether a session had errors during rehydration and has lost some
 	 * packets.
+	 *
+	 * @return the checks for corrupt data
 	 */
 	public final boolean getHasCorruptData() {
 		return this.hasCorruptData;
@@ -189,56 +233,62 @@ public abstract class NetworkClient extends Observable implements Closeable {
 
 	/**
 	 * Indicates how many packets were lost due to errors in rehydration.
+	 *
+	 * @return the packets lost count
 	 */
 	public final int getPacketsLostCount() {
 		return this.packetsLostCount;
 	}
 
 	/**
-	 * Get a copy of the network connection options used by this client
-	 * 
-	 * @return
+	 * Get a copy of the network connection options used by this client.
+	 *
+	 * @return the network connection options
 	 */
 	public final NetworkConnectionOptions cloneOptions() {
 		return this.options.clone();
 	}
 
-	/**
-	 * Returns a <see cref="T:System.String"/> that represents the current
-	 * <see cref="T:System.Object"/>.
-	 * 
-	 * @return A <see cref="T:System.String"/> that represents the current
-	 *         <see cref="T:System.Object"/>.
-	 * 
-	 *         <filterpriority>2</filterpriority>
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return this.statusString;
 	}
 
+	/**
+	 * Can retry.
+	 *
+	 * @return true, if successful
+	 */
 	protected abstract boolean canRetry();
 
+	/**
+	 * Retry delay.
+	 *
+	 * @return the integer
+	 */
 	protected abstract Integer retryDelay();
 
 	/**
-	 * Implemented to complete the protocol connection
-	 * 
+	 * Implemented to complete the protocol connection.
+	 *
 	 * @return True if a connection was successfully established, false otherwise.
-	 * @throws NoSuchMethodException
-	 * @throws IOException
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected abstract boolean connect() throws NoSuchMethodException, IOException;
 
 	/**
-	 * Implemented to transfer data on an established connection
-	 * 
-	 * @throws IOException
+	 * Implemented to transfer data on an established connection.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected abstract void transferData() throws IOException;
 
 	/**
-	 * Called when a valid connection is being administratively closed
+	 * Called when a valid connection is being administratively closed.
 	 */
 	protected void onClose() {
 	}
@@ -246,14 +296,16 @@ public abstract class NetworkClient extends Observable implements Closeable {
 	/**
 	 * Allows derived classes to register all of the packet factories they need when
 	 * creating a new packet reader.
-	 * 
-	 * @param packetReader
+	 *
+	 * @param packetReader the packet reader
 	 */
 	protected void onPacketFactoryRegister(PacketReader packetReader) {
 	}
 
 	/**
 	 * The network connection options used to connect to the server.
+	 *
+	 * @return the options
 	 */
 	public final NetworkConnectionOptions getOptions() {
 		return this.options;
@@ -261,9 +313,8 @@ public abstract class NetworkClient extends Observable implements Closeable {
 
 	/**
 	 * Transmit the provided network message to the server.
-	 * 
-	 * @param message
-	 * @throws IOException
+	 *
+	 * @param message the message
 	 */
 	protected final void sendMessage(NetworkMessage message) {
 		synchronized (this.lock) {
@@ -280,9 +331,8 @@ public abstract class NetworkClient extends Observable implements Closeable {
 
 	/**
 	 * Transmit the provided serialized packet to the server.
-	 * 
-	 * @param packet
-	 * @throws NoSuchMethodException
+	 *
+	 * @param packet the packet
 	 */
 	protected final void sendPacket(IPacket packet) {
 		synchronized (this.lock) {
@@ -322,9 +372,9 @@ public abstract class NetworkClient extends Observable implements Closeable {
 	/**
 	 * Read the next network packet from the pipe. Blocks until a packet is detected
 	 * or the connection fails.
-	 * 
-	 * @return
-	 * @throws IOException
+	 *
+	 * @return the network message
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected final NetworkMessage readNetworkMessage() throws IOException
 	{
@@ -362,6 +412,13 @@ public abstract class NetworkClient extends Observable implements Closeable {
 		return nextPacket;
 	}
 	
+	/**
+	 * Read socket.
+	 *
+	 * @param buffer the buffer
+	 * @return the int
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private int readSocket(OutObject<byte[]> buffer) throws IOException
 	{
 		//go into a blocking wait on the socket..  we'll loop until we get the whole buffer into the stream.
@@ -383,8 +440,8 @@ public abstract class NetworkClient extends Observable implements Closeable {
 
 	/**
 	 * Called to shut down the client due to a command from the server.
-	 * 
-	 * @throws IOException
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected final void remoteClose() throws IOException {
 		synchronized (this.lock) {
@@ -396,6 +453,9 @@ public abstract class NetworkClient extends Observable implements Closeable {
 		}
 	}
 
+	/**
+	 * Initialize.
+	 */
 	private void initialize() {
 		synchronized (this.lock) {
 			if (this.backgroundReader == null) {
@@ -416,9 +476,6 @@ public abstract class NetworkClient extends Observable implements Closeable {
 
 	/**
 	 * The main method of the background thread for reading from the stream.
-	 * 
-	 * @throws NoSuchMethodException
-	 * @throws IOException
 	 */
 	private void asyncNetworkStreamMain() {
 		try {
@@ -530,7 +587,7 @@ public abstract class NetworkClient extends Observable implements Closeable {
 	}
 
 	/**
-	 * Release and dispose all of the connection-specific resources
+	 * Release and dispose all of the connection-specific resources.
 	 */
 	private void disposeMembers() {
 		synchronized (this.lock) {
@@ -548,6 +605,11 @@ public abstract class NetworkClient extends Observable implements Closeable {
 		}
 	}
 
+	/**
+	 * Safe dispose.
+	 *
+	 * @param disposableObject the disposable object
+	 */
 	private static void safeDispose(Closeable disposableObject) {
 		if (disposableObject != null) {
 			try {
@@ -564,9 +626,9 @@ public abstract class NetworkClient extends Observable implements Closeable {
 	}
 
 	/**
-	 * Handles terminal socket failures
-	 * 
-	 * @param ex
+	 * Handles terminal socket failures.
+	 *
+	 * @param ex the ex
 	 */
 	private void actionSocketFailed(Exception ex) {
 		synchronized (this.lock) {
@@ -604,7 +666,8 @@ public abstract class NetworkClient extends Observable implements Closeable {
 	 * 
 	 * This is separate from the overrideable OnDisconnected to ensure our critical
 	 * state management gets done even if inheritor messes up.
-	 * @throws Exception 
+	 *
+	 * @throws Exception the exception
 	 */
 	private void actionOnClosed() throws Exception {
 		boolean performClose = false;
@@ -647,6 +710,11 @@ public abstract class NetworkClient extends Observable implements Closeable {
 		}
 	}
 
+	/**
+	 * Calculate state message.
+	 *
+	 * @param socket the socket
+	 */
 	private void calculateStateMessage(Socket socket) {
 		String state = null;
 
@@ -680,8 +748,8 @@ public abstract class NetworkClient extends Observable implements Closeable {
 
 	/**
 	 * Get a new TCP Client,if possible.
-	 * 
-	 * @return
+	 *
+	 * @return the tcp client
 	 */
 	private Socket getTcpClient() {
 		Socket newClient = null;

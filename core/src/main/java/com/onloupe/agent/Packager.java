@@ -35,24 +35,29 @@ import com.onloupe.model.exception.GibraltarException;
 import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.session.ISessionSummary;
 
+// TODO: Auto-generated Javadoc
 /**
  * Packages up sessions collected on the local computer and sends them via email
  * or file transport.
  */
 public class Packager {
-	/**
-	 * The log category for the packager
-	 */
+	
+	/** The log category for the packager. */
 	public static final String LOG_CATEGORY = "Loupe.Packager";
 
+	/** The repository. */
 	private LocalRepository repository;
+	
+	/** The Constant userListFormat. */
 	private static final String[] userListFormat = new String[] { "Anonymous", "%s", "%s and %s", "%s, %s, et. al." };;
+	
+	/** The Constant userListMaxCount. */
 	private static final int userListMaxCount = userListFormat.length - 1;;
 
 	/**
 	 * Create a new packager for the current process.
-	 * 
-	 * @throws IOException
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public Packager() throws IOException {
 		this(Log.getSessionSummary().getProduct(), Log.getSessionSummary().getApplication());
@@ -60,8 +65,9 @@ public class Packager {
 
 	/**
 	 * Create a new packager for the current process.
-	 * 
-	 * @throws IOException
+	 *
+	 * @param productName the product name
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public Packager(String productName) throws IOException {
 		this(productName, null);
@@ -69,8 +75,10 @@ public class Packager {
 
 	/**
 	 * Create a new packager for the current process.
-	 * 
-	 * @throws IOException
+	 *
+	 * @param productName the product name
+	 * @param applicationName the application name
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public Packager(String productName, String applicationName) throws IOException {
 		this(productName, applicationName, Log.getConfiguration().getSessionFile().getFolder());
@@ -78,8 +86,11 @@ public class Packager {
 
 	/**
 	 * Create a new packager for the current process.
-	 * 
-	 * @throws IOException
+	 *
+	 * @param productName the product name
+	 * @param applicationName the application name
+	 * @param repositoryFolder the repository folder
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public Packager(String productName, String applicationName, String repositoryFolder) throws IOException {
 		if (TypeUtils.isBlank(productName)) {
@@ -100,10 +111,20 @@ public class Packager {
 	 */
 	private String productName;
 
+	/**
+	 * Gets the product name.
+	 *
+	 * @return the product name
+	 */
 	public final String getProductName() {
 		return this.productName;
 	}
 
+	/**
+	 * Sets the product name.
+	 *
+	 * @param value the new product name
+	 */
 	private void setProductName(String value) {
 		this.productName = value;
 	}
@@ -114,23 +135,41 @@ public class Packager {
 	 */
 	private String applicationName;
 
+	/**
+	 * Gets the application name.
+	 *
+	 * @return the application name
+	 */
 	public final String getApplicationName() {
 		return this.applicationName;
 	}
 
+	/**
+	 * Sets the application name.
+	 *
+	 * @param value the new application name
+	 */
 	private void setApplicationName(String value) {
 		this.applicationName = value;
 	}
 
-	/**
-	 * A caption for the resulting package
-	 */
+	/** A caption for the resulting package. */
 	private String caption;
 
+	/**
+	 * Gets the caption.
+	 *
+	 * @return the caption
+	 */
 	public final String getCaption() {
 		return this.caption;
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	public final void setCaption(String value) {
 		this.caption = value;
 	}
@@ -140,14 +179,32 @@ public class Packager {
 	 */
 	private String description;
 
+	/**
+	 * Gets the description.
+	 *
+	 * @return the description
+	 */
 	public final String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * Sets the description.
+	 *
+	 * @param value the new description
+	 */
 	public final void setDescription(String value) {
 		this.description = value;
 	}
 
+	/**
+	 * Send to file.
+	 *
+	 * @param sessions the sessions
+	 * @param markAsRead the mark as read
+	 * @param fullFileNamePath the full file name path
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	//wrapper everything to this.
 	public final void sendToFile(EnumSet<SessionCriteria> sessions, boolean markAsRead, String fullFileNamePath) throws IOException {
 		// check for invalid arguments.
@@ -164,17 +221,13 @@ public class Packager {
 	/**
 	 * Write the completed package to the provided full file name and path without
 	 * extension.
-	 * 
+	 *
 	 * @param sessions         The set of match rules to apply to sessions to
 	 *                         determine what to send.
 	 * @param markAsRead       True to have every included session marked as read
 	 *                         upon successful completion.
 	 * @param fullFileNamePath The file name and path to write the final package to
-	 * @return The Package Send Event Arguments object that was also used for the
-	 *         EndSend event. The EndSend event will be raised when the send
-	 *         operation completes. Any provided extension will be removed and
-	 *         replaced with the standard Gibraltar package extension.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void sendToFile(SessionCriteria sessions, boolean markAsRead, String fullFileNamePath)
 			throws IOException {
@@ -184,19 +237,14 @@ public class Packager {
 	/**
 	 * Write the completed package to the provided full file name and path without
 	 * extension.
-	 * 
+	 *
 	 * @param sessionMatchPredicate A delegate to evaluate sessions and determine
 	 *                              which ones to send.
 	 * @param markAsRead            True to have every included session marked as
 	 *                              read upon successful completion.
 	 * @param fullFileNamePath      The file name and path to write the final
 	 *                              package to
-	 * @param asyncSend             True to have the package and send process run
-	 *                              asynchronously. The EndSend event will be raised
-	 *                              when the send operation completes. Any provided
-	 *                              extension will be removed and replaced with the
-	 *                              standard Gibraltar package extension.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void sendToFile(java.util.function.Predicate<ISessionSummary> sessionMatchPredicate,
 			boolean markAsRead, String fullFileNamePath) throws IOException {
@@ -217,8 +265,8 @@ public class Packager {
 	}
 
 	/**
-	 * Send the specified packages to our session data server as configured
-	 * 
+	 * Send the specified packages to our session data server as configured.
+	 *
 	 * @param sessionMatchPredicate    A delegate to evaluate sessions and determine
 	 *                                 which ones to send.
 	 * @param markAsRead               True to have every included session marked as
@@ -250,7 +298,7 @@ public class Packager {
 	 * @return The Package Send Event Arguments object that was also used for the
 	 *         EndSend event. The EndSend event will be raised when the send
 	 *         operation completes.
-	 * @throws Exception
+	 * @throws Exception the exception
 	 * @exception GibraltarException The server couldn't be contacted or there was a
 	 *                               communication error.
 	 */
@@ -277,8 +325,8 @@ public class Packager {
 	}
 
 	/**
-	 * Send the specified packages to our session data server as configured
-	 * 
+	 * Send the specified packages to our session data server as configured.
+	 *
 	 * @param sessions                 The set of match rules to apply to sessions
 	 *                                 to determine what to send.
 	 * @param markAsRead               True to have every included session marked as
@@ -310,7 +358,7 @@ public class Packager {
 	 * @return The Package Send Event Arguments object that was also used for the
 	 *         EndSend event. The EndSend event will be raised when the send
 	 *         operation completes.
-	 * @throws Exception
+	 * @throws Exception the exception
 	 * @exception GibraltarException The server couldn't be contacted or there was a
 	 *                               communication error
 	 */
@@ -333,31 +381,58 @@ public class Packager {
 		actionSendToServer(sessions, markAsRead, purgeSentSessions, overrideConfiguration, connectionOptions);
 	}
 	
+    /**
+     * Send to server.
+     *
+     * @param sessions the sessions
+     * @param markAsRead the mark as read
+     * @throws Exception the exception
+     */
     public void sendToServer(SessionCriteria sessions, boolean markAsRead) throws Exception
     {
         sendToServer(sessions, markAsRead, false, false, false, null, null, 0, false, null, null);
     }
     
+    /**
+     * Send to server.
+     *
+     * @param sessions the sessions
+     * @param markAsRead the mark as read
+     * @param customerName the customer name
+     * @throws Exception the exception
+     */
     public void sendToServer(SessionCriteria sessions, boolean markAsRead, String customerName) throws Exception
     {
         sendToServer(sessions, markAsRead, false, true, true, customerName, null, 0, false, null, null);
     }
     
+    /**
+     * Send to server.
+     *
+     * @param sessions the sessions
+     * @param markAsRead the mark as read
+     * @param server the server
+     * @param port the port
+     * @param useSsl the use ssl
+     * @param applicationBaseDirectory the application base directory
+     * @param repository the repository
+     * @throws Exception the exception
+     */
     public void sendToServer(SessionCriteria sessions, boolean markAsRead, String server, int port, boolean useSsl, String applicationBaseDirectory, String repository) throws Exception
     {
         sendToServer(sessions, markAsRead, false, true, false, null, server, port, useSsl, applicationBaseDirectory, repository);
     }
 
 	/**
-	 * Determines if it can correctly connect to the server and send data
-	 * 
+	 * Determines if it can correctly connect to the server and send data.
+	 *
 	 * @param overrideConfiguration Indicates if any of the configuration
 	 *                              information provided on this call should be used
 	 * @param serverConfiguration   The connection configuration to use if
 	 *                              overriding the server configuration
 	 * @return The hub status information for the specified configuration
-	 * @throws Exception
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public static HubConnectionStatus canSendToServer(boolean overrideConfiguration,
 			ServerConfiguration serverConfiguration) throws IOException, Exception {
@@ -372,23 +447,23 @@ public class Packager {
 	}
 
 	/**
-	 * Determines if it can correctly connect to the server and send data
-	 * 
+	 * Determines if it can correctly connect to the server and send data.
+	 *
 	 * @return The hub status information for the specified configuration
-	 * @throws Exception
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public static HubConnectionStatus canSendToServer() throws IOException, Exception {
 		return canSendToServer(false, null);
 	}
 
 	/**
-	 * Get a dataset of all of the sessions that should be included in our package
-	 * 
-	 * @param sessionCriteria
-	 * @param hasProblemSessions
-	 * @return
-	 * @throws IOException
+	 * Get a dataset of all of the sessions that should be included in our package.
+	 *
+	 * @param sessionCriteria the session criteria
+	 * @param hasProblemSessions the has problem sessions
+	 * @return the i session summary collection
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected final ISessionSummaryCollection findPackageSessions(SessionCriteria sessionCriteria,
 			Boolean hasProblemSessions) throws IOException {
@@ -424,10 +499,12 @@ public class Packager {
 	}
 
 	/**
-	 * Get a dataset of all of the sessions that should be included in our package
-	 * 
-	 * @return
-	 * @throws IOException
+	 * Get a dataset of all of the sessions that should be included in our package.
+	 *
+	 * @param sessionPredicate the session predicate
+	 * @param hasProblemSessions the has problem sessions
+	 * @return the i session summary collection
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected final ISessionSummaryCollection findPackageSessions(
 			java.util.function.Predicate<ISessionSummary> sessionPredicate, Boolean hasProblemSessions)
@@ -463,8 +540,14 @@ public class Packager {
 	 * collection repository.
 	 * 
 	 * Multi-thread safe.
-	 * 
-	 * @throws IOException
+	 *
+	 * @param selectedSessions the selected sessions
+	 * @param maxPackageSizeBytes the max package size bytes
+	 * @param hasProblemSessions the has problem sessions
+	 * @param packagingState the packaging state
+	 * @param destinationFileNamePath the destination file name path
+	 * @return the simple package
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private SimplePackage createTransportablePackage(ISessionSummaryCollection selectedSessions,
 			int maxPackageSizeBytes, Boolean hasProblemSessions, PackagingState packagingState,
@@ -731,7 +814,12 @@ public class Packager {
 	}
 
 	/**
-	 * Log the request information for a send to server request
+	 * Log the request information for a send to server request.
+	 *
+	 * @param overrideConfiguration the override configuration
+	 * @param markAsRead the mark as read
+	 * @param purgeSentSessions the purge sent sessions
+	 * @param serverConfiguration the server configuration
 	 */
 	private static void logSendToServer(boolean overrideConfiguration, boolean markAsRead, boolean purgeSentSessions,
 			ServerConfiguration serverConfiguration) {
@@ -776,10 +864,11 @@ public class Packager {
 	/**
 	 * Performs the actual packaging and storing of sessions in a file, safe for
 	 * async calling.
-	 * 
-	 * @param state
-	 * @return
-	 * @throws IOException
+	 *
+	 * @param sessionCriteria the session criteria
+	 * @param markAsRead the mark as read
+	 * @param fullFileNamePath the full file name path
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private void actionSendToFile(EnumSet<SessionCriteria> sessionCriteria, boolean markAsRead, String fullFileNamePath)
 			throws IOException {
@@ -803,10 +892,11 @@ public class Packager {
 	/**
 	 * Performs the actual packaging and storing of sessions in a file, safe for
 	 * async calling.
-	 * 
-	 * @param state
-	 * @return
-	 * @throws IOException
+	 *
+	 * @param sessionPredicate the session predicate
+	 * @param markAsRead the mark as read
+	 * @param fullFileNamePath the full file name path
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private void actionSendToFile(Predicate<ISessionSummary> sessionPredicate, boolean markAsRead,
 			String fullFileNamePath) throws IOException {
@@ -901,11 +991,13 @@ public class Packager {
 	/**
 	 * Performs the actual packaging and transmission of sessions via SDS, safe for
 	 * async calling.
-	 * 
-	 * @param state
-	 * @return
-	 * @throws Exception
-	 * @exception ArgumentException The server configuration specified is invalid
+	 *
+	 * @param sessionCriteria the session criteria
+	 * @param markAsRead the mark as read
+	 * @param purgeSentSessions the purge sent sessions
+	 * @param connectionSpecified the connection specified
+	 * @param serverConfiguration the server configuration
+	 * @throws Exception the exception
 	 */
 	private void actionSendToServer(SessionCriteria sessionCriteria, boolean markAsRead, boolean purgeSentSessions,
 			boolean connectionSpecified, ServerConfiguration serverConfiguration) throws Exception {
@@ -933,11 +1025,13 @@ public class Packager {
 	/**
 	 * Performs the actual packaging and transmission of sessions via SDS, safe for
 	 * async calling.
-	 * 
-	 * @param state
-	 * @return
-	 * @throws Exception
-	 * @exception ArgumentException The server configuration specified is invalid
+	 *
+	 * @param sessionPredicate the session predicate
+	 * @param markAsRead the mark as read
+	 * @param purgeSentSessions the purge sent sessions
+	 * @param connectionSpecified the connection specified
+	 * @param serverConfiguration the server configuration
+	 * @throws Exception the exception
 	 */
 	private void actionSendToServer(Predicate<ISessionSummary> sessionPredicate, boolean markAsRead,
 			boolean purgeSentSessions, boolean connectionSpecified, ServerConfiguration serverConfiguration)
@@ -1015,6 +1109,9 @@ public class Packager {
 		}
 	}
 
+	/**
+	 * The Class PackagingState.
+	 */
 	private static class PackagingState {
 		/**
 		 * The last session that we either packaged or attempted to package, and should
@@ -1022,10 +1119,20 @@ public class Packager {
 		 */
 		private UUID lastSessionId;
 
+		/**
+		 * Gets the last session id.
+		 *
+		 * @return the last session id
+		 */
 		public UUID getLastSessionId() {
 			return this.lastSessionId;
 		}
 
+		/**
+		 * Sets the last session id.
+		 *
+		 * @param lastSessionId the new last session id
+		 */
 		public void setLastSessionId(UUID lastSessionId) {
 			this.lastSessionId = lastSessionId;
 		}
@@ -1036,10 +1143,20 @@ public class Packager {
 		 */
 		private UUID lastFileId;
 
+		/**
+		 * Gets the last file id.
+		 *
+		 * @return the last file id
+		 */
 		public UUID getLastFileId() {
 			return this.lastFileId;
 		}
 
+		/**
+		 * Sets the last file id.
+		 *
+		 * @param lastSessionId the new last file id
+		 */
 		public void setLastFileId(UUID lastSessionId) {
 			this.lastFileId = lastSessionId;
 		}
@@ -1050,10 +1167,20 @@ public class Packager {
 		 */
 		private UUID nextSessionId;
 
+		/**
+		 * Gets the next session id.
+		 *
+		 * @return the next session id
+		 */
 		public UUID getNextSessionId() {
 			return this.nextSessionId;
 		}
 
+		/**
+		 * Sets the next session id.
+		 *
+		 * @param nextSessionId the new next session id
+		 */
 		public void setNextSessionId(UUID nextSessionId) {
 			this.nextSessionId = nextSessionId;
 		}
@@ -1063,24 +1190,41 @@ public class Packager {
 		 */
 		private RandomAccessFile nextSessionFile;
 
+		/**
+		 * Gets the next session file.
+		 *
+		 * @return the next session file
+		 */
 		public RandomAccessFile getNextSessionFile() {
 			return this.nextSessionFile;
 		}
 
+		/**
+		 * Sets the next session stream.
+		 *
+		 * @param nextSessionFile the new next session stream
+		 */
 		public void setNextSessionStream(RandomAccessFile nextSessionFile) {
 			this.nextSessionFile = nextSessionFile;
 		}
 
-		/**
-		 * Indicates if all of the sessions have been packaged (packaging is therefore
-		 * complete) or not
-		 */
+		/** Indicates if all of the sessions have been packaged (packaging is therefore complete) or not. */
 		private boolean complete;
 
+		/**
+		 * Checks if is complete.
+		 *
+		 * @return true, if is complete
+		 */
 		public final boolean isComplete() {
 			return this.complete;
 		}
 
+		/**
+		 * Sets the checks if is complete.
+		 *
+		 * @param value the new checks if is complete
+		 */
 		public final void setIsComplete(boolean value) {
 			this.complete = value;
 		}

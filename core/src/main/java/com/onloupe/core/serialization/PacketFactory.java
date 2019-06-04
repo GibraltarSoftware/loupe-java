@@ -2,12 +2,17 @@ package com.onloupe.core.serialization;
 
 import java.util.HashMap;
 
+// TODO: Auto-generated Javadoc
 /**
  * This helper class is used by PacketReader to manage the list of
  * IPacketFactory classes used to deserialize a stream of packets.
  */
 public class PacketFactory {
+	
+	/** The packet factories. */
 	private HashMap<String, IPacketFactory> packetFactories;
+	
+	/** The generic factory. */
 	private GenericPacketFactory genericFactory;
 
 	/**
@@ -31,8 +36,8 @@ public class PacketFactory {
 	}
 
 	/**
-	 * Associates the specified IPacketFactory with a type name
-	 * 
+	 * Associates the specified IPacketFactory with a type name.
+	 *
 	 * @param typeName Should refer to a type that implements IPacket
 	 * @param factory  IPacketFactory class used to
 	 */
@@ -40,6 +45,12 @@ public class PacketFactory {
 		this.packetFactories.put(typeName, factory);
 	}
 
+	/**
+	 * Gets the packet factory.
+	 *
+	 * @param typeName the type name
+	 * @return the packet factory
+	 */
 	public final IPacketFactory getPacketFactory(String typeName) {
 		if (this.packetFactories.containsKey(typeName)) {
 			return this.packetFactories.get(typeName);

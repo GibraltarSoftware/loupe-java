@@ -9,6 +9,7 @@ import java.util.UUID;
 import com.onloupe.core.util.OutObject;
 import com.onloupe.core.util.TypeUtils;
 
+// TODO: Auto-generated Javadoc
 /** 
  A collection of metric definitions, keyed by their unique Id and Key.
  
@@ -19,10 +20,20 @@ import com.onloupe.core.util.TypeUtils;
 */
 public final class MetricDefinitionCollection
 {
+	
+	/** The metric by id. */
 	private final Map<UUID, Metric> metricById = new HashMap<UUID, Metric>();
+	
+	/** The dictionary by name. */
 	private final Map<String, IMetricDefinition> dictionaryByName = new HashMap<String, IMetricDefinition>();
+	
+	/** The dictionary. */
 	private final Map<UUID, IMetricDefinition> dictionary = new HashMap<UUID, IMetricDefinition>();
+	
+	/** The list. */
 	private final List<IMetricDefinition> list = new ArrayList<IMetricDefinition>();
+	
+	/** The lock. */
 	private final Object lock = new Object();
 
 	/**
@@ -51,6 +62,8 @@ public final class MetricDefinitionCollection
 
 	/**
 	 * Object Change Locking object.
+	 *
+	 * @return the lock
 	 */
 	public Object getLock() {
 		return this.lock;
@@ -188,14 +201,15 @@ public final class MetricDefinitionCollection
 		}
 	}
 
-	/** 
-	 Retrieve an item from the collection by its key if present.  If not present, the default value of the object is returned.
-	 
-	 @param name The metric name to locate in the collection
-	 @param value When this method returns, contains the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter. This parameter is passed uninitialized.
-	 @return true if the collection contains an element with the specified key; otherwise false.
-	 @exception ArgumentNullException The provided name was null.
-	*/
+	/**
+	 *  
+	 * 	 Retrieve an item from the collection by its key if present.  If not present, the default value of the object is returned.
+	 * 	 
+	 *
+	 * @param name The metric name to locate in the collection
+	 * @param value When this method returns, contains the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter. This parameter is passed uninitialized.
+	 * @return true if the collection contains an element with the specified key; otherwise false.
+	 */
 	public boolean tryGetValue(String name, OutObject<IMetricDefinition> value)
 	{
 		// protect ourself from a null before we do the trim (or we'll get an odd user
@@ -211,16 +225,17 @@ public final class MetricDefinitionCollection
 		}
 	}
 
-	/** 
-	 Retrieve an item from the collection by its key if present.  If not present, the default value of the object is returned.
-	 
-	 @param metricsSystem The metrics capture system label.
-	 @param categoryName The name of the category with which this definition is associated.
-	 @param counterName The name of the definition within the category.
-	 @param value When this method returns, contains the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter. This parameter is passed uninitialized.
-	 @return true if the collection contains an element with the specified key; otherwise false.
-	 @exception ArgumentNullException The provided metricsSystem, categoryName, or counterName was null.
-	*/
+	/**
+	 *  
+	 * 	 Retrieve an item from the collection by its key if present.  If not present, the default value of the object is returned.
+	 * 	 
+	 *
+	 * @param metricsSystem The metrics capture system label.
+	 * @param categoryName The name of the category with which this definition is associated.
+	 * @param counterName The name of the definition within the category.
+	 * @param value When this method returns, contains the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter. This parameter is passed uninitialized.
+	 * @return true if the collection contains an element with the specified key; otherwise false.
+	 */
 	public boolean tryGetValue(String metricsSystem, String categoryName, String counterName, OutObject<IMetricDefinition> value)
 	{
 		// get the key for the provided values
@@ -233,13 +248,14 @@ public final class MetricDefinitionCollection
 		}
 	}
 
-	/** 
-	 Retrieve metric packet by numeric index in collection. 
-	 
-	 @param index
-	 @return 
-	 @exception NotSupportedException An attempt was made to set an object by index which is not supported.
-	*/
+	/**
+	 *  
+	 * 	 Retrieve metric packet by numeric index in collection. 
+	 * 	 
+	 *
+	 * @param index the index
+	 * @return the i metric definition
+	 */
 	public IMetricDefinition get(int index)
 	{
 		synchronized (this.lock) {
@@ -247,12 +263,14 @@ public final class MetricDefinitionCollection
 		}
 	}
 
-	/** 
-	 Retrieve metric definition object by its Id.
-	 
-	 @param id
-	 @return 
-	*/
+	/**
+	 *  
+	 * 	 Retrieve metric definition object by its Id.
+	 * 	 
+	 *
+	 * @param id the id
+	 * @return the i metric definition
+	 */
 	public IMetricDefinition get(UUID id)
 	{
 		synchronized (this.lock) {
@@ -260,12 +278,14 @@ public final class MetricDefinitionCollection
 		}
 	}
 
-	/** 
-	 Retrieve metric definition object by its Key.
-	 
-	 @param key
-	 @return 
-	*/
+	/**
+	 *  
+	 * 	 Retrieve metric definition object by its Key.
+	 * 	 
+	 *
+	 * @param key the key
+	 * @return the i metric definition
+	 */
 	public IMetricDefinition get(String key)
 	{
 		// protect ourself from a null before we do the trim (or we'll get an odd user
@@ -279,14 +299,16 @@ public final class MetricDefinitionCollection
 		}
 	}
 
-	/** 
-	 Retrieve metric definition object by its metrics system, category, and counter names.
-	 
-	 @param metricsSystem The metrics capture system label.
-	 @param categoryName The name of the category with which this definition is associated.
-	 @param counterName The name of the definition within the category.
-	 @return 
-	*/
+	/**
+	 *  
+	 * 	 Retrieve metric definition object by its metrics system, category, and counter names.
+	 * 	 
+	 *
+	 * @param metricsSystem The metrics capture system label.
+	 * @param categoryName The name of the category with which this definition is associated.
+	 * @param counterName The name of the definition within the category.
+	 * @return the i metric definition
+	 */
 	public IMetricDefinition get(String metricsSystem, String categoryName, String counterName)
 	{
 		// create the key from the parts we got
@@ -296,13 +318,15 @@ public final class MetricDefinitionCollection
 		}
 	}
 
-	/** 
-	 Add an existing IMetricDefinition item to this collection.
-	 
-	 If the supplied MetricDefinitin item is already in the collection, an exception will be thrown.
-	 @param item The new IMetricDefinition item to add.
-	 @exception ArgumentNullException The provided item was null
-	*/
+	/**
+	 *  
+	 * 	 Add an existing IMetricDefinition item to this collection.
+	 * 	 
+	 * 	 If the supplied MetricDefinitin item is already in the collection, an exception will be thrown.
+	 *
+	 * @param item The new IMetricDefinition item to add.
+	 * @return true, if successful
+	 */
 	public boolean add(IMetricDefinition item)
 	{
 		// we really don't want to support this method, but we have to for
@@ -390,20 +414,26 @@ public final class MetricDefinitionCollection
 		}
 	}
 
-	/** 
-	 The number of items currently in the collection
-	*/
+	/**
+	 *  
+	 * 	 The number of items currently in the collection.
+	 *
+	 * @return the int
+	 */
 	public int size()
 	{
 		return this.list.size();
 	}
 
-	/** 
-	 Indicates if the collection is read only and therefore can't have items added or removed.
-	 
-	 This collection is never read-only, however removing items is not supported.
-	 This property is required for ICollection compatibility
-	*/
+	/**
+	 *  
+	 * 	 Indicates if the collection is read only and therefore can't have items added or removed.
+	 * 	 
+	 * 	 This collection is never read-only, however removing items is not supported.
+	 * 	 This property is required for ICollection compatibility
+	 *
+	 * @return true, if is read only
+	 */
 	public boolean isReadOnly()
 	{
 		return false;

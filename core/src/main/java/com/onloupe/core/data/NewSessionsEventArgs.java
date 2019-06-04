@@ -2,19 +2,21 @@ package com.onloupe.core.data;
 
 import com.onloupe.model.log.LogMessageSeverity;
 
+// TODO: Auto-generated Javadoc
 /**
  * Supplies summary information about new sessions that are available to be
- * retrieved or just retrieved into the repository
+ * retrieved or just retrieved into the repository.
  */
 public class NewSessionsEventArgs {
+	
 	/**
-	 * Create a new sessions event arguments container
-	 * 
-	 * @param newSessions
-	 * @param warningSessions
-	 * @param errorSessions
-	 * @param criticalSessions
-	 * @param maxSeverity
+	 * Create a new sessions event arguments container.
+	 *
+	 * @param newSessions the new sessions
+	 * @param warningSessions the warning sessions
+	 * @param errorSessions the error sessions
+	 * @param criticalSessions the critical sessions
+	 * @param maxSeverity the max severity
 	 */
 	public NewSessionsEventArgs(int newSessions, int warningSessions, int errorSessions, int criticalSessions,
 			LogMessageSeverity maxSeverity) {
@@ -25,15 +27,23 @@ public class NewSessionsEventArgs {
 		setMaxSeverity(maxSeverity);
 	}
 
-	/**
-	 * The number of new sessions affected
-	 */
+	/** The number of new sessions affected. */
 	private int newSessions;
 
+	/**
+	 * Gets the new sessions.
+	 *
+	 * @return the new sessions
+	 */
 	public final int getNewSessions() {
 		return this.newSessions;
 	}
 
+	/**
+	 * Sets the new sessions.
+	 *
+	 * @param value the new new sessions
+	 */
 	private void setNewSessions(int value) {
 		this.newSessions = value;
 	}
@@ -43,10 +53,20 @@ public class NewSessionsEventArgs {
 	 */
 	private int warningSessions;
 
+	/**
+	 * Gets the warning sessions.
+	 *
+	 * @return the warning sessions
+	 */
 	public final int getWarningSessions() {
 		return this.warningSessions;
 	}
 
+	/**
+	 * Sets the warning sessions.
+	 *
+	 * @param value the new warning sessions
+	 */
 	private void setWarningSessions(int value) {
 		this.warningSessions = value;
 	}
@@ -56,10 +76,20 @@ public class NewSessionsEventArgs {
 	 */
 	private int errorSessions;
 
+	/**
+	 * Gets the error sessions.
+	 *
+	 * @return the error sessions
+	 */
 	public final int getErrorSessions() {
 		return this.errorSessions;
 	}
 
+	/**
+	 * Sets the error sessions.
+	 *
+	 * @param value the new error sessions
+	 */
 	private void setErrorSessions(int value) {
 		this.errorSessions = value;
 	}
@@ -69,10 +99,20 @@ public class NewSessionsEventArgs {
 	 */
 	private int criticalSessions;
 
+	/**
+	 * Gets the critical sessions.
+	 *
+	 * @return the critical sessions
+	 */
 	public final int getCriticalSessions() {
 		return this.criticalSessions;
 	}
 
+	/**
+	 * Sets the critical sessions.
+	 *
+	 * @param value the new critical sessions
+	 */
 	private void setCriticalSessions(int value) {
 		this.criticalSessions = value;
 	}
@@ -82,10 +122,20 @@ public class NewSessionsEventArgs {
 	 */
 	private LogMessageSeverity maxSeverity;
 
+	/**
+	 * Gets the max severity.
+	 *
+	 * @return the max severity
+	 */
 	public final LogMessageSeverity getMaxSeverity() {
 		return this.maxSeverity;
 	}
 
+	/**
+	 * Sets the max severity.
+	 *
+	 * @param value the new max severity
+	 */
 	private void setMaxSeverity(LogMessageSeverity value) {
 		this.maxSeverity = value;
 	}

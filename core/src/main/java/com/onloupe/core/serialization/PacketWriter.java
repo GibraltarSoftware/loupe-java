@@ -11,20 +11,34 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PacketWriter.
+ */
 public class PacketWriter implements IPacketWriter, Closeable {
+	
+	/** The output stream. */
 	private OutputStream outputStream;
+	
+	/** The buffer. */
 	private ByteArrayOutputStream buffer;
+	
+	/** The buffer writer. */
 	private IFieldWriter bufferWriter;
+	
+	/** The cached types. */
 	private PacketDefinitionList cachedTypes;
+	
+	/** The packet cache. */
 	private PacketCache packetCache;
 
 	/**
 	 * Initialize a PacketWriter to read the specified stream using the provided
 	 * encoding for strings.
-	 * 
+	 *
 	 * @param stream Destination for data written
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
 	 */
 	public PacketWriter(OutputStream stream) throws NoSuchMethodException, SecurityException {
 		this(stream, FileHeader.defaultMajorVersion, FileHeader.defaultMinorVersion);
@@ -33,12 +47,12 @@ public class PacketWriter implements IPacketWriter, Closeable {
 	/**
 	 * Initialize a PacketWriter to read the specified stream using the provided
 	 * encoding for strings.
-	 * 
+	 *
 	 * @param stream       Destination for data written
 	 * @param majorVersion Major version of the serialization protocol
 	 * @param minorVersion Minor version of the serialization protocol
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
 	 */
 	public PacketWriter(OutputStream stream, int majorVersion, int minorVersion)
 			throws NoSuchMethodException, SecurityException {
@@ -50,10 +64,10 @@ public class PacketWriter implements IPacketWriter, Closeable {
 	}
 
 	/**
-	 * Write the data needed to serialize the state of the packet
-	 * 
+	 * Write the data needed to serialize the state of the packet.
+	 *
 	 * @param packet Object to be serialized, must implement IPacket
-	 * @throws IOException
+	 * @throws Exception the exception
 	 */
 	@Override
 	public final void write(IPacket packet) throws Exception {
@@ -154,18 +168,32 @@ public class PacketWriter implements IPacketWriter, Closeable {
 		commit();
 	}
 
+	/**
+	 * Commit.
+	 */
 	private void commit() {
 		this.cachedTypes.commit();
 	}
 
+	/**
+	 * Rollback.
+	 */
 	private void rollback() {
 		this.cachedTypes.rollback();
 	}
 
+	/**
+	 * Gets the output stream.
+	 *
+	 * @return the output stream
+	 */
 	public OutputStream getOutputStream() {
 		return this.outputStream;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.io.Closeable#close()
+	 */
 	@Override
 	public void close() throws IOException {
 		IOUtils.closeQuietly(this.buffer);

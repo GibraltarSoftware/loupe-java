@@ -8,8 +8,9 @@ import com.onloupe.core.serialization.SerializedPacket;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
- * The serializeable representation of a custom sampled metric
+ * The serializeable representation of a custom sampled metric.
  */
 public class EventMetricPacket extends MetricPacket implements ICachedPacket {
 	/**
@@ -26,10 +27,10 @@ public class EventMetricPacket extends MetricPacket implements ICachedPacket {
 	}
 
 	/**
-	 * Compare this event metric packet to another to determine sort order
-	 * 
-	 * @param other
-	 * @return
+	 * Compare this event metric packet to another to determine sort order.
+	 *
+	 * @param other the other
+	 * @return the int
 	 */
 	public final int compareTo(EventMetricPacket other) {
 		// we just gateway to our base object.
@@ -39,11 +40,10 @@ public class EventMetricPacket extends MetricPacket implements ICachedPacket {
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -82,6 +82,7 @@ public class EventMetricPacket extends MetricPacket implements ICachedPacket {
 		return myHash;
 	}
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -102,6 +103,9 @@ public class EventMetricPacket extends MetricPacket implements ICachedPacket {
 		return requiredPackets;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -109,11 +113,17 @@ public class EventMetricPacket extends MetricPacket implements ICachedPacket {
 		definition.setVersion(SERIALIZATION_VERSION);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void readFields(PacketDefinition definition, SerializedPacket packet) {
 		// we only exist to do the required packet thing

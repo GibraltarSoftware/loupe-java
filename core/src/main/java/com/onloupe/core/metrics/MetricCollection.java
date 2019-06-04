@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+// TODO: Auto-generated Javadoc
 /**
  * A collection of metrics, keyed by their unique ID and name
  * 
@@ -14,10 +15,20 @@ import java.util.UUID;
  * is designed for comparison of the same metric between sessions.
  */
 public class MetricCollection {
+	
+	/** The dictionary by name. */
 	private final Map<String, Metric> dictionaryByName = new HashMap<String, Metric>();
+	
+	/** The dictionary. */
 	private final Map<UUID, Metric> dictionary = new HashMap<UUID, Metric>();
+	
+	/** The list. */
 	private final List<Metric> list = new ArrayList<Metric>();
+	
+	/** The lock. */
 	private final Object lock = new Object();
+	
+	/** The metric definition. */
 	private MetricDefinition metricDefinition;
 
 	/**
@@ -25,8 +36,8 @@ public class MetricCollection {
 	 * 
 	 * This dictionary is created automatically by the Metric Definition during its
 	 * initialization.
-	 * 
-	 * @param metricDefinition
+	 *
+	 * @param metricDefinition the metric definition
 	 */
 	public MetricCollection(MetricDefinition metricDefinition) {
 		if (metricDefinition == null) {
@@ -37,6 +48,8 @@ public class MetricCollection {
 
 	/**
 	 * Object Change Locking object.
+	 *
+	 * @return the lock
 	 */
 	public final Object getLock() {
 		return this.lock;
@@ -77,6 +90,8 @@ public class MetricCollection {
 	/**
 	 * The metric definition that owns this dictionary, meaning every metric is a
 	 * specific instance of this metric definition.
+	 *
+	 * @return the definition
 	 */
 	public MetricDefinition getDefinition() {
 		return this.metricDefinition;
@@ -85,8 +100,9 @@ public class MetricCollection {
 	/**
 	 * Retrieve an item from the collection by its key if present. If not present,
 	 * the default value of the object is returned.
-	 * 
+	 *
 	 * @param key The key of the value to get.
+	 * @return the metric
 	 */
 	public Metric tryGetValue(UUID key) {
 		synchronized (this.lock) {
@@ -98,8 +114,9 @@ public class MetricCollection {
 	/**
 	 * Retrieve an item from the collection by its key if present. If not present,
 	 * the default value of the object is returned.
-	 * 
+	 *
 	 * @param key The metric name to locate in the collection
+	 * @return the metric
 	 */
 	public Metric tryGetValue(String key) {
 		// we do a few cute tricks to normalize the key before checking it to be
@@ -129,6 +146,9 @@ public class MetricCollection {
 	 * Inserting objects by index is not supported because the collection is sorted.
 	 * This method is implemented only for IList interface support and will throw an
 	 * exception if called.
+	 *
+	 * @param index the index
+	 * @param item the item
 	 */
 	public final void insert(int index, Metric item) {
 		// we don't support setting an object by index; we are sorted.
@@ -139,6 +159,8 @@ public class MetricCollection {
 	 * Removing objects by index is not supported because the collection is always
 	 * read only. This method is implemented only for IList interface support and
 	 * will throw an exception if called.
+	 *
+	 * @param index the index
 	 */
 	public final void removeAt(int index) {
 		throw new UnsupportedOperationException();
@@ -146,9 +168,9 @@ public class MetricCollection {
 
 	/**
 	 * Retrieve metric packet by numeric index in collection.
-	 * 
-	 * @param index
-	 * @return
+	 *
+	 * @param index the index
+	 * @return the metric
 	 */
 	public Metric get(int index) {
 		synchronized (this.lock) {
@@ -157,10 +179,10 @@ public class MetricCollection {
 	}
 
 	/**
-	 * Retrieve metric object by its Id
-	 * 
-	 * @param id
-	 * @return
+	 * Retrieve metric object by its Id.
+	 *
+	 * @param id the id
+	 * @return the metric
 	 */
 	public Metric get(UUID id) {
 		synchronized (this.lock) {
@@ -169,10 +191,10 @@ public class MetricCollection {
 	}
 
 	/**
-	 * Retrieve metric object by its name
-	 * 
-	 * @param key
-	 * @return
+	 * Retrieve metric object by its name.
+	 *
+	 * @param key the key
+	 * @return the metric
 	 */
 	public Metric get(String key) {
 		// we do a few cute tricks to normalize the key before checking it to be
@@ -189,9 +211,9 @@ public class MetricCollection {
 	 * 
 	 * Metrics automatically add themselves when they are created, so it isn't
 	 * necessary (and will produce errors) to manually add them.
-	 * 
+	 *
 	 * @param item The new Metric item to add to this collection
-	 * @return
+	 * @return true, if successful
 	 */
 	public final boolean add(Metric item) {
 		// we really don't want to support this method, but we have to for
@@ -234,9 +256,9 @@ public class MetricCollection {
 	/**
 	 * Indicates whether the specified metric object is contained in this
 	 * dictionary.
-	 * 
+	 *
 	 * @param item The non-null object to look for.
-	 * @return
+	 * @return true, if successful
 	 */
 	public final boolean contains(Metric item) {
 		synchronized (this.lock) {
@@ -279,6 +301,8 @@ public class MetricCollection {
 
 	/**
 	 * The number of items in the dictionary.
+	 *
+	 * @return the count
 	 */
 	public final int getCount() {
 		synchronized (this.lock) {
@@ -289,6 +313,8 @@ public class MetricCollection {
 	/**
 	 * Indicates whether the dictionary is read-only (meaning no new metrics can be
 	 * added) or not.
+	 *
+	 * @return true, if is read only
 	 */
 	public final boolean isReadOnly() {
 		return true;
@@ -299,8 +325,9 @@ public class MetricCollection {
 	 * 
 	 * This method is implemented only for ICollection interface support and will
 	 * throw an exception if called.
-	 * 
+	 *
 	 * @param item The Metric item to remove.
+	 * @return true, if successful
 	 */
 	public final boolean remove(Metric item) {
 		throw new UnsupportedOperationException();

@@ -16,24 +16,38 @@ import com.onloupe.core.messaging.network.SendSessionCommandMessage;
 import com.onloupe.core.messaging.network.SessionHeaderMessage;
 import com.onloupe.model.log.LogMessageSeverity;
 
+// TODO: Auto-generated Javadoc
 /**
- * Communicates between an Agent and a Loupe Server
+ * Communicates between an Agent and a Loupe Server.
  */
 public class LiveSessionPublisher extends NetworkClient {
+	
+	/** The messenger. */
 	private NetworkMessenger messenger;
+	
+	/** The discovery file. */
 	private LocalServerDiscoveryFile discoveryFile;
 
+	/** The lock. */
 	private final Object lock = new Object();
 
 	/**
-	 * Create a new connection with the specified options
+	 * Create a new connection with the specified options.
+	 *
+	 * @param messenger the messenger
+	 * @param options the options
 	 */
 	public LiveSessionPublisher(NetworkMessenger messenger, NetworkConnectionOptions options) {
 		this(messenger, options, FileHeader.defaultMajorVersion, FileHeader.defaultMinorVersion);
 	}
 
 	/**
-	 * Create a new connection with the specified options
+	 * Create a new connection with the specified options.
+	 *
+	 * @param messenger the messenger
+	 * @param options the options
+	 * @param majorVersion the major version
+	 * @param minorVersion the minor version
 	 */
 	public LiveSessionPublisher(NetworkMessenger messenger, NetworkConnectionOptions options, int majorVersion,
 			int minorVersion) {
@@ -50,6 +64,12 @@ public class LiveSessionPublisher extends NetworkClient {
 		}
 	}
 
+	/**
+	 * Instantiates a new live session publisher.
+	 *
+	 * @param messenger the messenger
+	 * @param discoveryFile the discovery file
+	 */
 	public LiveSessionPublisher(NetworkMessenger messenger, LocalServerDiscoveryFile discoveryFile) {
 		this(messenger, new NetworkConnectionOptions(discoveryFile.getPublisherPort(),
 				InetAddress.getLoopbackAddress().getHostAddress(), false));
@@ -57,9 +77,9 @@ public class LiveSessionPublisher extends NetworkClient {
 	}
 
 	/**
-	 * Send a copy of the latest session summary information to the server
-	 * 
-	 * @throws IOException
+	 * Send a copy of the latest session summary information to the server.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void sendSummary() throws IOException {
 		SessionHeaderMessage headerPacket = new SessionHeaderMessage(new SessionHeader(Log.getSessionSummary()));
@@ -67,10 +87,10 @@ public class LiveSessionPublisher extends NetworkClient {
 	}
 
 	/**
-	 * Implemented to complete the protocol connection
-	 * 
+	 * Implemented to complete the protocol connection.
+	 *
 	 * @return True if a connection was successfully established, false otherwise.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected boolean connect() throws IOException {
@@ -85,9 +105,9 @@ public class LiveSessionPublisher extends NetworkClient {
 	}
 
 	/**
-	 * Implemented to transfer data on an established connection
-	 * 
-	 * @throws IOException
+	 * Implemented to transfer data on an established connection.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void transferData() throws IOException {
@@ -119,9 +139,8 @@ public class LiveSessionPublisher extends NetworkClient {
 	}
 
 	/**
-	 * Allows a derived class to implement its own retry delay strategy
-	 * 
-	 * @param defaultDelayMs The number of Milliseconds to wait before retrying
+	 * Allows a derived class to implement its own retry delay strategy.
+	 *
 	 * @return true if any retry should be attempted
 	 */
 	@Override
@@ -134,6 +153,9 @@ public class LiveSessionPublisher extends NetworkClient {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.messaging.network.NetworkClient#retryDelay()
+	 */
 	@Override
 	protected Integer retryDelay() {
 		// TODO Auto-generated method stub

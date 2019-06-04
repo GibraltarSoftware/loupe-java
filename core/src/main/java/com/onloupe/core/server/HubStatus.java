@@ -2,8 +2,9 @@ package com.onloupe.core.server;
 
 import com.onloupe.core.server.data.HubStatusXml;
 
+// TODO: Auto-generated Javadoc
 /**
- * The current status of a server that is accessible over the network
+ * The current status of a server that is accessible over the network.
  */
 public enum HubStatus {
 	/**
@@ -26,11 +27,20 @@ public enum HubStatus {
 	 */
 	MAINTENANCE(HubStatusXml.MAINTENANCE.getValue());
 
+	/** The Constant SIZE. */
 	public static final int SIZE = java.lang.Integer.SIZE;
 
+	/** The int value. */
 	private int intValue;
+	
+	/** The mappings. */
 	private static java.util.HashMap<Integer, HubStatus> mappings;
 
+	/**
+	 * Gets the mappings.
+	 *
+	 * @return the mappings
+	 */
 	private static java.util.HashMap<Integer, HubStatus> getMappings() {
 		if (mappings == null) {
 			synchronized (HubStatus.class) {
@@ -42,15 +52,31 @@ public enum HubStatus {
 		return mappings;
 	}
 
+	/**
+	 * Instantiates a new hub status.
+	 *
+	 * @param value the value
+	 */
 	private HubStatus(int value) {
 		this.intValue = value;
 		getMappings().put(value, this);
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return this.intValue;
 	}
 
+	/**
+	 * For value.
+	 *
+	 * @param value the value
+	 * @return the hub status
+	 */
 	public static HubStatus forValue(int value) {
 		return getMappings().get(value);
 	}

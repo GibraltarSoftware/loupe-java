@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.UUID;
 
+// TODO: Auto-generated Javadoc
 /**
  * Manages the cached credentials for the current process
  * 
@@ -13,20 +14,37 @@ import java.util.UUID;
  * reauthentication which dramatically decreases efficiency of communication.
  */
 public final class CachedCredentialsManager {
+	
+	/** The Constant gLock. */
 	private static final Object gLock = new Object();
+	
+	/** The Constant gRequestLock. */
 	private static final Object gRequestLock = new Object();
 
 	// we have to cache using a case-sensitive comparison of the endpoint because
+	/** The Constant gCachedCredentials. */
 	// hashing is case-sensitive.
 	private static final HashMap<CredentialCacheKey, IWebAuthenticationProvider> gCachedCredentials = new HashMap<CredentialCacheKey, IWebAuthenticationProvider>(); // PROTECTED
 																																										// BY
+																																										/** The Constant gCachedBlockedCredentials. */
 																																										// LOCK
 	private static final HashMap<String, String> gCachedBlockedCredentials = new HashMap<String, String>(); // PROTECTED
 																											// BY LOCK
 
-	private static class CredentialCacheKey {
+	/**
+																											 * The Class CredentialCacheKey.
+																											 */
+																											private static class CredentialCacheKey {
+		
+		/** The hash code. */
 		private int hashCode; // to avoid extra cost of calculation
 
+		/**
+		 * Instantiates a new credential cache key.
+		 *
+		 * @param entryUri the entry uri
+		 * @param repositoryId the repository id
+		 */
 		public CredentialCacheKey(String entryUri, UUID repositoryId) {
 			setEntryUri(entryUri);
 			setRepositoryId(repositoryId);
@@ -34,26 +52,54 @@ public final class CachedCredentialsManager {
 			this.hashCode = this.hashCode ^ getRepositoryId().hashCode();
 		}
 
+		/** The entry uri. */
 		private String entryUri;
 
+		/**
+		 * Gets the entry uri.
+		 *
+		 * @return the entry uri
+		 */
 		public final String getEntryUri() {
 			return this.entryUri;
 		}
 
+		/**
+		 * Sets the entry uri.
+		 *
+		 * @param value the new entry uri
+		 */
 		private void setEntryUri(String value) {
 			this.entryUri = value;
 		}
 
+		/** The repository id. */
 		private UUID repositoryId;
 
+		/**
+		 * Gets the repository id.
+		 *
+		 * @return the repository id
+		 */
 		public final UUID getRepositoryId() {
 			return this.repositoryId;
 		}
 
+		/**
+		 * Sets the repository id.
+		 *
+		 * @param value the new repository id
+		 */
 		private void setRepositoryId(UUID value) {
 			this.repositoryId = value;
 		}
 
+		/**
+		 * Equals.
+		 *
+		 * @param other the other
+		 * @return true, if successful
+		 */
 		public final boolean equals(CredentialCacheKey other) {
 			if (!getEntryUri().equalsIgnoreCase(other.getEntryUri())) {
 				return false;
@@ -66,6 +112,9 @@ public final class CachedCredentialsManager {
 			return true;
 		}
 
+		/* (non-Javadoc)
+		 * @see java.lang.Object#hashCode()
+		 */
 		@Override
 		public int hashCode() {
 			return this.hashCode;
@@ -73,8 +122,8 @@ public final class CachedCredentialsManager {
 	}
 
 	/**
-	 * Get credentials for the specified URL target and repository information
-	 * 
+	 * Get credentials for the specified URL target and repository information.
+	 *
 	 * @param targetChannel    The web channel representing the endpoint that the
 	 *                         credentials are for
 	 * @param useApiKey        True if an API key was used to originally set up the
@@ -95,8 +144,8 @@ public final class CachedCredentialsManager {
 	}
 
 	/**
-	 * Get credentials for the specified URL target and repository information
-	 * 
+	 * Get credentials for the specified URL target and repository information.
+	 *
 	 * @param targetChannel    The web channel representing the endpoint that the
 	 *                         credentials are for
 	 * @param useApiKey        True if an API key was used to originally set up the
@@ -117,22 +166,28 @@ public final class CachedCredentialsManager {
 	}
 
 	/**
-	 * Determine the entry URI used for credential keys
+	 * Determine the entry URI used for credential keys.
+	 *
+	 * @param channel the channel
+	 * @return the entry uri
 	 */
 	public static String getEntryUri(WebChannel channel) {
 		return getEntryUri(channel.getHostName());
 	}
 
 	/**
-	 * Determine the entry URI used for credential keys
+	 * Determine the entry URI used for credential keys.
+	 *
+	 * @param hostName the host name
+	 * @return the entry uri
 	 */
 	public static String getEntryUri(String hostName) {
 		return hostName.toLowerCase(Locale.ROOT); // hopefully that doesn't mess up Unicode host names...
 	}
 
 	/**
-	 * Get credentials for the specified URL target and repository information
-	 * 
+	 * Get credentials for the specified URL target and repository information.
+	 *
 	 * @param entryUri         The URI of the endpoint that the credentials are for
 	 * @param useApiKey        True if an API key was used to originally set up the
 	 *                         connection
@@ -160,6 +215,16 @@ public final class CachedCredentialsManager {
 		return credentials;
 	}
 
+	/**
+	 * Gets the cached credentials.
+	 *
+	 * @param entryUri the entry uri
+	 * @param useApiKey the use api key
+	 * @param repositoryId the repository id
+	 * @param keyContainerName the key container name
+	 * @param useMachineStore the use machine store
+	 * @return the cached credentials
+	 */
 	private static IWebAuthenticationProvider getCachedCredentials(String entryUri, boolean useApiKey,
 			UUID repositoryId, String keyContainerName, boolean useMachineStore) {
 		CredentialCacheKey cacheKey = new CredentialCacheKey(entryUri, repositoryId);
@@ -194,6 +259,10 @@ public final class CachedCredentialsManager {
 	 * 
 	 * Unlike Update, this will not re-prompt the user if they previously declined
 	 * to provide credentials
+	 *
+	 * @param targetChannel the target channel
+	 * @param repositoryId the repository id
+	 * @return true, if successful
 	 */
 	public static boolean requestCredentials(WebChannel targetChannel, UUID repositoryId) {
 		return requestCredentials(getEntryUri(targetChannel), repositoryId);
@@ -205,6 +274,10 @@ public final class CachedCredentialsManager {
 	 * 
 	 * Unlike Update, this will not re-prompt the user if they previously declined
 	 * to provide credentials and it will assume any cached credentials work.
+	 *
+	 * @param entryUri the entry uri
+	 * @param repositoryId the repository id
+	 * @return true, if successful
 	 */
 	public static boolean requestCredentials(String entryUri, UUID repositoryId) {
 		IWebAuthenticationProvider credentials = requestUserCredentials(entryUri, repositoryId);
@@ -218,7 +291,9 @@ public final class CachedCredentialsManager {
 	 * 
 	 * Unlike Update, this will not re-prompt the user if they previously declined
 	 * to provide credentials and it will assume any cached credentials work.
-	 * 
+	 *
+	 * @param entryUri the entry uri
+	 * @param repositoryId the repository id
 	 * @return The new authentication provider
 	 * @exception WebChannelAuthorizationException Thrown when no credentials were
 	 *                                             provided
@@ -279,11 +354,12 @@ public final class CachedCredentialsManager {
 	}
 
 	/**
-	 * Attempt to re-query the credentials for the specified URI
-	 * 
+	 * Attempt to re-query the credentials for the specified URI.
+	 *
 	 * @param targetChannel The web channel to update credentials for
 	 * @param forceUpdate   True to force a requery to the user even if they
 	 *                      previously canceled requesting credentials
+	 * @return true, if successful
 	 */
 	public static boolean updateCredentials(WebChannel targetChannel, boolean forceUpdate) {
 		if (targetChannel == null) {
@@ -294,13 +370,14 @@ public final class CachedCredentialsManager {
 	}
 
 	/**
-	 * Attempt to re-query the credentials for the specified URI
-	 * 
+	 * Attempt to re-query the credentials for the specified URI.
+	 *
 	 * @param targetChannel The web channel to update credentials for
 	 * @param repositoryId  The owner Id to specify to the server (for example
 	 *                      repository Id)
 	 * @param forceUpdate   True to force a requery to the user even if they
 	 *                      previously canceled requesting credentials
+	 * @return true, if successful
 	 */
 	public static boolean updateCredentials(WebChannel targetChannel, UUID repositoryId, boolean forceUpdate) {
 		if (targetChannel == null) {
@@ -315,8 +392,8 @@ public final class CachedCredentialsManager {
 	}
 
 	/**
-	 * Attempt to re-query the credentials for the specified URI
-	 * 
+	 * Attempt to re-query the credentials for the specified URI.
+	 *
 	 * @param entryUri     The entry URI to update credentials for
 	 * @param repositoryId The owner Id to specify to the server (for example
 	 *                     repository Id)

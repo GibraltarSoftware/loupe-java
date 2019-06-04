@@ -1,5 +1,6 @@
 package com.onloupe.core.logging;
 
+// TODO: Auto-generated Javadoc
 /**
  * Selects the performance trade-off for writing a given message to the log.
  * 
@@ -57,16 +58,34 @@ public enum LogWriteMode {
 	 */
 	WAIT_FOR_COMMIT;
 
+	/** The Constant SIZE. */
 	public static final int SIZE = java.lang.Integer.SIZE;
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return this.ordinal();
 	}
 
+	/**
+	 * For value.
+	 *
+	 * @param value the value
+	 * @return the log write mode
+	 */
 	public static LogWriteMode forValue(int value) {
 		return values()[value];
 	}
 	
+	/**
+	 * For value.
+	 *
+	 * @param writeMode the write mode
+	 * @return the log write mode
+	 */
 	public static LogWriteMode forValue(LogWriteMode writeMode) {
 		return forValue(writeMode.getValue());
 	}

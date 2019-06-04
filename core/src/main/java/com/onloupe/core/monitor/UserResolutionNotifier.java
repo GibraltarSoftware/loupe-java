@@ -9,26 +9,35 @@ import com.onloupe.core.messaging.PacketEventArgs;
 import com.onloupe.core.serialization.monitor.LogMessagePacket;
 import com.onloupe.core.util.TypeUtils;
 
+// TODO: Auto-generated Javadoc
 /**
  * Monitors packets going through the publisher to add user information as
  * needed.
  */
 public class UserResolutionNotifier implements Closeable {
+	
+	/** The users. */
 	private static ApplicationUserCollection users = new ApplicationUserCollection();
 
 	/**
 	 * Handler for the ResolveUser event.
-	 * 
-	 * @param sender
-	 * @param e
 	 */
 	@FunctionalInterface
 	public interface ResolveUserHandler {
+		
+		/**
+		 * Invoke.
+		 *
+		 * @param sender the sender
+		 * @param e the e
+		 */
 		void invoke(Object sender, ResolveUserEventArgs e);
 	}
 
 	/**
-	 * Create a new instance of the user resolution notifier
+	 * Create a new instance of the user resolution notifier.
+	 *
+	 * @param anonymousMode the anonymous mode
 	 */
 	public UserResolutionNotifier(boolean anonymousMode) {
 		if (!anonymousMode) {
@@ -40,13 +49,21 @@ public class UserResolutionNotifier implements Closeable {
 	 * Performs application-defined tasks associated with freeing, releasing, or
 	 * resetting unmanaged resources.
 	 * 
-	 * <filterpriority>2</filterpriority>
+	 * 
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void close() throws IOException {
 
 	}
 
+	/**
+	 * Publisher on message dispatching.
+	 *
+	 * @param sender the sender
+	 * @param e the e
+	 */
 	private void publisherOnMessageDispatching(Object sender, PacketEventArgs e) {
 		IMessengerPacket tempVar = e.getPacket();
 		LogMessagePacket logPacket = tempVar instanceof LogMessagePacket ? (LogMessagePacket) tempVar : null;
@@ -67,6 +84,7 @@ public class UserResolutionNotifier implements Closeable {
 		}
 	}
 
+	/** The t in resolve user event. */
 	private static ThreadLocal<Boolean> tInResolveUserEvent = new ThreadLocal<Boolean>() {
 		@Override
 		protected Boolean initialValue() {
@@ -74,6 +92,14 @@ public class UserResolutionNotifier implements Closeable {
 		}
 	};
 
+	/**
+	 * Gets the current application user.
+	 *
+	 * @param userName the user name
+	 * @param timestamp the timestamp
+	 * @param sequence the sequence
+	 * @return the current application user
+	 */
 	private ApplicationUser getCurrentApplicationUser(String userName, OffsetDateTime timestamp, long sequence) {
 		// prevent infinite recursion
 		if (tInResolveUserEvent.get()) {
@@ -113,6 +139,9 @@ public class UserResolutionNotifier implements Closeable {
 		return applicationUser;
 	}
 	
+	/**
+	 * Reset.
+	 */
 	public static void reset() {
 		users = new ApplicationUserCollection();
 		tInResolveUserEvent = new ThreadLocal<Boolean>() {

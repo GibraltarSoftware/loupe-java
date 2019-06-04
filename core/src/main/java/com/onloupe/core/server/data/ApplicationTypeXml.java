@@ -1,38 +1,44 @@
 package com.onloupe.core.server.data;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Enum ApplicationTypeXml.
+ */
 public enum ApplicationTypeXml {
 
-	/**
-	 * <remarks/>
-	 */
+	/** The unknown. */
 	UNKNOWN,
 
-	/**
-	 * <remarks/>
-	 */
+	/** The console. */
 	CONSOLE,
 
-	/**
-	 * <remarks/>
-	 */
+	/** The windows. */
 	WINDOWS,
 
-	/**
-	 * <remarks/>
-	 */
+	/** The service. */
 	SERVICE,
 
-	/**
-	 * <remarks/>
-	 */
+	/** The aspnet. */
 	ASPNET;
 
+	/** The Constant SIZE. */
 	public static final int SIZE = java.lang.Integer.SIZE;
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return this.ordinal();
 	}
 
+	/**
+	 * For value.
+	 *
+	 * @param value the value
+	 * @return the application type xml
+	 */
 	public static ApplicationTypeXml forValue(int value) {
 		return values()[value];
 	}

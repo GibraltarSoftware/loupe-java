@@ -15,29 +15,30 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.TypeUtils;
 
+// TODO: Auto-generated Javadoc
 /**
  * Authentication credentials for a repository to a shared data service.
  */
 public final class RepositoryCredentials implements IWebAuthenticationProvider {
-	/**
-	 * The prefix for the authorization header for this credential type
-	 */
+	
+	/** The prefix for the authorization header for this credential type. */
 	public static final String AUTHORIZATION_PREFIX = "Gibraltar-Repository";
 
-	/**
-	 * The HTTP Request header identifying the client repository
-	 */
+	/** The HTTP Request header identifying the client repository. */
 	public static final String CLIENT_REPOSITORY_HEADER = "X-Gibraltar-Repository";
 
+	/** The Constant AUTHORIZATION_HEADER. */
 	public static final String AUTHORIZATION_HEADER = "Authorization";
 
+	/** The lock. */
 	private final Object lock = new Object();
 
+	/** The access token. */
 	private String accessToken; // PROTECTED BY LOCK
 
 	/**
-	 * Create a new set of repository credentials
-	 * 
+	 * Create a new set of repository credentials.
+	 *
 	 * @param repositoryId     The owner Id to specify to the server (for example
 	 *                         repository Id)
 	 * @param keyContainerName The name of the key container to retrieve the private
@@ -55,42 +56,65 @@ public final class RepositoryCredentials implements IWebAuthenticationProvider {
 		setUseMachineStore(useMachineStore);
 	}
 
-	/**
-	 * True to use the machine store instead of the user store for the digital
-	 * certificate
-	 */
+	/** True to use the machine store instead of the user store for the digital certificate. */
 	private boolean useMachineStore;
 
+	/**
+	 * Gets the use machine store.
+	 *
+	 * @return the use machine store
+	 */
 	public boolean getUseMachineStore() {
 		return this.useMachineStore;
 	}
 
+	/**
+	 * Sets the use machine store.
+	 *
+	 * @param value the new use machine store
+	 */
 	private void setUseMachineStore(boolean value) {
 		this.useMachineStore = value;
 	}
 
-	/**
-	 * The name of the key container to retrieve the private key from
-	 */
+	/** The name of the key container to retrieve the private key from. */
 	private String keyContainerName;
 
+	/**
+	 * Gets the key container name.
+	 *
+	 * @return the key container name
+	 */
 	public String getKeyContainerName() {
 		return this.keyContainerName;
 	}
 
+	/**
+	 * Sets the key container name.
+	 *
+	 * @param value the new key container name
+	 */
 	private void setKeyContainerName(String value) {
 		this.keyContainerName = value;
 	}
 
-	/**
-	 * The owner Id to specify to the server (for example repository Id)
-	 */
+	/** The owner Id to specify to the server (for example repository Id). */
 	private UUID repositoryId;
 
+	/**
+	 * Gets the repository id.
+	 *
+	 * @return the repository id
+	 */
 	public UUID getRepositoryId() {
 		return this.repositoryId;
 	}
 
+	/**
+	 * Sets the repository id.
+	 *
+	 * @param value the new repository id
+	 */
 	private void setRepositoryId(UUID value) {
 		this.repositoryId = value;
 	}
@@ -102,6 +126,8 @@ public final class RepositoryCredentials implements IWebAuthenticationProvider {
 	 * If false then no logout will be attempted, and any request that requires
 	 * authentication will cause a login attempt without waiting for an
 	 * authentication failure.
+	 *
+	 * @return true, if is authenticated
 	 */
 	@Override
 	public boolean isAuthenticated() {
@@ -117,7 +143,9 @@ public final class RepositoryCredentials implements IWebAuthenticationProvider {
 	}
 
 	/**
-	 * indicates if the authentication provider can perform a logout
+	 * indicates if the authentication provider can perform a logout.
+	 *
+	 * @return true, if successful
 	 */
 	@Override
 	public boolean logoutIsSupported() {
@@ -125,11 +153,11 @@ public final class RepositoryCredentials implements IWebAuthenticationProvider {
 	}
 
 	/**
-	 * Perform a login on the supplied channel
-	 * 
-	 * @param channel
-	 * @param client
-	 * @throws Exception
+	 * Perform a login on the supplied channel.
+	 *
+	 * @param channel the channel
+	 * @param client the client
+	 * @throws Exception the exception
 	 */
 	@Override
 	public void login(WebChannel channel, HttpClient client) throws Exception {
@@ -148,10 +176,10 @@ public final class RepositoryCredentials implements IWebAuthenticationProvider {
 	}
 
 	/**
-	 * Perform a logout on the supplied channel
-	 * 
-	 * @param channel
-	 * @param client
+	 * Perform a logout on the supplied channel.
+	 *
+	 * @param channel the channel
+	 * @param client the client
 	 */
 	@Override
 	public void logout(WebChannel channel, HttpClient client) {
@@ -164,7 +192,7 @@ public final class RepositoryCredentials implements IWebAuthenticationProvider {
 
 	/**
 	 * Perform per-request authentication processing.
-	 * 
+	 *
 	 * @param channel                       The channel object
 	 * @param client                        The web client that is about to be used
 	 *                                      to execute the request. It can't be used
@@ -178,7 +206,7 @@ public final class RepositoryCredentials implements IWebAuthenticationProvider {
 	 *                                      request doesn't support authentication,
 	 *                                      it's a best practice to not provide any
 	 *                                      authentication information.
-	 * @throws URISyntaxException
+	 * @throws URISyntaxException the URI syntax exception
 	 */
 	@Override
 	public void preProcessRequest(WebChannel channel, CloseableHttpClient client, HttpRequestBase request,
@@ -205,9 +233,9 @@ public final class RepositoryCredentials implements IWebAuthenticationProvider {
 
 	/**
 	 * Calculates the effective hash given the provided salt text.
-	 * 
-	 * @param saltText
-	 * @return
+	 *
+	 * @param saltText the salt text
+	 * @return the string
 	 */
 	private String calculateHash(String saltText) {
 		byte[] buffer;

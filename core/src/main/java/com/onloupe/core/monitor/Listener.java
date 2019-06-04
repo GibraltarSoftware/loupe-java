@@ -19,25 +19,45 @@ import com.onloupe.core.serialization.monitor.AssemblyInfoPacket;
 import com.onloupe.core.util.SystemUtils;
 import com.onloupe.model.metric.MetricSampleInterval;
 
+// TODO: Auto-generated Javadoc
 /**
  * The central listener that manages the configuration of the individual
- * listeners
+ * listeners.
  */
 public final class Listener {
+	
+	/** The Constant monitorThreadLock. */
 	private static final Object monitorThreadLock = new Object();
+	
+	/** The Constant listenerLock. */
 	private static final Object listenerLock = new Object();
+	
+	/** The Constant configLock. */
 	private static final Object configLock = new Object();
 
+	/** The agent configuration. */
 	private static AgentConfiguration agentConfiguration;
+	
+	/** The configuration. */
 	private static ListenerConfiguration configuration; // the active listener configuration //LOCKED BY CONFIGLOCK
+	
+	/** The pending config change. */
 	private static boolean pendingConfigChange; // LOCKED BY CONFIGLOCK
+	
+	/** The initialized. */
 	private static boolean initialized; // LOCKED BY CONFIGLOCK; (update only)
 	
 
+	/** The monitor thread. */
 	private static Thread monitorThread; // LOCKED BY MONITORTHREADLOCK
 
+	/** The sampling interval. */
 	private static MetricSampleInterval samplingInterval = MetricSampleInterval.MINUTE;
+	
+	/** The polling started. */
 	private static OffsetDateTime pollingStarted;
+	
+	/** The events initialized. */
 	private static boolean eventsInitialized;
 
 	static {
@@ -46,9 +66,9 @@ public final class Listener {
 	}
 
 	/**
-	 * Apply the provided listener configuration
-	 * 
-	 * @param localAgentConfiguration
+	 * Apply the provided listener configuration.
+	 *
+	 * @param localAgentConfiguration the local agent configuration
 	 */
 	public static void initialize(AgentConfiguration localAgentConfiguration) {
 		ListenerConfiguration localListenerConfiguration = localAgentConfiguration.getListener();
@@ -74,11 +94,16 @@ public final class Listener {
 
 	/**
 	 * Indicates if the listeners have been initialized the first time yet.
+	 *
+	 * @return the initialized
 	 */
 	public static boolean getInitialized() {
 		return initialized;
 	}
 
+	/**
+	 * Creates the monitor thread.
+	 */
 	private static void createMonitorThread() {
 		synchronized (monitorThreadLock) {
 			monitorThread = new Thread() {
@@ -95,6 +120,9 @@ public final class Listener {
 		}
 	}
 
+	/**
+	 * Monitor thread main.
+	 */
 	private static void monitorThreadMain() {
 		try {
 			// First, we need to make sure we're initialized
@@ -184,9 +212,9 @@ public final class Listener {
 
 	/**
 	 * wait upto the specified number of milliseconds for a configuration update.
-	 * 
-	 * @param maxWaitInterval
-	 * @return
+	 *
+	 * @param maxWaitInterval the max wait interval
+	 * @return true, if successful
 	 */
 	private static boolean waitOnConfigUpdate(long maxWaitInterval) {
 		boolean configUpdated;
@@ -214,6 +242,9 @@ public final class Listener {
 		return configUpdated;
 	}
 
+	/**
+	 * Update monitor configuration.
+	 */
 	private static void updateMonitorConfiguration() {
 		ListenerConfiguration newConfiguration;
 
@@ -249,6 +280,11 @@ public final class Listener {
 		}
 	}
 	
+	/**
+	 * Classpath resources to assembly info.
+	 *
+	 * @return the sets the
+	 */
 	private static Set<AssemblyInfoPacket> classpathResourcesToAssemblyInfo() {
 		Set<AssemblyInfoPacket> assemblies = new HashSet<AssemblyInfoPacket>();
 

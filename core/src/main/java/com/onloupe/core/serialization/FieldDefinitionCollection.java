@@ -6,17 +6,41 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FieldDefinitionCollection.
+ */
 public class FieldDefinitionCollection {
+	
+	/** The definitions by name. */
 	private Map<String, FieldDefinition> definitionsByName = new HashMap<String, FieldDefinition>();
+	
+	/** The index by name. */
 	private Map<String, Integer> indexByName = new HashMap<String, Integer>();
+	
+	/** The definitions list. */
 	private List<FieldDefinition> definitionsList = new ArrayList<FieldDefinition>();
+	
+	/** The lock. */
 	private final Object lock = new Object(); // MT Safety lock
+	
+	/** The locked. */
 	private boolean locked; // true if we can no longer be modified.
 
+	/**
+	 * Gets the locked.
+	 *
+	 * @return the locked
+	 */
 	public final boolean getLocked() {
 		return this.locked;
 	}
 
+	/**
+	 * Sets the locked.
+	 *
+	 * @param value the new locked
+	 */
 	public final void setLocked(boolean value) {
 		// act as a latch - once set can't be unset
 		if (value) {
@@ -27,34 +51,39 @@ public class FieldDefinitionCollection {
 	/**
 	 * Returns an enumerator that iterates through the collection.
 	 * 
-	 * @return A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can
-	 *         be used to iterate through the collection.
+	 * @return A that can be used to iterate through the collection.
 	 * 
-	 *         <filterpriority>1</filterpriority>
 	 */
 	public final Iterator<FieldDefinition> iterator() {
 		return this.definitionsList.iterator();
 	}
 
+	/**
+	 * Adds the.
+	 *
+	 * @param fieldName the field name
+	 * @param type the type
+	 */
 	public final void add(String fieldName, java.lang.Class type) {
 		add(fieldName, PacketDefinition.getSerializableType(type));
 	}
 
+	/**
+	 * Adds the.
+	 *
+	 * @param fieldName the field name
+	 * @param fieldType the field type
+	 */
 	public final void add(String fieldName, FieldType fieldType) {
 		FieldDefinition field = new FieldDefinition(fieldName, fieldType);
 		add(field);
 	}
 
 	/**
-	 * Adds an item to the
-	 * <see cref="T:System.Collections.Generic.ICollection`1" />.
-	 * 
-	 * @param item The object to add to the
-	 *             <see cref="T:System.Collections.Generic.ICollection`1" />.
-	 * @return
-	 * @exception T:System.NotSupportedException The <see cref=
-	 *                                           "T:System.Collections.Generic.ICollection`1"
-	 *                                           /> is read-only.
+	 * Adds an item to the collection.
+	 *
+	 * @param item The object to add to the collection
+	 * @return true, if successful
 	 */
 	public final boolean add(FieldDefinition item) {
 		synchronized (this.lock) {
@@ -73,12 +102,7 @@ public class FieldDefinitionCollection {
 	}
 
 	/**
-	 * Removes all items from the
-	 * <see cref="T:System.Collections.Generic.ICollection`1" />.
-	 * 
-	 * @exception T:System.NotSupportedException The <see cref=
-	 *                                           "T:System.Collections.Generic.ICollection`1"
-	 *                                           /> is read-only.
+	 * Removes all items from the collection.
 	 */
 	public final void clear() {
 		synchronized (this.lock) {
@@ -90,15 +114,13 @@ public class FieldDefinitionCollection {
 
 	/**
 	 * Determines whether the
-	 * <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific
+	 * collection contains a specific
 	 * value.
-	 * 
-	 * @return true if <paramref name="item" /> is found in the
-	 *         <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise,
+	 *
+	 * @param objectValue the object value
+	 * @return true if item is found in the
+	 *         collection; otherwise,
 	 *         false.
-	 * 
-	 * @param item The object to locate in the
-	 *             <see cref="T:System.Collections.Generic.ICollection`1" />.
 	 */
 	public final boolean contains(Object objectValue) {
 		FieldDefinition item = (FieldDefinition) objectValue;
@@ -117,41 +139,14 @@ public class FieldDefinitionCollection {
 	}
 
 	/**
-	 * Copies the elements of the
-	 * <see cref="T:System.Collections.Generic.ICollection`1"/> to an
-	 * <see cref="T:System.Array"/>, starting at a particular
-	 * <see cref="T:System.Array"/> index.
-	 * 
-	 * @param array      The one-dimensional <see cref="T:System.Array"/> that is
-	 *                   the destination of the elements copied from
-	 *                   <see cref="T:System.Collections.Generic.ICollection`1"/>.
-	 *                   The <see cref="T:System.Array"/> must have zero-based
-	 *                   indexing.
+	 * Copies the elements of the collection to an array, starting at a particular
+	 * array index.
+	 *
+	 * @param array      The one-dimensional array that is the destination of the
+	 *                   elements copied from collection. The array must have
+	 *                   zero-based indexing.
 	 * @param arrayIndex The zero-based index in <paramref name="array"/> at which
 	 *                   copying begins.
-	 * @exception T:System.ArgumentNullException       <paramref name="array"/> is
-	 *                                                 null.
-	 * @exception T:System.ArgumentOutOfRangeException <paramref name="arrayIndex"/>
-	 *                                                 is less than 0.
-	 * @exception T:System.ArgumentException           <paramref name="array"/> is
-	 *                                                 multidimensional. -or-
-	 *                                                 <paramref name="arrayIndex"/>
-	 *                                                 is equal to or greater than
-	 *                                                 the length of
-	 *                                                 <paramref name="array"/>.
-	 *                                                 -or- The number of elements
-	 *                                                 in the source <see cref=
-	 *                                                 "T:System.Collections.Generic.ICollection`1"/>
-	 *                                                 is greater than the available
-	 *                                                 space from
-	 *                                                 <paramref name="arrayIndex"/>
-	 *                                                 to the end of the destination
-	 *                                                 <paramref name="array"/>.
-	 *                                                 -or- Type cannot be cast
-	 *                                                 automatically to the type of
-	 *                                                 the destination
-	 *                                                 <paramref name="array"/>.
-	 * 
 	 */
 	public final void copyTo(FieldDefinition[] array, int arrayIndex) {
 		System.arraycopy(this.definitionsList, 0, array, arrayIndex, this.definitionsList.size());
@@ -159,19 +154,14 @@ public class FieldDefinitionCollection {
 
 	/**
 	 * Removes the first occurrence of a specific object from the
-	 * <see cref="T:System.Collections.Generic.ICollection`1" />.
-	 * 
-	 * @return true if <paramref name="item" /> was successfully removed from the
-	 *         <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise,
-	 *         false. This method also returns false if <paramref name="item" /> is
+	 * collection.
+	 *
+	 * @param objectValue the object value
+	 * @return true if item was successfully removed from the
+	 *         collection; otherwise,
+	 *         false. This method also returns false if item is
 	 *         not found in the original
-	 *         <see cref="T:System.Collections.Generic.ICollection`1" />.
-	 * 
-	 * @param item The object to remove from the
-	 *             <see cref="T:System.Collections.Generic.ICollection`1" />.
-	 * @exception T:System.NotSupportedException The <see cref=
-	 *                                           "T:System.Collections.Generic.ICollection`1"
-	 *                                           /> is read-only.
+	 *         collection.
 	 */
 	public final boolean remove(Object objectValue) {
 		FieldDefinition item = (FieldDefinition) objectValue;
@@ -202,10 +192,10 @@ public class FieldDefinitionCollection {
 
 	/**
 	 * Gets the number of elements contained in the
-	 * <see cref="T:System.Collections.Generic.ICollection`1" />.
+	 * collection.
 	 * 
 	 * @return The number of elements contained in the
-	 *         <see cref="T:System.Collections.Generic.ICollection`1" />.
+	 *         collection.
 	 * 
 	 */
 	public final int size() {
@@ -214,9 +204,9 @@ public class FieldDefinitionCollection {
 
 	/**
 	 * Gets a value indicating whether the
-	 * <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+	 * collection is read-only.
 	 * 
-	 * @return true if the <see cref="T:System.Collections.Generic.ICollection`1" />
+	 * @return true if the collection
 	 *         is read-only; otherwise, false.
 	 * 
 	 */
@@ -226,13 +216,12 @@ public class FieldDefinitionCollection {
 
 	/**
 	 * Determines the index of a specific item in the
-	 * <see cref="T:System.Collections.Generic.IList`1" />.
-	 * 
-	 * @return The index of <paramref name="item" /> if found in the list;
-	 *         otherwise, -1.
-	 * 
+	 * collection.
+	 *
 	 * @param item The object to locate in the
-	 *             <see cref="T:System.Collections.Generic.IList`1" />.
+	 *             collection.
+	 * @return The index of item if found in the list;
+	 *         otherwise, -1.
 	 */
 	public final int indexOf(FieldDefinition item) {
 		return this.definitionsList.indexOf(item);
@@ -254,40 +243,24 @@ public class FieldDefinitionCollection {
 	}
 
 	/**
-	 * Inserts an item to the <see cref="T:System.Collections.Generic.IList`1" /> at
+	 * Inserts an item to the collection at
 	 * the specified index.
-	 * 
-	 * @param index The zero-based index at which <paramref name="item" /> should be
+	 *
+	 * @param index The zero-based index at which item should be
 	 *              inserted.
 	 * @param item  The object to insert into the
-	 *              <see cref="T:System.Collections.Generic.IList`1" />.
-	 * @exception T:System.ArgumentOutOfRangeException <paramref name="index" /> is
-	 *                                                 not a valid index in the
-	 *                                                 <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"
-	 *                                                 />.
-	 * @exception T:System.NotSupportedException       The <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"
-	 *                                                 /> is read-only.
+	 *              collection.
 	 */
 	public final void add(int index, FieldDefinition item) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * Removes the <see cref="T:System.Collections.Generic.IList`1" /> item at the
+	 * Removes the collection item at the
 	 * specified index.
-	 * 
+	 *
 	 * @param index The zero-based index of the item to remove.
-	 * @return
-	 * @exception T:System.ArgumentOutOfRangeException <paramref name="index" /> is
-	 *                                                 not a valid index in the
-	 *                                                 <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"
-	 *                                                 />.
-	 * @exception T:System.NotSupportedException       The <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"
-	 *                                                 /> is read-only.
+	 * @return the field definition
 	 */
 	public final FieldDefinition remove(int index) {
 		throw new UnsupportedOperationException();
@@ -295,48 +268,41 @@ public class FieldDefinitionCollection {
 
 	/**
 	 * Gets the element at the specified index.
-	 * 
-	 * @return The element at the specified index.
-	 * 
+	 *
 	 * @param index The zero-based index of the element to get or set.
-	 * @exception T:System.ArgumentOutOfRangeException <paramref name="index" /> is
-	 *                                                 not a valid index in the
-	 *                                                 <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"
-	 *                                                 />.
-	 * @exception T:System.NotSupportedException       The property is set and the
-	 *                                                 <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"
-	 *                                                 /> is read-only.
+	 * @return The element at the specified index.
 	 */
 	public final FieldDefinition get(int index) {
 		return this.definitionsList.get(index);
 	}
 
+	/**
+	 * Sets the.
+	 *
+	 * @param index the index
+	 * @param value the value
+	 * @return the field definition
+	 */
 	public final FieldDefinition set(int index, FieldDefinition value) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Gets the element at the specified index.
-	 * 
-	 * @return The element at the specified index.
-	 * 
+	 *
 	 * @param fieldName The name of the field to get.
-	 * @exception T:System.ArgumentOutOfRangeException <paramref name="fieldName" />
-	 *                                                 is not a valid name in the
-	 *                                                 <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"
-	 *                                                 />.
-	 * @exception T:System.NotSupportedException       The property is set and the
-	 *                                                 <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"
-	 *                                                 /> is read-only.
+	 * @return The element at the specified index.
 	 */
 	public final FieldDefinition get(String fieldName) {
 		return this.definitionsByName.get(fieldName);
 	}
 
+	/**
+	 * Sets the.
+	 *
+	 * @param fieldName the field name
+	 * @param value the value
+	 */
 	public final void set(String fieldName, FieldDefinition value) {
 		throw new UnsupportedOperationException();
 	}

@@ -54,6 +54,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+// TODO: Auto-generated Javadoc
 /**
  * Handles interfacing with a single log file for the purpose of writing log
  * messages.
@@ -91,9 +92,7 @@ public final class Log {
 	public static final String FILE_FILTER_PACKAGES_ONLY = "Package File(*." + PACKAGE_EXTENSION + ")|*."
 			+ PACKAGE_EXTENSION + "|All Files (*.*)|*.*";
 	
-	/**
-	 * The category for trace messages
-	 */
+	/** The category for trace messages. */
 	public static final String CATEGORY = "Trace";
 
 	/**
@@ -106,39 +105,74 @@ public final class Log {
 	 */
 	public static final String EXCEPTION_CATEGORY = "System.Exception";
 
+	/** The Constant LINE_BREAK_STRING. */
 	public static final String LINE_BREAK_STRING = "\r\n";
 
+	/** The session start info. */
 	private static SessionSummary sessionStartInfo;
+	
+	/** The publisher. */
 	private static Publisher publisher; // Our one and only publisher
+	
+	/** The publish engine. */
 	private static RepositoryPublishEngine publishEngine; // We have zero or one publish engine
+	
+	/** The active packager. */
 	private static Packager activePackager; // PROTECTED BY LOCK
+	
+	/** The repository. */
 	private static LocalRepository repository;
+	
+	/** The resource monitor. */
 	private static ResourceMonitor resourceMonitor;
 
+	/** The metric definitions. */
 	private static MetricDefinitionCollection metricDefinitions = new MetricDefinitionCollection();
 
+	/** The t current thread info. */
 	private static ThreadLocal<ThreadInfo> tCurrentThreadInfo = new ThreadLocal<>(); // ThreadInfo for the current thread, for efficiency.
 
+	/** The send sessions on exit. */
 	private static boolean sendSessionsOnExit; // protected by syncObject
 
+	/** The running configuration. */
 	private static AgentConfiguration runningConfiguration;
 
+	/** The Constant syncObject. */
 	private static final Object syncObject = new Object(); // the general lock for the log object.
+	
+	/** The Constant initializingLock. */
 	private static final Object initializingLock = new Object();
+	
+	/** The Constant notifierLock. */
 	private static final Object notifierLock = new Object(); // used for initializing Notifier instances.
 
+	/** The initialized. */
 	private volatile static boolean initialized; // protected by being volatile
+	
+	/** The initialization never attempted. */
 	private volatile static boolean initializationNeverAttempted = true; // protected by being volatile
+	
+	/** The initializing. */
 	private volatile static boolean initializing; // PROTECTED BY INITIALIZING and volatile
+	
+	/** The explicit start session called. */
 	private volatile static boolean explicitStartSessionCalled; // protected by being volatile
 	
+	/** The shutdown requested. */
 	private static boolean shutdownRequested;
 
+	/** The message alert notifier. */
 	private static Notifier messageAlertNotifier; // PROTECTED BY NOTIFIERLOCK (weak check outside lock allowed)
+	
+	/** The message notifier. */
 	private static Notifier messageNotifier; // PROTECTED BY NOTIFIERLOCK (weak check outside lock allowed)
+	
+	/** The user resolution notifier. */
 	private static UserResolutionNotifier userResolutionNotifier;
 
 	// A thread-specific static flag for each thread to identify if this thread is
+	/** The t thread is initializer. */
 	// the current initialize
 	private static ThreadLocal<Boolean> tThreadIsInitializer = new ThreadLocal<Boolean>() {
 		@Override
@@ -148,6 +182,7 @@ public final class Log {
 		}
 	};
 	
+	/** The Constant appenderRefs. */
 	private static final Map<UUID, String> appenderRefs = new HashMap<UUID, String>();
 
 	/**
@@ -156,11 +191,18 @@ public final class Log {
 	 * 
 	 * True enables breakpointing, false disables. This should probably be replaced
 	 * with an enum to support multiple modes, assuming the basic usage works out.
+	 *
+	 * @return the break point enable
 	 */
 	public static boolean getBreakPointEnable() {
 		return CommonCentralLogic.getBreakPointEnable();
 	}
 
+	/**
+	 * Sets the break point enable.
+	 *
+	 * @param value the new break point enable
+	 */
 	public static void setBreakPointEnable(boolean value) {
 		CommonCentralLogic.setBreakPointEnable(value);
 	}
@@ -170,30 +212,41 @@ public final class Log {
 	 * when running in the agent).
 	 * 
 	 * Pass-through to the setting in CommonFileTools.
+	 *
+	 * @return the silent mode
 	 */
 	public static boolean getSilentMode() {
 		return CommonCentralLogic.getSilentMode();
 	}
 
+	/**
+	 * Sets the silent mode.
+	 *
+	 * @param value the new silent mode
+	 */
 	public static void setSilentMode(boolean value) {
 		CommonCentralLogic.setSilentMode(value);
 	}
 
 	
+	/**
+	 * Gets the metric definitions.
+	 *
+	 * @return the metric definitions
+	 */
 	public static MetricDefinitionCollection getMetricDefinitions() {
 		return metricDefinitions;
 	}
 
 	/**
-	 * Indicates if logging is active, performing initialization if necessary
-	 * 
+	 * Indicates if logging is active, performing initialization if necessary.
+	 *
 	 * @return True if logging is active, false if it isn't at this time. The very
 	 *         first time this is used it will attempt to start the logging system
 	 *         even if it hasn't already been started. If that call is canceled
 	 *         through our Initializing event then it will return false. After the
 	 *         first call it will indicate if logging is currently initialized and
 	 *         not attempt to initialize.
-	 * @throws IOException 
 	 */
 	public static boolean isLoggingActive() {
 		if (getInitialized()) {
@@ -219,6 +272,8 @@ public final class Log {
 	 * 
 	 * Once true it will never go false, however if false it may go true at any
 	 * time.
+	 *
+	 * @return the initialized
 	 */
 	public static boolean getInitialized() {
 		return initialized;
@@ -227,7 +282,7 @@ public final class Log {
 	/**
 	 * Attempt to initialize the log system. If it is already initialized it will
 	 * return immediately.
-	 * 
+	 *
 	 * @param configuration Optional. A default configuration to start with instead
 	 *                      of the configuration file.
 	 * @return True if the initialization has completed (on this call or prior),
@@ -236,7 +291,7 @@ public final class Log {
 	 *         started with the trace listener, you must set suppressTraceInitialize
 	 *         to true to guarantee that the application will not deadlock or throw
 	 *         an unexpected exception.
-	 * @throws IOException 
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static boolean initialize(AgentConfiguration configuration) throws IOException {
 		// NOTE TO MAINTAINERS: THIS CLASS RELIES ON THE INITIALIZER VARIABLES BEING
@@ -320,7 +375,9 @@ public final class Log {
 	/**
 	 * The running publisher configuration. This is always safe even when logging is
 	 * disabled.
-	 * @throws IOException 
+	 *
+	 * @return the configuration
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static AgentConfiguration getConfiguration() throws IOException {
 		ensureSummaryIsAvailable();
@@ -331,7 +388,9 @@ public final class Log {
 	/**
 	 * The common information about the active log session. This is always safe even
 	 * when logging is disabled.
-	 * @throws IOException 
+	 *
+	 * @return the session summary
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static SessionSummary getSessionSummary() throws IOException {
 		ensureSummaryIsAvailable();
@@ -342,6 +401,8 @@ public final class Log {
 	/**
 	 * Get the official Error Alert Notifier instance. Will create it if it doesn't
 	 * already exist.
+	 *
+	 * @return the message alert notifier
 	 */
 	public static Notifier getMessageAlertNotifier() {
 		if (messageAlertNotifier == null) {
@@ -360,6 +421,8 @@ public final class Log {
 	/**
 	 * Get the official Notifier instance that returns all messages. Will create it
 	 * if it doesn't already exist.
+	 *
+	 * @return the message notifier
 	 */
 	public static Notifier getMessageNotifier() {
 		if (messageNotifier == null) {
@@ -378,6 +441,8 @@ public final class Log {
 	/**
 	 * Get the official user resolution notifier instance. Will create it if it
 	 * doesn't already exist.
+	 *
+	 * @return the user resolution notifier
 	 */
 	public static UserResolutionNotifier getUserResolutionNotifier() {
 		if (userResolutionNotifier == null) {
@@ -395,7 +460,9 @@ public final class Log {
 	}
 
 	/**
-	 * The current process's collection repository
+	 * The current process's collection repository.
+	 *
+	 * @return the repository
 	 */
 	public static LocalRepository getRepository() {
 		// when valid this should have been set up during initialization, which is done
@@ -409,8 +476,9 @@ public final class Log {
 	 * 
 	 * This checks whether there is sufficient configuration to submit sessions
 	 * using the current configuration.
-	 * 
-	 * @return
+	 *
+	 * @param message the message
+	 * @return true, if successful
 	 */
 	public static boolean canSendSessions(String message) {
 		if (!getInitialized()) {
@@ -449,8 +517,9 @@ public final class Log {
 	 * This checks whether there is sufficient configuration to submit sessions
 	 * through the packager upon exit. It also checks that the packager executable
 	 * can be found.
-	 * 
-	 * @return
+	 *
+	 * @param message the message
+	 * @return true, if successful
 	 */
 	public static boolean canSendSessionsOnExit(String message) {
 		boolean goodToGo = canSendSessions(message);
@@ -465,7 +534,7 @@ public final class Log {
 	}
 
 	/**
-	 * Ensure all messages have been written completely
+	 * Ensure all messages have been written completely.
 	 */
 	public static void flush() {
 		IMessengerPacket commandPacket = new CommandPacket(MessagingCommand.FLUSH);
@@ -475,7 +544,8 @@ public final class Log {
 	/**
 	 * Indicates if we have sufficient configuration information to automatically
 	 * send packages by email submission.
-	 * 
+	 *
+	 * @param message the message
 	 * @return Does not check if email submission is allowed
 	 */
 	public static boolean isEmailSubmissionConfigured(String message) {
@@ -510,8 +580,9 @@ public final class Log {
 	 * through a server. It does NOT check whether the packager is configured to
 	 * allow submission through a server, because they may also be sent directly
 	 * from Agent without using the packager.
-	 * 
-	 * @return
+	 *
+	 * @param message the message
+	 * @return true, if is hub submission configured
 	 */
 	public static boolean isHubSubmissionConfigured(String message) {
 		if (!initialized) {
@@ -553,6 +624,9 @@ public final class Log {
 	/**
 	 * Indicates if the packager executable is available where this process can find
 	 * it.
+	 *
+	 * @param message the message
+	 * @return true, if successful
 	 */
 	public static boolean canFindPackager(String message) {
 		if (message == null) {
@@ -575,6 +649,8 @@ public final class Log {
 	 * application after this session exits.
 	 * 
 	 * When true the system will automatically
+	 *
+	 * @return the send sessions on exit
 	 */
 	public static boolean getSendSessionsOnExit() {
 		synchronized (syncObject) {
@@ -592,6 +668,8 @@ public final class Log {
 	 * StartSession was explicitly called then we expect the client to make a
 	 * corresponding explicit EndSession call, and the Agent's ApplicationExit
 	 * handler will not call EndSession.
+	 *
+	 * @return the explicit start session called
 	 */
 	public static boolean getExplicitStartSessionCalled() {
 		return explicitStartSessionCalled;
@@ -606,7 +684,8 @@ public final class Log {
 	 * provided only this metrics collection is used. If there is a duplicate metric
 	 * in the data stream, that information will be discarded when the log file is
 	 * read (but there is no effect at runtime).
-	 * 
+	 *
+	 * @return the metrics
 	 */
 	public static MetricDefinitionCollection getMetrics() {
 		return metricDefinitions;
@@ -614,6 +693,8 @@ public final class Log {
 
 	/**
 	 * Reports whether EndSession() has been called to formally end the session.
+	 *
+	 * @return true, if is session ending
 	 */
 	public static boolean isSessionEnding() {
 		return CommonCentralLogic.isSessionEnding();
@@ -622,6 +703,8 @@ public final class Log {
 	/**
 	 * Reports whether EndSession() has completed flushing the end-session command
 	 * to the log.
+	 *
+	 * @return true, if is session ended
 	 */
 	public static boolean isSessionEnded() {
 		return CommonCentralLogic.isSessionEnded();
@@ -629,7 +712,9 @@ public final class Log {
 	
 	/**
 	 * The version information for the Gibraltar Agent.
-	 * @throws IOException 
+	 *
+	 * @return the agent version
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static Version getAgentVersion() throws IOException {
 		ensureSummaryIsAvailable();
@@ -642,9 +727,9 @@ public final class Log {
 	 * 
 	 * When sampling multiple metrics at the same time, it is faster to make a
 	 * single write call than multiple calls.
-	 * 
+	 *
 	 * @param samples A list of metric samples to record.
-	 * @throws InterruptedException
+	 * @throws InterruptedException the interrupted exception
 	 */
 	public static void write(ArrayList<MetricSample> samples) throws InterruptedException {
 		if (!initialized) {
@@ -673,9 +758,9 @@ public final class Log {
 	 * this object to create log information instead of manually creating log
 	 * packets and writing them here. This functionality is primarily for internal
 	 * support of the various log listeners that support third party log systems.
-	 * 
-	 * @param sample
-	 * @throws InterruptedException
+	 *
+	 * @param sample the sample
+	 * @throws InterruptedException the interrupted exception
 	 */
 	public static void write(MetricSample sample) throws InterruptedException {
 		if (!initialized) {
@@ -691,6 +776,21 @@ public final class Log {
 		publisher.publish(new MetricSamplePacket[] { sample.getPacket() }, false);
 	}
 	
+	/**
+	 * Write.
+	 *
+	 * @param severity the severity
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void write(LogMessageSeverity severity, Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption, String description, Object... args) {
 		if (element != null) {
@@ -701,6 +801,21 @@ public final class Log {
 		}
 	}
 	
+	/**
+	 * Write.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param logSystem the log system
+	 * @param throwable the throwable
+	 * @param attributeToException the attribute to exception
+	 * @param threadInfo the thread info
+	 * @param element the element
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void write(LogMessageSeverity severity, LogWriteMode writeMode, String logSystem, Throwable throwable,
 			boolean attributeToException, ThreadInfo threadInfo, StackTraceElement element, String category, String caption, String description, Object... args) {
 		if (!initialized) {
@@ -731,12 +846,16 @@ public final class Log {
 	 * rather than pass a direct value of null, to avoid compiler ambiguity over the
 	 * type of a simple null.
 	 * </p>
-	 * 
+	 *
 	 * @param severity             The log message severity.
 	 * @param writeMode            Whether to queue-and-return or wait-for-commit.
+	 * @param logSystem the log system
+	 * @param throwable the throwable
 	 * @param attributeToException True if the call stack from where the exception
 	 *                             was thrown should be used for log message
 	 *                             attribution
+	 * @param threadInfo the thread info
+	 * @param skipFrames the skip frames
 	 * @param category             The category for this log message.
 	 * @param caption              A simple single-line message caption. (Will not
 	 *                             be processed for formatting.)
@@ -759,26 +878,87 @@ public final class Log {
 		logMessage.publishToLog(); // tell the SimpleLogMessage to publish itself (back through us).		
 	}
 
+	/**
+	 * Write.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param throwable the throwable
+	 * @param attributeToException the attribute to exception
+	 * @param skipFrames the skip frames
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void write(LogMessageSeverity severity, LogWriteMode writeMode, Throwable throwable,
 			boolean attributeToException, int skipFrames, String category, String caption, String description, Object... args) {
 		write(severity, writeMode, LogSystems.GIBRALTAR, throwable, attributeToException, null, skipFrames, category, caption, description, args);
 	}
 	
+	/**
+	 * Write.
+	 *
+	 * @param severity the severity
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void write(LogMessageSeverity severity, String category, String caption, String description,
 			Object... args) {
 		write(severity, LogWriteMode.QUEUED, null, false, 1, category, caption, description, args);
 	}
 	
+	/**
+	 * Write.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param throwable the throwable
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void write(LogMessageSeverity severity, LogWriteMode writeMode, Throwable throwable, String category,
 			String caption, String description, Object... args) {
 		write(severity, writeMode, throwable, false, 1, category, caption, description, args);
 	}
 	
+	/**
+	 * Write.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param throwable the throwable
+	 * @param attributeToException the attribute to exception
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void write(LogMessageSeverity severity, LogWriteMode writeMode, Throwable throwable,
 			boolean attributeToException, String category, String caption, String description, Object... args) {
 		write(severity, writeMode, throwable, attributeToException, 1, category, caption, description, args);
 	}
 	
+	/**
+	 * Write message.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param sourceProvider the source provider
+	 * @param userName the user name
+	 * @param throwable the throwable
+	 * @param threadInfo the thread info
+	 * @param detailsXml the details xml
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void writeMessage(LogMessageSeverity severity, LogWriteMode writeMode, String logSystem,
 			String categoryName, IMessageSourceProvider sourceProvider, String userName, Throwable throwable,
 			ThreadInfo threadInfo, String detailsXml, String caption, String description, Object... args) {
@@ -793,6 +973,18 @@ public final class Log {
 
 	}
 	
+	/**
+	 * Write message.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param skipFrames the skip frames
+	 * @param throwable the throwable
+	 * @param detailsXml the details xml
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void writeMessage(LogMessageSeverity severity, LogWriteMode writeMode, int skipFrames,
 			Throwable throwable, String detailsXml, String caption, String description, Object... args) {
 		if (!initialized) {
@@ -809,6 +1001,19 @@ public final class Log {
 		logMessage.publishToLog(); // tell the DetailLogMessage to publish itself (back through us).
 	}
 	
+	/**
+	 * Write message.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param skipFrames the skip frames
+	 * @param throwable the throwable
+	 * @param attributeToException the attribute to exception
+	 * @param detailsXml the details xml
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void writeMessage(LogMessageSeverity severity, LogWriteMode writeMode, int skipFrames,
 			Throwable throwable, boolean attributeToException, String detailsXml, String caption, String description,
 			Object... args) {
@@ -833,9 +1038,8 @@ public final class Log {
 	 * listeners that support third party log systems. This overload uses the
 	 * default LogWriteMode.Queued. To specify wait-for-commit behavior, use the
 	 * overload with a LogWriteMode argument.
-	 * 
+	 *
 	 * @param packet The log packet to write
-	 * @throws InterruptedException
 	 */
 	public static void write(IMessengerPacket packet) {
 		// we explicitly are not checking initialized because we are part of the
@@ -855,10 +1059,9 @@ public final class Log {
 	 * 
 	 * This functionality is primarily for internal support of the various log
 	 * listeners that support third party log systems.
-	 * 
+	 *
 	 * @param packetArray An array of the log packets to write.
 	 * @param writeMode   Whether to queue-and-return or wait-for-commit.
-	 * @throws InterruptedException
 	 */
 	public static void write(IMessengerPacket[] packetArray, LogWriteMode writeMode) {
 		// we explicitly are not checking initialized because we are part of the
@@ -893,10 +1096,23 @@ public final class Log {
 		}
 	}
 	
+	/**
+	 * Trace.
+	 *
+	 * @param str the str
+	 * @param args the args
+	 */
 	public static void trace(String str, Object... args) {
 		trace(null, str, args);
 	}
 
+	/**
+	 * Trace.
+	 *
+	 * @param t the t
+	 * @param str the str
+	 * @param args the args
+	 */
 	public static void trace(Throwable t, String str, Object... args) {
 		write(LogMessageSeverity.VERBOSE, t, null, 1, null, null, LogSystems.GIBRALTAR, CATEGORY, null, str, args);
 	}
@@ -922,12 +1138,13 @@ public final class Log {
 	 * which disrupt a user activity, see the
 	 * <see CREF="ReportException">ReportException</see> method.
 	 * </p>
-	 * 
+	 *
 	 * @param sourceProvider An IMessageSourceProvider object which supplies the
 	 *                       source information about this log message (NOT the
 	 *                       exception source information).
 	 * @param throwable      An Exception object to record as a log message. This
 	 *                       call is ignored if null.
+	 * @param threadInfo the thread info
 	 * @param detailsXml     Optional. An XML document with extended details about
 	 *                       the exception. Can be null.
 	 * @param category       The application subsystem or logging category that the
@@ -939,7 +1156,7 @@ public final class Log {
 	 *                       (private use)
 	 * @param blocking       True if reporting to user and waiting for user
 	 *                       response; otherwise should be false. (private use)
-	 * @throws IOException 
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void recordException(IMessageSourceProvider sourceProvider, Throwable throwable, ThreadInfo threadInfo, String detailsXml,
 			String category, boolean canContinue, boolean reporting, boolean blocking) throws IOException {
@@ -999,16 +1216,48 @@ public final class Log {
 		}
 	}
 	
+	/**
+	 * Record exception.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param throwable the throwable
+	 * @param threadInfo the thread info
+	 * @param detailsXml the details xml
+	 * @param category the category
+	 * @param canContinue the can continue
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void recordException(int skipFrames, Throwable throwable, ThreadInfo threadInfo, String detailsXml, String category,
 			boolean canContinue) throws IOException {
 		recordException(null, throwable, threadInfo, detailsXml, category, canContinue, false, false);
 	}
 	
+	/**
+	 * Record exception.
+	 *
+	 * @param sourceProvider the source provider
+	 * @param throwable the throwable
+	 * @param threadInfo the thread info
+	 * @param detailsXml the details xml
+	 * @param category the category
+	 * @param canContinue the can continue
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void recordException(IMessageSourceProvider sourceProvider, Throwable throwable, ThreadInfo threadInfo, String detailsXml,
 			String category, boolean canContinue) throws IOException {
 		recordException(sourceProvider, throwable, threadInfo, detailsXml, category, canContinue, false, false);
 	}
 
+	/**
+	 * Record exception.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param throwable the throwable
+	 * @param detailsXml the details xml
+	 * @param category the category
+	 * @param canContinue the can continue
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void recordException(int skipFrames, Throwable throwable, String detailsXml, String category,
 			boolean canContinue) throws IOException {
 		recordException(skipFrames, throwable, null, detailsXml, category, canContinue);
@@ -1131,7 +1380,7 @@ public final class Log {
 	 * If EndSession is never called, the log will reflect that the session must
 	 * have crashed.
 	 * </p>
-	 * 
+	 *
 	 * @param endingStatus   The explicit ending status to declare for this session,
 	 *                       <see cref="SessionStatus.Normal">Normal</see> or
 	 *                       <see cref="SessionStatus.Crashed">Crashed</see>.
@@ -1139,7 +1388,7 @@ public final class Log {
 	 *                       source information about this log message.
 	 * @param reason         A simple reason to declare why the application is
 	 *                       ending as Normal or as Crashed, or may be null.
-	 * @throws IOException 
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void shutdown(SessionStatus endingStatus, IMessageSourceProvider sourceProvider, String reason)
 			throws IOException {
@@ -1230,9 +1479,9 @@ public final class Log {
 	 * Unregister an appender with Loupe. If requestShutdown is true, Loupe
 	 * will attempt to shut down if no other appenders are currently active,
 	 * otherwise Loupe will shut down after the last active appender has.
-	 * 
-	 * @param appenderRef
-	 * @param requestShutdown
+	 *
+	 * @param appenderRef the appender ref
+	 * @param requestShutdown the request shutdown
 	 */
 	public static void shutdownAppender(UUID appenderRef, boolean requestShutdown) {
 		String name = appenderRefs.remove(appenderRef);
@@ -1270,7 +1519,7 @@ public final class Log {
 	 * If EndSession is never called, the log will reflect that the session must
 	 * have crashed.
 	 * </p>
-	 * 
+	 *
 	 * @param endingStatus The explicit ending status to declare for this session,
 	 *                     <see cref="SessionStatus.Normal">Normal</see> or
 	 *                     <see cref="SessionStatus.Crashed">Crashed</see>.
@@ -1278,7 +1527,7 @@ public final class Log {
 	 *                     original caller.
 	 * @param reason       A simple reason to declare why the application is ending
 	 *                     as Normal or as Crashed, or may be null.
-	 * @throws IOException 
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void shutdown(SessionStatus endingStatus, int skipFrames, String reason)
 			throws IOException {
@@ -1289,6 +1538,9 @@ public final class Log {
 		shutdown(endingStatus, new MessageSourceProvider(skipFrames + 1), reason);
 	}
 	
+	/**
+	 * Shutdown.
+	 */
 	public static void shutdown() {
 		try {
 			shutdown(SessionStatus.NORMAL, 1, "Beginning shutdown of Loupe");
@@ -1299,10 +1551,10 @@ public final class Log {
 	
 	/**
 	 * Register an appender with Loupe, and start it up if not already running.
-	 * 
-	 * @param name
+	 *
+	 * @param appenderName the appender name
 	 * @return A UUID that will be used to track the appender.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static UUID startAppender(String appenderName) throws IOException {
 		// no null nonsense.
@@ -1327,10 +1579,21 @@ public final class Log {
 		}
 	}
 	
+	/**
+	 * Start.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void start() throws IOException {
 		start(null, 1, "Initializing, will attempt configuration resolution.");
 	}
 	
+	/**
+	 * Start.
+	 *
+	 * @param configuration the configuration
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void start(AgentConfiguration configuration) throws IOException {
 		if (configuration == null) {
 			throw new NullPointerException("configuration");
@@ -1342,12 +1605,12 @@ public final class Log {
 	/**
 	 * Called to activate the logging system. If it is already active then this has
 	 * no effect.
-	 * 
+	 *
 	 * @param configuration Optional. An initial default configuration to use
 	 *                      instead of the configuration file.
-	 * @param skipFrames
-	 * @param reason
-	 * @throws IOException 
+	 * @param skipFrames the skip frames
+	 * @param reason the reason
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void start(AgentConfiguration configuration, int skipFrames, String reason)
 			throws IOException {
@@ -1364,12 +1627,12 @@ public final class Log {
 	/**
 	 * Called to activate the logging system. If it is already active then this has
 	 * no effect.
-	 * 
+	 *
 	 * @param configuration  Optional. An initial default configuration to use
 	 *                       instead of the configuration file.
-	 * @param sourceProvider
-	 * @param reason
-	 * @throws IOException 
+	 * @param sourceProvider the source provider
+	 * @param reason the reason
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void start(AgentConfiguration configuration, IMessageSourceProvider sourceProvider,
 			String reason) throws IOException {
@@ -1396,15 +1659,15 @@ public final class Log {
 	}
 
 	/**
-	 * Send sessions using packager
-	 * 
+	 * Send sessions using packager.
+	 *
 	 * @param criteria              Optional. A session criteria to use
 	 * @param sessionMatchPredicate Optional. A session match predicate to use
-	 * @param asyncSend
+	 * @param asyncSend the async send
 	 * @return True if the send was processed, false if it was not due to
 	 *         configuration or another active send Either a criteria or
 	 *         sessionMatchPredicate must be provided
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static Boolean sendSessions(Optional<SessionCriteria> criteria,
 			java.util.function.Predicate<ISessionSummary> sessionMatchPredicate, boolean asyncSend) throws IOException {
@@ -1481,8 +1744,8 @@ public final class Log {
 	/**
 	 * Set the SendSessionsOnExit setting. (Should only be called through the
 	 * SendSessionsOnExit property in Monitor.Log or Agent.Log.)
-	 * 
-	 * @param value
+	 *
+	 * @param value the new send sessions on exit
 	 */
 	public static void setSendSessionsOnExit(boolean value) {
 		boolean valueChanged = false;
@@ -1550,7 +1813,7 @@ public final class Log {
 	 * which can then be bundled with other packets (in an array) to be submitted to
 	 * the log as a batch. This method ONLY supports being invoked on the same
 	 * thread which is originating the log message.
-	 * 
+	 *
 	 * @param severity       The severity enum value of the log message.
 	 * @param logSystem      The name of the originating log system, such as
 	 *                       "Trace", "Log4Net", or "Gibraltar".
@@ -1564,6 +1827,7 @@ public final class Log {
 	 *                       task which issued the log message.
 	 * @param throwable      An Exception object attached to this log message, or
 	 *                       null if none.
+	 * @param threadInfo the thread info
 	 * @param detailsXml     Optional. An XML document with extended details about
 	 *                       the message. Can be null.
 	 * @param caption        A single line display caption.
@@ -1571,6 +1835,7 @@ public final class Log {
 	 *                       a format string for the arguments. Can be null.
 	 * @param args           A variable number of arguments to insert into the
 	 *                       formatted description string.
+	 * @return the i messenger packet
 	 */
 	public static IMessengerPacket makeLogPacket(LogMessageSeverity severity, String logSystem, String category,
 			IMessageSourceProvider sourceProvider, String userName, Throwable throwable, ThreadInfo threadInfo, String detailsXml,
@@ -1671,6 +1936,11 @@ public final class Log {
 		return packet;
 	}
 
+	/**
+	 * Gets the current thread info.
+	 *
+	 * @return the current thread info
+	 */
 	private static ThreadInfo getCurrentThreadInfo() {
 		if (!initialized) {
 			return null;
@@ -1690,12 +1960,19 @@ public final class Log {
 	}
 
 	/**
-	 * Indicates if the calling thread is part of the log initialization process
+	 * Indicates if the calling thread is part of the log initialization process.
+	 *
+	 * @return the thread is initializer
 	 */
 	public static boolean getThreadIsInitializer() {
 		return tThreadIsInitializer.get();
 	}
 
+	/**
+	 * Sets the thread is initializer.
+	 *
+	 * @param value the new thread is initializer
+	 */
 	public static void setThreadIsInitializer(boolean value) {
 		Log.tThreadIsInitializer.set(value);
 	}
@@ -1703,8 +1980,8 @@ public final class Log {
 	/**
 	 * Get the full file name and path to where the packager would need to be for us
 	 * to use it.
-	 * 
-	 * @return
+	 *
+	 * @return the packager file name path
 	 */
 	// TODO need more research... how to spin up another java process
 	private static String getPackagerFileNamePath() {
@@ -1826,6 +2103,12 @@ public final class Log {
 //		}
 	}
 
+	/**
+	 * Normalize caption description.
+	 *
+	 * @param caption the caption
+	 * @param description the description
+	 */
 	private static void normalizeCaptionDescription(String caption, String description) {
 		if (description == null) {
 			description = ""; // Must be a legal string.
@@ -1865,11 +2148,12 @@ public final class Log {
 
 	/**
 	 * Perform the critical central initialization and indicate if we should be
-	 * active or not
-	 * 
+	 * active or not.
+	 *
+	 * @param configuration the configuration
 	 * @return True if initialization was completed and logging can now commence,
 	 *         false otherwise.
-	 * @throws IOException 
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private static boolean onInitialize(AgentConfiguration configuration) throws IOException {
 		// make sure that we don't ever run again once we're initialized, that would be
@@ -1952,6 +2236,11 @@ public final class Log {
 		return true;
 	}
 
+	/**
+	 * Ensure summary is available.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private static void ensureSummaryIsAvailable() throws IOException {
 		// make sure we aren't in a race condition starting to initialize...
 		if ((!initialized) && ((runningConfiguration == null) || (sessionStartInfo == null))) {
@@ -1978,7 +2267,7 @@ public final class Log {
 
 	/**
 	 * If the configuration allows publishing then starts our one publish engine,
-	 * creating it if necessary
+	 * creating it if necessary.
 	 */
 	private static void startPublishEngine() {
 		try {
@@ -2023,6 +2312,9 @@ public final class Log {
 		}
 	}
 	
+	/**
+	 * Reset.
+	 */
 	private static void reset() {
 		Multiplexer.shutdown();
 		Multiplexer.reset();

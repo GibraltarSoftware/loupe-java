@@ -2,14 +2,13 @@ package com.onloupe.core.server;
 
 import com.onloupe.model.exception.GibraltarException;
 
+// TODO: Auto-generated Javadoc
 /**
- * Exceptions related to network operations
+ * Exceptions related to network operations.
  */
 public class GibraltarNetworkException extends GibraltarException {
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -39,11 +38,22 @@ public class GibraltarNetworkException extends GibraltarException {
 		// Just the base constructor
 	}
 
+	/**
+	 * Instantiates a new gibraltar network exception.
+	 *
+	 * @param t the t
+	 */
 	public GibraltarNetworkException(Throwable t) {
 		super(t);
 		// Just the base constructor
 	}
 
+	/**
+	 * Instantiates a new gibraltar network exception.
+	 *
+	 * @param message the message
+	 * @param t the t
+	 */
 	public GibraltarNetworkException(String message, Throwable t) {
 		super(message, t);
 		// Just the base constructor

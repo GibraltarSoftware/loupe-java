@@ -1,12 +1,12 @@
 package com.onloupe.core.server;
 
+// TODO: Auto-generated Javadoc
 /**
- * The state of a web request
+ * The state of a web request.
  */
 public enum WebRequestState {
-	/**
-	 * Not yet processed
-	 */
+	
+	/** Not yet processed. */
 	NEW(0),
 
 	/**
@@ -14,9 +14,7 @@ public enum WebRequestState {
 	 */
 	COMPLETED(1),
 
-	/**
-	 * Canceled before it could be completed
-	 */
+	/** Canceled before it could be completed. */
 	CANCELED(2),
 
 	/**
@@ -24,11 +22,20 @@ public enum WebRequestState {
 	 */
 	ERROR(3);
 
+	/** The Constant SIZE. */
 	public static final int SIZE = java.lang.Integer.SIZE;
 
+	/** The int value. */
 	private int intValue;
+	
+	/** The mappings. */
 	private static java.util.HashMap<Integer, WebRequestState> mappings;
 
+	/**
+	 * Gets the mappings.
+	 *
+	 * @return the mappings
+	 */
 	private static java.util.HashMap<Integer, WebRequestState> getMappings() {
 		if (mappings == null) {
 			synchronized (WebRequestState.class) {
@@ -40,15 +47,31 @@ public enum WebRequestState {
 		return mappings;
 	}
 
+	/**
+	 * Instantiates a new web request state.
+	 *
+	 * @param value the value
+	 */
 	private WebRequestState(int value) {
 		this.intValue = value;
 		getMappings().put(value, this);
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return this.intValue;
 	}
 
+	/**
+	 * For value.
+	 *
+	 * @param value the value
+	 * @return the web request state
+	 */
 	public static WebRequestState forValue(int value) {
 		return getMappings().get(value);
 	}

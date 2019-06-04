@@ -5,6 +5,7 @@ import java.util.Set;
 import com.onloupe.agent.IMessageSourceProvider;
 import com.onloupe.core.CommonCentralLogic;
 
+// TODO: Auto-generated Javadoc
 /**
  * A basic class to determine the source of a log message and act as an
  * IMessageSourceProvider.
@@ -17,9 +18,17 @@ import com.onloupe.core.CommonCentralLogic;
  * (etc).
  */
 public class MessageSourceProvider implements IMessageSourceProvider {
+	
+	/** The method name. */
 	private String methodName;
+	
+	/** The class name. */
 	private String className;
+	
+	/** The file name. */
 	private String fileName;
+	
+	/** The line number. */
 	private int lineNumber;
 
 	/**
@@ -32,6 +41,11 @@ public class MessageSourceProvider implements IMessageSourceProvider {
 		this.lineNumber = 0;
 	}
 	
+	/**
+	 * Instantiates a new message source provider.
+	 *
+	 * @param element the element
+	 */
 	public MessageSourceProvider(StackTraceElement element) {
 		// protecting ourselves here.
 		if (element != null) {
@@ -93,12 +107,10 @@ public class MessageSourceProvider implements IMessageSourceProvider {
 	 * needs to generate an IMessageSoruceProvider for construction of
 	 * internally-generated packets without going through the usual direct
 	 * PublishToLog() mechanism.
-	 * 
+	 *
 	 * @param skipFrames  The number of stack frames to skip over to find the first
 	 *                    candidate to be identified as the source of the log
 	 *                    message.
-	 * @param localOrigin True if logging a message originating in Gibraltar code.
-	 *                    False if logging a message from the client application.
 	 */
 	public MessageSourceProvider(int skipFrames) {
 		MessageSourceProvider provider = CommonCentralLogic.findMessageSource(skipFrames + 1, null, null);
@@ -109,6 +121,12 @@ public class MessageSourceProvider implements IMessageSourceProvider {
 		this.className = provider.getClassName();
 	}
 
+	/**
+	 * Instantiates a new message source provider.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param throwable the throwable
+	 */
 	public MessageSourceProvider(int skipFrames, Throwable throwable) {
 		MessageSourceProvider provider = CommonCentralLogic.findMessageSource(skipFrames + 1, throwable);
 
@@ -118,6 +136,12 @@ public class MessageSourceProvider implements IMessageSourceProvider {
 		this.className = provider.getClassName();
 	}
 	
+	/**
+	 * Instantiates a new message source provider.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 */
 	public MessageSourceProvider(int skipFrames, Set<String> exclusions) {
 		MessageSourceProvider provider = CommonCentralLogic.findMessageSource(skipFrames + 1, exclusions);
 
@@ -127,6 +151,13 @@ public class MessageSourceProvider implements IMessageSourceProvider {
 		this.className = provider.getClassName();
 	}
 	
+	/**
+	 * Instantiates a new message source provider.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param throwable the throwable
+	 * @param exclusions the exclusions
+	 */
 	public MessageSourceProvider(int skipFrames, Throwable throwable, Set<String> exclusions) {
 		MessageSourceProvider provider = CommonCentralLogic.findMessageSource(skipFrames + 1, throwable, exclusions);
 
@@ -138,6 +169,8 @@ public class MessageSourceProvider implements IMessageSourceProvider {
 	
 	/**
 	 * The simple name of the method which issued the log message.
+	 *
+	 * @return the method name
 	 */
 	@Override
 	public final String getMethodName() {
@@ -147,6 +180,8 @@ public class MessageSourceProvider implements IMessageSourceProvider {
 	/**
 	 * The full name of the class (with namespace) whose method issued the log
 	 * message.
+	 *
+	 * @return the class name
 	 */
 	@Override
 	public final String getClassName() {
@@ -155,6 +190,8 @@ public class MessageSourceProvider implements IMessageSourceProvider {
 
 	/**
 	 * The name of the file containing the method which issued the log message.
+	 *
+	 * @return the file name
 	 */
 	@Override
 	public final String getFileName() {
@@ -163,6 +200,8 @@ public class MessageSourceProvider implements IMessageSourceProvider {
 
 	/**
 	 * The line within the file at which the log message was issued.
+	 *
+	 * @return the line number
 	 */
 	@Override
 	public final int getLineNumber() {

@@ -1,5 +1,6 @@
 package com.onloupe.core.serialization.monitor;
 
+// TODO: Auto-generated Javadoc
 /**
  * Implement to support derived object creation from serialized packets
  * 
@@ -12,8 +13,12 @@ package com.onloupe.core.serialization.monitor;
  * <typeparam name="DataObjectType">The base object</typeparam>
  * <typeparam name="ParentObjectType">The base type of object that collects this
  * base object</typeparam>
+ *
+ * @param <DataObjectType> the generic type
+ * @param <ParentObjectType> the generic type
  */
 public interface IPacketObjectFactory<DataObjectType, ParentObjectType> {
+	
 	/**
 	 * Called to create the wrapping data object for a packet object.
 	 * 
@@ -23,9 +28,9 @@ public interface IPacketObjectFactory<DataObjectType, ParentObjectType> {
 	 * format of this interface to implement for a given base data object. For
 	 * example, when overriding MetricPacket you will have to implement one form,
 	 * for MetricSamplePacket a different one.
-	 * 
+	 *
 	 * @param optionalParent The object that will own the newly created data object
-	 * @return
+	 * @return the data object
 	 */
 	DataObjectType getDataObject(ParentObjectType optionalParent);
 }

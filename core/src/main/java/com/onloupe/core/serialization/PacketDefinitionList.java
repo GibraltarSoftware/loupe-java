@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * Helper class used by PacketRead and PacketWriter to maintain a cache of
- * PacketDefinition instances for used IPacket types
+ * PacketDefinition instances for used IPacket types.
  */
 public final class PacketDefinitionList implements java.lang.Iterable<PacketDefinition> {
+	
+	/** The list. */
 	private List<PacketDefinition> list;
+	
+	/** The committed list size. */
 	private int committedListSize;
 
 	/**
@@ -21,6 +26,8 @@ public final class PacketDefinitionList implements java.lang.Iterable<PacketDefi
 
 	/**
 	 * Gets the number of elements in the list.
+	 *
+	 * @return the count
 	 */
 	public int getCount() {
 		return this.list.size();
@@ -40,8 +47,9 @@ public final class PacketDefinitionList implements java.lang.Iterable<PacketDefi
 	/**
 	 * Gets the index of the corresponding PacketDefinition, if cached. Otherwise,
 	 * returns -1.
-	 * 
+	 *
 	 * @param packet IPacket object for which a PacketDefinition may be cached
+	 * @return the int
 	 */
 	public int indexOf(IPacket packet) {
 		// Most packets have a static field structure. But some packets, such as EventMetrics, have a
@@ -66,9 +74,10 @@ public final class PacketDefinitionList implements java.lang.Iterable<PacketDefi
 	/**
 	 * Gets the index of the corresponding PacketDefinition, if cached. Otherwise,
 	 * returns -1.
-	 * 
+	 *
 	 * @param qualifiedTypeName Type name of the corresponding IPacket object for
 	 *                          which a PacketDefinition may be cached
+	 * @return the int
 	 */
 	public int indexOf(String qualifiedTypeName) {
 		for (int index = 0; index < this.list.size(); index++) {
@@ -142,7 +151,7 @@ public final class PacketDefinitionList implements java.lang.Iterable<PacketDefi
 	 * @return An <see cref="T:System.Collections.IEnumerator"/> object that can be
 	 *         used to iterate through the collection.
 	 * 
-	 *         <filterpriority>2</filterpriority>
+	 *         
 	 */
 	public Iterator<PacketDefinition> getEnumerator() {
 		return ((java.lang.Iterable<PacketDefinition>) this).iterator();

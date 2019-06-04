@@ -8,137 +8,237 @@ import com.onloupe.core.util.TypeUtils;
 
 import java.util.HashMap;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ApplicationUserPacket.
+ */
 public class ApplicationUserPacket extends GibraltarCachedPacket implements IPacket {
+	
+	/** The key. */
 	private String key;
+	
+	/** The fully qualified user name. */
 	private String fullyQualifiedUserName;
+	
+	/** The caption. */
 	private String caption;
+	
+	/** The title. */
 	private String title;
+	
+	/** The organization. */
 	private String organization;
+	
+	/** The role. */
 	private String role;
+	
+	/** The tenant. */
 	private String tenant;
+	
+	/** The time zone code. */
 	private String timeZoneCode;
+	
+	/** The email address. */
 	private String emailAddress;
+	
+	/** The phone. */
 	private String phone;
 
+	/** The Properties. */
 	private final HashMap<String, String> _Properties = new HashMap<>();
 
+	/**
+	 * Instantiates a new application user packet.
+	 */
 	public ApplicationUserPacket() {
 		super(false);
 	}
 
 	/**
 	 * Optional. An absolute, unique key for the user to use as a primary match
+	 *
+	 * @return the key
 	 */
 	public final String getKey() {
 		return this.key;
 	}
 
+	/**
+	 * Sets the key.
+	 *
+	 * @param value the new key
+	 */
 	public final void setKey(String value) {
 		this.key = value;
 	}
 
 	/**
 	 * The fully qualified user name, composed from the Domain and Name as
-	 * originally specified
+	 * originally specified.
+	 *
+	 * @return the fully qualified user name
 	 */
 	public final String getFullyQualifiedUserName() {
 		return this.fullyQualifiedUserName;
 	}
 
+	/**
+	 * Sets the fully qualified user name.
+	 *
+	 * @param value the new fully qualified user name
+	 */
 	public final void setFullyQualifiedUserName(String value) {
 		this.fullyQualifiedUserName = value;
 	}
 
 	/**
-	 * A display label for the user (such as their full name)
+	 * A display label for the user (such as their full name).
+	 *
+	 * @return the caption
 	 */
 	public final String getCaption() {
 		return this.caption;
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	public final void setCaption(String value) {
 		this.caption = value;
 	}
 
 	/**
 	 * Optional. A primary email address for the user
+	 *
+	 * @return the email address
 	 */
 	public final String getEmailAddress() {
 		return this.emailAddress;
 	}
 
+	/**
+	 * Sets the email address.
+	 *
+	 * @param value the new email address
+	 */
 	public final void setEmailAddress(String value) {
 		this.emailAddress = value;
 	}
 
 	/**
 	 * Optional. A phone number or other telecommunication alias
+	 *
+	 * @return the phone
 	 */
 	public final String getPhone() {
 		return this.phone;
 	}
 
+	/**
+	 * Sets the phone.
+	 *
+	 * @param value the new phone
+	 */
 	public final void setPhone(String value) {
 		this.phone = value;
 	}
 
 	/**
 	 * Optional. A label for the organization this user is a part of
+	 *
+	 * @return the organization
 	 */
 	public final String getOrganization() {
 		return this.organization;
 	}
 
+	/**
+	 * Sets the organization.
+	 *
+	 * @param value the new organization
+	 */
 	public final void setOrganization(String value) {
 		this.organization = value;
 	}
 
 	/**
 	 * Optional. The primary time zone the user is associated with.
+	 *
+	 * @return the time zone code
 	 */
 	public final String getTimeZoneCode() {
 		return this.timeZoneCode;
 	}
 
+	/**
+	 * Sets the time zone code.
+	 *
+	 * @param value the new time zone code
+	 */
 	public final void setTimeZoneCode(String value) {
 		this.timeZoneCode = value;
 	}
 
 	/**
 	 * Optional. A title to display for the user
+	 *
+	 * @return the title
 	 */
 	public final String getTitle() {
 		return this.title;
 	}
 
+	/**
+	 * Sets the title.
+	 *
+	 * @param value the new title
+	 */
 	public final void setTitle(String value) {
 		this.title = value;
 	}
 
 	/**
 	 * Optional. A primary role for this user with respect to this application
+	 *
+	 * @return the role
 	 */
 	public final String getRole() {
 		return this.role;
 	}
 
+	/**
+	 * Sets the role.
+	 *
+	 * @param value the new role
+	 */
 	public final void setRole(String value) {
 		this.role = value;
 	}
 
 	/**
 	 * Optional. The primary tenant this user is a part of.
+	 *
+	 * @return the tenant
 	 */
 	public final String getTenant() {
 		return this.tenant;
 	}
 
+	/**
+	 * Sets the tenant.
+	 *
+	 * @param value the new tenant
+	 */
 	public final void setTenant(String value) {
 		this.tenant = value;
 	}
 
 	/**
-	 * Application provided properties
+	 * Application provided properties.
+	 *
+	 * @return the properties
 	 */
 	public final HashMap<String, String> getProperties() {
 		return this._Properties;
@@ -147,11 +247,10 @@ public class ApplicationUserPacket extends GibraltarCachedPacket implements IPac
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -162,11 +261,10 @@ public class ApplicationUserPacket extends GibraltarCachedPacket implements IPac
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	public final boolean equals(ApplicationUserPacket other) {
 		// Careful - can be null
@@ -214,8 +312,12 @@ public class ApplicationUserPacket extends GibraltarCachedPacket implements IPac
 		return super.hashCode();
 	}
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -238,6 +340,9 @@ public class ApplicationUserPacket extends GibraltarCachedPacket implements IPac
 		definition.getFields().add("PropertyValues", FieldType.STRING_ARRAY);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -256,6 +361,9 @@ public class ApplicationUserPacket extends GibraltarCachedPacket implements IPac
 		packet.setField("PropertyValues", this._Properties.values());
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");

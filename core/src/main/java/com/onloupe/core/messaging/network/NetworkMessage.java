@@ -9,20 +9,31 @@ import com.onloupe.core.data.BinarySerializer;
 import com.onloupe.core.util.PacketHeader;
 import com.onloupe.model.system.Version;
 
+// TODO: Auto-generated Javadoc
 /**
- * A packet of data that can be serialized across the network
+ * A packet of data that can be serialized across the network.
  */
 public abstract class NetworkMessage {
+	
+	/** The Constant BASE_PACKET_LENGTH. */
 	private static final int BASE_PACKET_LENGTH = 16; // our fixed size when serialized
 
+	/** The lock. */
 	private final Object lock = new Object();
 
+	/** The version. */
 	private Version version;
+	
+	/** The type code. */
 	private NetworkMessageTypeCode typeCode;
+	
+	/** The length. */
 	private int length;
 
 	/**
-	 * The protocol version
+	 * The protocol version.
+	 *
+	 * @return the version
 	 */
 	public final Version getVersion() {
 		synchronized (this.lock) {
@@ -30,6 +41,11 @@ public abstract class NetworkMessage {
 		}
 	}
 
+	/**
+	 * Sets the version.
+	 *
+	 * @param value the new version
+	 */
 	public final void setVersion(Version value) {
 		synchronized (this.lock) {
 			this.version = value;
@@ -37,7 +53,9 @@ public abstract class NetworkMessage {
 	}
 
 	/**
-	 * The specific packet type code
+	 * The specific packet type code.
+	 *
+	 * @return the type code
 	 */
 	public final NetworkMessageTypeCode getTypeCode() {
 		synchronized (this.lock) {
@@ -45,6 +63,11 @@ public abstract class NetworkMessage {
 		}
 	}
 
+	/**
+	 * Sets the type code.
+	 *
+	 * @param value the new type code
+	 */
 	public final void setTypeCode(NetworkMessageTypeCode value) {
 		synchronized (this.lock) {
 			this.typeCode = value;
@@ -53,8 +76,9 @@ public abstract class NetworkMessage {
 
 	/**
 	 * The number of bytes for the packet.
-	 * 
-	 * @throws IOException
+	 *
+	 * @return the length
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final int getLength() throws IOException {
 		synchronized (this.lock) {
@@ -71,6 +95,11 @@ public abstract class NetworkMessage {
 	
 	
 
+	/**
+	 * Sets the length.
+	 *
+	 * @param length the new length
+	 */
 	public void setLength(int length) {
 		synchronized(this.lock) {
 			this.length = length;
@@ -78,9 +107,11 @@ public abstract class NetworkMessage {
 	}
 
 	/**
-	 * Peek at the byte data and see if there's a full packet header
-	 * 
-	 * @throws IOException
+	 * Peek at the byte data and see if there's a full packet header.
+	 *
+	 * @param inputStream the input stream
+	 * @return the packet header
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static PacketHeader readHeader(InputStream inputStream) throws IOException {
 		if (inputStream.available() >= BASE_PACKET_LENGTH) {
@@ -101,9 +132,11 @@ public abstract class NetworkMessage {
 	}
 
 	/**
-	 * Read the provided stream to create the packet
-	 * 
-	 * @throws IOException
+	 * Read the provided stream to create the packet.
+	 *
+	 * @param inputStream the input stream
+	 * @return the network message
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static NetworkMessage read(InputStream inputStream) throws IOException {
 		NetworkMessage newPacket;
@@ -162,9 +195,9 @@ public abstract class NetworkMessage {
 
 	/**
 	 * Write the packet to the stream.
-	 * 
+	 *
 	 * @param stream The stream to write to
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void write(OutputStream stream) throws IOException {
 		synchronized (this.lock) {
@@ -181,16 +214,18 @@ public abstract class NetworkMessage {
 	}
 
 	/**
-	 * Write the packet to the stream
-	 * 
-	 * @throws IOException
+	 * Write the packet to the stream.
+	 *
+	 * @param outputStream the output stream
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected abstract void onWrite(OutputStream outputStream) throws IOException;
 
 	/**
-	 * Read packet data from the stream
-	 * 
-	 * @throws IOException
+	 * Read packet data from the stream.
+	 *
+	 * @param inputStream the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected abstract void onRead(InputStream inputStream) throws IOException;
 
@@ -200,11 +235,18 @@ public abstract class NetworkMessage {
 	 * 
 	 * At any time the remaining length is the Length property minus the BaseLength
 	 * property.
+	 *
+	 * @return the base length
 	 */
 	protected int getBaseLength() {
 		return BASE_PACKET_LENGTH;
 	}
 
+	/**
+	 * Gets the content length.
+	 *
+	 * @return the content length
+	 */
 	// getContentLength would return _Length - Base_packet_length
 	protected int getContentLength() {
 		return this.length - BASE_PACKET_LENGTH;

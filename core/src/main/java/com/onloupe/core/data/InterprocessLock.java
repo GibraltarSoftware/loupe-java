@@ -9,6 +9,7 @@ import java.util.Observable;
 
 import com.onloupe.core.util.TimeConversion;
 
+// TODO: Auto-generated Javadoc
 /**
  * Represents an exclusive lock on a repository within a process and between
  * processes.
@@ -23,20 +24,50 @@ public final class InterprocessLock extends Observable implements Closeable {
 	 */
 	public static final String LOCK_FILE_EXTENSION = "lock";
 
+	/** The index path. */
 	private String indexPath;
+	
+	/** The lock name. */
 	private String lockName;
+	
+	/** The lock full file name path. */
 	private String lockFullFileNamePath;
+	
+	/** The wait for lock. */
 	private boolean waitForLock;
+	
+	/** The lock. */
 	private final Object lock = new Object(); // For locking inter-thread signals to this instance.
 
+	/** The owning thread. */
 	private Thread owningThread;
+	
+	/** The owning object. */
 	private Object owningObject;
+	
+	/** The our lock proxy. */
 	private InterprocessLockProxy ourLockProxy;
+	
+	/** The actual lock. */
 	private InterprocessLock actualLock;
+	
+	/** The wait timeout. */
 	private OffsetDateTime waitTimeout; // Might be locked by MyLock?
+	
+	/** The turn. */
 	private boolean turn; // LOCKED by MyLock
+	
+	/** The closed. */
 	private boolean closed; // LOCKED by MyLock
 
+	/**
+	 * Instantiates a new interprocess lock.
+	 *
+	 * @param requester the requester
+	 * @param indexPath the index path
+	 * @param lockName the lock name
+	 * @param timeoutSeconds the timeout seconds
+	 */
 	public InterprocessLock(Object requester, String indexPath, String lockName, int timeoutSeconds) {
 		this.owningObject = requester;
 		this.owningThread = Thread.currentThread();
@@ -53,7 +84,9 @@ public final class InterprocessLock extends Observable implements Closeable {
 	 * Performs application-defined tasks associated with freeing, releasing, or
 	 * resetting unmanaged resources.
 	 * 
-	 * <filterpriority>2</filterpriority>
+	 * 
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public void close() throws IOException {
@@ -85,6 +118,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 
 	/**
 	 * The full (unique) name for the lock, combining the index path and lock name.
+	 *
+	 * @return the full name
 	 */
 	public String getFullName() {
 		return this.lockFullFileNamePath;
@@ -92,6 +127,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 
 	/**
 	 * The name of the repository this lock controls access to.
+	 *
+	 * @return the index path
 	 */
 	public String getIndexPath() {
 		return this.indexPath;
@@ -99,6 +136,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 
 	/**
 	 * The name of the lock within the repository.
+	 *
+	 * @return the lock name
 	 */
 	public String getLockName() {
 		return this.lockName;
@@ -106,6 +145,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 
 	/**
 	 * The object that is currently holding the lock.
+	 *
+	 * @return the owner
 	 */
 	public Object getOwner() {
 		return this.owningObject;
@@ -114,6 +155,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 	/**
 	 * The thread that created and waits on this request and owns the lock when this
 	 * request is granted.
+	 *
+	 * @return the owning thread
 	 */
 	public Thread getOwningThread() {
 		return this.owningThread;
@@ -121,6 +164,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 
 	/**
 	 * The ManagedThreadId of the thread that owns this lock instance.
+	 *
+	 * @return the owning thread id
 	 */
 	public long getOwningThreadId() {
 		return this.owningThread.getId();
@@ -129,6 +174,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 	/**
 	 * Whether this lock request is willing to wait (finite) for the lock or return
 	 * immediately if not available.
+	 *
+	 * @return the wait for lock
 	 */
 	public boolean getWaitForLock() {
 		return this.waitForLock;
@@ -138,6 +185,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 	 * The clock time at which this lock request wants to stop waiting for the lock
 	 * and give up. (MaxValue once the lock is granted, MinValue if the lock was
 	 * denied.)
+	 *
+	 * @return the wait timeout
 	 */
 	public OffsetDateTime getWaitTimeout() {
 		return this.waitTimeout;
@@ -147,6 +196,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 	/**
 	 * The actual holder of the lock if we are a secondary lock on the same thread,
 	 * or ourselves if we hold the file lock.
+	 *
+	 * @return the actual lock
 	 */
 	public InterprocessLock getActualLock() {
 		return this.actualLock;
@@ -155,6 +206,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 	/**
 	 * Reports if this lock object holds a secondary lock rather than the actual
 	 * lock (or no lock).
+	 *
+	 * @return true, if is secondary lock
 	 */
 	public boolean isSecondaryLock() {
 		return this.actualLock != this;
@@ -163,6 +216,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 	/**
 	 * Reports if this request instance has expired and should be skipped over
 	 * because no thread is still waiting on it.
+	 *
+	 * @return true, if is expired
 	 */
 	public boolean isExpired() {
 		synchronized (this.lock) {
@@ -173,6 +228,8 @@ public final class InterprocessLock extends Observable implements Closeable {
 	/**
 	 * Whether this lock instance has been disposed (and thus does not hold any
 	 * locks).
+	 *
+	 * @return true, if is disposed
 	 */
 	public boolean isDisposed() {
 		return this.closed;
@@ -181,11 +238,18 @@ public final class InterprocessLock extends Observable implements Closeable {
 	/**
 	 * Gets or sets the dispose-on-close policy for the lock proxy associated with
 	 * this lock instance.
+	 *
+	 * @return the dispose proxy on close
 	 */
 	public boolean getDisposeProxyOnClose() {
 		return (this.ourLockProxy == null) ? false : this.ourLockProxy.getDisposeOnClose();
 	}
 
+	/**
+	 * Sets the dispose proxy on close.
+	 *
+	 * @param value the new dispose proxy on close
+	 */
 	public void setDisposeProxyOnClose(boolean value) {
 		if (this.ourLockProxy != null) {
 			this.ourLockProxy.setDisposeOnClose(value);
@@ -194,15 +258,27 @@ public final class InterprocessLock extends Observable implements Closeable {
 
 	/**
 	 * The proxy who will actually hold the file lock on our behalf.
+	 *
+	 * @return the our lock proxy
 	 */
 	public InterprocessLockProxy getOurLockProxy() {
 		return this.ourLockProxy;
 	}
 
+	/**
+	 * Sets the our lock proxy.
+	 *
+	 * @param value the new our lock proxy
+	 */
 	public void setOurLockProxy(InterprocessLockProxy value) {
 		this.ourLockProxy = value;
 	}
 
+	/**
+	 * Grant the lock.
+	 *
+	 * @param actualLock the actual lock
+	 */
 	public void grantTheLock(InterprocessLock actualLock) {
 		if (actualLock != null && !actualLock.isDisposed()
 				&& actualLock.getOwningThread() == this.owningThread
@@ -217,6 +293,9 @@ public final class InterprocessLock extends Observable implements Closeable {
 		}
 	}
 
+	/**
+	 * Signal my turn.
+	 */
 	public void signalMyTurn() {
 		synchronized (this.lock) {
 			this.turn = true; // Flag it as being our turn.
@@ -225,6 +304,12 @@ public final class InterprocessLock extends Observable implements Closeable {
 		}
 	}
 
+	/**
+	 * Await turn or timeout.
+	 *
+	 * @return true, if successful
+	 * @throws InterruptedException the interrupted exception
+	 */
 	public boolean awaitTurnOrTimeout() throws InterruptedException {
 		synchronized (this.lock) {
 			if (this.waitForLock) // Never changes, so check it first.
@@ -256,6 +341,13 @@ public final class InterprocessLock extends Observable implements Closeable {
 		}
 	}
 
+	/**
+	 * Gets the lock file name.
+	 *
+	 * @param indexPath the index path
+	 * @param lockName the lock name
+	 * @return the lock file name
+	 */
 	public static String getLockFileName(String indexPath, String lockName) {
 		return Paths.get(indexPath).resolve(lockName + "." + LOCK_FILE_EXTENSION).toString();
 	}

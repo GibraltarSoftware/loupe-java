@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * This is the class returned by PacketReader when an unknown packet type is
  * read from the input stream. This class is designed to allow the underlying
@@ -12,16 +13,22 @@ import java.util.List;
  * 
  */
 public final class GenericPacket implements IPacket {
+	
+	/** The definition. */
 	private PacketDefinition definition;
+	
+	/** The field values. */
 	private Object[] fieldValues;
+	
+	/** The base packet. */
 	private GenericPacket basePacket;
 
 	/**
-	 * Read any packet based solely on its PacketDefinition
-	 * 
+	 * Read any packet based solely on its PacketDefinition.
+	 *
 	 * @param definition PacketDefinition describing the next packet in the stream
 	 * @param reader     Data stream to be read
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public GenericPacket(PacketDefinition definition, IFieldReader reader) throws IOException {
 		if (definition.getParentPacket() != null) {
@@ -71,28 +78,67 @@ public final class GenericPacket implements IPacket {
 		}
 	}
 
+	/**
+	 * Gets the packet definition.
+	 *
+	 * @return the packet definition
+	 */
 	public PacketDefinition getPacketDefinition() { return this.definition; }
 
+	/**
+	 * Gets the version.
+	 *
+	 * @return the version
+	 */
 	public int getVersion() {
 		return this.definition.getVersion();
 	}
 
+	/**
+	 * Gets the field count.
+	 *
+	 * @return the field count
+	 */
 	public int getFieldCount() {
 		return this.definition.getFields().size();
 	}
 
+	/**
+	 * Index of.
+	 *
+	 * @param fieldName the field name
+	 * @return the int
+	 */
 	public int indexOf(String fieldName) {
 		return this.definition.getFields().indexOf(fieldName);
 	}
 
+	/**
+	 * Gets the field name.
+	 *
+	 * @param index the index
+	 * @return the field name
+	 */
 	public String getFieldName(int index) {
 		return this.definition.getFields().get(index).getName();
 	}
 
+	/**
+	 * Gets the field type.
+	 *
+	 * @param index the index
+	 * @return the field type
+	 */
 	public FieldType getFieldType(int index) {
 		return this.definition.getFields().get(index).getFieldType();
 	}
 
+	/**
+	 * Gets the field value.
+	 *
+	 * @param index the index
+	 * @return the field value
+	 */
 	public Object getFieldValue(int index) {
 		return this.fieldValues[index];
 	}
@@ -112,7 +158,8 @@ public final class GenericPacket implements IPacket {
 	 * The key idea of a GenericPacket is that it allows an unknown packet type to
 	 * be read and rewritten such that it can subsequently be read properly when the
 	 * appropriate IPacketFactory is registered.
-	 * 
+	 *
+	 * @param definition the definition
 	 * @return The original PacketDefinition read from the input stream
 	 */
 	@Override
@@ -121,8 +168,8 @@ public final class GenericPacket implements IPacket {
 	}
 
 	/**
-	 * Write out all of the fields for the current packet
-	 * 
+	 * Write out all of the fields for the current packet.
+	 *
 	 * @param definition The definition that was used to persist the packet.
 	 * @param packet     The serialized packet to populate with data
 	 */

@@ -2,6 +2,7 @@ package com.onloupe.core.monitor;
 
 import com.onloupe.model.log.ILogMessage;
 
+// TODO: Auto-generated Javadoc
 /**
  * EventArgs for Message Filter events.
  */
@@ -18,6 +19,11 @@ public class MessageFilterEventArgs {
 	 */
 	public boolean cancel;
 
+	/**
+	 * Instantiates a new message filter event args.
+	 *
+	 * @param message the message
+	 */
 	public MessageFilterEventArgs(ILogMessage message) {
 		this.message = message;
 		this.cancel = false;

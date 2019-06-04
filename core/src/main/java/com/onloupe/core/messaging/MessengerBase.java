@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+// TODO: Auto-generated Javadoc
 /**
  * A baseline implementation of a messenger that provides common messenger
  * functionality.
@@ -20,41 +21,79 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * first.
  */
 public abstract class MessengerBase implements IMessenger, Closeable {
-	/**
-	 * The log category to use for log messages in this class
-	 */
+	
+	/** The log category to use for log messages in this class. */
 	public static final String LOG_CATEGORY = "Loupe.Messenger";
 
+	/** The supports write through. */
 	private boolean supportsWriteThrough;
+	
+	/** The message queue lock. */
 	private final Object messageQueueLock = new Object();
+	
+	/** The message dispatch thread lock. */
 	private final Object messageDispatchThreadLock = new Object();
+	
+	/** The message queue. */
 	private ConcurrentLinkedQueue<PacketEnvelope> messageQueue;
+	
+	/** The message overflow queue. */
 	private ConcurrentLinkedQueue<PacketEnvelope> messageOverflowQueue;
 
+	/** The caption. */
 	private String caption;
+	
+	/** The description. */
 	private String description;
+	
+	/** The name. */
 	private String name;
 
+	/** The publisher. */
 	private Publisher publisher;
+	
+	/** The configuration. */
 	private IMessengerConfiguration configuration;
+	
+	/** The message dispatch thread. */
 	private Thread messageDispatchThread; // LOCKED BY THREADLOCK
+	
+	/** The message dispatch thread failed. */
 	volatile private boolean messageDispatchThreadFailed; // LOCKED BY THREADLOCK
+	
+	/** The message queue max length. */
 	private int messageQueueMaxLength = 2000; // LOCKED BY QUEUELOCK
+	
+	/** The force write through. */
 	private boolean forceWriteThrough;
+	
+	/** The initialized. */
 	volatile private boolean initialized; // designed to enable us to do our initialization in the background. LOCKED
+											
+											/** The exiting. */
 											// BY THREADLOCK
 	volatile private boolean exiting; // set true once we have an exit-mode or close-messenger command pending LOCKED
+										
+										/** The exited. */
 										// BY QUEUELOCK
 	private boolean exited; // set true once we have processed the exit-mode command LOCKED BY QUEUELOCK
+	
+	/** The closed. */
 	private boolean closed; // set true once we have been decommissioned (close-messenger) LOCKED BY
+								
+								/** The in overflow mode. */
 								// QUEUELOCK
 	private boolean inOverflowMode; // a flag to indicate whether we're in overflow mode or not. LOCKED BY QUEUELOCK
+	
+	/** The maintenance mode. */
 	private boolean maintenanceMode; // a flag indicating when we're in maintenance mode. LOCKED BY QUEUELOCK
+	
+	/** The next flush due. */
 	private LocalDateTime nextFlushDue = LocalDateTime.MIN;
 
 	/**
-	 * Create a new messenger
-	 * 
+	 * Create a new messenger.
+	 *
 	 * @param name                 A display name for this messenger to
 	 *                             differentiate it from other messengers
 	 */
@@ -64,7 +103,7 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	}
 
 	/**
-	 * Create a new messenger
+	 * Create a new messenger.
 	 *
 	 * @param name                 A display name for this messenger to
 	 *                             differentiate it from other messengers
@@ -81,6 +120,9 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 		this.messageOverflowQueue = new ConcurrentLinkedQueue<>(); // a more or less arbitrary initial queue size.
 	}
 
+	/**
+	 * Creates the message dispatch thread.
+	 */
 	private void createMessageDispatchThread() {
 		synchronized (this.messageDispatchThreadLock) {
 			// clear the dispatch thread failed flag so no one else tries to create our
@@ -104,9 +146,6 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 
 	/**
 	 * The main method of the message dispatch thread.
-	 * 
-	 * @throws NoSuchMethodException
-	 * @throws IOException
 	 */
 	private void messageDispatchMain() {
 		try {
@@ -207,6 +246,9 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 		}
 	}
 
+	/**
+	 * On thread abort.
+	 */
 	private void onThreadAbort() {
 		synchronized (this.messageQueueLock) {
 			if (!this.exiting) // If we aren't exiting yet then we want to allow a new thread to pick up and
@@ -232,6 +274,9 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 		}
 	}
 
+	/**
+	 * Transfer overflow.
+	 */
 	private void transferOverflow() {
 		// we still have an item in the overflow queue and we have room for it, so lets
 		// add it.
@@ -248,12 +293,11 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	/**
 	 * Send the packet via our messenger and add it to our packet cache, if
 	 * necessary.
-	 * 
-	 * @param packetEnvelope
+	 *
+	 * @param packetEnvelope the packet envelope
 	 * @return maintenanceRequested Specifies whether maintenance mode has been
 	 *                             requested after this packet and the type (source)
 	 *                             of that request.
-	 * @throws Exception
 	 */
 	private MaintenanceModeRequest dispatchPacket(PacketEnvelope packetEnvelope) {
 		synchronized (packetEnvelope) {
@@ -297,6 +341,12 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 		}
 	}
 
+	/**
+	 * Enter maintenance mode.
+	 *
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void enterMaintenanceMode() throws NoSuchMethodException, IOException {
 		// set our flag so we know we're in maintenance. This affects the queuing, so we
 		// need a queuelock
@@ -326,14 +376,13 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	/**
 	 * Wraps calling the OnCommand() method that derived classes use to provide
 	 * common exception handling.
-	 * 
+	 *
 	 * @param command              The MessagingCommand enum value of this command.
 	 * @param state                Optional. Command arguments
 	 * @param writeThrough         Whether write-through (synchronous) behavior was
 	 *                             requested.
-	 * @param  maintenanceRequested Specifies whether the handler requested
-	 *                             maintenance mode and the type (source) of that
-	 *                             request.
+	 * @param maintenanceRequested the maintenance requested
+	 * @return the maintenance mode request
 	 */
 	private MaintenanceModeRequest actionOnCommand(MessagingCommand command, Object state, boolean writeThrough, MaintenanceModeRequest maintenanceRequested) {
 		try {
@@ -370,6 +419,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	/**
 	 * Wraps calling the OnConfigurationUpdate() method that derived classes use to
 	 * provide common exception handling.
+	 *
+	 * @param configuration the configuration
 	 */
 	private void actionOnConfigurationUpdate(IMessengerConfiguration configuration) {
 		try {
@@ -381,8 +432,6 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	/**
 	 * Wraps calling the OnFlush() method that derived classes use to provide common
 	 * exception handling.
-	 * 
-	 * @throws IOException
 	 */
 	private void actionOnFlush() {
 		// since we're starting the flush procedure, we'll assume that this is going to
@@ -400,9 +449,9 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	/**
 	 * Wraps calling the OnInitialize() method that derived classes use to provide
 	 * common exception handling.
-	 * 
-	 * @throws Exception
-	 * @throws IOException
+	 *
+	 * @param configuration the configuration
+	 * @throws Exception the exception
 	 */
 	private void actionOnInitialize(IMessengerConfiguration configuration) throws Exception {
 		try {
@@ -462,10 +511,11 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	/**
 	 * Wraps calling the OnWrite() method that derived classes use to provide common
 	 * exception handling.
-	 * 
-	 * @throws Exception
-	 * @throws NoSuchMethodException
-	 * @throws IOException
+	 *
+	 * @param packet the packet
+	 * @param writeThrough the write through
+	 * @param modeRequest the mode request
+	 * @return the maintenance mode request
 	 */
 	private MaintenanceModeRequest actionOnWrite(IMessengerPacket packet, boolean writeThrough, MaintenanceModeRequest modeRequest) {
 		try {
@@ -504,12 +554,24 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 		 */
 		EXPLICIT;
 
+		/** The Constant SIZE. */
 		public static final int SIZE = java.lang.Integer.SIZE;
 
+		/**
+		 * Gets the value.
+		 *
+		 * @return the value
+		 */
 		public int getValue() {
 			return this.ordinal();
 		}
 
+		/**
+		 * For value.
+		 *
+		 * @param value the value
+		 * @return the maintenance mode request
+		 */
 		public static MaintenanceModeRequest forValue(int value) {
 			return values()[value];
 		}
@@ -526,10 +588,20 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 */
 	private boolean autoFlush;
 
+	/**
+	 * Gets the auto flush.
+	 *
+	 * @return the auto flush
+	 */
 	protected final boolean getAutoFlush() {
 		return this.autoFlush;
 	}
 
+	/**
+	 * Sets the auto flush.
+	 *
+	 * @param value the new auto flush
+	 */
 	protected final void setAutoFlush(boolean value) {
 		this.autoFlush = value;
 	}
@@ -541,10 +613,20 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 */
 	private int autoFlushInterval;
 
+	/**
+	 * Gets the auto flush interval.
+	 *
+	 * @return the auto flush interval
+	 */
 	protected final int getAutoFlushInterval() {
 		return this.autoFlushInterval;
 	}
 
+	/**
+	 * Sets the auto flush interval.
+	 *
+	 * @param value the new auto flush interval
+	 */
 	protected final void setAutoFlushInterval(int value) {
 		this.autoFlushInterval = value;
 	}
@@ -553,6 +635,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * The publisher that created this messenger.
 	 * 
 	 * This property does not require any locks.
+	 *
+	 * @return the publisher
 	 */
 	protected final Publisher getPublisher() {
 		return this.publisher;
@@ -565,6 +649,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * This property is not thread-safe; to guarantee thread safety callers should
 	 * have the Queue Lock. This property indicates a normal application exit
 	 * condition.
+	 *
+	 * @return the exiting
 	 */
 	protected final boolean getExiting() {
 		return this.exiting;
@@ -575,6 +661,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * 
 	 * This property is not thread-safe; to guarantee thread safety callers should
 	 * have the Queue Lock.
+	 *
+	 * @return the exited
 	 */
 	protected final boolean getExited() {
 		return this.exited;
@@ -585,6 +673,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * 
 	 * This property is not thread-safe; to guarantee thread safety callers should
 	 * have the Queue Lock.
+	 *
+	 * @return the closed
 	 */
 	protected final boolean getClosed() {
 		return this.closed;
@@ -595,6 +685,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * 
 	 * This property is not thread-safe; to guarantee thread safety callers should
 	 * have the Thread Lock.
+	 *
+	 * @return the initialized
 	 */
 	protected final boolean getInitialized() {
 		return this.initialized;
@@ -605,6 +697,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * 
 	 * This property is not thread-safe; to guarantee thread safety callers should
 	 * have the Thread Lock.
+	 *
+	 * @return the force write through
 	 */
 	protected final boolean getForceWriteThrough() {
 		return this.forceWriteThrough;
@@ -618,6 +712,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * object lock, you must use the Monitor.Pulse command to notify other threads
 	 * that you are done with the lock. Failure to do so may cause your messenger to
 	 * be unresponsive.
+	 *
+	 * @return the queue lock
 	 */
 	protected final Object getQueueLock() {
 		return this.messageQueueLock;
@@ -631,6 +727,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * object lock, you must use the Monitor.Pulse command to notify other threads
 	 * that you are done with the lock. Failure to do so may cause your messenger to
 	 * be unresponsive.
+	 *
+	 * @return the thread lock
 	 */
 	protected final Object getThreadLock() {
 		return this.messageDispatchThreadLock;
@@ -645,19 +743,28 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 */
 	private OverflowMode overflowMode;
 
+	/**
+	 * Gets the overflow mode.
+	 *
+	 * @return the overflow mode
+	 */
 	protected final OverflowMode getOverflowMode() {
 		return this.overflowMode;
 	}
 
+	/**
+	 * Sets the overflow mode.
+	 *
+	 * @param value the new overflow mode
+	 */
 	protected final void setOverflowMode(OverflowMode value) {
 		this.overflowMode = value;
 	}
 
 	/**
 	 * Perform first-time initialization. Requires the caller have the Thread Lock.
-	 * 
-	 * @throws Exception
-	 * @throws IOException
+	 *
+	 * @throws Exception the exception
 	 */
 	protected final void ensureInitialized() throws Exception {
 		if (!this.initialized) {
@@ -796,9 +903,9 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * Even if the envelope is not set to write through the method will not return
 	 * until the packet has been committed. This method performs its own
 	 * synchronization and should not be done within a lock.
-	 * 
+	 *
 	 * @param packetEnvelope The packet that must be committed
-	 * @throws InterruptedException 
+	 * @throws InterruptedException the interrupted exception
 	 */
 	protected static void waitOnPacket(PacketEnvelope packetEnvelope) throws InterruptedException {
 		// we are monitoring for write through by using object locking, so get the
@@ -821,9 +928,9 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * 
 	 * This method performs its own synchronization and should not be done within a
 	 * lock.
-	 * 
+	 *
 	 * @param packetEnvelope The packet that must be submitted
-	 * @throws InterruptedException 
+	 * @throws InterruptedException the interrupted exception
 	 */
 	protected static void waitOnPending(PacketEnvelope packetEnvelope) throws InterruptedException {
 		// we are monitoring for pending by using object locking, so get the lock...
@@ -848,13 +955,15 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * Code in this method is protected by a Queue Lock. This method is called with
 	 * the Message Dispatch thread exclusively. Some commands (Shutdown, Flush) are
 	 * handled by MessengerBase and redirected into specific method calls.
-	 * 
+	 *
 	 * @param command              The MessagingCommand enum value of this command.
 	 * @param state                Optional. Command arguments
 	 * @param writeThrough         Whether write-through (synchronous) behavior was
 	 *                             requested.
 	 * @param maintenanceRequested Specifies whether maintenance mode has been
 	 *                             requested and the type (source) of that request.
+	 * @return the maintenance mode request
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected MaintenanceModeRequest onCommand(MessagingCommand command, Object state, boolean writeThrough, MaintenanceModeRequest maintenanceRequested) throws IOException {
 		// we do nothing by default
@@ -877,8 +986,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * 
 	 * Code in this method is protected by a Queue Lock. This method is called with
 	 * the Message Dispatch thread exclusively.
-	 * 
-	 * @throws IOException
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected void onClose() throws IOException {
 		// we do nothing by default
@@ -890,6 +999,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * 
 	 * Code in this method is protected by a Thread Lock. This method is called with
 	 * the Message Dispatch thread exclusively.
+	 *
+	 * @param configuration the configuration
 	 */
 	protected void onConfigurationUpdate(IMessengerConfiguration configuration) {
 		// we do nothing by default
@@ -901,8 +1012,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * 
 	 * Code in this method is protected by a Queue Lock. This method is called with
 	 * the Message Dispatch thread exclusively.
-	 * 
-	 * @throws IOException
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected void onFlush() throws IOException {
 		// we do nothing by default
@@ -915,8 +1026,9 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * This method will be called exactly once before any call to OnFlush or OnWrite
 	 * is made. Code in this method is protected by a Thread Lock. This method is
 	 * called with the Message Dispatch thread exclusively.
-	 * 
-	 * @throws IOException
+	 *
+	 * @param configuration the configuration
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected void onInitialize(IMessengerConfiguration configuration) throws IOException {
 		// we do nothing by default
@@ -933,11 +1045,9 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * This method is not called with any active locks to allow messages to continue
 	 * to queue during maintenance. This method is called with the Message Dispatch
 	 * thread exclusively.
-	 * 
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws IOException
-	 * @throws Exception
+	 *
+	 * @throws Exception the exception
+	 * @throws SecurityException the security exception
 	 */
 	protected void onMaintenance() throws Exception {
 		// we do nothing by default
@@ -977,11 +1087,15 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * 
 	 * Code in this method is protected by a Queue Lock This method is called with
 	 * the Message Dispatch thread exclusively.
-	 * 
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws IOException
-	 * @throws Exception
+	 *
+	 * @param packet the packet
+	 * @param writeThrough the write through
+	 * @param maintenanceModeRequested the maintenance mode requested
+	 * @return the maintenance mode request
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	protected abstract MaintenanceModeRequest onWrite(IMessengerPacket packet, boolean writeThrough, MaintenanceModeRequest maintenanceModeRequested)
 			throws NoSuchMethodException, SecurityException, IOException, Exception;
@@ -991,26 +1105,38 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * 
 	 * End-user display caption for this messenger. Captions are typically not
 	 * unique to a given instance of a messenger.
+	 *
+	 * @return the caption
 	 */
 	@Override
 	public final String getCaption() {
 		return this.caption;
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	protected final void setCaption(String value) {
 		this.caption = value;
 	}
 
 	/**
-	 * A display description for this messenger
-	 * 
-	 * 
+	 * A display description for this messenger.
+	 *
+	 * @return the description
 	 */
 	@Override
 	public final String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * Sets the description.
+	 *
+	 * @param value the new description
+	 */
 	protected final void setDescription(String value) {
 		this.description = value;
 	}
@@ -1041,7 +1167,9 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * Performs application-defined tasks associated with freeing, releasing, or
 	 * resetting unmanaged resources.
 	 * 
-	 * <filterpriority>2</filterpriority>
+	 * 
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void close() throws IOException {
@@ -1071,11 +1199,10 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the other parameter;
 	 *         otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	public final boolean equals(IMessenger other) {
 		// Careful - can be null
@@ -1108,6 +1235,8 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * A name for this messenger
 	 * 
 	 * The name is unique and specified by the publisher during initialization.
+	 *
+	 * @return the name
 	 */
 	@Override
 	public final String getName() {
@@ -1119,12 +1248,12 @@ public abstract class MessengerBase implements IMessenger, Closeable {
 	 * 
 	 * The packet may depend on other packets. If the messenger needs those packets
 	 * they are available from the publisher's packet cache.
-	 * 
+	 *
 	 * @param packet       The packet to write through the messenger.
 	 * @param writeThrough True if the information contained in packet should be
 	 *                     committed synchronously, false if the messenger should
 	 *                     use write caching (if available).
-	 * @throws InterruptedException 
+	 * @throws InterruptedException the interrupted exception
 	 */
 	@Override
 	public final void write(IMessengerPacket packet, boolean writeThrough) throws InterruptedException {

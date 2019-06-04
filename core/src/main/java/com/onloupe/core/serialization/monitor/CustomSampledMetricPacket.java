@@ -3,8 +3,9 @@ package com.onloupe.core.serialization.monitor;
 import com.onloupe.core.metrics.Metric;
 import com.onloupe.core.metrics.MetricDefinition;
 
+// TODO: Auto-generated Javadoc
 /**
- * The serializeable representation of a custom sampled metric
+ * The serializeable representation of a custom sampled metric.
  */
 public class CustomSampledMetricPacket extends SampledMetricPacket
 		implements IPacketObjectFactory<Metric, MetricDefinition> {
@@ -21,6 +22,12 @@ public class CustomSampledMetricPacket extends SampledMetricPacket
 		super(metricDefinitionPacket, instanceName);
 	}
 
+	/**
+	 * Compare to.
+	 *
+	 * @param other the other
+	 * @return the int
+	 */
 	public final int compareTo(CustomSampledMetricPacket other) {
 		// we just gateway to our base object.
 		return super.compareTo(other);
@@ -29,11 +36,10 @@ public class CustomSampledMetricPacket extends SampledMetricPacket
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	@Override
 	public boolean equals(Object other) {

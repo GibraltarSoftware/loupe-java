@@ -3,6 +3,7 @@ package com.onloupe.core.server;
 import com.onloupe.core.server.data.DataConverter;
 import com.onloupe.core.server.data.HubConfigurationXml;
 
+// TODO: Auto-generated Javadoc
 /**
  * Get the current hub configuration information for the hub
  * 
@@ -10,8 +11,9 @@ import com.onloupe.core.server.data.HubConfigurationXml;
  * and second because it's used as a Ping by the agent.
  */
 public class HubConfigurationGetRequest extends WebChannelRequestBase {
+	
 	/**
-	 * Create a new sessions version request
+	 * Create a new sessions version request.
 	 */
 	public HubConfigurationGetRequest() {
 		super(false, false);
@@ -22,19 +24,29 @@ public class HubConfigurationGetRequest extends WebChannelRequestBase {
 	 */
 	private HubConfigurationXml configuration;
 
+	/**
+	 * Gets the configuration.
+	 *
+	 * @return the configuration
+	 */
 	public final HubConfigurationXml getConfiguration() {
 		return this.configuration;
 	}
 
+	/**
+	 * Sets the configuration.
+	 *
+	 * @param value the new configuration
+	 */
 	private void setConfiguration(HubConfigurationXml value) {
 		this.configuration = value;
 	}
 
 	/**
 	 * Implemented by inheritors to perform the request on the provided web client.
-	 * 
-	 * @param connection
-	 * @throws Exception
+	 *
+	 * @param connection the connection
+	 * @throws Exception the exception
 	 */
 	@Override
 	protected void onProcessRequest(IWebChannelConnection connection) throws Exception {

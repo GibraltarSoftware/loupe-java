@@ -6,22 +6,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+// TODO: Auto-generated Javadoc
 /**
  * A collection of performance counter metric packets, keyed by their unique ID.
  * This is the persistable form of a performance counter metric.
  */
 public class MetricPacketDictionary {
+	
+	/** The dictionary by name. */
 	private final Map<String, MetricPacket> dictionaryByName = new HashMap<String, MetricPacket>();
+	
+	/** The dictionary. */
 	private final Map<UUID, MetricPacket> dictionary = new HashMap<UUID, MetricPacket>();
+	
+	/** The list. */
 	private final List<MetricPacket> list = new ArrayList<MetricPacket>();
+	
+	/** The lock. */
 	private final Object lock = new Object();
 
 	/**
 	 * Add an existing metric packet object to our collection. It must be for the
 	 * same analysis as this collection.
-	 * 
+	 *
 	 * @param newMetricPacket The new metric object to add.
-	 * @return
+	 * @return true, if successful
 	 */
 	public final boolean add(MetricPacket newMetricPacket) {
 		// we really don't want to support this method, but we have to for
@@ -89,12 +98,8 @@ public class MetricPacketDictionary {
 	/**
 	 * Retrieve an item from the collection by its key if present. If not present,
 	 * the default value of the object is returned.
-	 * 
+	 *
 	 * @param key   The key of the value to get.
-	 * @param value When this method returns, contains the value associated with the
-	 *              specified key, if the key is found; otherwise, the default value
-	 *              for the type of the value parameter. This parameter is passed
-	 *              uninitialized.
 	 * @return true if the collection contains an element with the specified key;
 	 *         otherwise false.
 	 */
@@ -126,6 +131,12 @@ public class MetricPacketDictionary {
 		}
 	}
 
+	/**
+	 * Index of.
+	 *
+	 * @param objectValue the object value
+	 * @return the int
+	 */
 	public final int indexOf(Object objectValue) {
 		MetricPacket item = (MetricPacket) objectValue;
 		synchronized (this.lock) // Apparently Lists are not internally threadsafe.
@@ -134,11 +145,23 @@ public class MetricPacketDictionary {
 		}
 	}
 
+	/**
+	 * Adds the.
+	 *
+	 * @param index the index
+	 * @param item the item
+	 */
 	public final void add(int index, MetricPacket item) {
 		// we don't support setting an object by index; we are sorted.
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Removes the.
+	 *
+	 * @param index the index
+	 * @return the metric packet
+	 */
 	public final MetricPacket remove(int index) {
 		// find the item at the requested location
 		MetricPacket victim;
@@ -156,9 +179,9 @@ public class MetricPacketDictionary {
 	/**
 	 * Retrieve performance counter metric packet object by numeric index in
 	 * collection.
-	 * 
-	 * @param index
-	 * @return
+	 *
+	 * @param index the index
+	 * @return the metric packet
 	 */
 	public final MetricPacket get(int index) {
 		synchronized (this.lock) // Apparently Lists are not internally threadsafe.
@@ -167,16 +190,23 @@ public class MetricPacketDictionary {
 		}
 	}
 
+	/**
+	 * Sets the.
+	 *
+	 * @param index the index
+	 * @param value the value
+	 * @return the metric packet
+	 */
 	public final MetricPacket set(int index, MetricPacket value) {
 		// we don't want to support setting an object by index, we are sorted.
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * Retrieve metric packet object by its name
-	 * 
-	 * @param key
-	 * @return
+	 * Retrieve metric packet object by its name.
+	 *
+	 * @param key the key
+	 * @return the metric packet
 	 */
 	public final MetricPacket get(String key) {
 		synchronized (this.lock) // Apparently Dictionaries are not internally threadsafe.
@@ -186,10 +216,10 @@ public class MetricPacketDictionary {
 	}
 
 	/**
-	 * Retrieve performance counter metric packet object by its Id
-	 * 
-	 * @param ID
-	 * @return
+	 * Retrieve performance counter metric packet object by its Id.
+	 *
+	 * @param id the id
+	 * @return the metric packet
 	 */
 	public final MetricPacket get(UUID id) {
 		synchronized (this.lock) // Apparently Dictionaries are not internally threadsafe.
@@ -198,6 +228,9 @@ public class MetricPacketDictionary {
 		}
 	}
 
+	/**
+	 * Clear.
+	 */
 	public final void clear() {
 		// Only do this if we HAVE something, since events are fired.
 		int count;
@@ -215,6 +248,12 @@ public class MetricPacketDictionary {
 
 	}
 
+	/**
+	 * Contains.
+	 *
+	 * @param objectValue the object value
+	 * @return true, if successful
+	 */
 	public final boolean contains(Object objectValue) {
 		MetricPacket item = (MetricPacket) objectValue;
 		// here we are relying on the fact that the comment object implements
@@ -225,6 +264,11 @@ public class MetricPacketDictionary {
 		}
 	}
 
+	/**
+	 * Size.
+	 *
+	 * @return the int
+	 */
 	public final int size() {
 		synchronized (this.lock) // Apparently Lists are not internally threadsafe.
 		{
@@ -232,6 +276,11 @@ public class MetricPacketDictionary {
 		}
 	}
 
+	/**
+	 * Checks if is read only.
+	 *
+	 * @return true, if is read only
+	 */
 	public final boolean isReadOnly() {
 		return false;
 	}
@@ -239,8 +288,9 @@ public class MetricPacketDictionary {
 	/**
 	 * Remove the specified victim comment. If the comment isn't in the collection,
 	 * no exception is thrown.
-	 * 
-	 * @param victim The object to remove.
+	 *
+	 * @param objectValue the object value
+	 * @return true, if successful
 	 */
 	public final boolean remove(Object objectValue) {
 		MetricPacket victim = (MetricPacket) objectValue;

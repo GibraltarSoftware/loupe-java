@@ -8,18 +8,47 @@ import com.onloupe.model.IThreadInfo;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ThreadInfoPacket.
+ */
 public class ThreadInfoPacket extends GibraltarCachedPacket implements IPacket, IThreadInfo {
+	
+	/** The thread index. */
 	private long threadIndex;
+	
+	/** The thread id. */
 	private long threadId;
+	
+	/** The thread name. */
 	private String threadName;
+	
+	/** The domain id. */
 	private int domainId;
+	
+	/** The domain name. */
 	private String domainName;
+	
+	/** The thread pool thread. */
 	private boolean threadPoolThread;
 
+	/**
+	 * Instantiates a new thread info packet.
+	 */
 	public ThreadInfoPacket() {
 		super(false);
 	}
 
+	/**
+	 * Instantiates a new thread info packet.
+	 *
+	 * @param threadIndex the thread index
+	 * @param threadId the thread id
+	 * @param threadName the thread name
+	 * @param domainId the domain id
+	 * @param domainName the domain name
+	 * @param threadPoolThread the thread pool thread
+	 */
 	public ThreadInfoPacket(long threadIndex, long threadId, String threadName,
 			int domainId, String domainName, boolean threadPoolThread) {
 		super(false);
@@ -33,55 +62,105 @@ public class ThreadInfoPacket extends GibraltarCachedPacket implements IPacket, 
 
 
 
+	/**
+	 * Gets the thread index.
+	 *
+	 * @return the thread index
+	 */
 	public final long getThreadIndex() {
 		return this.threadIndex;
 	}
 
+	/**
+	 * Sets the thread index.
+	 *
+	 * @param value the new thread index
+	 */
 	public final void setThreadIndex(long value) {
 		this.threadIndex = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.IThreadInfo#getThreadId()
+	 */
 	@Override
 	public final long getThreadId() {
 		return this.threadId;
 	}
 
+	/**
+	 * Sets the thread id.
+	 *
+	 * @param value the new thread id
+	 */
 	public final void setThreadId(long value) {
 		this.threadId = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.IThreadInfo#getThreadName()
+	 */
 	@Override
 	public final String getThreadName() {
 		return this.threadName;
 	}
 
+	/**
+	 * Sets the thread name.
+	 *
+	 * @param value the new thread name
+	 */
 	public final void setThreadName(String value) {
 		this.threadName = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.IThreadInfo#getDomainId()
+	 */
 	@Override
 	public final int getDomainId() {
 		return this.domainId;
 	}
 
+	/**
+	 * Sets the domain id.
+	 *
+	 * @param value the new domain id
+	 */
 	public final void setDomainId(int value) {
 		this.domainId = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.IThreadInfo#getDomainName()
+	 */
 	@Override
 	public final String getDomainName() {
 		return this.domainName;
 	}
 
+	/**
+	 * Sets the domain name.
+	 *
+	 * @param value the new domain name
+	 */
 	public final void setDomainName(String value) {
 		this.domainName = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.IThreadInfo#isThreadPoolThread()
+	 */
 	@Override
 	public final boolean isThreadPoolThread() {
 		return this.threadPoolThread;
 	}
 
+	/**
+	 * Sets the checks if is thread pool thread.
+	 *
+	 * @param value the new checks if is thread pool thread
+	 */
 	public final void setIsThreadPoolThread(boolean value) {
 		this.threadPoolThread = value;
 	}
@@ -89,11 +168,10 @@ public class ThreadInfoPacket extends GibraltarCachedPacket implements IPacket, 
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -104,11 +182,10 @@ public class ThreadInfoPacket extends GibraltarCachedPacket implements IPacket, 
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	public final boolean equals(ThreadInfoPacket other) {
 		// Careful - can be null
@@ -153,6 +230,7 @@ public class ThreadInfoPacket extends GibraltarCachedPacket implements IPacket, 
 		return myHash;
 	}
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -165,6 +243,9 @@ public class ThreadInfoPacket extends GibraltarCachedPacket implements IPacket, 
 		return super.getRequiredPackets();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -180,6 +261,9 @@ public class ThreadInfoPacket extends GibraltarCachedPacket implements IPacket, 
 		definition.getFields().add("IsThreadPoolThread", FieldType.BOOL);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -193,11 +277,17 @@ public class ThreadInfoPacket extends GibraltarCachedPacket implements IPacket, 
 		packet.setField("IsThreadPoolThread", this.threadPoolThread);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.IThreadInfo#isBackground()
+	 */
 	@Override
 	public boolean isBackground() {
 		//there is no equivalent for this in Java.

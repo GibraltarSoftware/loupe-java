@@ -1,7 +1,8 @@
 package com.onloupe.core.monitor;
 
+// TODO: Auto-generated Javadoc
 /**
- * The different possible actions that were performed on a collection
+ * The different possible actions that were performed on a collection.
  */
 public enum CollectionAction {
 	/**
@@ -29,11 +30,20 @@ public enum CollectionAction {
 	 */
 	CLEARED(4);
 
+	/** The Constant SIZE. */
 	public static final int SIZE = java.lang.Integer.SIZE;
 
+	/** The int value. */
 	private int intValue;
+	
+	/** The mappings. */
 	private static java.util.HashMap<Integer, CollectionAction> mappings;
 
+	/**
+	 * Gets the mappings.
+	 *
+	 * @return the mappings
+	 */
 	private static java.util.HashMap<Integer, CollectionAction> getMappings() {
 		if (mappings == null) {
 			synchronized (CollectionAction.class) {
@@ -45,15 +55,31 @@ public enum CollectionAction {
 		return mappings;
 	}
 
+	/**
+	 * Instantiates a new collection action.
+	 *
+	 * @param value the value
+	 */
 	private CollectionAction(int value) {
 		this.intValue = value;
 		getMappings().put(value, this);
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return this.intValue;
 	}
 
+	/**
+	 * For value.
+	 *
+	 * @param value the value
+	 * @return the collection action
+	 */
 	public static CollectionAction forValue(int value) {
 		return getMappings().get(value);
 	}

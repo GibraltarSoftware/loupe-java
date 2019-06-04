@@ -14,28 +14,24 @@ import com.onloupe.core.util.SystemUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.exception.GibraltarException;
 
+// TODO: Auto-generated Javadoc
 /**
- * Determines the correct physical paths to use for various Gibraltar scenarios
+ * Determines the correct physical paths to use for various Gibraltar scenarios.
  */
 public final class PathManager {
-	/**
-	 * The subfolder of the selected path used for the repository
-	 */
+	
+	/** The subfolder of the selected path used for the repository. */
 	public static final String REPOSITORY_FOLDER = "Repository";
 
-	/**
-	 * The subfolder of the selected path used for local session log collection
-	 */
+	/** The subfolder of the selected path used for local session log collection. */
 	public static final String COLLECTION_FOLDER = "Local Logs";
 
-	/**
-	 * The subfolder of the selected path used for discovery information
-	 */
+	/** The subfolder of the selected path used for discovery information. */
 	public static final String DISCOVERY_FOLDER = "Discovery";
 
 	/**
-	 * Determine the best path of the provided type for the current user
-	 * 
+	 * Determine the best path of the provided type for the current user.
+	 *
 	 * @param pathType The path type to retrieve a path for
 	 * @return The best accessible path of the requested type. The common
 	 *         application data folder is used if usable then the local application
@@ -46,8 +42,8 @@ public final class PathManager {
 	}
 
 	/**
-	 * Determine the best path of the provided type for the current user
-	 * 
+	 * Determine the best path of the provided type for the current user.
+	 *
 	 * @param pathType      The path type to retrieve a path for
 	 * @param preferredPath The requested full path to use if available.
 	 * @return The best accessible path of the requested type. If the preferred path
@@ -94,7 +90,9 @@ public final class PathManager {
 	/**
 	 * Find the full path for the provided subfolder name within a special folder,
 	 * and make sure it's usable (return null if fails).
-	 * 
+	 *
+	 * @param basePath the base path
+	 * @param folderName the folder name
 	 * @return The full path to the requested folder if it is usable, null
 	 *         otherwise.
 	 */
@@ -107,7 +105,9 @@ public final class PathManager {
 	/**
 	 * Compute the full path for the provided subfolder name within a special
 	 * folder.
-	 * 
+	 *
+	 * @param basePath the base path
+	 * @param folderName the folder name
 	 * @return The full path to the requested folder, which may or may not exist.
 	 */
 	public static String computePath(Path basePath, String folderName) {
@@ -125,9 +125,9 @@ public final class PathManager {
 	}
 
 	/**
-	 * Determines if the provided full path is usable for the current user
-	 * 
-	 * @param path
+	 * Determines if the provided full path is usable for the current user.
+	 *
+	 * @param path the path
 	 * @return True if the path is usable, false otherwise The path is usable if the
 	 *         current user can access the path, create files and write to existing
 	 *         files.
@@ -176,6 +176,12 @@ public final class PathManager {
 		return pathIsWritable;
 	}
 
+	/**
+	 * Path type to folder name.
+	 *
+	 * @param pathType the path type
+	 * @return the string
+	 */
 	private static String pathTypeToFolderName(PathType pathType) {
 		String pathFolder;
 		switch (pathType) {
@@ -195,6 +201,11 @@ public final class PathManager {
 		return pathFolder;
 	}
 
+	/**
+	 * Gets the local application data path.
+	 *
+	 * @return the local application data path
+	 */
 	private static Path getLocalApplicationDataPath() {
 		if (SystemUtils.isWindows()) {
 			return SystemUtils.getWindowsLocalApplicationDataFolder();
@@ -207,6 +218,11 @@ public final class PathManager {
 		return SystemUtils.getJavaIoTmpDir();
 	}
 
+	/**
+	 * Gets the common application data path.
+	 *
+	 * @return the common application data path
+	 */
 	private static Path getCommonApplicationDataPath() {
 		if (SystemUtils.isWindows()) {
 			return SystemUtils.getWindowsCommonApplicationDataFolder();

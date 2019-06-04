@@ -16,35 +16,80 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LogMessagePacket.
+ */
 public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMessage {
+	
+	/** The id. */
 	private UUID id;
+	
+	/** The severity. */
 	private LogMessageSeverity severity;
+	
+	/** The log system. */
 	private String logSystem; // The major log system it comes from, eg. "Log4net", "Trace", "Gibraltar",
+								
+								/** The category name. */
 								// "ELF"
 	private String categoryName; // The subsystem category, eg. the LoggerName from Log4Net
+	
+	/** The user name. */
 	private String userName;
+	
+	/** The caption. */
 	private String caption;
+	
+	/** The description. */
 	private String description;
+	
+	/** The details. */
 	private String details;
+	
+	/** The exception chain. */
 	private IExceptionInfo[] exceptionChain;
+	
+	/** The method name. */
 	private String methodName;
+	
+	/** The class name. */
 	private String className;
+	
+	/** The file name. */
 	private String fileName;
+	
+	/** The line number. */
 	private int lineNumber;
+	
+	/** The thread index. */
 	private long threadIndex; // The UNIQUE index assigned by Gibraltar.Agent to identify the thread.
+	
+	/** The thread id. */
 	private long threadId; // The unique-at-any-one-time-but-not-for-the-whole-process-lifetime
+							
+							/** The suppress notification. */
 							// ManagedThreadId from .NET.
 	private boolean suppressNotification; // Read only, for now.
 
+	/** The message. */
 	// the following are generated fields and are not persisted
 	private String message; // a concatenated caption & description for GLV.
 
+	/**
+	 * Instantiates a new log message packet.
+	 */
 	public LogMessagePacket() {
 		// we aren't a cachable packet so we have our own GUID
 		setId(UUID.randomUUID());
 		this.suppressNotification = Publisher.queryThreadMustNotNotify();
 	}
 
+	/**
+	 * Sets the source info.
+	 *
+	 * @param sourceProvider the new source info
+	 */
 	public final void setSourceInfo(IMessageSourceProvider sourceProvider) {
 		if (sourceProvider != null) {
 			// Note: Should we map null strings to empty strings here?
@@ -55,47 +100,87 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getId()
+	 */
 	@Override
 	public final UUID getId() {
 		return this.id;
 	}
 
+	/**
+	 * Sets the id.
+	 *
+	 * @param value the new id
+	 */
 	private void setId(UUID value) {
 		this.id = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getSeverity()
+	 */
 	@Override
 	public final LogMessageSeverity getSeverity() {
 		return this.severity;
 	}
 
+	/**
+	 * Sets the severity.
+	 *
+	 * @param value the new severity
+	 */
 	public final void setSeverity(LogMessageSeverity value) {
 		this.severity = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getLogSystem()
+	 */
 	@Override
 	public final String getLogSystem() {
 		return this.logSystem;
 	}
 
+	/**
+	 * Sets the log system.
+	 *
+	 * @param value the new log system
+	 */
 	public final void setLogSystem(String value) {
 		this.logSystem = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getCategoryName()
+	 */
 	@Override
 	public final String getCategoryName() {
 		return this.categoryName;
 	}
 
+	/**
+	 * Sets the category name.
+	 *
+	 * @param value the new category name
+	 */
 	public final void setCategoryName(String value) {
 		this.categoryName = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getUserName()
+	 */
 	@Override
 	public final String getUserName() {
 		return this.userName;
 	}
 
+	/**
+	 * Sets the user name.
+	 *
+	 * @param value the new user name
+	 */
 	public final void setUserName(String value) {
 		this.userName = value;
 	}
@@ -105,63 +190,123 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 	 */
 	private ApplicationUserPacket userPacket;
 
+	/**
+	 * Gets the user packet.
+	 *
+	 * @return the user packet
+	 */
 	public final ApplicationUserPacket getUserPacket() {
 		return this.userPacket;
 	}
 
+	/**
+	 * Sets the user packet.
+	 *
+	 * @param value the new user packet
+	 */
 	public final void setUserPacket(ApplicationUserPacket value) {
 		this.userPacket = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getMethodName()
+	 */
 	@Override
 	public final String getMethodName() {
 		return this.methodName;
 	}
 
+	/**
+	 * Sets the method name.
+	 *
+	 * @param value the new method name
+	 */
 	public final void setMethodName(String value) {
 		this.methodName = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getClassName()
+	 */
 	@Override
 	public final String getClassName() {
 		return this.className;
 	}
 
+	/**
+	 * Sets the class name.
+	 *
+	 * @param value the new class name
+	 */
 	public final void setClassName(String value) {
 		this.className = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getFileName()
+	 */
 	@Override
 	public final String getFileName() {
 		return this.fileName;
 	}
 
+	/**
+	 * Sets the file name.
+	 *
+	 * @param value the new file name
+	 */
 	public final void setFileName(String value) {
 		this.fileName = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getLineNumber()
+	 */
 	@Override
 	public final int getLineNumber() {
 		return this.lineNumber;
 	}
 
+	/**
+	 * Sets the line number.
+	 *
+	 * @param value the new line number
+	 */
 	public final void setLineNumber(int value) {
 		this.lineNumber = value;
 	}
 
+	/**
+	 * Gets the thread index.
+	 *
+	 * @return the thread index
+	 */
 	public long getThreadIndex() {
 		return this.threadIndex;
 	}
 
+	/**
+	 * Sets the thread index.
+	 *
+	 * @param _ThreadIndex the new thread index
+	 */
 	public void setThreadIndex(long _ThreadIndex) {
 		this.threadIndex = _ThreadIndex;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getThreadId()
+	 */
 	@Override
 	public long getThreadId() {
 		return this.threadId;
 	}
 
+	/**
+	 * Sets the thread id.
+	 *
+	 * @param _ThreadId the new thread id
+	 */
 	public void setThreadId(long _ThreadId) {
 		this.threadId = _ThreadId;
 	}
@@ -172,28 +317,52 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 	 */
 	private ThreadInfoPacket threadInfoPacket;
 
+	/**
+	 * Gets the thread info packet.
+	 *
+	 * @return the thread info packet
+	 */
 	public final ThreadInfoPacket getThreadInfoPacket() {
 		return this.threadInfoPacket;
 	}
 
+	/**
+	 * Sets the thread info packet.
+	 *
+	 * @param value the new thread info packet
+	 */
 	public final void setThreadInfoPacket(ThreadInfoPacket value) {
 		this.threadInfoPacket = value;
 	}
 
+	/**
+	 * Gets the thread info.
+	 *
+	 * @return the thread info
+	 */
 	public final IThreadInfo getThreadInfo() {
 		return getThreadInfoPacket();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getDomainId()
+	 */
 	@Override
 	public final int getDomainId() {
 		return getThreadInfo().getDomainId();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getDomainName()
+	 */
 	@Override
 	public final String getDomainName() {
 		return getThreadInfo().getDomainName();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#isThreadPoolThread()
+	 */
 	@Override
 	public final boolean isThreadPoolThread() {
 		return getThreadInfo().isThreadPoolThread();
@@ -202,6 +371,8 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 	/**
 	 * Indicates if the log message has related thread information. If false, some
 	 * calls to thread information may throw exceptions.
+	 *
+	 * @return the checks for thread info
 	 */
 	@Override
 	public final boolean getHasThreadInfo() {
@@ -210,7 +381,9 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 
 
 	/**
-	 * A combined caption &amp; description Added for GLV support
+	 * A combined caption &amp; description Added for GLV support.
+	 *
+	 * @return the message
 	 */
 	public final String getMessage() {
 		if (this.message == null) // that's deliberate - null means not calculated, empty string means calculated
@@ -239,6 +412,8 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 	 * available.
 	 * 
 	 * Added for GLV support
+	 *
+	 * @return the thread name
 	 */
 	@Override
 	public final String getThreadName() {
@@ -249,8 +424,8 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 
 	/**
 	 * Captures the provided exception immediately.
-	 * 
-	 * @param throwable
+	 *
+	 * @param throwable the new exception
 	 */
 	public final void setException(Throwable throwable) {
 		this.exceptionChain = exceptionToArray(throwable); // this handles a null Exception, never returns null
@@ -258,6 +433,8 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 
 	/**
 	 * Whether or not this log message includes attached Exception information.
+	 *
+	 * @return the checks for exception
 	 */
 	@Override
 	public final boolean getHasException() {
@@ -267,6 +444,8 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 
 	/**
 	 * Indicates if the class name and method name are available.
+	 *
+	 * @return the checks for method info
 	 */
 	@Override
 	public final boolean getHasMethodInfo() {
@@ -275,16 +454,26 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 
 	/**
 	 * Indicates if the file name and line number are available.
+	 *
+	 * @return the checks for source location
 	 */
 	@Override
 	public final boolean getHasSourceLocation() {
 		return !TypeUtils.isBlank(getFileName());
 	}
 
+	/**
+	 * Gets the exceptions.
+	 *
+	 * @return the exceptions
+	 */
 	public final IExceptionInfo[] getExceptions() {
 		return this.exceptionChain;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.log.ILogMessage#getException()
+	 */
 	@Override
 	public final IExceptionInfo getException() {
 		IExceptionInfo[] exceptionInfo = getExceptions();
@@ -297,9 +486,9 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 
 	/**
 	 * Normalize the exception pointers to a single list.
-	 * 
-	 * @param exception
-	 * @return
+	 *
+	 * @param exception the exception
+	 * @return the list
 	 */
 	public static List<IExceptionInfo> exceptionsList(IExceptionInfo exception) {
 		ArrayList<IExceptionInfo> exceptions = new ArrayList<>();
@@ -314,13 +503,20 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 	}
 
 	/**
-	 * A single line caption
+	 * A single line caption.
+	 *
+	 * @return the caption
 	 */
 	@Override
 	public final String getCaption() {
 		return this.caption;
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	public final void setCaption(String value) {
 		this.caption = value;
 
@@ -329,13 +525,20 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 	}
 
 	/**
-	 * A multi line description
+	 * A multi line description.
+	 *
+	 * @return the description
 	 */
 	@Override
 	public final String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * Sets the description.
+	 *
+	 * @param value the new description
+	 */
 	public final void setDescription(String value) {
 		this.description = value;
 
@@ -344,13 +547,20 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 	}
 
 	/**
-	 * XML details for this log message
+	 * XML details for this log message.
+	 *
+	 * @return the details
 	 */
 	@Override
 	public String getDetails() {
 		return this.details;
 	}
 
+	/**
+	 * Sets the details.
+	 *
+	 * @param value the new details
+	 */
 	public void setDetails(String value) {
 		this.details = value;
 	}
@@ -358,16 +568,27 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 	/**
 	 * True if the message was issued from a Notifier thread which needs to suppress
 	 * notification about this message.
+	 *
+	 * @return the suppress notification
 	 */
 	public final boolean getSuppressNotification() {
 		return this.suppressNotification;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return String.format("%1$tc: %2$s", getTimestamp(), getCaption());
 	}
 
+	/**
+	 * Compare to.
+	 *
+	 * @param other the other
+	 * @return the int
+	 */
 	public final int compareTo(ILogMessage other) {
 		// First do a quick match on Guid. this is the only case we want to return zero
 		// (an exact match)
@@ -386,11 +607,10 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -520,6 +740,9 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 		return requiredPackets;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -557,6 +780,9 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 		definition.getFields().add("ApplicationUserId", FieldType.GUID);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -611,11 +837,20 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 		packet.setField("ApplicationUserId", (getUserPacket() == null) ? null : getUserPacket().getID());
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");
 	}
 
+	/**
+	 * Exception to array.
+	 *
+	 * @param throwable the throwable
+	 * @return the i exception info[]
+	 */
 	private static IExceptionInfo[] exceptionToArray(Throwable throwable) {
 		// This must accept a null Exception and never return a null, use empty array;
 		if (throwable == null) {

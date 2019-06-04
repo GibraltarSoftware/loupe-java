@@ -11,18 +11,29 @@ import com.onloupe.core.monitor.LocalRepository;
 import com.onloupe.model.data.ISessionSummaryCollection;
 import com.onloupe.model.session.ISessionSummary;
 
+// TODO: Auto-generated Javadoc
 /**
  * The session summary collection implementation for the local collection
- * repository
+ * repository.
  */
 public class SessionSummaryCollection implements ISessionSummaryCollection {
+	
+	/** The lock. */
 	private final Object lock = new Object();
+	
+	/** The repository. */
 	private LocalRepository repository;
+	
+	/** The list. */
 	private final List<ISessionSummary> list = new ArrayList<ISessionSummary>();
+	
+	/** The dictionary. */
 	private final Map<UUID, ISessionSummary> dictionary = new HashMap<UUID, ISessionSummary>();
 
 	/**
-	 * Create an empty session summary collection
+	 * Create an empty session summary collection.
+	 *
+	 * @param repository the repository
 	 */
 	public SessionSummaryCollection(LocalRepository repository) {
 		this.repository = repository;
@@ -30,6 +41,9 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 
 	/**
 	 * Create a new collection by loading the provided summaries.
+	 *
+	 * @param repository the repository
+	 * @param sessions the sessions
 	 */
 	public SessionSummaryCollection(LocalRepository repository, List<ISessionSummary> sessions) {
 		this.repository = repository;
@@ -52,10 +66,20 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 		return this.list.iterator();
 	}
 
+	/**
+	 * Adds the.
+	 *
+	 * @param item the item
+	 */
 	public void add(ISessionSummary item) {
 		addItem(item);
 	}
 
+	/**
+	 * Adds the item.
+	 *
+	 * @param item the item
+	 */
 	private void addItem(ISessionSummary item) {
 		synchronized (this.lock) {
 			this.list.add(item);
@@ -66,11 +90,6 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	/**
 	 * Removes all items from the
 	 * <see cref="T:System.Collections.Generic.ICollection`1"/>.
-	 * 
-	 * @exception T:System.NotSupportedException The <see cref=
-	 *                                           "T:System.Collections.Generic.ICollection`1"/>
-	 *                                           is read-only.
-	 * 
 	 */
 	public final void clear() {
 		synchronized (this.lock) {
@@ -80,9 +99,9 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	}
 
 	/**
-	 * Indicates if the collection contains the key
-	 * 
-	 * @param key
+	 * Indicates if the collection contains the key.
+	 *
+	 * @param key the key
 	 * @return True if a session summary with the key exists in the collection,
 	 *         false otherwise.
 	 */
@@ -95,14 +114,12 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	 * Determines whether the
 	 * <see cref="T:System.Collections.Generic.ICollection`1"/> contains a specific
 	 * value.
-	 * 
+	 *
+	 * @param item The object to locate in the
+	 *             <see cref="T:System.Collections.Generic.ICollection`1"/>.
 	 * @return true if <paramref name="item"/> is found in the
 	 *         <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise,
 	 *         false.
-	 * 
-	 * @param item The object to locate in the
-	 *             <see cref="T:System.Collections.Generic.ICollection`1"/>.
-	 * 
 	 */
 	public final boolean contains(ISessionSummary item) {
 		if (item == null) {
@@ -119,7 +136,7 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	 * <see cref="T:System.Collections.Generic.ICollection`1"/> to an
 	 * <see cref="T:System.Array"/>, starting at a particular
 	 * <see cref="T:System.Array"/> index.
-	 * 
+	 *
 	 * @param array      The one-dimensional <see cref="T:System.Array"/> that is
 	 *                   the destination of the elements copied from
 	 *                   <see cref="T:System.Collections.Generic.ICollection`1"/>.
@@ -127,25 +144,6 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	 *                   indexing.
 	 * @param arrayIndex The zero-based index in <paramref name="array"/> at which
 	 *                   copying begins.
-	 * @exception T:System.ArgumentNullException       <paramref name="array"/> is
-	 *                                                 null.
-	 * @exception T:System.ArgumentOutOfRangeException <paramref name="arrayIndex"/>
-	 *                                                 is less than 0.
-	 * @exception T:System.ArgumentException           <paramref name="array"/> is
-	 *                                                 multidimensional. -or-
-	 *                                                 <paramref name="arrayIndex"/>
-	 *                                                 is equal to or greater than
-	 *                                                 the length of
-	 *                                                 <paramref name="array"/>.
-	 *                                                 -or- The number of elements
-	 *                                                 in the source <see cref=
-	 *                                                 "T:System.Collections.Generic.ICollection`1"/>
-	 *                                                 is greater than the available
-	 *                                                 space from
-	 *                                                 <paramref name="arrayIndex"/>
-	 *                                                 to the end of the destination
-	 *                                                 <paramref name="array"/>.
-	 * 
 	 */
 	public final void copyTo(ISessionSummary[] array, int arrayIndex) {
 		synchronized (this.lock) {
@@ -156,24 +154,25 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	/**
 	 * Removes the first occurrence of a specific object from the
 	 * <see cref="T:System.Collections.Generic.ICollection`1"/>.
-	 * 
+	 *
+	 * @param item The object to remove from the
+	 *             <see cref="T:System.Collections.Generic.ICollection`1"/>.
 	 * @return true if <paramref name="item"/> was successfully removed from the
 	 *         <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise,
 	 *         false. This method also returns false if <paramref name="item"/> is
 	 *         not found in the original
 	 *         <see cref="T:System.Collections.Generic.ICollection`1"/>.
-	 * 
-	 * @param item The object to remove from the
-	 *             <see cref="T:System.Collections.Generic.ICollection`1"/>.
-	 * @exception T:System.NotSupportedException The <see cref=
-	 *                                           "T:System.Collections.Generic.ICollection`1"/>
-	 *                                           is read-only.
-	 * 
 	 */
 	public final boolean remove(ISessionSummary item) {
 		return removeItem(item);
 	}
 
+	/**
+	 * Removes the item.
+	 *
+	 * @param item the item
+	 * @return true, if successful
+	 */
 	private boolean removeItem(ISessionSummary item) {
 		if (item == null) {
 			throw new NullPointerException("item");
@@ -295,10 +294,10 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	}
 
 	/**
-	 * Removes the first occurrence of a specified object
-	 * 
-	 * @param key
-	 * @return
+	 * Removes the first occurrence of a specified object.
+	 *
+	 * @param key the key
+	 * @return true, if successful
 	 */
 	@Override
 	public final boolean remove(UUID key) {
@@ -317,8 +316,10 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 
 	/**
 	 * Attempt to get the item with the specified key, returning true if it could be
-	 * found
-	 * 
+	 * found.
+	 *
+	 * @param key the key
+	 * @param item the item
 	 * @return True if the item could be found, false otherwise
 	 */
 	@Override
@@ -329,13 +330,11 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	/**
 	 * Determines the index of a specific item in the
 	 * <see cref="T:System.Collections.Generic.IList`1"/>.
-	 * 
-	 * @return The index of <paramref name="item"/> if found in the list; otherwise,
-	 *         -1.
-	 * 
+	 *
 	 * @param item The object to locate in the
 	 *             <see cref="T:System.Collections.Generic.IList`1"/>.
-	 * 
+	 * @return The index of <paramref name="item"/> if found in the list; otherwise,
+	 *         -1.
 	 */
 	public final int indexOf(ISessionSummary item) {
 		synchronized (this.lock) {
@@ -346,19 +345,11 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	/**
 	 * Inserts an item to the <see cref="T:System.Collections.Generic.IList`1"/> at
 	 * the specified index.
-	 * 
+	 *
 	 * @param index The zero-based index at which <paramref name="item"/> should be
 	 *              inserted.
 	 * @param item  The object to insert into the
 	 *              <see cref="T:System.Collections.Generic.IList`1"/>.
-	 * @exception T:System.ArgumentOutOfRangeException <paramref name="index"/> is
-	 *                                                 not a valid index in the
-	 *                                                 <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"/>.
-	 * @exception T:System.NotSupportedException       The <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"/>
-	 *                                                 is read-only.
-	 * 
 	 */
 	public final void insert(int index, ISessionSummary item) {
 		throw new UnsupportedOperationException(
@@ -368,16 +359,8 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	/**
 	 * Removes the <see cref="T:System.Collections.Generic.IList`1"/> item at the
 	 * specified index.
-	 * 
+	 *
 	 * @param index The zero-based index of the item to remove.
-	 * @exception T:System.ArgumentOutOfRangeException <paramref name="index"/> is
-	 *                                                 not a valid index in the
-	 *                                                 <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"/>.
-	 * @exception T:System.NotSupportedException       The <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"/>
-	 *                                                 is read-only.
-	 * 
 	 */
 	public final void removeAt(int index) {
 		synchronized (this.lock) {
@@ -390,44 +373,47 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 
 	/**
 	 * Gets or sets the element at the specified index.
-	 * 
-	 * @return The element at the specified index.
-	 * 
+	 *
 	 * @param index The zero-based index of the element to get or set.
-	 * @exception T:System.ArgumentOutOfRangeException <paramref name="index"/> is
-	 *                                                 not a valid index in the
-	 *                                                 <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"/>.
-	 * @exception T:System.NotSupportedException       The property is set and the
-	 *                                                 <see cref=
-	 *                                                 "T:System.Collections.Generic.IList`1"/>
-	 *                                                 is read-only.
-	 * 
+	 * @return The element at the specified index.
 	 */
 	public final ISessionSummary get(int index) {
 		return this.list.get(index);
 	}
 
+	/**
+	 * Sets the.
+	 *
+	 * @param index the index
+	 * @param value the value
+	 * @return the i session summary
+	 */
 	public final ISessionSummary set(int index, ISessionSummary value) {
 		throw new UnsupportedOperationException("Updated items by index is not supported.");
 	}
 
 	/**
-	 * get the item with the specified key
-	 * 
-	 * @param key
-	 * @return
+	 * get the item with the specified key.
+	 *
+	 * @param key the key
+	 * @return the i session summary
 	 */
 	@Override
 	public final ISessionSummary get(UUID key) {
 		return this.dictionary.get(key);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.data.ISessionSummaryCollection#size()
+	 */
 	@Override
 	public int size() {
 		return this.list.size();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Iterable#iterator()
+	 */
 	@Override
 	public Iterator<ISessionSummary> iterator() {
 		return this.list.iterator();

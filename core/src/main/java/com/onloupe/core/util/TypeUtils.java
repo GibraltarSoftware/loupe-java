@@ -12,8 +12,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TypeUtils.
+ */
 public class TypeUtils {
 
+	/**
+	 * Gets the super interfaces.
+	 *
+	 * @param clazz the clazz
+	 * @param superInterfaces the super interfaces
+	 * @return the super interfaces
+	 */
 	@SuppressWarnings("rawtypes")
 	public static void getSuperInterfaces(Class clazz, Set<Class> superInterfaces) {
 		for (Class interfaze : clazz.getInterfaces()) {
@@ -22,18 +33,44 @@ public class TypeUtils {
 		}
 	}
 
+	/**
+	 * Equals.
+	 *
+	 * @param str1 the str 1
+	 * @param str2 the str 2
+	 * @return true, if successful
+	 */
 	public static boolean equals(String str1, String str2) {
 		return str1 == null ? str2 == null : str1.equals(str2);
 	}
 
+	/**
+	 * Checks if is blank.
+	 *
+	 * @param str the str
+	 * @return true, if is blank
+	 */
 	public static boolean isBlank(String str) {
 		return CodeConversionHelpers.isNullOrEmpty(str) || CodeConversionHelpers.isNullOrWhiteSpace(str);
 	}
 
+	/**
+	 * Checks if is not blank.
+	 *
+	 * @param str the str
+	 * @return true, if is not blank
+	 */
 	public static boolean isNotBlank(String str) {
 		return !isBlank(str);
 	}
 
+	/**
+	 * Starts with ignore case.
+	 *
+	 * @param str the str
+	 * @param prefix the prefix
+	 * @return true, if successful
+	 */
 	public static boolean startsWithIgnoreCase(String str, String prefix) {
 		if (str == null || prefix == null)
 			return str == prefix;
@@ -44,6 +81,14 @@ public class TypeUtils {
 		return str.toUpperCase().startsWith(prefix.toUpperCase());
 	}
 
+	/**
+	 * Mid.
+	 *
+	 * @param str the str
+	 * @param pos the pos
+	 * @param len the len
+	 * @return the string
+	 */
 	public static String mid(String str, int pos, final int len) {
 		if (str == null) {
 			return null;
@@ -60,6 +105,13 @@ public class TypeUtils {
 		return str.substring(pos, pos + len);
 	}
 
+	/**
+	 * Ends with ignore case.
+	 *
+	 * @param str the str
+	 * @param suffix the suffix
+	 * @return true, if successful
+	 */
 	public static boolean endsWithIgnoreCase(String str, String suffix) {
 		if (str == null || suffix == null)
 			return str == suffix;
@@ -70,18 +122,43 @@ public class TypeUtils {
 		return str.toUpperCase().endsWith(suffix.toUpperCase());
 	}
 
+	/**
+	 * Trim to empty.
+	 *
+	 * @param str the str
+	 * @return the string
+	 */
 	public static String trimToEmpty(String str) {
 		return str == null ? "" : str.trim();
 	}
 
+	/**
+	 * Trim to null.
+	 *
+	 * @param str the str
+	 * @return the string
+	 */
 	public static String trimToNull(String str) {
 		return isBlank(str) ? null : str.trim();
 	}
 	
+	/**
+	 * Trim.
+	 *
+	 * @param str the str
+	 * @return the string
+	 */
 	public static String trim(String str) {
 		return str == null ? null : str.trim();
 	}
 
+	/**
+	 * Strip.
+	 *
+	 * @param str the str
+	 * @param stripChars the strip chars
+	 * @return the string
+	 */
 	public static String strip(String str, final String stripChars) {
 		if (CodeConversionHelpers.isNullOrEmpty(str)) {
 			return str;
@@ -90,6 +167,13 @@ public class TypeUtils {
 		return stripEnd(str, stripChars);
 	}
 
+	/**
+	 * Strip start.
+	 *
+	 * @param str the str
+	 * @param stripChars the strip chars
+	 * @return the string
+	 */
 	public static String stripStart(final String str, final String stripChars) {
 		int strLen;
 		if (str == null || (strLen = str.length()) == 0) {
@@ -110,6 +194,13 @@ public class TypeUtils {
 		return str.substring(start);
 	}
 
+	/**
+	 * Strip end.
+	 *
+	 * @param str the str
+	 * @param stripChars the strip chars
+	 * @return the string
+	 */
 	public static String stripEnd(final String str, final String stripChars) {
 		int end;
 		if (str == null || (end = str.length()) == 0) {
@@ -130,6 +221,12 @@ public class TypeUtils {
 		return str.substring(0, end);
 	}
 
+	/**
+	 * Gets the root cause.
+	 *
+	 * @param throwable the throwable
+	 * @return the root cause
+	 */
 	public static Throwable getRootCause(Throwable throwable) {
 		final List<Throwable> list = new ArrayList<>();
 		while (throwable != null && !list.contains(throwable)) {
@@ -139,12 +236,24 @@ public class TypeUtils {
 		return list.isEmpty() ? null : list.get(list.size() - 1);
 	}
 
+	/**
+	 * Gets the root cause message.
+	 *
+	 * @param th the th
+	 * @return the root cause message
+	 */
 	public static String getRootCauseMessage(final Throwable th) {
 		Throwable root = getRootCause(th);
 		root = root == null ? th : root;
 		return root.getMessage();
 	}
 
+	/**
+	 * Gets the stack trace.
+	 *
+	 * @param throwable the throwable
+	 * @return the stack trace
+	 */
 	public static String getStackTrace(final Throwable throwable) {
 		try (final StringWriter sw = new StringWriter(); final PrintWriter pw = new PrintWriter(sw, true)) {
 			throwable.printStackTrace(pw);
@@ -154,6 +263,12 @@ public class TypeUtils {
 		}
 	}
 
+	/**
+	 * Safe int.
+	 *
+	 * @param value the value
+	 * @return the int
+	 */
 	public static int safeInt(Object value) {
 		if (value != null) {
 			if (Integer.class.isAssignableFrom(value.getClass()))
@@ -174,6 +289,12 @@ public class TypeUtils {
 		return 0;
 	}
 	
+	/**
+	 * Safe long.
+	 *
+	 * @param value the value
+	 * @return the long
+	 */
 	public static long safeLong(Object value) {		
 		if (value != null) {
 			if (Long.class.isAssignableFrom(value.getClass()))
@@ -194,6 +315,12 @@ public class TypeUtils {
 		return 0L;
 	}
 	
+	/**
+	 * Safe double.
+	 *
+	 * @param value the value
+	 * @return the double
+	 */
 	public static double safeDouble(Object value) {		
 		if (value != null) {
 			if (Double.class.isAssignableFrom(value.getClass()))
@@ -214,6 +341,12 @@ public class TypeUtils {
 		return 0d;
 	}
 
+	/**
+	 * Safe UUID.
+	 *
+	 * @param value the value
+	 * @return the uuid
+	 */
 	public static UUID safeUUID(Object value) {
 		return (value instanceof UUID) ? (UUID)value : new UUID(0,0);
 	}
@@ -222,9 +355,9 @@ public class TypeUtils {
 	 * This method takes a java type and returns the FQCN of the corresponding type
 	 * in .NET. It is necessary for us to bind data types in a way that the .NET desktop
 	 * and server side applications can understand and deserialize.
-	 * 
-	 * @param type
-	 * @return
+	 *
+	 * @param type the type
+	 * @return the net type
 	 */
 	public static String getNetType(Class type) {	
 		if (type != null) {

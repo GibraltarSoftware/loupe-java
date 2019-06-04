@@ -1,5 +1,6 @@
 package com.onloupe.agent.metrics;
 
+// TODO: Auto-generated Javadoc
 /**
  * A suggested interval between value samples.
  */
@@ -14,9 +15,7 @@ public enum SamplingInterval {
 	 */
 	SHORTEST(1),
 
-	/**
-	 * Use a sampling interval set in milliseconds
-	 */
+	/** Use a sampling interval set in milliseconds. */
 	MILLISECOND(2),
 
 	/**
@@ -49,11 +48,20 @@ public enum SamplingInterval {
 	 */
 	MONTH(8);
 
+	/** The Constant SIZE. */
 	public static final int SIZE = java.lang.Integer.SIZE;
 
+	/** The int value. */
 	private int intValue;
+	
+	/** The mappings. */
 	private static java.util.HashMap<Integer, SamplingInterval> mappings;
 
+	/**
+	 * Gets the mappings.
+	 *
+	 * @return the mappings
+	 */
 	private static java.util.HashMap<Integer, SamplingInterval> getMappings() {
 		if (mappings == null) {
 			synchronized (SamplingInterval.class) {
@@ -65,15 +73,31 @@ public enum SamplingInterval {
 		return mappings;
 	}
 
+	/**
+	 * Instantiates a new sampling interval.
+	 *
+	 * @param value the value
+	 */
 	private SamplingInterval(int value) {
 		this.intValue = value;
 		getMappings().put(value, this);
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return this.intValue;
 	}
 
+	/**
+	 * For value.
+	 *
+	 * @param value the value
+	 * @return the sampling interval
+	 */
 	public static SamplingInterval forValue(int value) {
 		return getMappings().get(value);
 	}

@@ -6,10 +6,13 @@ import com.onloupe.core.logging.Log;
 import com.onloupe.model.log.ILogMessage;
 import com.onloupe.model.log.LogMessageSeverity;
 
+// TODO: Auto-generated Javadoc
 /**
  * EventArgs for Notification events.
  */
 public class NotificationEventArgs {
+	
+	/** The Send session. */
 	private boolean _SendSession;
 
 	/**
@@ -61,11 +64,18 @@ public class NotificationEventArgs {
 	 * If there is insufficient configuration information to automatically send
 	 * sessions this property will revert to false when set true. To verify if there
 	 * is sufficient configuration information, use CanSendSession
+	 *
+	 * @return the send session
 	 */
 	public final boolean getSendSession() {
 		return this._SendSession;
 	}
 
+	/**
+	 * Sets the send session.
+	 *
+	 * @param value the new send session
+	 */
 	public final void setSendSession(boolean value) {
 		if (this._SendSession == value) {
 			return;
@@ -87,6 +97,12 @@ public class NotificationEventArgs {
 		}
 	}
 
+	/**
+	 * Instantiates a new notification event args.
+	 *
+	 * @param messages the messages
+	 * @param defaultMinWait the default min wait
+	 */
 	public NotificationEventArgs(ILogMessage[] messages, Duration defaultMinWait) {
 		this.minimumNotificationDelay = defaultMinWait;
 		this.messages = messages;

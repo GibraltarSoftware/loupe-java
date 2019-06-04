@@ -6,14 +6,24 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.system.ApplicationType;
 import com.onloupe.model.system.Version;
 
+// TODO: Auto-generated Javadoc
 /**
  * The configuration of the publisher.
  */
 public final class PublisherConfiguration {
+	
+	/**
+	 * Instantiates a new publisher configuration.
+	 */
 	public PublisherConfiguration() {
 
 	}
 
+	/**
+	 * Instantiates a new publisher configuration.
+	 *
+	 * @param props the props
+	 */
 	protected PublisherConfiguration(Properties props) {
 		setProductName(props.getProperty("Publisher.ProductName"));
 		setApplicationDescription(props.getProperty("Publisher.ApplicationDescription"));
@@ -35,6 +45,11 @@ public final class PublisherConfiguration {
 		setEnableDebugMode(Boolean.valueOf(props.getProperty("Publisher.EnableDebugMode", String.valueOf(enableDebugMode))));
 	}
 	
+	/**
+	 * Instantiates a new publisher configuration.
+	 *
+	 * @param builder the builder
+	 */
 	private PublisherConfiguration(Builder builder) {
 		this.productName = builder.productName;
 		this.applicationDescription = builder.applicationDescription;
@@ -59,10 +74,20 @@ public final class PublisherConfiguration {
 	 */
 	private String productName;
 
+	/**
+	 * Gets the product name.
+	 *
+	 * @return the product name
+	 */
 	public String getProductName() {
 		return this.productName;
 	}
 
+	/**
+	 * Sets the product name.
+	 *
+	 * @param value the new product name
+	 */
 	public void setProductName(String value) {
 		this.productName = value;
 	}
@@ -78,10 +103,20 @@ public final class PublisherConfiguration {
 	 */
 	private String applicationDescription;
 
+	/**
+	 * Gets the application description.
+	 *
+	 * @return the application description
+	 */
 	public String getApplicationDescription() {
 		return this.applicationDescription;
 	}
 
+	/**
+	 * Sets the application description.
+	 *
+	 * @param value the new application description
+	 */
 	public void setApplicationDescription(String value) {
 		this.applicationDescription = value;
 	}
@@ -96,10 +131,20 @@ public final class PublisherConfiguration {
 	 */
 	private String applicationName;
 
+	/**
+	 * Gets the application name.
+	 *
+	 * @return the application name
+	 */
 	public String getApplicationName() {
 		return this.applicationName;
 	}
 
+	/**
+	 * Sets the application name.
+	 *
+	 * @param value the new application name
+	 */
 	public void setApplicationName(String value) {
 		this.applicationName = value;
 	}
@@ -118,10 +163,20 @@ public final class PublisherConfiguration {
 	 */
 	private ApplicationType applicationType = ApplicationType.UNKNOWN;
 
+	/**
+	 * Gets the application type.
+	 *
+	 * @return the application type
+	 */
 	public ApplicationType getApplicationType() {
 		return this.applicationType;
 	}
 
+	/**
+	 * Sets the application type.
+	 *
+	 * @param value the new application type
+	 */
 	public void setApplicationType(ApplicationType value) {
 		this.applicationType = value;
 	}
@@ -138,10 +193,20 @@ public final class PublisherConfiguration {
 	 */
 	private Version applicationVersion = new Version(2,2);
 
+	/**
+	 * Gets the application version.
+	 *
+	 * @return the application version
+	 */
 	public Version getApplicationVersion() {
 		return this.applicationVersion;
 	}
 
+	/**
+	 * Sets the application version.
+	 *
+	 * @param value the new application version
+	 */
 	public void setApplicationVersion(Version value) {
 		this.applicationVersion = value;
 	}
@@ -151,11 +216,18 @@ public final class PublisherConfiguration {
 	 * and the standard binder doesn't use Version.Parse.
 	 * 
 	 * Added Attributes to hide in IntelliSense.
+	 *
+	 * @return the application version number
 	 */
 	public String getApplicationVersionNumber() {
 		return getApplicationVersion() == null ? null : getApplicationVersion().toString();
 	}
 
+	/**
+	 * Sets the application version number.
+	 *
+	 * @param value the new application version number
+	 */
 	public void setApplicationVersionNumber(String value) {
 		setApplicationVersion(new Version(value));
 	}
@@ -170,10 +242,20 @@ public final class PublisherConfiguration {
 	 */
 	private String environmentName;
 
+	/**
+	 * Gets the environment name.
+	 *
+	 * @return the environment name
+	 */
 	public String getEnvironmentName() {
 		return this.environmentName;
 	}
 
+	/**
+	 * Sets the environment name.
+	 *
+	 * @param value the new environment name
+	 */
 	public void setEnvironmentName(String value) {
 		this.environmentName = value;
 	}
@@ -189,10 +271,20 @@ public final class PublisherConfiguration {
 	 */
 	private String promotionLevelName;
 
+	/**
+	 * Gets the promotion level name.
+	 *
+	 * @return the promotion level name
+	 */
 	public String getPromotionLevelName() {
 		return this.promotionLevelName;
 	}
 
+	/**
+	 * Sets the promotion level name.
+	 *
+	 * @param value the new promotion level name
+	 */
 	public void setPromotionLevelName(String value) {
 		this.promotionLevelName = value;
 	}
@@ -208,10 +300,20 @@ public final class PublisherConfiguration {
 	 */
 	private boolean forceSynchronous = false;
 
+	/**
+	 * Gets the force synchronous.
+	 *
+	 * @return the force synchronous
+	 */
 	public boolean getForceSynchronous() {
 		return this.forceSynchronous;
 	}
 
+	/**
+	 * Sets the force synchronous.
+	 *
+	 * @param value the new force synchronous
+	 */
 	public void setForceSynchronous(boolean value) {
 		this.forceSynchronous = value;
 	}
@@ -225,10 +327,20 @@ public final class PublisherConfiguration {
 	 */
 	private int maxQueueLength = 2000;
 
+	/**
+	 * Gets the max queue length.
+	 *
+	 * @return the max queue length
+	 */
 	public int getMaxQueueLength() {
 		return this.maxQueueLength;
 	}
 
+	/**
+	 * Sets the max queue length.
+	 *
+	 * @param value the new max queue length
+	 */
 	public void setMaxQueueLength(int value) {
 		this.maxQueueLength = value;
 	}
@@ -244,10 +356,20 @@ public final class PublisherConfiguration {
 	 */
 	private boolean enableAnonymousMode = false;
 
+	/**
+	 * Gets the enable anonymous mode.
+	 *
+	 * @return the enable anonymous mode
+	 */
 	public boolean getEnableAnonymousMode() {
 		return this.enableAnonymousMode;
 	}
 
+	/**
+	 * Sets the enable anonymous mode.
+	 *
+	 * @param value the new enable anonymous mode
+	 */
 	public void setEnableAnonymousMode(boolean value) {
 		this.enableAnonymousMode = value;
 	}
@@ -270,16 +392,26 @@ public final class PublisherConfiguration {
 	 */
 	private boolean enableDebugMode = false;
 
+	/**
+	 * Gets the enable debug mode.
+	 *
+	 * @return the enable debug mode
+	 */
 	public boolean getEnableDebugMode() {
 		return this.enableDebugMode;
 	}
 
+	/**
+	 * Sets the enable debug mode.
+	 *
+	 * @param value the new enable debug mode
+	 */
 	public void setEnableDebugMode(boolean value) {
 		this.enableDebugMode = value;
 	}
 
 	/**
-	 * Normalize configuration data
+	 * Normalize configuration data.
 	 */
 	public void sanitize() {
 		if (getMaxQueueLength() <= 0) {
@@ -314,76 +446,172 @@ public final class PublisherConfiguration {
 	 * Builder to build {@link PublisherConfiguration}.
 	 */
 	public static final class Builder {
+		
+		/** The product name. */
 		private String productName;
+		
+		/** The application description. */
 		private String applicationDescription;
+		
+		/** The application name. */
 		private String applicationName;
+		
+		/** The application type. */
 		private ApplicationType applicationType;
+		
+		/** The application version. */
 		private Version applicationVersion;
+		
+		/** The environment name. */
 		private String environmentName;
+		
+		/** The promotion level name. */
 		private String promotionLevelName;
+		
+		/** The force synchronous. */
 		private boolean forceSynchronous;
+		
+		/** The max queue length. */
 		private int maxQueueLength;
+		
+		/** The enable anonymous mode. */
 		private boolean enableAnonymousMode;
+		
+		/** The enable debug mode. */
 		private boolean enableDebugMode;
 
+		/**
+		 * Instantiates a new builder.
+		 */
 		private Builder() {
 		}
 
+		/**
+		 * Product name.
+		 *
+		 * @param productName the product name
+		 * @return the builder
+		 */
 		public Builder productName(String productName) {
 			this.productName = productName;
 			return this;
 		}
 
+		/**
+		 * Application description.
+		 *
+		 * @param applicationDescription the application description
+		 * @return the builder
+		 */
 		public Builder applicationDescription(String applicationDescription) {
 			this.applicationDescription = applicationDescription;
 			return this;
 		}
 
+		/**
+		 * Application name.
+		 *
+		 * @param applicationName the application name
+		 * @return the builder
+		 */
 		public Builder applicationName(String applicationName) {
 			this.applicationName = applicationName;
 			return this;
 		}
 
+		/**
+		 * Application type.
+		 *
+		 * @param applicationType the application type
+		 * @return the builder
+		 */
 		public Builder applicationType(ApplicationType applicationType) {
 			this.applicationType = applicationType;
 			return this;
 		}
 
+		/**
+		 * Application version.
+		 *
+		 * @param applicationVersion the application version
+		 * @return the builder
+		 */
 		public Builder applicationVersion(Version applicationVersion) {
 			this.applicationVersion = applicationVersion;
 			return this;
 		}
 
+		/**
+		 * Environment name.
+		 *
+		 * @param environmentName the environment name
+		 * @return the builder
+		 */
 		public Builder environmentName(String environmentName) {
 			this.environmentName = environmentName;
 			return this;
 		}
 
+		/**
+		 * Promotion level name.
+		 *
+		 * @param promotionLevelName the promotion level name
+		 * @return the builder
+		 */
 		public Builder promotionLevelName(String promotionLevelName) {
 			this.promotionLevelName = promotionLevelName;
 			return this;
 		}
 
+		/**
+		 * Force synchronous.
+		 *
+		 * @param forceSynchronous the force synchronous
+		 * @return the builder
+		 */
 		public Builder forceSynchronous(boolean forceSynchronous) {
 			this.forceSynchronous = forceSynchronous;
 			return this;
 		}
 
+		/**
+		 * Max queue length.
+		 *
+		 * @param maxQueueLength the max queue length
+		 * @return the builder
+		 */
 		public Builder maxQueueLength(int maxQueueLength) {
 			this.maxQueueLength = maxQueueLength;
 			return this;
 		}
 
+		/**
+		 * Enable anonymous mode.
+		 *
+		 * @param enableAnonymousMode the enable anonymous mode
+		 * @return the builder
+		 */
 		public Builder enableAnonymousMode(boolean enableAnonymousMode) {
 			this.enableAnonymousMode = enableAnonymousMode;
 			return this;
 		}
 
+		/**
+		 * Enable debug mode.
+		 *
+		 * @param enableDebugMode the enable debug mode
+		 * @return the builder
+		 */
 		public Builder enableDebugMode(boolean enableDebugMode) {
 			this.enableDebugMode = enableDebugMode;
 			return this;
 		}
 
+		/**
+		 * Builds the.
+		 *
+		 * @return the publisher configuration
+		 */
 		public PublisherConfiguration build() {
 			return new PublisherConfiguration(this);
 		}

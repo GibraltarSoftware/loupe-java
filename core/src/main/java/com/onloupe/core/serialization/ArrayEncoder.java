@@ -3,6 +3,7 @@ package com.onloupe.core.serialization;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+// TODO: Auto-generated Javadoc
 /**
  * This helper class implements an enhanced run length encoding strategy to
  * compress arrays. It's enhanced in that it has an optimization for the case of
@@ -11,17 +12,37 @@ import java.lang.reflect.InvocationTargetException;
  * runlength of 1 as would occur in classic RLE encoding.
  * 
  * <typeparam name="T">Type of value contained in the array</typeparam>
+ *
+ * @param <T> the generic type
  */
 public class ArrayEncoder<T> {
+	
+	/** The read method. */
 	private java.lang.reflect.Method readMethod;
+	
+	/** The write method. */
 	private java.lang.reflect.Method writeMethod;
 
+	/**
+	 * Instantiates a new array encoder.
+	 *
+	 * @param clazz the clazz
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 */
 	public ArrayEncoder(Class clazz) throws NoSuchMethodException, SecurityException {
 		String readMethodName = "read" + clazz.getSimpleName();
 		this.readMethod = IFieldReader.class.getMethod(readMethodName);
 		this.writeMethod = IFieldWriter.class.getMethod("write", new java.lang.Class[] { clazz });
 	}
 
+	/**
+	 * Are equal.
+	 *
+	 * @param left the left
+	 * @param right the right
+	 * @return true, if successful
+	 */
 	private boolean areEqual(T left, T right) {
 		// We have to check if left is null (right can be checked by Equals itself)
 		if (left == null) {
@@ -34,10 +55,12 @@ public class ArrayEncoder<T> {
 	/**
 	 * This helper method uses reflection to invoke the proper method to read a
 	 * value from the stream of type T.
-	 * 
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
+	 *
+	 * @param reader the reader
+	 * @return the t
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws InvocationTargetException the invocation target exception
 	 */
 	private T readValue(IFieldReader reader)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -47,10 +70,12 @@ public class ArrayEncoder<T> {
 	/**
 	 * This helper method uses reflection to invoke the proper method to write a
 	 * value to the stream of type T.
-	 * 
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
+	 *
+	 * @param writer the writer
+	 * @param value the value
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws InvocationTargetException the invocation target exception
 	 */
 	private void writeValue(IFieldWriter writer, T value)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -59,10 +84,10 @@ public class ArrayEncoder<T> {
 
 	/**
 	 * Reads an array of type T from the stream.
-	 * 
+	 *
 	 * @param reader Data stream to read
 	 * @return Array of type T
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final T[] read(IFieldReader reader) throws IOException {
 		// The array always starts with its length. Since the length can't be
@@ -108,13 +133,11 @@ public class ArrayEncoder<T> {
 
 	/**
 	 * Writes an array of type T to the stream.
-	 * 
+	 *
 	 * @param array  Data to be written
 	 * @param writer Stream to write the data into
-	 * @throws IOException
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
+	 * @throws Exception the exception
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public final void write(T[] array, IFieldWriter writer) throws Exception {
 		writer.writePositive(array.length);
@@ -165,12 +188,13 @@ public class ArrayEncoder<T> {
 	}
 
 	/**
-	 * Helper method to write out a single run (either repating or unique values)
-	 * 
-	 * @throws IOException
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
+	 * Helper method to write out a single run (either repating or unique values).
+	 *
+	 * @param array the array
+	 * @param writer the writer
+	 * @param writeRun the write run
+	 * @throws Exception the exception
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	private void writeRun(T[] array, IFieldWriter writer, WriteRun writeRun) throws Exception {
 		// This handles the edge case of the last run containing only one value
@@ -205,26 +229,70 @@ public class ArrayEncoder<T> {
 		writeRun.setRunLength(0);
 	}
 	
+	/**
+	 * The Class WriteRun.
+	 */
 	private class WriteRun {
+		
+		/** The current index. */
 		private int currentIndex = 0;
+		
+		/** The peek index. */
 		private int peekIndex = currentIndex + 1;
+		
+		/** The run length. */
 		private int runLength = 0;
 		
+		/**
+		 * Gets the current index.
+		 *
+		 * @return the current index
+		 */
 		public int getCurrentIndex() {
 			return currentIndex;
 		}
+		
+		/**
+		 * Sets the current index.
+		 *
+		 * @param currentIndex the new current index
+		 */
 		public void setCurrentIndex(int currentIndex) {
 			this.currentIndex = currentIndex;
 		}
+		
+		/**
+		 * Gets the peek index.
+		 *
+		 * @return the peek index
+		 */
 		public int getPeekIndex() {
 			return peekIndex;
 		}
+		
+		/**
+		 * Sets the peek index.
+		 *
+		 * @param peekIndex the new peek index
+		 */
 		public void setPeekIndex(int peekIndex) {
 			this.peekIndex = peekIndex;
 		}
+		
+		/**
+		 * Gets the run length.
+		 *
+		 * @return the run length
+		 */
 		public int getRunLength() {
 			return runLength;
 		}
+		
+		/**
+		 * Sets the run length.
+		 *
+		 * @param runLength the new run length
+		 */
 		public void setRunLength(int runLength) {
 			this.runLength = runLength;
 		}

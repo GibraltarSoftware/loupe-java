@@ -1,5 +1,6 @@
 package com.onloupe.agent.metrics;
 
+// TODO: Auto-generated Javadoc
 /**
  * Determines what the raw data for a given sampled metric is, and how it has to
  * be processed to produce final data point values for display.
@@ -29,11 +30,9 @@ package com.onloupe.agent.metrics;
  * enumeration provided by the runtime, but has been simplified for easier use.
  * </p>
  * 
- * @see "!:Metrics_SampledMetricDesign.html" cat=Developer's Reference Metrics -
- *      Designing Sampled Metrics
- * @see "SampledMetricDefinition" cat=Related Classes SampledMetricDefinition
- *      Class
- * @see "SampledMetric" cat=Related Classes SampledMetric Class
+ * @see "Designing Sampled Metrics"
+ * @see "SampledMetricDefinition"
+ * @see "SampledMetric"
  */
 public enum SamplingType {
 	/**
@@ -70,11 +69,20 @@ public enum SamplingType {
 	 */
 	TOTAL_FRACTION(5);
 
+	/** The Constant SIZE. */
 	public static final int SIZE = java.lang.Integer.SIZE;
 
+	/** The int value. */
 	private int intValue;
+	
+	/** The mappings. */
 	private static java.util.HashMap<Integer, SamplingType> mappings;
 
+	/**
+	 * Gets the mappings.
+	 *
+	 * @return the mappings
+	 */
 	private static java.util.HashMap<Integer, SamplingType> getMappings() {
 		if (mappings == null) {
 			synchronized (SamplingType.class) {
@@ -86,15 +94,31 @@ public enum SamplingType {
 		return mappings;
 	}
 
+	/**
+	 * Instantiates a new sampling type.
+	 *
+	 * @param value the value
+	 */
 	private SamplingType(int value) {
 		this.intValue = value;
 		getMappings().put(value, this);
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return this.intValue;
 	}
 
+	/**
+	 * For value.
+	 *
+	 * @param value the value
+	 * @return the sampling type
+	 */
 	public static SamplingType forValue(int value) {
 		return getMappings().get(value);
 	}

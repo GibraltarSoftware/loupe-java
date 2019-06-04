@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.onloupe.model.log.LogMessageSeverity;
 
+// TODO: Auto-generated Javadoc
 /**
  * An intermediary class to log a Gibraltar log message including an XML details
  * string.
@@ -18,10 +19,31 @@ import com.onloupe.model.log.LogMessageSeverity;
  */
 public class LogMessage extends LogMessageBase {
 
+	/**
+	 * Instantiates a new log message.
+	 *
+	 * @param severity the severity
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param skipFrames the skip frames
+	 * @param description the description
+	 * @param args the args
+	 */
 	public LogMessage(LogMessageSeverity severity, String logSystem, String categoryName, int skipFrames, String description, Object... args) {
 		this(severity, logSystem, categoryName, skipFrames, null, description,  args);
 	}
 	
+	/**
+	 * Instantiates a new log message.
+	 *
+	 * @param severity the severity
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param skipFrames the skip frames
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public LogMessage(LogMessageSeverity severity, String logSystem, String categoryName, int skipFrames,
 			String caption, String description, Object... args) {
 		this(severity, LogWriteMode.QUEUED, logSystem, categoryName, skipFrames + 1, null, caption, description,
@@ -90,35 +112,120 @@ public class LogMessage extends LogMessageBase {
 				description, args);
 	}
 
+	/**
+	 * Instantiates a new log message.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param skipFrames the skip frames
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public LogMessage(LogMessageSeverity severity, LogWriteMode writeMode, String logSystem, String categoryName,
 			int skipFrames, String caption, String description, Object... args) {
 		this(severity, writeMode, logSystem, categoryName, skipFrames + 1, null, false, null, caption,
 				description, args);
 	}
 
+	/**
+	 * Instantiates a new log message.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param skipFrames the skip frames
+	 * @param exception the exception
+	 * @param description the description
+	 * @param args the args
+	 */
 	public LogMessage(LogMessageSeverity severity, LogWriteMode writeMode, String logSystem, String categoryName,
 			int skipFrames, Throwable exception, String description, Object... args) {
 		this(severity, writeMode, logSystem, categoryName, skipFrames, exception, null, null, false, null, null, description, args);
 	}
 
+	/**
+	 * Instantiates a new log message.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param skipFrames the skip frames
+	 * @param exception the exception
+	 * @param threadInfo the thread info
+	 * @param attributeToException the attribute to exception
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public LogMessage(LogMessageSeverity severity, LogWriteMode writeMode, String logSystem, String categoryName,
 			int skipFrames, Throwable exception, ThreadInfo threadInfo, boolean attributeToException, String caption,
 			String description, Object... args) {
 		this(severity, writeMode, logSystem, categoryName, skipFrames, exception, threadInfo, null, attributeToException, null, caption, description, args);
 	}
 	
+	/**
+	 * Instantiates a new log message.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param skipFrames the skip frames
+	 * @param exception the exception
+	 * @param attributeToException the attribute to exception
+	 * @param detailsXml the details xml
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public LogMessage(LogMessageSeverity severity, LogWriteMode writeMode, String logSystem, String categoryName,
 			int skipFrames, Throwable exception, boolean attributeToException, String detailsXml, String caption,
 			String description, Object... args) {
 		this(severity, writeMode, logSystem, categoryName, skipFrames, exception, null, null, attributeToException, detailsXml, caption, description, args);
 	}
 	
+	/**
+	 * Instantiates a new log message.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param skipFrames the skip frames
+	 * @param exception the exception
+	 * @param threadInfo the thread info
+	 * @param attributeToException the attribute to exception
+	 * @param detailsXml the details xml
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public LogMessage(LogMessageSeverity severity, LogWriteMode writeMode, String logSystem, String categoryName,
 			int skipFrames, Throwable exception, ThreadInfo threadInfo, boolean attributeToException, String detailsXml, String caption,
 			String description, Object... args) {
 		this(severity, writeMode, logSystem, categoryName, skipFrames, detailsXml, caption, description, args);
 	}
 
+	/**
+	 * Instantiates a new log message.
+	 *
+	 * @param severity the severity
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param skipFrames the skip frames
+	 * @param exception the exception
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param attributeToException the attribute to exception
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public LogMessage(LogMessageSeverity severity, String logSystem, String categoryName,
 			int skipFrames, Throwable exception, Set<String> exclusions, ThreadInfo threadInfo, boolean attributeToException, String caption,
 			String description, Object... args) {
@@ -132,7 +239,7 @@ public class LogMessage extends LogMessageBase {
 	 * This constructor creates a DetailLogMessage with specified LogWriteMode
 	 * behavior (queue-and-return or wait-for-commit), a specified Exception object
 	 * to attach, and XML details string (which may be null).
-	 * 
+	 *
 	 * @param severity             The severity of the log message.
 	 * @param writeMode            Whether to queue-and-return or wait-for-commit.
 	 * @param logSystem            The name of the logging system the message was
@@ -144,13 +251,15 @@ public class LogMessage extends LogMessageBase {
 	 * @param skipFrames           The number of stack frames to skip over to find
 	 *                             the first candidate to be identified as the
 	 *                             source of the log message.
-	 * @param detailsXml           Optional. An XML document with extended details
-	 *                             about the message. Can be null.
 	 * @param exception            An exception associated with this log message (or
 	 *                             null for none).
+	 * @param threadInfo the thread info
+	 * @param exclusions the exclusions
 	 * @param attributeToException True if the call stack from where the exception
 	 *                             was thrown should be used for log message
 	 *                             attribution
+	 * @param detailsXml           Optional. An XML document with extended details
+	 *                             about the message. Can be null.
 	 * @param caption              A single line display caption.
 	 * @param description          Optional. A multi-line description to use which
 	 *                             can be a format string for the arguments. Can be
@@ -172,18 +281,63 @@ public class LogMessage extends LogMessageBase {
 		setMessageArgs(args);
 	}
 	
+	/**
+	 * Instantiates a new log message.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param element the element
+	 * @param exception the exception
+	 * @param attributeToException the attribute to exception
+	 * @param detailsXml the details xml
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public LogMessage(LogMessageSeverity severity, LogWriteMode writeMode, String logSystem, String categoryName,
 			StackTraceElement element, Throwable exception, boolean attributeToException, String detailsXml, String caption,
 			String description, Object... args) {
 		this(severity, writeMode, logSystem, categoryName, element, exception, null, attributeToException, detailsXml, caption, description, args);
 	}
 	
+	/**
+	 * Instantiates a new log message.
+	 *
+	 * @param severity the severity
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param element the element
+	 * @param exception the exception
+	 * @param threadInfo the thread info
+	 * @param attributeToException the attribute to exception
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public LogMessage(LogMessageSeverity severity, String logSystem, String categoryName,
 			StackTraceElement element, Throwable exception, ThreadInfo threadInfo, boolean attributeToException, String caption,
 			String description, Object... args) {
 		this(severity, LogWriteMode.QUEUED, logSystem, categoryName, element, exception, attributeToException, null, caption, description, args);
 	}
 	
+	/**
+	 * Instantiates a new log message.
+	 *
+	 * @param severity the severity
+	 * @param writeMode the write mode
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param element the element
+	 * @param exception the exception
+	 * @param threadInfo the thread info
+	 * @param attributeToException the attribute to exception
+	 * @param detailsXml the details xml
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public LogMessage(LogMessageSeverity severity, LogWriteMode writeMode, String logSystem, String categoryName,
 			StackTraceElement element, Throwable exception, ThreadInfo threadInfo, boolean attributeToException, String detailsXml, String caption,
 			String description, Object... args) {

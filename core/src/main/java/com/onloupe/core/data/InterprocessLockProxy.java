@@ -21,30 +21,65 @@ import com.onloupe.core.CommonCentralLogic;
 import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.TimeConversion;
 
+// TODO: Auto-generated Javadoc
 /**
  * A class to hold a file lock for this process (app domain) and pass it fairly
  * to other waiting threads before release.
  */
 public class InterprocessLockProxy extends Observable implements Observer, Closeable {
+	
+	/** The Constant LOCK_POLLING_DELAY. */
 	private static final int LOCK_POLLING_DELAY = 16; // 16 ms wait between attempts to open a lock file.
+	
+	/** The Constant BACK_OFF_DELAY. */
 	private static final int BACK_OFF_DELAY = LOCK_POLLING_DELAY * 3; // 48 ms wait when another process requests a
 																		// turn.
 
-	private final ConcurrentLinkedQueue<InterprocessLock> waitQueue = new ConcurrentLinkedQueue<InterprocessLock>();
+	/** The wait queue. */
+																		private final ConcurrentLinkedQueue<InterprocessLock> waitQueue = new ConcurrentLinkedQueue<InterprocessLock>();
+	
+	/** The queue lock. */
 	private final Object queueLock = new Object();
+	
+	/** The index path. */
 	private String indexPath;
+	
+	/** The lock name. */
 	private String lockName;
+	
+	/** The lock full file name path. */
 	private String lockFullFileNamePath;
+	
+	/** The delete on close. */
 	private boolean deleteOnClose; // File persistence policy for this lock (should delete unless a high-traffic
+									
+									/** The current lock turn. */
 									// lock).
 	private InterprocessLock currentLockTurn;
+	
+	/** The file lock. */
 	private FileLock fileLock;
+	
+	/** The lock request. */
 	private FileLock lockRequest;
+	
+	/** The min time next turn. */
 	private OffsetDateTime minTimeNextTurn = TimeConversion.MIN;
+	
+	/** The dispose on close. */
 	private boolean disposeOnClose; // Object persistence policy for this instance (should delete if not a reused
+									
+									/** The closed. */
 									// lock).
 	private boolean closed;
 
+	/**
+	 * Instantiates a new interprocess lock proxy.
+	 *
+	 * @param indexPath the index path
+	 * @param lockName the lock name
+	 * @param deleteOnClose the delete on close
+	 */
 	public InterprocessLockProxy(String indexPath, String lockName, boolean deleteOnClose) {
 		this.indexPath = indexPath;
 		this.lockName = lockName;
@@ -54,6 +89,8 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 
 	/**
 	 * The full (unique) name for the lock, combining the index path and lock name.
+	 *
+	 * @return the full name
 	 */
 	public final String getFullName() {
 		return this.lockFullFileNamePath;
@@ -61,6 +98,8 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 
 	/**
 	 * The name of the repository this lock controls access to.
+	 *
+	 * @return the index path
 	 */
 	public final String getIndexPath() {
 		return this.indexPath;
@@ -68,6 +107,8 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 
 	/**
 	 * The name of the lock within the repository.
+	 *
+	 * @return the lock name
 	 */
 	public final String getLockName() {
 		return this.lockName;
@@ -76,6 +117,8 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 	/**
 	 * Whether this lock instance has been disposed (and thus does not hold any
 	 * locks).
+	 *
+	 * @return true, if is closed
 	 */
 	public final boolean isClosed() {
 		return this.closed;
@@ -85,6 +128,8 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 	 * Reports how many threads are in the queue waiting on the lock (some may have
 	 * timed out and given up already). (Reports -1 if the proxy is idle (no current
 	 * turn).)
+	 *
+	 * @return the waiting count
 	 */
 	public final int getWaitingCount() {
 		return (this.currentLockTurn == null) ? -1 : this.waitQueue.size();
@@ -92,6 +137,8 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 
 	/**
 	 * The lock request with the current turn to hold or wait for the lock.
+	 *
+	 * @return the current lock turn
 	 */
 	public final InterprocessLock getCurrentLockTurn() {
 		return this.currentLockTurn;
@@ -99,6 +146,8 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 
 	/**
 	 * The requesting owner of the current turn for the lock.
+	 *
+	 * @return the current turn owner
 	 */
 	public final Object getCurrentTurnOwner() {
 		return this.currentLockTurn == null ? null : this.currentLockTurn.getOwner();
@@ -106,6 +155,8 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 
 	/**
 	 * The thread with the current turn for the lock.
+	 *
+	 * @return the current turn thread
 	 */
 	public final Thread getCurrentTurnThread() {
 		return this.currentLockTurn == null ? null : this.currentLockTurn.getOwningThread();
@@ -114,6 +165,8 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 	/**
 	 * The ManagedThreadId of the thread with the current turn for the lock, or -1
 	 * if none. (For debug convenience only.)
+	 *
+	 * @return the current turn thread id
 	 */
 	public final long getCurrentTurnThreadId() {
 		if (this.currentLockTurn == null) {
@@ -126,11 +179,18 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 	/**
 	 * Object persistence policy for this instance: Whether to dispose this instance
 	 * when file lock is released.
+	 *
+	 * @return the dispose on close
 	 */
 	public final boolean getDisposeOnClose() {
 		return this.disposeOnClose;
 	}
 
+	/**
+	 * Sets the dispose on close.
+	 *
+	 * @param value the new dispose on close
+	 */
 	public final void setDisposeOnClose(boolean value) {
 		this.disposeOnClose = value;
 	}
@@ -172,8 +232,8 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 	/**
 	 * Queue a lock request (RepositoryLock instance). Must be followed by a call to
 	 * AwaitOurTurnOrTimeout (which can block).
-	 * 
-	 * @param lockRequest
+	 *
+	 * @param lockRequest the lock request
 	 */
 	public final void queueRequest(InterprocessLock lockRequest) {
 		if (!lockRequest.getFullName().equalsIgnoreCase(this.lockFullFileNamePath)) {
@@ -191,11 +251,10 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 
 	/**
 	 * Wait for our turn to have the lock (and wait for the lock) up to our time
-	 * limit
-	 * 
-	 * @param lockRequest
-	 * @return
-	 * @throws IOException
+	 * limit.
+	 *
+	 * @param lockRequest the lock request
+	 * @return true, if successful
 	 */
 	public final boolean awaitOurTurnOrTimeout(InterprocessLock lockRequest) {
 		if (lockRequest.isExpired()) {
@@ -269,16 +328,22 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 		return validLock;
 	}
 
+	/**
+	 * Gets the lock file name.
+	 *
+	 * @param indexPath the index path
+	 * @param lockName the lock name
+	 * @return the lock file name
+	 */
 	public static Path getLockFileName(String indexPath, String lockName) {
 		return Paths.get(indexPath).resolve(lockName + "." + InterprocessLock.LOCK_FILE_EXTENSION);
 	}
 
 	/**
 	 * Try to get the actual file lock on behalf of the current request.
-	 * 
-	 * @param currentRequest
-	 * @return
-	 * @throws IOException
+	 *
+	 * @param currentRequest the current request
+	 * @return true, if successful
 	 */
 	private boolean tryGetLock(InterprocessLock currentRequest) {
 		boolean waitForLock = currentRequest.getWaitForLock();
@@ -336,11 +401,10 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 	/**
 	 * Find the next request still waiting and signal it to go. Or return true if
 	 * the current caller may proceed.
-	 * 
+	 *
 	 * @param currentRequest The request the caller is waiting on, or null for none.
 	 * @return True if the caller's supplied request is the next turn, false
 	 *         otherwise.
-	 * @throws IOException
 	 */
 	private boolean startNextTurn(InterprocessLock currentRequest) {
 		synchronized (this.queueLock) {
@@ -392,6 +456,11 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 		}
 	}
 
+	/**
+	 * Dequeue next request.
+	 *
+	 * @return the int
+	 */
 	private int dequeueNextRequest() {
 		synchronized (this.queueLock) {
 			int dequeueCount = 0;
@@ -514,11 +583,11 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 	/**
 	 * Open a file for the specified fileAccess and fileShare, or return null if
 	 * open fails (avoids exceptions).
-	 * 
+	 *
 	 * @param fullFileNamePath    The full-path file name to open for the specified
 	 *                            access.
-	 * @param fileAccess          The FileAccess with which to open the file.
-	 * @param fileShare           The FileShare to allow to overlap with this open.
+	 * @param mode the mode
+	 * @param shared the shared
 	 * @param manualDeleteOnClose Whether the (successfully-opened) FileLock
 	 *                            returned should delete the file upon dispose.
 	 * @return A disposable FileLock opened with the specified access and sharing),
@@ -549,7 +618,9 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 	 * Performs application-defined tasks associated with freeing, releasing, or
 	 * resetting unmanaged resources.
 	 * 
-	 * <filterpriority>2</filterpriority>
+	 * 
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public void close() throws IOException {
@@ -590,6 +661,12 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 	}
 
 
+	/**
+	 * Lock disposed.
+	 *
+	 * @param disposingLock the disposing lock
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void lockDisposed(InterprocessLock disposingLock) throws IOException {
 		// we need to remove this object from the lock collection
 		synchronized (this.queueLock) {
@@ -634,6 +711,9 @@ public class InterprocessLockProxy extends Observable implements Observer, Close
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable observable, Object arg) {
 		InterprocessLock lock = (InterprocessLock) observable;

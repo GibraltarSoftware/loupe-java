@@ -32,6 +32,7 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.SampleType;
 import com.onloupe.model.metric.MemberType;
 
+// TODO: Auto-generated Javadoc
 /**
  * The definition of an event metric, which must be registered before any
  * specific event metric instance can be created or sampled.
@@ -65,42 +66,55 @@ import com.onloupe.model.metric.MemberType;
  * </p>
  * <p>
  * To define an event metric with attributes, apply the
- * <see cref="EventMetricAttribute">EventMetric</see> attribute to the source
+ * <see cref="EventMetricAttribute">EventMetric attribute to the source
  * code for any class, struct, or interface, and apply the
- * <see cref="EventMetricValueAttribute">EventMetricValue</see> attribute to
+ * <see cref="EventMetricValueAttribute">EventMetricValue attribute to
  * desired members to define the value columns. This approach provides a simple
  * and powerful way to design and collect event metrics for your application.
- * See the <see cref="EventMetric">EventMetric Class Overview</see> for an
+ * See the EventMetric Class Overview for an
  * example.
  * </p>
  * <p>
  * To define an event metric programmatically requires more coding, but allows
  * you to optimize the performance of recording event metrics and works in
  * environments where it isn't feasible to decorate a class with attributes. See
- * the <see cref="EventMetric">EventMetric Class Overview</see> for an example.
+ * the EventMetric Class Overview for an example.
  * </p>
  * 
- * <example> See the <see cref="EventMetric">EventMetric Class Overview</see>
- * for an example. </example>
- * 
- * @see "!:Metrics_EventMetricDesign.html" cat=Developer's Reference Metrics -
- *      Designing Event Metrics
- * @see "EventMetric" cat=Related Classes EventMetric Class
  */
 public final class EventMetricDefinition implements IMetricDefinition {
+	
+	/** The Constant definitions. */
 	private static final MetricDefinitionCollection definitions = Log.getMetricDefinitions();;
 
+	/** The packet. */
 	private EventMetricDefinitionPacket packet;
+	
+	/** The lock. */
 	private final Object lock = new Object();
 
+	/** The metrics. */
 	private EventMetricCollection metrics;
+	
+	/** The metric values. */
 	private EventMetricValueDefinitionCollection metricValues;
+	
+	/** The bound. */
 	private boolean bound;
+	
+	/** The bound type. */
 	private java.lang.Class boundType;
+	
+	/** The name bound. */
 	private boolean nameBound;
+	
+	/** The name member name. */
 	private String nameMemberName;
+	
+	/** The name member type. */
 	private MemberType nameMemberType;
 
+	/** The Constant inheritanceMap. */
 	private static final Map<java.lang.Class, Class[]> inheritanceMap = new HashMap<java.lang.Class, Class[]>(); // Array
 																													// of
 																													// all
@@ -110,12 +124,14 @@ public final class EventMetricDefinition implements IMetricDefinition {
 																													// have
 																													// attributes),
 																													// by
+																													/** The Constant definitionMap. */
 																													// type.
 	private static final Map<java.lang.Class, EventMetricDefinition> definitionMap = new HashMap<java.lang.Class, EventMetricDefinition>(); // LOCKED
 																																			// definition
 																																			// by
 																																			// specific
 																																			// bound
+																																			/** The Constant dictionaryLock. */
 																																			// type.
 	private static final Object dictionaryLock = new Object(); // Lock for the DefinitionMap dictionary.
 
@@ -143,9 +159,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	}
 	
 	/**
-	 * Create a new event metric object from the provided raw data packet
-	 * 
-	 * @param definitions The definitions dictionary this definition is a part of
+	 * Create a new event metric object from the provided raw data packet.
+	 *
 	 * @param packet      The packet to create a definition from.
 	 */
 	private EventMetricDefinition(EventMetricDefinitionPacket packet) {
@@ -182,9 +197,9 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 *                        represents, or null for unit-less values.
 	 * @param caption         The end-user display caption for this value column.
 	 * @param description     The end-user description for this value column.
-	 * @return The newly created value column definition. <example> See the
-	 *         <see cref="EventMetric">EventMetric Class Overview</see> for an
-	 *         example. </example>
+	 * @return The newly created value column definition.  See the
+	 *         EventMetric Class Overview for an
+	 *         example. 
 	 */
 	public EventMetricValueDefinition addValue(String name, java.lang.Class type, SummaryFunction summaryFunction,
 			String unitCaption, String caption, String description) {
@@ -208,28 +223,13 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * argument will return an empty array, as will an argument which does not
 	 * define any valid event metrics. Also see RegisterType(Type) to find or create
 	 * a single event metric definition for a specific Type.
-	 * 
+	 *
 	 * @param metricData A Type or an instance defining event metrics by attributes
 	 *                   on itself and/or its interfaces.
 	 * @return An array of zero or more event metric definitions found for the
-	 *         provided object or Type. <example> See the
-	 *         <see cref="EventMetric">EventMetric Class Overview</see> for an
-	 *         example. </example>
-	 * @exception ArgumentException The specified metricDataObjectType does not have
-	 *                              an EventMetric attribute -or- The specified Type
-	 *                              does not have a usable EventMetric attribute, so
-	 *                              it can't be used to define an event metric. -or-
-	 *                              The specified Type's EventMetric has an empty
-	 *                              metric namespace which is not allowed, so no
-	 *                              metric can be defined. -or- The specified Type's
-	 *                              EventMetric has an empty metric category name
-	 *                              which is not allowed, so no metric can be
-	 *                              defined. -or- The specified Type's EventMetric
-	 *                              has an empty metric counter name which is not
-	 *                              allowed, so no metric can be defined. -or- The
-	 *                              specified Type's EventMetric attribute's 3-part
-	 *                              Key is already used for a metric definition
-	 *                              which is not an event metric.
+	 *         provided object or Type.  See the
+	 *         EventMetric Class Overview for an
+	 *         example. 
 	 */
 	public static EventMetricDefinition[] registerAll(Object metricData) {
 		List<EventMetricDefinition> definitions = new ArrayList<EventMetricDefinition>();
@@ -358,8 +358,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * be given. A method with void return type will return typeof(void), and
 	 * properties with no get accessor will return null. This does not currently
 	 * check method signature info for the zero-argument requirement.
-	 * 
-	 * @param member The MemberInfo of a Field, Property, or Method member.
+	 *
+	 * @param memberInfo the member info
 	 * @return The Type of value which can be read from the field, property, or
 	 *         method.
 	 */
@@ -394,26 +394,11 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * Type of this definition <b>can</b> be sampled from this specific event metric
 	 * definition. Also see AddOrGetDefinitions() to find and return an array of
 	 * definitions.
-	 * 
+	 *
 	 * @param metricDataObjectType A specific Type with attributes defining an event
 	 *                             metric.
 	 * @return The single event metric definition determined by attributes on the
 	 *         given Type.
-	 * @exception ArgumentException The specified metricDataObjectType does not have
-	 *                              an EventMetric attribute -or- The specified Type
-	 *                              does not have a usable EventMetric attribute, so
-	 *                              it can't be used to define an event metric. -or-
-	 *                              The specified Type's EventMetric has an empty
-	 *                              metric namespace which is not allowed, so no
-	 *                              metric can be defined. -or- The specified Type's
-	 *                              EventMetric has an empty metric category name
-	 *                              which is not allowed, so no metric can be
-	 *                              defined. -or- The specified Type's EventMetric
-	 *                              has an empty metric counter name which is not
-	 *                              allowed, so no metric can be defined. -or- The
-	 *                              specified Type's EventMetric attribute's 3-part
-	 *                              Key is already used for a metric definition
-	 *                              which is not an event metric.
 	 */
 	//THIS SCANS CLASS FIELDS AND METHODS FOR ATTRIBUTE/ANNOTATIONS
 	public static EventMetricDefinition registerType(java.lang.Class metricDataObjectType) {
@@ -630,15 +615,10 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * new definition will be officially registered and may be used as a valid
 	 * definition. This approach ensures thread-safe creation of singular event
 	 * metric definitions without the need for locking by your code.
-	 * 
+	 *
 	 * @param newDefinition A reference to an event metric definition template to be
 	 *                      registered, and to receive the official registered event
 	 *                      metric definition.
-	 * @exception ArgumentNullException A null definition can not be registered nor
-	 *                                  used to look up a registered event metric
-	 *                                  definition. <example> See the
-	 *                                  <see cref="EventMetric">EventMetric Class
-	 *                                  Overview</see> for an example. </example>
 	 */
 	public static void register(RefObject<EventMetricDefinition> newDefinition) {
 		// ToDo: Consider copy-in/copy-out of newDefinition to protect against
@@ -703,20 +683,13 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * Also see the overload directly taking an EventMetricValueDefinition as the
 	 * defaultValue for an approach which may be less prone to mistakes.
 	 * </p>
-	 * 
+	 *
 	 * @param newDefinition A reference to an event metric definition template to be
 	 *                      registered, and to receive the official registered event
 	 *                      metric definition.
 	 * @param defaultValue  The name of a value column to designate as the default
 	 *                      one to graph for this metric.
-	 * @throws Exception 
-	 * @exception ArgumentNullException A null newDefinition or a null or empty
-	 *                                  defaultValue was provided.
-	 * @exception KeyNotFoundException  The specified defaultValue column name was
-	 *                                  not found in the provided definition.
-	 *                                  <example> See the
-	 *                                  <see cref="EventMetric">EventMetric Class
-	 *                                  Overview</see> for an example. </example>
+	 * @throws Exception the exception
 	 */
 	public static void register(RefObject<EventMetricDefinition> newDefinition, String defaultValue) throws Exception {
 		EventMetricDefinition theDefinition = newDefinition.argValue;
@@ -785,20 +758,14 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * effect; a metric definition which is already registered can not be altered,
 	 * to ensure consistency within the session log.
 	 * </p>
-	 * 
+	 *
 	 * @param newDefinition A reference to an event metric definition template to be
 	 *                      registered, and to receive the official registered event
 	 *                      metric definition.
 	 * @param defaultValue  The definition of a value column in this event metric
 	 *                      definition to designate as the default one to graph for
 	 *                      this metric.
-	 * @throws Exception 
-	 * @exception ArgumentNullException A null newDefinition was provided.
-	 * @exception KeyNotFoundException  A defaultValue was provided but it is not
-	 *                                  from the provided EventMetricDefinition
-	 *                                  <example> See the
-	 *                                  <see cref="EventMetric">EventMetric Class
-	 *                                  Overview</see> for an example. </example>
+	 * @throws Exception the exception
 	 */
 	public static void register(RefObject<EventMetricDefinition> newDefinition,
 			EventMetricValueDefinition defaultValue) throws Exception {
@@ -842,9 +809,9 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * ArgumentException will be thrown to signal your programming mistake.
 	 * 
 	 * @return The actual usable definition with the same metrics system, category
-	 *         name, and counter name as this instance. <example> See the
-	 *         <see cref="EventMetric">EventMetric Class Overview</see> for an
-	 *         example. </example>
+	 *         name, and counter name as this instance.  See the
+	 *         EventMetric Class Overview for an
+	 *         example. 
 	 */
 	public EventMetricDefinition register() {
 		EventMetricDefinition officialDefinition;
@@ -917,6 +884,12 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	
 	///////////////////////////////////////////////////////
 
+	/**
+	 * Adds the or get.
+	 *
+	 * @param instanceName the instance name
+	 * @return the event metric
+	 */
 	public EventMetric addOrGet(String instanceName) {
 		// now that we have our instance name, we go ahead and see if there is already
 		// an instance with the right name or just add it
@@ -939,6 +912,12 @@ public final class EventMetricDefinition implements IMetricDefinition {
 		}
 	}
 	
+	/**
+	 * Adds the.
+	 *
+	 * @param instanceName the instance name
+	 * @return the event metric
+	 */
 	public EventMetric add(String instanceName) {
 		return this.getMetrics().add(TypeUtils.trimToNull(instanceName));
 	}
@@ -949,12 +928,13 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * exist, it will be created. If the metric definition does exist, but is not a
 	 * Custom Sampled Metric (or a derived class) an exception will be thrown.
 	 * Definitions are looked up and added to the provided definitions dictionary.
-	 * 
+	 *
 	 * @param definitions    The definitions dictionary this definition is a part of
 	 * @param metricTypeName The unique metric type
 	 * @param categoryName   The name of the category with which this definition is
 	 *                       associated.
 	 * @param counterName    The name of the definition within the category.
+	 * @return the event metric definition
 	 */
 	public static EventMetricDefinition addOrGet(MetricDefinitionCollection definitions, String metricTypeName,
 			String categoryName, String counterName) {
@@ -990,11 +970,12 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * exist, it will be created. If the metric definition does exist, but is not an
 	 * Event Metric an exception will be thrown. Definitions are looked up and added
 	 * to the active logging metrics collection (Log.Metrics)
-	 * 
+	 *
 	 * @param metricTypeName The unique metric type
 	 * @param categoryName   The name of the category with which this definition is
 	 *                       associated.
 	 * @param counterName    The name of the definition within the category.
+	 * @return the event metric definition
 	 */
 	public static EventMetricDefinition addOrGet(String metricTypeName, String categoryName, String counterName) {
 		// just forward into our call that requires the definition to be specified
@@ -1057,15 +1038,13 @@ public final class EventMetricDefinition implements IMetricDefinition {
 
 	/**
 	 * Calculate the string key for a metric definition.
-	 * 
+	 *
 	 * @param metricTypeName The unique metric type
 	 * @param categoryName   The name of the performance counter category
 	 *                       (performance object) with which this performance
 	 *                       counter is associated.
 	 * @param counterName    The name of the performance counter.
 	 * @return The unique string key for this item
-	 * @exception ArgumentNullException The provided metricsSystem, categoryName, or
-	 *                                  counterName was null.
 	 */
 	public static String getKey(String metricTypeName, String categoryName, String counterName) {
 		return getKey(metricTypeName, categoryName, counterName, null);
@@ -1073,7 +1052,7 @@ public final class EventMetricDefinition implements IMetricDefinition {
 
 	/**
 	 * Calculate the string key for a metric.
-	 * 
+	 *
 	 * @param metricTypeName The unique metric type
 	 * @param categoryName   The name of the performance counter category
 	 *                       (performance object) with which this performance
@@ -1083,8 +1062,6 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 *                       or an empty string (""), if the category contains a
 	 *                       single instance.
 	 * @return The unique string key for this item
-	 * @exception ArgumentNullException The provided metricsSystem, categoryName, or
-	 *                                  counterName was null.
 	 */
 	public static String getKey(String metricTypeName, String categoryName, String counterName, String instanceName) {
 		String key;
@@ -1121,6 +1098,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * 
 	 * Any number of different values can be recorded along with each event to
 	 * provide additional trends and filtering ability for later client analysis.
+	 *
+	 * @return the values
 	 */
 	public final EventMetricValueDefinitionCollection getValues() {
 		return this.metricValues;
@@ -1134,11 +1113,18 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * the same type that was used to generate the data binding. It isn't necessary
 	 * that the same object be used, just that it be a compatible type to the
 	 * original type used to establish the binding.
+	 *
+	 * @return true, if is bound
 	 */
 	public boolean isBound() {
 		return this.bound;
 	}
 
+	/**
+	 * Sets the checks if is bound.
+	 *
+	 * @param value the new checks if is bound
+	 */
 	public void setIsBound(boolean value) {
 		this.bound = value;
 	}
@@ -1148,11 +1134,18 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * 
 	 * When creating new metrics or metric samples, this data type must be provided
 	 * in bound mode.
+	 *
+	 * @return the bound type
 	 */
 	public java.lang.Class getBoundType() {
 		return this.boundType;
 	}
 
+	/**
+	 * Sets the bound type.
+	 *
+	 * @param value the new bound type
+	 */
 	public void setBoundType(java.lang.Class value) {
 		this.boundType = value;
 	}
@@ -1161,6 +1154,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * The set of metrics that use this definition.
 	 * 
 	 * All metrics with the same definition are of the same object type.
+	 *
+	 * @return the metrics
 	 */
 	public EventMetricCollection getMetrics() {
 		return this.metrics;
@@ -1172,6 +1167,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * Any number of different values can be recorded along with each event to
 	 * provide additional summarization and filtering ability for later client
 	 * analysis.
+	 *
+	 * @return the value collection
 	 */
 	protected EventMetricValueDefinitionCollection getValueCollection() {
 		return this.metricValues;
@@ -1184,9 +1181,11 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * Any number of different values can be recorded along with each event to
 	 * provide additional summarization and filtering ability for later client
 	 * analysis. While the definition is being built (with
-	 * <see cref="AddValue">AddValue</see> the current set of value definitions can
+	 * <see cref="AddValue">AddValue the current set of value definitions can
 	 * be examined as an array snapshot returned by this property. Changes to the
 	 * array will only affect that copy.
+	 *
+	 * @return the value definitions
 	 */
 	public EventMetricValueDefinition[] getValueDefinitions() {
 		return this.metricValues.toArray();
@@ -1246,12 +1245,19 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	/**
 	 * The default value to display for this event metric. Typically this should be
 	 * a trendable value.
+	 *
+	 * @return the default value
 	 */
 	public final EventMetricValueDefinition getDefaultValue() {
 		return ((TypeUtils.isBlank(packet.getDefaultValueName())) ? null
 				: getValues().get(packet.getDefaultValueName()));
 	}
 	
+	/**
+	 * Sets the default value.
+	 *
+	 * @param value the new default value
+	 */
 	public final void setDefaultValue(EventMetricValueDefinition value) {
 		packet.setDefaultValueName(((value == null) ? null : getValues().get(value.getName()).getName()));
 	}
@@ -1361,11 +1367,11 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 *                             provided user data object is not assignable to
 	 *                             this event metric's bound type and can not be
 	 *                             sampled automatically for this metric definition.
-	 *                             <example> See the
-	 *                             <see cref="EventMetric">EventMetric Class
-	 *                             Overview</see> for an example.
+	 *                              See the
+	 *                             EventMetric Class
+	 *                             Overview for an example.
 	 *                             <code title="" description="" lang=
-	 *                             "neutral"></code></example>
+	 *                             "neutral"></code>
 	 */
 	public void writeSample(Object metricData, String fallbackInstanceName) {
 		if (metricData == null) {
@@ -1446,9 +1452,9 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 *                   used to specify the data values directly.&lt;br /&gt;
 	 *                   -or-&lt;br /&gt; The provided user data object is not
 	 *                   assignable to this event metric's bound type and can not be
-	 *                   sampled automatically for this metric definition. <example>
-	 *                   See the <see cref="EventMetric">EventMetric Class
-	 *                   Overview</see> for an example. </example>
+	 *                   sampled automatically for this metric definition. 
+	 *                   See the EventMetric Class
+	 *                   Overview for an example. 
 	 */
 	public void writeSample(Object metricData) {
 		writeSample(metricData, null);
@@ -1536,11 +1542,11 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 *                             /&gt; &lt;br /&gt; The specified Type's
 	 *                             EventMetric attribute's 3-part Key is already
 	 *                             used for a metric definition which is not an
-	 *                             event metric. <example> See the
-	 *                             <see cref="EventMetric">EventMetric Class
-	 *                             Overview</see> for an example.
+	 *                             event metric.  See the
+	 *                             EventMetric Class
+	 *                             Overview for an example.
 	 *                             <code title="" description="" lang=
-	 *                             "neutral"></code></example>
+	 *                             "neutral"></code>
 	 */
 	public static void write(Object metricData, String fallbackInstanceName) {
 		EventMetricDefinition[] allDefinitions = registerAll(metricData);
@@ -1583,9 +1589,9 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 *                   defined.&lt;br /&gt; &lt;br /&gt; -or- &lt;br /&gt; &lt;br
 	 *                   /&gt; The specified Type's EventMetric attribute's 3-part
 	 *                   Key is already used for a metric definition which is not an
-	 *                   event metric. <example> See the
-	 *                   <see cref="EventMetric">EventMetric Class Overview</see>
-	 *                   for an example. </example>
+	 *                   event metric.  See the
+	 *                   EventMetric Class Overview
+	 *                   for an example. 
 	 */
 	public static void write(Object metricData) {
 		write(metricData, null);
@@ -1593,12 +1599,19 @@ public final class EventMetricDefinition implements IMetricDefinition {
 
 	/**
 	 * Object Change Locking object.
+	 *
+	 * @return the lock
 	 */
 	public Object getLock() {
 		return this.lock;
 	}
 
 	
+	/**
+	 * Gets the packet.
+	 *
+	 * @return the packet
+	 */
 	protected EventMetricDefinitionPacket getPacket() {
 		return packet;
 	}
@@ -1608,11 +1621,18 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * 
 	 * When true, the Name Member Name and Name Member Type properties are
 	 * available.
+	 *
+	 * @return the name bound
 	 */
 	protected boolean getNameBound() {
 		return this.nameBound;
 	}
 
+	/**
+	 * Sets the name bound.
+	 *
+	 * @param value the new name bound
+	 */
 	protected void setNameBound(boolean value) {
 		this.nameBound = value;
 	}
@@ -1621,11 +1641,18 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * The name of the member to invoke to determine the metric instance name.
 	 * 
 	 * This property is only valid when NameBound is true.
+	 *
+	 * @return the name member name
 	 */
 	protected String getNameMemberName() {
 		return this.nameMemberName;
 	}
 
+	/**
+	 * Sets the name member name.
+	 *
+	 * @param value the new name member name
+	 */
 	protected void setNameMemberName(String value) {
 		this.nameMemberName = value;
 	}
@@ -1635,11 +1662,18 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * (field, method, or property)
 	 * 
 	 * This property is only valid when NameBound is true.
+	 *
+	 * @return the name member type
 	 */
 	protected MemberType getNameMemberType() {
 		return this.nameMemberType;
 	}
 
+	/**
+	 * Sets the name member type.
+	 *
+	 * @param value the new name member type
+	 */
 	protected void setNameMemberType(MemberType value) {
 		this.nameMemberType = value;
 	}
@@ -1653,6 +1687,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * across different sessions, which could have different actual definitions due
 	 * to changing user code. See the Key property to identify a metric definition
 	 * across different sessions.
+	 *
+	 * @return the id
 	 */
 	@Override
 	public UUID getId() {
@@ -1664,6 +1700,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * 
 	 * The name is for comparing the same definition in different sessions. They
 	 * will have the same name but not the same Id.
+	 *
+	 * @return the name
 	 */
 	public final String getName() {
 		return this.packet.getName();
@@ -1676,6 +1714,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * The Key is the combination of metrics capture system label, category name,
 	 * and counter name to uniquely identify a specific metric definition. It can
 	 * also identify the same definition across different sessions.
+	 *
+	 * @return the key
 	 */
 	@Override
 	public String getKey() {
@@ -1685,12 +1725,19 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	/**
 	 * A short display string for this metric definition, suitable for end-user
 	 * display.
+	 *
+	 * @return the caption
 	 */
 	@Override
 	public String getCaption() {
 		return this.packet.getCaption();
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	public void setCaption(String value) {
 		this.packet.setCaption(value);
 	}
@@ -1698,18 +1745,27 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	/**
 	 * A description of what is tracked by this metric, suitable for end-user
 	 * display.
+	 *
+	 * @return the description
 	 */
 	@Override
 	public String getDescription() {
 		return this.packet.getDescription();
 	}
 
+	/**
+	 * Sets the description.
+	 *
+	 * @param value the new description
+	 */
 	public void setDescription(String value) {
 		this.packet.setDescription(value);
 	}
 
 	/**
 	 * The recommended default display interval for graphing.
+	 *
+	 * @return the interval
 	 */
 	//TODO refactor this when we pull up the model, use only agent types.
 	@Override
@@ -1738,6 +1794,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * groups will fall under separate namespaces and not require category names to
 	 * be globally unique across third party libraries linked by an application.
 	 * Pick your own label which will uniquely identify your library or namespace.
+	 *
+	 * @return the metrics system
 	 */
 	@Override
 	public String getMetricsSystem() {
@@ -1747,6 +1805,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	/**
 	 * The category of this metric for display purposes. This can be a period
 	 * delimited string to represent a variable height hierarchy.
+	 *
+	 * @return the category name
 	 */
 	@Override
 	public String getCategoryName() {
@@ -1755,6 +1815,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 
 	/**
 	 * The display name of this metric (unique within the category name).
+	 *
+	 * @return the counter name
 	 */
 	@Override
 	public String getCounterName() {
@@ -1764,6 +1826,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	/**
 	 * The sample type of the metric. Indicates whether the metric represents
 	 * discrete events or a continuous value.
+	 *
+	 * @return the sample type
 	 */
 	@Override
 	public SampleType getSampleType() {
@@ -1774,6 +1838,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * Indicates whether this event metric definition is now read-only because it
 	 * has been officially registered and can be used to create event metric
 	 * instances.
+	 *
+	 * @return true, if is read only
 	 */
 	@Override
 	public boolean isReadOnly() {
@@ -2058,50 +2124,120 @@ public final class EventMetricDefinition implements IMetricDefinition {
 		return foundValue;
 	}
 	
+	/**
+	 * Builder.
+	 *
+	 * @param metricTypeName the metric type name
+	 * @param categoryName the category name
+	 * @param counterName the counter name
+	 * @return the builder
+	 */
 	public static Builder builder(String metricTypeName, String categoryName, String counterName) {
 		return new Builder(metricTypeName, categoryName, counterName);
 	}
 
+	/**
+	 * Builder.
+	 *
+	 * @param packet the packet
+	 * @return the builder
+	 */
 	public static Builder builder(EventMetricDefinitionPacket packet) {
 		return new Builder(packet);
 	}
 	
+	/**
+	 * The Class Builder.
+	 */
 	public static final class Builder {
+		
+		/** The definition. */
 		private EventMetricDefinition definition;
 
+		/**
+		 * Instantiates a new builder.
+		 *
+		 * @param metricTypeName the metric type name
+		 * @param categoryName the category name
+		 * @param counterName the counter name
+		 */
 		private Builder(String metricTypeName, String categoryName, String counterName) {
 			definition = new EventMetricDefinition(metricTypeName, categoryName, counterName);
 		}
 
+		/**
+		 * Instantiates a new builder.
+		 *
+		 * @param packet the packet
+		 */
 		private Builder(EventMetricDefinitionPacket packet) {
 			definition = new EventMetricDefinition(packet);
 		}
 		
+		/**
+		 * Default value.
+		 *
+		 * @param eventMetricValueDefinition the event metric value definition
+		 * @return the builder
+		 */
 		public Builder defaultValue(EventMetricValueDefinition eventMetricValueDefinition) {
 			definition.setDefaultValue(eventMetricValueDefinition);
 			return this;
 		}
 		
+		/**
+		 * Adds the value.
+		 *
+		 * @param name the name
+		 * @param type the type
+		 * @param summaryFunction the summary function
+		 * @param unitCaption the unit caption
+		 * @param caption the caption
+		 * @param description the description
+		 * @return the builder
+		 */
 		public Builder addValue(String name, java.lang.Class type, SummaryFunction summaryFunction,
 				String unitCaption, String caption, String description) {
 			definition.addValue(name, type, summaryFunction, unitCaption, caption, description);
 			return this;
 		}
 		
+		/**
+		 * Description.
+		 *
+		 * @param description the description
+		 * @return the builder
+		 */
 		public Builder description(String description) {
 			definition.setDescription(description);
 			return this;
 		}
 		
+		/**
+		 * Caption.
+		 *
+		 * @param caption the caption
+		 * @return the builder
+		 */
 		public Builder caption(String caption) {
 			definition.getPacket().setCaption(caption);
 			return this;
 		}
 
+		/**
+		 * Builds the.
+		 *
+		 * @return the event metric definition
+		 */
 		public EventMetricDefinition build() {
 			return definition;
 		}
 		
+		/**
+		 * Register.
+		 *
+		 * @return the event metric definition
+		 */
 		public EventMetricDefinition register() {
 			return definition.register();
 		}

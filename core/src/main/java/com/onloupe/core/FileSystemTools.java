@@ -19,6 +19,7 @@ import com.onloupe.core.util.FileUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.exception.LoupeFileSystemException;
 
+// TODO: Auto-generated Javadoc
 /**
  * Common routines for manipulating files and directories that extend the .NET
  * framework
@@ -45,10 +46,10 @@ public final class FileSystemTools {
 	/**
 	 * Ensures that the provided full file name and path is unique, and makes it
 	 * unique if necessary.
-	 * 
-	 * @param path The candidate path to verify
+	 *
+	 * @param pathStr the path str
 	 * @return A unique path based on the provided path.
-	 * @throws Exception 
+	 * @throws Exception the exception
 	 */
 	public static String makeFileNamePathUnique(String pathStr) throws Exception {
 		File fileInfo = new File(pathStr);
@@ -96,9 +97,9 @@ public final class FileSystemTools {
 	/**
 	 * Ensure that the path to the provided fully qualified file name exists,
 	 * creating it if necessary.
-	 * 
+	 *
 	 * @param fileNamePath A fully qualified file name and path.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void ensurePathExists(String fileNamePath) throws IOException {
 		try {
@@ -110,8 +111,8 @@ public final class FileSystemTools {
 
 	/**
 	 * Checks the attributes on the file and clears read-only attributes.
-	 * 
-	 * @param fileNamePath
+	 *
+	 * @param fileNamePath the file name path
 	 */
 	public static void makeFileWriteable(String fileNamePath) {
 		File file = new File(fileNamePath);
@@ -124,9 +125,9 @@ public final class FileSystemTools {
 	}
 
 	/**
-	 * Find out the size of the file specified
-	 * 
-	 * @param fileNamePath
+	 * Find out the size of the file specified.
+	 *
+	 * @param fileNamePath the file name path
 	 * @return The file size in bytes or 0 if the file is not found.
 	 */
 	public static long getFileSize(String fileNamePath) {
@@ -141,12 +142,11 @@ public final class FileSystemTools {
 
 	/**
 	 * Open a temporary file for write and return the open FileStream.
-	 * 
-	 * @param fileName      The full file name path created.
+	 *
 	 * @param deleteOnClose True to set the file delete on close, false to leave the
 	 *                      file after close (caller must delete, rename, etc).
 	 * @return An open read-write FileStream.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static File getTempFile(boolean deleteOnClose) throws IOException {
 		File file;
@@ -165,9 +165,9 @@ public final class FileSystemTools {
 	/**
 	 * Open a temporary file for read and write and return the open FileStream which
 	 * will delete-on-close.
-	 * 
+	 *
 	 * @return An open read-write FileStream which is set to delete on close.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static File getTempFile() throws IOException {
 		return getTempFile(true);
@@ -176,12 +176,12 @@ public final class FileSystemTools {
 	/**
 	 * Copy the content of a Stream into a temporary file opened for read and write
 	 * and return the open FileStream which will delete-on-close.
-	 * 
+	 *
 	 * @param contentStream An open Stream to copy from its current Position to its
 	 *                      end.
 	 * @return An open read-write FileStream which is set to delete on close with a
 	 *         copy of the contentStream.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static File copyStreamToTempFile(InputStream contentStream) throws IOException {
 		File file = getTempFile();
@@ -217,6 +217,13 @@ public final class FileSystemTools {
 		return destArray.length;
 	}
 
+	/**
+	 * Content pump.
+	 *
+	 * @param source the source
+	 * @param dest the dest
+	 * @return the int
+	 */
 	public static int contentPump(ByteBuffer source, ByteBuffer dest) {
 		return contentPump(source, dest, source.capacity());
 	}
@@ -228,6 +235,7 @@ public final class FileSystemTools {
 	 * @param source The Stream to read from, starting at its current Position.
 	 * @param dest   The Stream to write into, starting at its current Position.
 	 * @return The total number of bytes copied.
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static int contentPump(InputStream source, OutputStream dest) throws IOException {
 		byte[] buffer = new byte[1024 * 8];
@@ -288,8 +296,10 @@ public final class FileSystemTools {
 	/**
 	 * Copy a file to a target location, replacing an existing file if the source is
 	 * newer.
-	 * 
-	 * @throws IOException
+	 *
+	 * @param sourceFileNamePath the source file name path
+	 * @param targetFileNamePath the target file name path
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void copyIfNewer(String sourceFileNamePath, String targetFileNamePath) throws IOException {
 		File source = new File(targetFileNamePath);
@@ -312,6 +322,12 @@ public final class FileSystemTools {
 		}
 	}
 
+	/**
+	 * Sanitize file name.
+	 *
+	 * @param fileName the file name
+	 * @return the string
+	 */
 	public static String sanitizeFileName(String fileName) {
 		if (TypeUtils.isBlank(fileName))
 			throw new LoupeFileSystemException("File name must not be blank.");
@@ -319,6 +335,14 @@ public final class FileSystemTools {
 		return fileName.replaceAll("[^a-zA-Z0-9\\.\\-]", "_");
 	}
 
+	/**
+	 * Creates the random access file.
+	 *
+	 * @param filename the filename
+	 * @param mode the mode
+	 * @return the random access file
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static RandomAccessFile createRandomAccessFile(String filename, String mode) throws IOException {
 		try {
 			File file = new File(filename);

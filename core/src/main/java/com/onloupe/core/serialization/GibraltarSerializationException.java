@@ -2,6 +2,7 @@ package com.onloupe.core.serialization;
 
 import com.onloupe.model.exception.GibraltarException;
 
+// TODO: Auto-generated Javadoc
 /**
  * This is a base class for any new serialization Exception types we define and
  * for generic exceptions generated in Serialization.
@@ -12,6 +13,7 @@ import com.onloupe.model.exception.GibraltarException;
 public class GibraltarSerializationException extends GibraltarException {
 	// This is a dummy wrapper around Gibraltar exceptions (for now)
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -99,16 +101,23 @@ public class GibraltarSerializationException extends GibraltarException {
 		setStreamFailed(streamFailed);
 	}
 
-	/**
-	 * Indicates if the exception is a stream error, so no further packets can be
-	 * serialized
-	 */
+	/** Indicates if the exception is a stream error, so no further packets can be serialized. */
 	private boolean streamFailed;
 
+	/**
+	 * Gets the stream failed.
+	 *
+	 * @return the stream failed
+	 */
 	public final boolean getStreamFailed() {
 		return this.streamFailed;
 	}
 
+	/**
+	 * Sets the stream failed.
+	 *
+	 * @param value the new stream failed
+	 */
 	private void setStreamFailed(boolean value) {
 		this.streamFailed = value;
 	}

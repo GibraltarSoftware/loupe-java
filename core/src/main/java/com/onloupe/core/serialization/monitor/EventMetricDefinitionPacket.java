@@ -10,17 +10,20 @@ import com.onloupe.model.SampleType;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * A serializable event metric definition. Provides metadata for metrics based
  * on events.
  */
 public final class EventMetricDefinitionPacket extends MetricDefinitionPacket implements ICachedPacket, java.lang.Comparable<EventMetricDefinitionPacket> {
+	
+	/** The default value name. */
 	private String defaultValueName;
 
 	/**
 	 * Creates an event metric definition packet for the provided event metric
-	 * information
-	 * 
+	 * information.
+	 *
 	 * @param metricTypeName The unique metric type
 	 * @param categoryName   The name of the category with which this definition is
 	 *                       associated.
@@ -33,20 +36,27 @@ public final class EventMetricDefinitionPacket extends MetricDefinitionPacket im
 	/**
 	 * The default value to display for this event metric. Typically this should be
 	 * a trendable value.
+	 *
+	 * @return the default value name
 	 */
 	public String getDefaultValueName() {
 		return this.defaultValueName;
 	}
 
+	/**
+	 * Sets the default value name.
+	 *
+	 * @param value the new default value name
+	 */
 	public void setDefaultValueName(String value) {
 		this.defaultValueName = value;
 	}
 
 	/**
 	 * Compare this event metric definition packet with another.
-	 * 
-	 * @param other
-	 * @return
+	 *
+	 * @param other the other
+	 * @return the int
 	 */
 	@Override
 	public int compareTo(EventMetricDefinitionPacket other) {
@@ -57,11 +67,10 @@ public final class EventMetricDefinitionPacket extends MetricDefinitionPacket im
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -109,14 +118,25 @@ public final class EventMetricDefinitionPacket extends MetricDefinitionPacket im
 	 */
 	private EventMetricValueDefinitionCollection metricValues;
 
+	/**
+	 * Gets the metric values.
+	 *
+	 * @return the metric values
+	 */
 	public EventMetricValueDefinitionCollection getMetricValues() {
 		return this.metricValues;
 	}
 
+	/**
+	 * Sets the metric values.
+	 *
+	 * @param value the new metric values
+	 */
 	public void setMetricValues(EventMetricValueDefinitionCollection value) {
 		this.metricValues = value;
 	}
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -130,6 +150,9 @@ public final class EventMetricDefinitionPacket extends MetricDefinitionPacket im
 		return super.getRequiredPackets();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricDefinitionPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -139,6 +162,9 @@ public final class EventMetricDefinitionPacket extends MetricDefinitionPacket im
 		definition.getFields().add("DefaultValueName", FieldType.STRING);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricDefinitionPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -146,6 +172,9 @@ public final class EventMetricDefinitionPacket extends MetricDefinitionPacket im
 		packet.setField("DefaultValueName", this.defaultValueName);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricDefinitionPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");

@@ -1,5 +1,6 @@
 package com.onloupe.core.metrics;
 
+// TODO: Auto-generated Javadoc
 /**
  * Determines what the raw data for a given sampled metric is, and how it has to
  * be processed to produce final values.
@@ -41,9 +42,7 @@ public enum MetricSampleType {
 	 */
 	INCREMENTAL_FRACTION(3),
 
-	/**
-	 * Each sample value is the cumulative total up to the timestamp of the sample
-	 */
+	/** Each sample value is the cumulative total up to the timestamp of the sample. */
 	TOTAL_COUNT(4),
 
 	/**
@@ -52,11 +51,20 @@ public enum MetricSampleType {
 	 */
 	TOTAL_FRACTION(5);
 
+	/** The Constant SIZE. */
 	public static final int SIZE = java.lang.Integer.SIZE;
 
+	/** The int value. */
 	private int intValue;
+	
+	/** The mappings. */
 	private static java.util.HashMap<Integer, MetricSampleType> mappings;
 
+	/**
+	 * Gets the mappings.
+	 *
+	 * @return the mappings
+	 */
 	private static java.util.HashMap<Integer, MetricSampleType> getMappings() {
 		if (mappings == null) {
 			synchronized (MetricSampleType.class) {
@@ -68,15 +76,31 @@ public enum MetricSampleType {
 		return mappings;
 	}
 
+	/**
+	 * Instantiates a new metric sample type.
+	 *
+	 * @param value the value
+	 */
 	private MetricSampleType(int value) {
 		this.intValue = value;
 		getMappings().put(value, this);
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return this.intValue;
 	}
 
+	/**
+	 * For value.
+	 *
+	 * @param value the value
+	 * @return the metric sample type
+	 */
 	public static MetricSampleType forValue(int value) {
 		return getMappings().get(value);
 	}

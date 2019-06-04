@@ -13,6 +13,7 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.SampleType;
 import com.onloupe.model.metric.MetricSampleInterval;
 
+// TODO: Auto-generated Javadoc
 /**
  * A single metric that has been captured. A metric is a single measured value
  * over time.
@@ -23,13 +24,21 @@ import com.onloupe.model.metric.MetricSampleInterval;
  * 
  */
 public abstract class Metric implements IDisplayable {
+	
+	/** The metric definition. */
 	private MetricDefinition metricDefinition;
+	
+	/** The packet. */
 	private MetricPacket packet;
 
 	// these variables are not persisted but just used to manage our own state.
+	/** The sample sequence. */
 	// used when adding sampled metrics to ensure order.
 	private AtomicLong sampleSequence = new AtomicLong();
 
+	/**
+	 * Instantiates a new metric.
+	 */
 	public Metric() {
 		// TODO Auto-generated constructor stub
 	}
@@ -75,6 +84,8 @@ public abstract class Metric implements IDisplayable {
 	 * 
 	 * The key can be used to compare the same metric across different instances
 	 * (e.g. sessions). This Id is always unique to a particular instance.
+	 *
+	 * @return the id
 	 */
 	public final UUID getId() {
 		return this.packet.getID();
@@ -85,6 +96,8 @@ public abstract class Metric implements IDisplayable {
 	 * 
 	 * The name is for comparing the same metric in different sessions. They will
 	 * have the same name but not the same Id.
+	 *
+	 * @return the name
 	 */
 	public final String getName() {
 		return this.packet.getName();
@@ -92,6 +105,8 @@ public abstract class Metric implements IDisplayable {
 
 	/**
 	 * A short caption of what the metric tracks, suitable for end-user display.
+	 *
+	 * @return the caption
 	 */
 	@Override
 	public final String getCaption() {
@@ -101,6 +116,8 @@ public abstract class Metric implements IDisplayable {
 	/**
 	 * A description of what is tracked by this metric, suitable for end-user
 	 * display.
+	 *
+	 * @return the description
 	 */
 	@Override
 	public final String getDescription() {
@@ -109,13 +126,17 @@ public abstract class Metric implements IDisplayable {
 
 	/**
 	 * The definition of this metric object.
+	 *
+	 * @return the definition
 	 */
 	public MetricDefinition getDefinition() {
 		return this.metricDefinition;
 	}
 
 	/**
-	 * The internal metric type of this metric definition
+	 * The internal metric type of this metric definition.
+	 *
+	 * @return the metric type name
 	 */
 	public final String getMetricTypeName() {
 		return getDefinition().getMetricTypeName();
@@ -124,6 +145,8 @@ public abstract class Metric implements IDisplayable {
 	/**
 	 * The category of this metric for display purposes. Category is the top
 	 * displayed hierarchy.
+	 *
+	 * @return the category name
 	 */
 	public final String getCategoryName() {
 		return getDefinition().getCategoryName();
@@ -131,6 +154,8 @@ public abstract class Metric implements IDisplayable {
 
 	/**
 	 * Gets or sets an instance name for this performance counter.
+	 *
+	 * @return the instance name
 	 */
 	public final String getInstanceName() {
 		return this.packet.getInstanceName();
@@ -143,6 +168,8 @@ public abstract class Metric implements IDisplayable {
 	 * The default instance has a null instance name. This property is provided as a
 	 * convenience to simplify client code so you don't have to distinguish empty
 	 * strings or null.
+	 *
+	 * @return true, if is default
 	 */
 	public final boolean isDefault() {
 		return (TypeUtils.isBlank(this.packet.getInstanceName()));
@@ -151,11 +178,18 @@ public abstract class Metric implements IDisplayable {
 	/**
 	 * The sample type of the metric. Indicates whether the metric represents
 	 * discrete events or a continuous value.
+	 *
+	 * @return the sample type
 	 */
 	public final SampleType getSampleType() {
 		return getDefinition().getSampleType();
 	}
 
+	/**
+	 * Gets the counter name.
+	 *
+	 * @return the counter name
+	 */
 	public String getCounterName() {
 		return this.metricDefinition.getCounterName();
 	}
@@ -244,12 +278,12 @@ public abstract class Metric implements IDisplayable {
 	 * To calculate a backwards offset (the date that is the specified interval
 	 * before the baseline) use a negative number of intervals. For example, -1
 	 * intervals will give you one interval before the baseline.
-	 * 
+	 *
 	 * @param baseline  The date and time to calculate an offset date and time from
 	 * @param interval  The interval to add or subtract from the baseline
 	 * @param intervals The number of intervals to go forward or (if negative)
 	 *                  backwards
-	 * @return
+	 * @return the offset date time
 	 */
 	public final OffsetDateTime calculateOffset(OffsetDateTime baseline, MetricSampleInterval interval, int intervals) {
 		OffsetDateTime returnVal; // just so we're initialized with SOMETHING.
@@ -310,9 +344,9 @@ public abstract class Metric implements IDisplayable {
 	 * 
 	 * Tolerance allows for us to ignore small variations in exact timestamps for
 	 * the purposes of fitting the best data.
-	 * 
-	 * @param interval
-	 * @return
+	 *
+	 * @param interval the interval
+	 * @return the duration
 	 */
 	public static Duration calculateOffsetTolerance(MetricSampleInterval interval) {
 		Duration returnVal;
@@ -356,7 +390,9 @@ public abstract class Metric implements IDisplayable {
 	}
 
 	/**
-	 * The underlying packet
+	 * The underlying packet.
+	 *
+	 * @return the packet
 	 */
 	public MetricPacket getPacket() {
 		return this.packet;
@@ -366,8 +402,8 @@ public abstract class Metric implements IDisplayable {
 	 * A unique, increasing sequence number each time it's called.
 	 * 
 	 * This method is thread-safe.
-	 * 
-	 * @return
+	 *
+	 * @return the sample sequence
 	 */
 	public final long getSampleSequence() {
 		return this.sampleSequence.incrementAndGet();

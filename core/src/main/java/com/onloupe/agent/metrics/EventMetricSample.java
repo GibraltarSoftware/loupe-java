@@ -10,6 +10,7 @@ import com.onloupe.core.util.OutObject;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
+// TODO: Auto-generated Javadoc
 /**
  * One sample of a Event metric
  * 
@@ -18,9 +19,14 @@ import com.onloupe.model.log.LogMessageSeverity;
  * compatibility with any Event metric implementation.
  */
 public final class EventMetricSample {
+	
+	/** The Constant LOG_CATEGORY. */
 	private static final String LOG_CATEGORY = "Loupe";
 
+	/** The metric. */
 	private EventMetric metric;
+	
+	/** The packet. */
 	private EventMetricSamplePacket packet;
 
 	/**
@@ -148,6 +154,8 @@ public final class EventMetricSample {
 
 	/**
 	 * The Event metric this sample is for.
+	 *
+	 * @return the metric
 	 */
 	public EventMetric getMetric() {
 		return this.metric;
@@ -156,6 +164,8 @@ public final class EventMetricSample {
 	/**
 	 * The raw value of this metric. Depending on the metric definition, this may be
 	 * meaningless and instead a calculation may need to be performed.
+	 *
+	 * @return the value
 	 */
 	public double getValue() {
 		double value;
@@ -200,9 +210,9 @@ public final class EventMetricSample {
 	
 	/**
 	 * Get the effective value, substituting zero for null.
-	 * 
+	 *
 	 * @param valueIndex The numeric index of the value to retrieve
-	 * @return
+	 * @return the effective value
 	 */
 	public final double getEffectiveValue(int valueIndex) {
 		double returnVal;
@@ -237,6 +247,8 @@ public final class EventMetricSample {
 	/**
 	 * The array of values associated with this sample. Any value may be a null
 	 * object.
+	 *
+	 * @return the values
 	 */
 	public final Object[] getValues() {
 		return packet.getValues();

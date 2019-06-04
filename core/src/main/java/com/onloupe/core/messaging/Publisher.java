@@ -21,44 +21,84 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+// TODO: Auto-generated Javadoc
 /**
- * The central publisher for messaging
- * 
- * 
+ * The central publisher for messaging.
  */
 public class Publisher implements Closeable {
+	
+	/** The session summary. */
 	private SessionSummary sessionSummary;
+	
+	/** The message queue lock. */
 	private final Object messageQueueLock = new Object();
+	
+	/** The message dispatch thread lock. */
 	private final Object messageDispatchThreadLock = new Object();
+	
+	/** The header packets lock. */
 	private final Object headerPacketsLock = new Object();
+	
+	/** The config lock. */
 	private final Object configLock = new Object();
+	
+	/** The cached types. */
 	private PacketDefinitionList cachedTypes;
+	
+	/** The packet cache. */
 	private PacketCache packetCache;
+	
+	/** The header packets. */
 	private final ArrayList<ICachedMessengerPacket> headerPackets = new ArrayList<ICachedMessengerPacket>(); // LOCKED
 																												// BY
+																												/** The message queue. */
 																												// HEADERPACKETSLOCK
 	private ConcurrentLinkedQueue<PacketEnvelope> messageQueue;
+	
+	/** The message overflow queue. */
 	private ConcurrentLinkedQueue<PacketEnvelope> messageOverflowQueue;
+	
+	/** The messengers. */
 	private List<IMessenger> messengers; // LOCKED BY CONFIGLOCK
+	
+	/** The session name. */
 	private String sessionName;
 
+	/** The configuration. */
 	private AgentConfiguration configuration;
+	
+	/** The message dispatch thread. */
 	private Thread messageDispatchThread; // LOCKED BY THREADLOCK
+	
+	/** The message dispatch thread failed. */
 	private volatile boolean messageDispatchThreadFailed; // LOCKED BY THREADLOCK (and volatile to allow quick reading
+															
+															/** The message queue max length. */
 															// outside the lock)
 	private int messageQueueMaxLength = 2000; // LOCKED BY QUEUELOCK
+	
+	/** The force write through. */
 	private boolean forceWriteThrough;
+	
+	/** The initialized. */
 	private boolean initialized; // designed to enable us to do our initialization in the background. LOCKED BY
+									
+									/** The shutdown. */
 									// THREADLOCK
 	private volatile boolean shutdown; // locks us down when we shut down LOCKED BY QUEUELOCK (and volatile to allow
+										
+										/** The packet sequence. */
 										// quick reading outside the lock)
 	private long packetSequence; // a monotonically increasing sequence number for packets as they get queued.
+									
+									/** The closed. */
 									// LOCKED BY QUEUELOCK
 	private boolean closed;
 
 	// A thread-specific static flag for each thread, so we can disable blocking for
 	// Publisher and Messenger threads
 
+	/** The t thread must not block. */
 	private static ThreadLocal<Boolean> tThreadMustNotBlock = new ThreadLocal<Boolean>() {
 		@Override
 		protected Boolean initialValue() {
@@ -68,6 +108,7 @@ public class Publisher implements Closeable {
 	};
 
 	// A thread-specific static flag for each thread, so we can disable notification
+	/** The t thread must not notify. */
 	// loops for Notifier threads
 	private static ThreadLocal<Boolean> tThreadMustNotNotify = new ThreadLocal<Boolean>() {
 		@Override
@@ -84,6 +125,10 @@ public class Publisher implements Closeable {
 	 * process. More specifically, there should be a one to one relationship between
 	 * publisher, packet cache, and messengers to ensure integrity of the message
 	 * output.
+	 *
+	 * @param sessionName the session name
+	 * @param configuration the configuration
+	 * @param sessionSummary the session summary
 	 */
 	public Publisher(String sessionName, AgentConfiguration configuration, SessionSummary sessionSummary) {
 		if (TypeUtils.isBlank(sessionName)) {
@@ -170,6 +215,9 @@ public class Publisher implements Closeable {
 		return tThreadMustNotNotify.get();
 	}
 
+	/**
+	 * Creates the message dispatch thread.
+	 */
 	private void createMessageDispatchThread() {
 		synchronized (this.messageDispatchThreadLock) {
 			Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -216,10 +264,6 @@ public class Publisher implements Closeable {
 
 	/**
 	 * The main method of the message dispatch thread.
-	 * 
-	 * @throws InterruptedException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
 	 */
 	private void messageDispatchMain() {
 		try {
@@ -314,6 +358,9 @@ public class Publisher implements Closeable {
 		}
 	}
 
+	/**
+	 * On thread abort.
+	 */
 	private void onThreadAbort() {
 		synchronized (this.messageQueueLock) {
 			// We need to dump the queues and tell everyone to stop waiting, because we'll
@@ -338,10 +385,10 @@ public class Publisher implements Closeable {
 
 	/**
 	 * Send the packet to every current messenger and add it to the packet cache if
-	 * it's cachable
-	 * 
-	 * @param envelope
-	 * @throws Exception 
+	 * it's cachable.
+	 *
+	 * @param envelope the envelope
+	 * @throws Exception the exception
 	 */
 	private void dispatchPacket(PacketEnvelope envelope) throws Exception {
 		IMessengerPacket packet;
@@ -411,9 +458,6 @@ public class Publisher implements Closeable {
 
 	/**
 	 * Perform first-time initialization. We presume we're in a thread-safe lock.
-	 * 
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
 	 */
 	private void ensureInitialized() {
 		if (!this.initialized) {
@@ -433,6 +477,12 @@ public class Publisher implements Closeable {
 		}
 	}
 
+	/**
+	 * Adds the messenger.
+	 *
+	 * @param configuration the configuration
+	 * @param messengerType the messenger type
+	 */
 	@SuppressWarnings("rawtypes")
 	private void addMessenger(IMessengerConfiguration configuration, java.lang.Class messengerType) {
 		IMessenger newMessenger = null;
@@ -461,6 +511,9 @@ public class Publisher implements Closeable {
 		}
 	}
 
+	/**
+	 * Ensure message dispatch thread is valid.
+	 */
 	private void ensureMessageDispatchThreadIsValid() {
 		// see if for some mystical reason our message dispatch thread failed. But if
 		// we're shut down then we don't care.
@@ -482,6 +535,11 @@ public class Publisher implements Closeable {
 		}
 	}
 
+	/**
+	 * Queue to notifier.
+	 *
+	 * @param packet the packet
+	 */
 	private void queueToNotifier(IMessengerPacket packet) {
 
 	}
@@ -531,6 +589,13 @@ public class Publisher implements Closeable {
 		return packetEnvelope;
 	}
 
+	/**
+	 * Stamp packet.
+	 *
+	 * @param packet the packet
+	 * @param defaultTimeStamp the default time stamp
+	 * @throws Exception the exception
+	 */
 	private void stampPacket(IMessengerPacket packet, OffsetDateTime defaultTimeStamp) throws Exception {
 		assert TimeConversion.epochTicks(defaultTimeStamp) > 0;
 
@@ -573,9 +638,9 @@ public class Publisher implements Closeable {
 	 * Even if the envelope is not set to write through the method will not return
 	 * until the packet has been committed. This method performs its own
 	 * synchronization and should not be done within a lock.
-	 * 
+	 *
 	 * @param packetEnvelope The packet that must be committed
-	 * @throws InterruptedException
+	 * @throws InterruptedException the interrupted exception
 	 */
 	private void waitOnPacket(PacketEnvelope packetEnvelope) throws InterruptedException {
 		// we are monitoring for write through by using object locking, so get the
@@ -601,9 +666,9 @@ public class Publisher implements Closeable {
 	 * 
 	 * This method performs its own synchronization and should not be done within a
 	 * lock.
-	 * 
+	 *
 	 * @param packetEnvelope The packet that must be submitted
-	 * @throws InterruptedException
+	 * @throws InterruptedException the interrupted exception
 	 */
 	private static void waitOnPending(PacketEnvelope packetEnvelope) throws InterruptedException {
 		// we are monitoring for pending by using object locking, so get the lock...
@@ -623,6 +688,13 @@ public class Publisher implements Closeable {
 		}
 	}
 
+	/**
+	 * Gets the required packets.
+	 *
+	 * @param packet the packet
+	 * @return the required packets
+	 * @throws Exception the exception
+	 */
 	private List<IPacket> getRequiredPackets(IPacket packet) throws Exception {
 		PacketDefinition previewDefinition;
 		int previewTypeIndex = this.cachedTypes.indexOf(packet);
@@ -637,7 +709,9 @@ public class Publisher implements Closeable {
 	}
 
 	/**
-	 * The central configuration of the publisher
+	 * The central configuration of the publisher.
+	 *
+	 * @return the configuration
 	 */
 	public final PublisherConfiguration getConfiguration() {
 		// before we return the configuration, we need to have been initialized.
@@ -645,9 +719,9 @@ public class Publisher implements Closeable {
 	}
 
 	/**
-	 * The cache of packets that have already been published
-	 * 
-	 * 
+	 * The cache of packets that have already been published.
+	 *
+	 * @return the packet cache
 	 */
 	public final PacketCache getPacketCache() {
 		return this.packetCache;
@@ -655,12 +729,12 @@ public class Publisher implements Closeable {
 
 	/**
 	 * Publish the provided batch of packets.
-	 * 
+	 *
 	 * @param packetArray  An array of packets to publish as a batch.
 	 * @param writeThrough True if the information contained in packet should be
 	 *                     committed synchronously, false if the publisher can use
 	 *                     write caching (when available).
-	 * @throws InterruptedException
+	 * @throws InterruptedException the interrupted exception
 	 */
 	public final void publish(IMessengerPacket[] packetArray, boolean writeThrough) throws InterruptedException {
 		// Sanity-check the most likely no-op cases before we bother with the lock
@@ -797,13 +871,17 @@ public class Publisher implements Closeable {
 	 * The session name consists of the application name and version and the session
 	 * start date. It will generally be unique except in the case where a user
 	 * starts two instances of the same application in the same second.
+	 *
+	 * @return the session name
 	 */
 	public final String getSessionName() {
 		return this.sessionName;
 	}
 
 	/**
-	 * The session summary for the session being published
+	 * The session summary for the session being published.
+	 *
+	 * @return the session summary
 	 */
 	public final SessionSummary getSessionSummary() {
 		return this.sessionSummary;
@@ -812,6 +890,8 @@ public class Publisher implements Closeable {
 	/**
 	 * The list of cached packets that should be in every stream before any other
 	 * packet.
+	 *
+	 * @return the header packets
 	 */
 	public final ICachedMessengerPacket[] getHeaderPackets() {
 		ICachedMessengerPacket[] returnVal;
@@ -826,6 +906,9 @@ public class Publisher implements Closeable {
 		return returnVal;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.io.Closeable#close()
+	 */
 	@Override
 	public void close() throws IOException {
 		if (!this.closed) {
@@ -854,6 +937,9 @@ public class Publisher implements Closeable {
 		}
 	}
 	
+	/**
+	 * Reset.
+	 */
 	public static void reset() {
 		tThreadMustNotBlock = new ThreadLocal<Boolean>() {
 			@Override

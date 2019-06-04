@@ -27,31 +27,46 @@ import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
+// TODO: Auto-generated Javadoc
 /**
- * A web channel request to upload a session file or full session stream
+ * A web channel request to upload a session file or full session stream.
  */
 public class SessionUploadRequest extends WebChannelRequestBase implements Closeable {
 
+	/** The Constant SESSION_TEMP_FOLDER. */
 	private static final String SESSION_TEMP_FOLDER = "Session_Upload";
 
+	/** The Constant SINGLE_PASS_CUTOFF_BYTES. */
 	private static final int SINGLE_PASS_CUTOFF_BYTES = 300000; // about 300k.
+	
+	/** The Constant DEFAULT_SEGMENT_SIZE_BYTES. */
 	private static final int DEFAULT_SEGMENT_SIZE_BYTES = 100000; // about 100k
 
+	/** The initialized. */
 	private boolean initialized;
+	
+	/** The perform cleanup. */
 	private boolean performCleanup;
+	
+	/** The bytes written. */
 	private int bytesWritten;
+	
+	/** The temp session progress file name path. */
 	private String tempSessionProgressFileNamePath; // the transfer tracking file.
 
+	/** The session transport lock. */
 	private InterprocessLock sessionTransportLock;
+	
+	/** The delete temporary files on dispose. */
 	private boolean deleteTemporaryFilesOnDispose;
 
 	/**
 	 * Create a new session upload request.
-	 * 
-	 * @param clientId
-	 * @param repository
-	 * @param sessionId
-	 * @param fileId
+	 *
+	 * @param clientId the client id
+	 * @param repository the repository
+	 * @param sessionId the session id
+	 * @param fileId the file id
 	 * @param purgeSessionOnSuccess Indicates if the session should be purged from
 	 *                              the repository once it has been sent
 	 *                              successfully.
@@ -69,13 +84,13 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 
 	/**
 	 * Initialize the upload request and underlying session data for transport.
-	 * 
+	 *
 	 * @return True if the session has been initialized and this is the only upload
 	 *         request trying to process this data. If the session isn't already
 	 *         being transported to this endpoint then a lock will be set for
 	 *         transport. This request must be disposed to ensure this lock is
 	 *         released in a timely manner.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final boolean prepareSession() throws IOException {
 		initialize();
@@ -83,28 +98,44 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 		return (this.sessionTransportLock != null);
 	}
 
-	/**
-	 * The repository the session upload request is coming from
-	 */
+	/** The repository the session upload request is coming from. */
 	private LocalRepository repository;
 
+	/**
+	 * Gets the repository.
+	 *
+	 * @return the repository
+	 */
 	public final LocalRepository getRepository() {
 		return this.repository;
 	}
 
+	/**
+	 * Sets the repository.
+	 *
+	 * @param value the new repository
+	 */
 	private void setRepository(LocalRepository value) {
 		this.repository = value;
 	}
 
-	/**
-	 * The unique id to use for the client sending the session
-	 */
+	/** The unique id to use for the client sending the session. */
 	private UUID clientId;
 
+	/**
+	 * Gets the client id.
+	 *
+	 * @return the client id
+	 */
 	public final UUID getClientId() {
 		return this.clientId;
 	}
 
+	/**
+	 * Sets the client id.
+	 *
+	 * @param value the new client id
+	 */
 	private void setClientId(UUID value) {
 		this.clientId = value;
 	}
@@ -114,10 +145,20 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 	 */
 	private UUID sessionId;
 
+	/**
+	 * Gets the session id.
+	 *
+	 * @return the session id
+	 */
 	public final UUID getSessionId() {
 		return this.sessionId;
 	}
 
+	/**
+	 * Sets the session id.
+	 *
+	 * @param value the new session id
+	 */
 	private void setSessionId(UUID value) {
 		this.sessionId = value;
 	}
@@ -127,10 +168,20 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 	 */
 	private UUID fileId;
 
+	/**
+	 * Gets the file id.
+	 *
+	 * @return the file id
+	 */
 	public final UUID getFileId() {
 		return this.fileId;
 	}
 
+	/**
+	 * Sets the file id.
+	 *
+	 * @param value the new file id
+	 */
 	public final void setFileId(UUID value) {
 		this.fileId = value;
 	}
@@ -141,10 +192,20 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 	 */
 	private boolean purgeSessionOnSuccess;
 
+	/**
+	 * Gets the purge session on success.
+	 *
+	 * @return the purge session on success
+	 */
 	public final boolean getPurgeSessionOnSuccess() {
 		return this.purgeSessionOnSuccess;
 	}
 
+	/**
+	 * Sets the purge session on success.
+	 *
+	 * @param value the new purge session on success
+	 */
 	private void setPurgeSessionOnSuccess(boolean value) {
 		this.purgeSessionOnSuccess = value;
 	}
@@ -153,7 +214,9 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 	 * Performs application-defined tasks associated with freeing, releasing, or
 	 * resetting unmanaged resources.
 	 * 
-	 * <filterpriority>2</filterpriority>
+	 * 
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void close() throws IOException {
@@ -170,6 +233,11 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 		}
 	}
 
+	/**
+	 * Perform cleanup.
+	 *
+	 * @param connection the connection
+	 */
 	private void performCleanup(IWebChannelConnection connection) {
 		try {
 			// we're going to upload zero bytes as a delete to the right URL.
@@ -181,10 +249,10 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 
 	/**
 	 * Implemented by inheritors to perform the request on the provided web client.
-	 * 
-	 * @param connection
-	 * @throws IOException
-	 * @throws URISyntaxException
+	 *
+	 * @param connection the connection
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws URISyntaxException the URI syntax exception
 	 */
 	@Override
 	protected void onProcessRequest(IWebChannelConnection connection) throws IOException, URISyntaxException {
@@ -309,6 +377,12 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 		}
 	}
 
+	/**
+	 * Load progress tracking file.
+	 *
+	 * @return the int
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private int loadProgressTrackingFile() throws IOException {
 		try (RandomAccessFile file = new RandomAccessFile(this.tempSessionProgressFileNamePath, "r")) {
 			return file.readInt();
@@ -317,6 +391,11 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 		}
 	}
 
+	/**
+	 * Update progress tracking file.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void updateProgressTrackingFile() throws IOException {
 		try (RandomAccessFile file = new RandomAccessFile(this.tempSessionProgressFileNamePath, "rw")) {
 			file.write(this.bytesWritten);
@@ -325,6 +404,9 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 		}
 	}
 
+	/**
+	 * Safe purge session.
+	 */
 	private void safePurgeSession() {
 		try {
 			getRepository().remove(getSessionId(), getFileId()); // this will just remove the one file, not
@@ -343,6 +425,11 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 		this.deleteTemporaryFilesOnDispose = false; // because we already did.
 	}
 
+	/**
+	 * Safe delete file.
+	 *
+	 * @param fileNamePath the file name path
+	 */
 	private static void safeDeleteFile(String fileNamePath) {
 		if (TypeUtils.isBlank(fileNamePath)) {
 			return;
@@ -355,15 +442,20 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 		}
 	}
 
+	/**
+	 * Generate resource uri.
+	 *
+	 * @return the string
+	 */
 	private String generateResourceUri() {
 		return String.format("/Hub/Hosts/%1$s/Sessions/%2$s/Files/%3$s.zip", getClientId(), getSessionId(),	getFileId());
 	}
 
 	/**
 	 * The temporary path to put all of the transfer information for this session.
-	 * 
-	 * @return
-	 * @throws IOException 
+	 *
+	 * @return the string
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private String generateTemporarySessionPath() throws IOException {
 		// find the right temporary directory for us...
@@ -390,9 +482,9 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 	}
 
 	/**
-	 * The file name (without extension) for this session
-	 * 
-	 * @return
+	 * The file name (without extension) for this session.
+	 *
+	 * @return the string
 	 */
 	private String generateTemporarySessionFileName() {
 		// the path needs to be generated reliably, but uniquely.
@@ -401,15 +493,20 @@ public class SessionUploadRequest extends WebChannelRequestBase implements Close
 
 	/**
 	 * The full file name and path (without extension) for the transfer information
-	 * for this session
-	 * 
-	 * @return
-	 * @throws IOException 
+	 * for this session.
+	 *
+	 * @return the string
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private String generateTemporarySessionFileNamePath() throws IOException {
 		return Paths.get(generateTemporarySessionPath()).resolve(generateTemporarySessionFileName()).toString();
 	}
 
+	/**
+	 * Initialize.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void initialize() throws IOException {
 		if (this.initialized) {
 			return;

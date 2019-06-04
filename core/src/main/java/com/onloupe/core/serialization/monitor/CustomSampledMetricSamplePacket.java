@@ -8,6 +8,7 @@ import com.onloupe.core.serialization.SerializedPacket;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * One raw data sample of a custom sampled metric
  * 
@@ -16,26 +17,28 @@ import java.util.List;
  * information are captured during construction).
  */
 public class CustomSampledMetricSamplePacket extends SampledMetricSamplePacket implements IPacket, java.lang.Comparable<CustomSampledMetricSamplePacket> {
+	
+	/** The base value. */
 	private double baseValue; // the (optional) base value to compare the raw value to (used in some metric
 								// types)
 
 	/**
-	 * Create a complete custom sampled metric packet
-	 * 
-	 * @param rawValue The raw data value
-	 * @param packet   The metric this sample is for
-	 */
+								 * Create a complete custom sampled metric packet.
+								 *
+								 * @param packet   The metric this sample is for
+								 * @param rawValue The raw data value
+								 */
 	public CustomSampledMetricSamplePacket(CustomSampledMetricPacket packet, double rawValue) {
 		super(packet, rawValue);
 		this.baseValue = 0;
 	}
 
 	/**
-	 * Create a complete custom sampled metric packet
-	 * 
+	 * Create a complete custom sampled metric packet.
+	 *
+	 * @param packet       The metric this sample is for
 	 * @param rawValue     The raw data value
 	 * @param rawTimeStamp The exact date and time the raw value was determined
-	 * @param packet       The metric this sample is for
 	 */
 	public CustomSampledMetricSamplePacket(CustomSampledMetricPacket packet, double rawValue, OffsetDateTime rawTimeStamp) {
 		super(packet, rawValue, rawTimeStamp);
@@ -43,12 +46,12 @@ public class CustomSampledMetricSamplePacket extends SampledMetricSamplePacket i
 	}
 
 	/**
-	 * Create a complete custom sampled metric packet
-	 * 
+	 * Create a complete custom sampled metric packet.
+	 *
+	 * @param packet    The metric this sample is for
 	 * @param rawValue  The raw data value
 	 * @param baseValue The reference value to compare against for come counter
 	 *                  types
-	 * @param packet    The metric this sample is for
 	 */
 	public CustomSampledMetricSamplePacket(CustomSampledMetricPacket packet, double rawValue, double baseValue) {
 		super(packet, rawValue);
@@ -56,13 +59,13 @@ public class CustomSampledMetricSamplePacket extends SampledMetricSamplePacket i
 	}
 
 	/**
-	 * Create a complete custom sampled metric packet
-	 * 
+	 * Create a complete custom sampled metric packet.
+	 *
+	 * @param packet       The metric this sample is for
 	 * @param rawValue     The raw data value
-	 * @param rawTimeStamp The exact date and time the raw value was determined
 	 * @param baseValue    The reference value to compare against for come counter
 	 *                     types
-	 * @param packet       The metric this sample is for
+	 * @param rawTimeStamp The exact date and time the raw value was determined
 	 */
 	public CustomSampledMetricSamplePacket(CustomSampledMetricPacket packet, double rawValue, double baseValue,
 			OffsetDateTime rawTimeStamp) {
@@ -78,11 +81,18 @@ public class CustomSampledMetricSamplePacket extends SampledMetricSamplePacket i
 	 * know both how much capacity was used and how much was available. The base
 	 * represents how much was available and the raw value how much was used in that
 	 * scenario.
+	 *
+	 * @return the base value
 	 */
 	public final double getBaseValue() {
 		return this.baseValue;
 	}
 
+	/**
+	 * Sets the base value.
+	 *
+	 * @param value the new base value
+	 */
 	protected final void setBaseValue(double value) {
 		this.baseValue = value;
 	}
@@ -90,9 +100,9 @@ public class CustomSampledMetricSamplePacket extends SampledMetricSamplePacket i
 	/**
 	 * Compare this custom sampled metric sample packet with another to determine if
 	 * they are the same sample packet.
-	 * 
-	 * @param other
-	 * @return
+	 *
+	 * @param other the other
+	 * @return the int
 	 */
 	@Override
 	public final int compareTo(CustomSampledMetricSamplePacket other) {
@@ -104,11 +114,10 @@ public class CustomSampledMetricSamplePacket extends SampledMetricSamplePacket i
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -148,6 +157,7 @@ public class CustomSampledMetricSamplePacket extends SampledMetricSamplePacket i
 		return myHash;
 	}
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -161,6 +171,9 @@ public class CustomSampledMetricSamplePacket extends SampledMetricSamplePacket i
 		return super.getRequiredPackets();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.SampledMetricSamplePacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -170,6 +183,9 @@ public class CustomSampledMetricSamplePacket extends SampledMetricSamplePacket i
 		definition.getFields().add("baseValue", FieldType.DOUBLE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.SampledMetricSamplePacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -177,6 +193,9 @@ public class CustomSampledMetricSamplePacket extends SampledMetricSamplePacket i
 		packet.setField("baseValue", this.baseValue);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.SampledMetricSamplePacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");

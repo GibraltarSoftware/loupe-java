@@ -4,16 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * Consolidates storage summary information for all packet types and fragments
- * in a session
+ * in a session.
  */
 public class FileStorageSummary {
-	/**
-	 * List of records providing storage summary info about each packet type in the
-	 * session fragments Note that PacketSize is calculated by scaling the
-	 * uncompressed packet sizes to their portion of TotalRawFileSize
-	 */
+	
+	/** List of records providing storage summary info about each packet type in the session fragments Note that PacketSize is calculated by scaling the uncompressed packet sizes to their portion of TotalRawFileSize. */
 	public final List<PacketTypeStorageSummary> packetList = new ArrayList<PacketTypeStorageSummary>();
 
 	/**
@@ -22,34 +20,53 @@ public class FileStorageSummary {
 	 */
 	public final List<FragmentStorageSummary> fragmentList = new ArrayList<FragmentStorageSummary>();
 
-	/**
-	 * Returns the total number of bytes for all fragments
-	 */
+	/** Returns the total number of bytes for all fragments. */
 	private long totalRawFileSize;
 
+	/**
+	 * Gets the total raw file size.
+	 *
+	 * @return the total raw file size
+	 */
 	public final long getTotalRawFileSize() {
 		return this.totalRawFileSize;
 	}
 
+	/**
+	 * Sets the total raw file size.
+	 *
+	 * @param value the new total raw file size
+	 */
 	private void setTotalRawFileSize(long value) {
 		this.totalRawFileSize = value;
 	}
 
-	/**
-	 * Returns the total number of bytes for all uncompressed packets
-	 */
+	/** Returns the total number of bytes for all uncompressed packets. */
 	private long totalPacketSize;
 
+	/**
+	 * Gets the total packet size.
+	 *
+	 * @return the total packet size
+	 */
 	public final long getTotalPacketSize() {
 		return this.totalPacketSize;
 	}
 
+	/**
+	 * Sets the total packet size.
+	 *
+	 * @param value the new total packet size
+	 */
 	private void setTotalPacketSize(long value) {
 		this.totalPacketSize = value;
 	}
 
 	/**
-	 * Merge data from one session fragment
+	 * Merge data from one session fragment.
+	 *
+	 * @param packetTypes the packet types
+	 * @param fragment the fragment
 	 */
 	public final void merge(ArrayList<PacketTypeStorageSummary> packetTypes, FragmentStorageSummary fragment) {
 		this.fragmentList.add(fragment);
@@ -72,7 +89,7 @@ public class FileStorageSummary {
 	}
 
 	/**
-	 * Summarize the data about fragments and packet types
+	 * Summarize the data about fragments and packet types.
 	 */
 	public final void summarize() {
 		Collections.sort(this.packetList);

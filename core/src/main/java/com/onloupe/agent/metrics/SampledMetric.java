@@ -15,8 +15,16 @@ import com.onloupe.core.serialization.monitor.CustomSampledMetricSamplePacket;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.metric.MemberType;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SampledMetric.
+ */
 public final class SampledMetric {
+	
+	/** The metric definition. */
 	private SampledMetricDefinition metricDefinition;
+	
+	/** The packet. */
 	private CustomSampledMetricPacket packet;
 
 	/**
@@ -25,10 +33,10 @@ public final class SampledMetric {
 	 * 
 	 * The new metric will automatically be added to the metric definition's metrics
 	 * collection.
-	 * 
+	 *
 	 * @param definition The API custom sampled metric definition for the metric
 	 *                   instance.
-	 * @param metric     The internal custom sampled metric to wrap.
+	 * @param packet the packet
 	 */
 	public SampledMetric(SampledMetricDefinition definition, CustomSampledMetricPacket packet) {
 		// verify and store off our input
@@ -85,7 +93,7 @@ public final class SampledMetric {
 	 * object will always be used by preference over the fall-back instance name
 	 * parameter, even if the instance name member returns a null.
 	 * </p>
-	 * 
+	 *
 	 * @param userDataObject       An object or Type defining sampled metrics via
 	 *                             attributes on itself or on its base types or
 	 *                             interfaces.
@@ -95,7 +103,6 @@ public final class SampledMetric {
 	 * @return And array of all sampled metric instances found or created (one per
 	 *         definition) based on the instance name binding and optional
 	 *         fallbackInstanceName.
-	 * @exception ArgumentNullException The provided userDataObject was null.
 	 */
 	public static SampledMetric[] registerAll(Object userDataObject, String fallbackInstanceName) {
 		// we need a live object, not a null object or we'll fail
@@ -167,15 +174,14 @@ public final class SampledMetric {
 	 * This call ensures that the reflection scan of all members looking for
 	 * attributes across the entire inheritance of an object instance or Type has
 	 * been done (e.g. outside of a critical path) so that the first call to
-	 * <see cref="Write(object)">Write</see> can be as fast as possible. Results are
+	 * Write can be as fast as possible. Results are
 	 * cached internally, so redundant calls to this method will not repeat the scan
 	 * for types already scanned (including as part of a different top-level type).
 	 * </p>
 	 * <p>
 	 * If a live object is given (not just a Type) then the member(s) decorated with
-	 * a <see cref=
-	 * "SampledMetricInstanceNameAttribute">SampledMetricInstanceNameAttribute
-	 * Class</see> will be queried and used to also register a sampled metric
+	 * a SampledMetricInstanceNameAttribute
+	 * Class will be queried and used to also register a sampled metric
 	 * instance with the returned name.
 	 * </p>
 	 * <p>
@@ -185,29 +191,11 @@ public final class SampledMetric {
 	 * metricDataObject.
 	 * </p>
 	 * 
-	 * <example> For examples, see the <see cref="SampledMetric">Sampled
-	 * Metric</see> class overview. </example>
-	 * 
+	 *  For examples, see the Sampled
+	 * Metric class overview. 
+	 *
 	 * @param metricData An object or Type defining sampled metrics via attributes
 	 *                   on itself or on its base types or interfaces.
-	 * @exception ArgumentNullException The provided metricData object was null.
-	 * @exception ArgumentException     The specified Type does not have a
-	 *                                  SampledMetric attribute, so it can't be used
-	 *                                  to define sampled metrics.<br />
-	 *                                  - or -<br />
-	 *                                  The specified Type does not have a usable
-	 *                                  SampledMetric attribute, so it can't be used
-	 *                                  to define sampled metrics.<br />
-	 *                                  - or -<br />
-	 *                                  The specified Type's SampledMetric attribute
-	 *                                  has an empty metric namespace which is not
-	 *                                  allowed, so no metrics can be defined under
-	 *                                  it.<br />
-	 *                                  - or -<br />
-	 *                                  The specified Type's SampledMetric attribute
-	 *                                  has an empty metric category name which is
-	 *                                  not allowed, so no metrics can be defined
-	 *                                  under it.
 	 */
 	public static void register(Object metricData) {
 		registerAll(metricData, null); // Register all definitions, but with no fall-back for unspecified instances.
@@ -233,9 +221,9 @@ public final class SampledMetric {
 	 * that an exception can be thrown by the Loupe Agent.
 	 * </p>
 	 * 
-	 * <example> For examples, see the <see cref="SampledMetric">Sampled
-	 * Metric</see> class overview. </example>
-	 * 
+	 *  For examples, see the Sampled
+	 * Metric class overview. 
+	 *
 	 * @param metricsSystem The metrics capture system label.
 	 * @param categoryName  The name of the category with which this metric is
 	 *                      associated.
@@ -248,6 +236,7 @@ public final class SampledMetric {
 	 *                      counter.
 	 * @param instanceName  The unique name of this instance within the metric's
 	 *                      collection (may be null).
+	 * @return the sampled metric
 	 */
 	public static SampledMetric register(String metricsSystem, String categoryName, String counterName,
 			SamplingType samplingType, String unitCaption, String metricCaption, String description,
@@ -273,13 +262,13 @@ public final class SampledMetric {
 	 * register the metric and the second (and all subsequent calls to Register with
 	 * the same three part key) will return the same object.
 	 * </p>
-	 * 
-	 * @return The event metric object for the specified event metric instance.
-	 *         <example> For examples, see the <see cref="SampledMetric">Sampled
-	 *         Metric</see> class overview. </example>
+	 *
 	 * @param definition   The metric definition for the metric instance.
 	 * @param instanceName The unique name of this instance within the metric's
 	 *                     collection (may be null).
+	 * @return The event metric object for the specified event metric instance.
+	 *          For examples, see the Sampled
+	 *         Metric class overview. 
 	 */
 	public static SampledMetric register(SampledMetricDefinition definition, String instanceName) {
 		if (definition == null) {
@@ -295,8 +284,8 @@ public final class SampledMetric {
 	 * sampling types.
 	 * 
 	 * Sampled metrics using any fraction sampling type should instead use an
-	 * overload providing both values. <example> For examples, see the
-	 * <see cref="SampledMetric">Sampled Metric</see> class overview. </example>
+	 * overload providing both values.  For examples, see the
+	 * Sampled Metric class overview. 
 	 * 
 	 * @param rawValue The raw data value.
 	 */
@@ -310,8 +299,8 @@ public final class SampledMetric {
 	 * sampling types.
 	 * 
 	 * Sampled metrics using any fraction sampling type should instead use an
-	 * overload providing both values. <example> For examples, see the
-	 * <see cref="SampledMetric">Sampled Metric</see> class overview. </example>
+	 * overload providing both values.  For examples, see the
+	 * Sampled Metric class overview. 
 	 * 
 	 * @param rawValue     The raw data value.
 	 * @param rawTimestamp The exact date and time the raw value was determined.
@@ -326,8 +315,8 @@ public final class SampledMetric {
 	 * sampling types.
 	 * 
 	 * Sampled metrics using a non-fraction sampling type should instead use an
-	 * overload taking a single data values. <example> For examples, see the
-	 * <see cref="SampledMetric">Sampled Metric</see> class overview. </example>
+	 * overload taking a single data values.  For examples, see the
+	 * Sampled Metric class overview. 
 	 * 
 	 * @param rawValue  The raw data value.
 	 * @param baseValue The divisor entry of this sample.
@@ -342,8 +331,8 @@ public final class SampledMetric {
 	 * sampling types.
 	 * 
 	 * Sampled metrics using a non-fraction sampling type should instead use an
-	 * overload taking a single data values. <example> For examples, see the
-	 * <see cref="SampledMetric">Sampled Metric</see> class overview. </example>
+	 * overload taking a single data values.  For examples, see the
+	 * Sampled Metric class overview. 
 	 * 
 	 * @param rawValue     The raw data value.
 	 * @param baseValue    The divisor entry of this sample.
@@ -359,21 +348,10 @@ public final class SampledMetric {
 	 * provided data object.
 	 * 
 	 * The provided user data object must be assignable to the bound type which
-	 * defined this sampled metric via attributes. <example> For examples, see the
-	 * <see cref="SampledMetric">Sampled Metric</see> class overview. </example>
-	 * 
+	 * defined this sampled metric via attributes.  For examples, see the
+	 * Sampled Metric class overview. 
+	 *
 	 * @param metricData The object to retrieve metric values from.
-	 * @exception ArgumentNullException The provided metricData object was null.
-	 * @exception ArgumentException     This sampled metric's definition is not
-	 *                                  bound to sample automatically from a user
-	 *                                  data object. WriteSample(...) must be given
-	 *                                  the data values directly.<br />
-	 *                                  -or-<br />
-	 *                                  The provided user data object type (%s) is
-	 *                                  not assignable to this sampled metric's
-	 *                                  bound type ({1}) and can not be sampled
-	 *                                  automatically for this metric
-	 *                                  instance."></exception>
 	 */
 	public void writeSample(Object metricData) {
 		if (metricData == null) {
@@ -440,32 +418,14 @@ public final class SampledMetric {
 	 * data object by attributes.
 	 * 
 	 * The provided user data object must be assignable to the bound type which
-	 * defined this sampled metric via attributes. <example> For examples, see the
-	 * <see cref="SampledMetric">Sampled Metric</see> class overview. </example>
-	 * 
+	 * defined this sampled metric via attributes.  For examples, see the
+	 * Sampled Metric class overview. 
+	 *
 	 * @param metricData           The object to retrieve both metric values and
 	 *                             definition from
 	 * @param fallbackInstanceName The instance name to fall back on if a definition
 	 *                             does not specify an instance name binding (may be
 	 *                             null).
-	 * @exception ArgumentNullException The provided metricData object was null.
-	 * @exception ArgumentException     The specified Type does not have a
-	 *                                  SampledMetric attribute, so it can't be used
-	 *                                  to define sampled metrics.<br />
-	 *                                  - or -<br />
-	 *                                  The specified Type does not have a usable
-	 *                                  SampledMetric attribute, so it can't be used
-	 *                                  to define sampled metrics.<br />
-	 *                                  - or -<br />
-	 *                                  The specified Type's SampledMetric attribute
-	 *                                  has an empty metric namespace which is not
-	 *                                  allowed, so no metrics can be defined under
-	 *                                  it.<br />
-	 *                                  - or -<br />
-	 *                                  The specified Type's SampledMetric attribute
-	 *                                  has an empty metric category name which is
-	 *                                  not allowed, so no metrics can be defined
-	 *                                  under it.
 	 */
 	public static void write(Object metricData, String fallbackInstanceName) {
 		// We have to force a null fall-back instance name into a valid string to force
@@ -491,8 +451,8 @@ public final class SampledMetric {
 	 * data object by attributes.
 	 * 
 	 * The provided user data object must be assignable to the bound type which
-	 * defined this sampled metric via attributes. <example> For examples, see the
-	 * <see cref="SampledMetric">Sampled Metric</see> class overview. </example>
+	 * defined this sampled metric via attributes.  For examples, see the
+	 * Sampled Metric class overview. 
 	 * 
 	 * @param metricData The object to retrieve both metric values and definition
 	 *                   from
@@ -504,6 +464,8 @@ public final class SampledMetric {
 
 	/**
 	 * The definition of this sampled metric.
+	 *
+	 * @return the definition
 	 */
 	public SampledMetricDefinition getDefinition() {
 		return this.metricDefinition;
@@ -517,9 +479,10 @@ public final class SampledMetric {
 	 * The Id is limited to a specific session, and thus identifies a consistent
 	 * unchanged definition. The Id can <b>not</b> be used to identify a definition
 	 * across different sessions, which could have different actual definitions due
-	 * to changing user code. See the <see cref="Key">Key</see> property to identify
+	 * to changing user code. See the Key property to identify
 	 * a metric definition across different sessions.
-	 * 
+	 *
+	 * @return the id
 	 */
 	public UUID getId() {
 		return this.packet.getID();
@@ -532,6 +495,8 @@ public final class SampledMetric {
 	 * and counter name of the metric definition, along with the instance name, to
 	 * uniquely identify a specific metric instance of a specific metric definition.
 	 * It can also identify the same metric instance across different sessions.
+	 *
+	 * @return the key
 	 */
 	public String getKey() {
 		return this.packet.getName();
@@ -539,6 +504,8 @@ public final class SampledMetric {
 
 	/**
 	 * A short caption of what the metric tracks, suitable for end-user display.
+	 *
+	 * @return the caption
 	 */
 	public String getCaption() {
 		return this.packet.getCaption();
@@ -547,6 +514,8 @@ public final class SampledMetric {
 	/**
 	 * A description of what is tracked by this metric, suitable for end-user
 	 * display.
+	 *
+	 * @return the description
 	 */
 	public String getDescription() {
 		return this.packet.getDescription();
@@ -554,6 +523,8 @@ public final class SampledMetric {
 
 	/**
 	 * The metrics capture system label of this metric definition.
+	 *
+	 * @return the metrics system
 	 */
 	public String getMetricsSystem() {
 		return this.metricDefinition.getMetricsSystem();
@@ -568,7 +539,8 @@ public final class SampledMetric {
 	 * separate category levels. For example, the category "Database.Query.Search"
 	 * will be parsed to create a three-level category {Database, Query, Search}.
 	 * You can have spaces in the category name.
-	 * 
+	 *
+	 * @return the category name
 	 */
 	public String getCategoryName() {
 		return this.metricDefinition.getCategoryName();
@@ -576,6 +548,8 @@ public final class SampledMetric {
 
 	/**
 	 * The display name of this metric (unique within the category name).
+	 *
+	 * @return the counter name
 	 */
 	public String getCounterName() {
 		return this.metricDefinition.getCounterName();
@@ -592,12 +566,12 @@ public final class SampledMetric {
 	 * </p>
 	 * <list type="number"> <item> Recording with each sample the total number of
 	 * bytes written from the start of the process to the current point. This would
-	 * use the Total Count <see cref="SamplingType">Sampling Type</see>. </item>
+	 * use the Total Count Sampling Type. </item>
 	 * <item> Recording with each sample the number of bytes written since the last
-	 * sample. This would use the IncrementalCount <see cref="SamplingType">Sampling
-	 * Type</see>. </item> <item> Recording with each sample the bytes per second
+	 * sample. This would use the IncrementalCount Sampling
+	 * Type. </item> <item> Recording with each sample the bytes per second
 	 * since the last sample. This would use the RawCount
-	 * <see cref="SamplingType">Sampling Type</see>. </item> </list>
+	 * Sampling Type. </item> </list>
 	 * <p>
 	 * <strong>Fraction Sampling Formats</strong>
 	 * </p>
@@ -611,14 +585,14 @@ public final class SampledMetric {
 	 * <list type="number"> <item> Recording with each sample the total number of
 	 * ticks spent writing to disk as the value and the total number of ticks spent
 	 * servicing requests as the base value. This would use the TotalFraction
-	 * <see cref="SamplingType">Sampling Type</see>. </item> <item> Recording with
+	 * Sampling Type. </item> <item> Recording with
 	 * each sample the number of ticks spent writing to disk since the last sample
 	 * as the value and the number of ticks spent servicing client requests since
 	 * the last sample as the base value. This would use the IncrementalFraction
-	 * <see cref="SamplingType">Sampling Type</see>. </item> <item> Recording with
+	 * Sampling Type. </item> <item> Recording with
 	 * each sample the number of ticks spent writing per second as the value and the
 	 * number of ticks spent servicing client requests per second as the base value.
-	 * This would use the RawFraction <see cref="SamplingType">Sampling Type</see>.
+	 * This would use the RawFraction Sampling Type.
 	 * </item> </list>
 	 * <p>
 	 * The advantage of the fractional sampling types over simply doing the division
@@ -627,7 +601,8 @@ public final class SampledMetric {
 	 * different sampling intervals (such as when samples are recorded once per
 	 * second but you want to view them on a longer interval)
 	 * </p>
-	 * 
+	 *
+	 * @return the sampling type
 	 * @see SamplingType SamplingType Enumeration
 	 */
 	public SamplingType getSamplingType() {
@@ -649,7 +624,8 @@ public final class SampledMetric {
 	 * Normally unit captions do not include aggregation text, such as Average, Min
 	 * or Max to support the best axis grouping.
 	 * </p>
-	 * 
+	 *
+	 * @return the unit caption
 	 */
 	public String getUnitCaption() {
 		return this.metricDefinition.getUnitCaption();
@@ -657,6 +633,8 @@ public final class SampledMetric {
 
 	/**
 	 * Gets the instance name for this sampled metric.
+	 *
+	 * @return the instance name
 	 */
 	public String getInstanceName() {
 		return this.packet.getInstanceName();
@@ -669,6 +647,8 @@ public final class SampledMetric {
 	 * The default instance has a null instance name. This property is provided as a
 	 * convenience to simplify client code so you don't have to distinguish empty
 	 * strings or null.
+	 *
+	 * @return true, if is default
 	 */
 	public boolean isDefault() {
 		return (TypeUtils.isBlank(this.packet.getInstanceName()));

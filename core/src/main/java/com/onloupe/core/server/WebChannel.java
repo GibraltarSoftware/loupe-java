@@ -39,39 +39,94 @@ import com.onloupe.model.exception.GibraltarException;
 import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.system.Version;
 
+// TODO: Auto-generated Javadoc
 /**
  * Provides in-order communication with a remote web server.
  */
 public class WebChannel implements IWebChannelConnection, Closeable {
 
+	/** The Constant LOG_CATEGORY. */
 	private static final String LOG_CATEGORY = "Loupe.Server.Client";
 	
+	/** The client. */
 	private CloseableHttpClient client;
+	
+	/** The use SSL. */
 	private boolean useSSL;
+	
+	/** The port. */
 	private int port;
+	
+	/** The host name. */
 	private String hostName;
+	
+	/** The application base directory. */
 	private String applicationBaseDirectory;
+	
+	/** The use compatibility methods. */
 	private boolean useCompatibilityMethods;
+    
+    /** The use http version 10. */
     private boolean useHttpVersion10 = false;
+    
+    /** The first request. */
     private boolean firstRequest = true;
+    
+    /** The enable logging. */
     private boolean enableLogging;
+	
+	/** The logger. */
 	private IClientLogger logger;
+	
+	/** The app protocol version. */
 	private Version appProtocolVersion;
+	
+	/** The authentication provider. */
 	private IWebAuthenticationProvider authenticationProvider;
+	
+	/** The connection state. */
 	private ChannelConnectionState connectionState;
 	
+	/** The server use compatibility setting. */
 	private Map<String,Boolean> serverUseCompatibilitySetting = new HashMap<String,Boolean>();
+	
+	/** The server use http version 10 setting. */
 	private Map<String,Boolean> serverUseHttpVersion10Setting = new HashMap<String,Boolean>();
 
+	/**
+	 * Instantiates a new web channel.
+	 *
+	 * @param logger the logger
+	 * @param hostName the host name
+	 */
 	public WebChannel(IClientLogger logger, String hostName) {
 		this(logger, false, hostName, null, null);
 	}
 
+	/**
+	 * Instantiates a new web channel.
+	 *
+	 * @param logger the logger
+	 * @param useSsl the use ssl
+	 * @param hostName the host name
+	 * @param applicationBaseDirectory the application base directory
+	 * @param appProtocolVersion the app protocol version
+	 */
 	public WebChannel(IClientLogger logger, boolean useSsl, String hostName, String applicationBaseDirectory,
 			Version appProtocolVersion) {
 		this(logger, useSsl, hostName, useSsl ? 443 : 80, applicationBaseDirectory, appProtocolVersion);
 	}
 
+	/**
+	 * Instantiates a new web channel.
+	 *
+	 * @param logger the logger
+	 * @param useSsl the use ssl
+	 * @param hostName the host name
+	 * @param port the port
+	 * @param applicationBaseDirectory the application base directory
+	 * @param appProtocolVersion the app protocol version
+	 */
 	public WebChannel(IClientLogger logger, boolean useSsl, String hostName, int port, String applicationBaseDirectory,
 			Version appProtocolVersion) {
 		if (logger == null)
@@ -108,28 +163,43 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#downloadData(java.lang.String)
+	 */
 	@Override
 	public byte[] downloadData(String relativeUrl) throws URISyntaxException {
 		return downloadData(relativeUrl, null, null);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#downloadData(java.lang.String, java.lang.Integer)
+	 */
 	@Override
 	public byte[] downloadData(String relativeUrl, Integer timeout) throws URISyntaxException {
 		return downloadData(relativeUrl, null, timeout);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#downloadData(java.lang.String, java.util.List)
+	 */
 	@Override
 	public byte[] downloadData(String relativeUrl, List<NameValuePair<String>> additionalHeaders)
 			throws URISyntaxException {
 		return downloadData(relativeUrl, additionalHeaders, null);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#downloadData(java.lang.String, java.util.List, java.lang.Integer)
+	 */
 	@Override
 	public byte[] downloadData(String relativeUrl, List<NameValuePair<String>> additionalHeaders, Integer timeout)
 			throws URISyntaxException {
 		return execute(new HttpGet(preProcessURI(relativeUrl)), additionalHeaders, timeout);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#downloadFile(java.lang.String, java.lang.String, java.lang.Integer)
+	 */
 	@Override
 	public void downloadFile(String relativeUrl, String destinationFileName, Integer timeout)
 			throws URISyntaxException, IOException {
@@ -140,33 +210,51 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#downloadString(java.lang.String)
+	 */
 	@Override
 	public String downloadString(String relativeUrl) throws URISyntaxException {
 		return downloadString(relativeUrl, null);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#downloadString(java.lang.String, java.lang.Integer)
+	 */
 	@Override
 	public String downloadString(String relativeUrl, Integer timeout) throws URISyntaxException {
 		return new String(downloadData(relativeUrl, timeout));
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#uploadData(java.lang.String, java.lang.String, byte[], java.util.List)
+	 */
 	@Override
 	public byte[] uploadData(String relativeUrl, String contentType, byte[] data,
 			List<NameValuePair<String>> additionalHeaders) throws URISyntaxException {
 		return uploadData(relativeUrl, contentType, data, additionalHeaders, null);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#uploadData(java.lang.String, java.lang.String, byte[])
+	 */
 	@Override
 	public byte[] uploadData(String relativeUrl, String contentType, byte[] data) throws URISyntaxException {
 		return uploadData(relativeUrl, contentType, data, null, null);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#uploadData(java.lang.String, java.lang.String, byte[], java.util.List, java.lang.Integer)
+	 */
 	@Override
 	public byte[] uploadData(String relativeUrl, String contentType, byte[] data,
 			List<NameValuePair<String>> additionalHeaders, Integer timeout) throws URISyntaxException {
 		return uploadData(relativeUrl, null, contentType, data, additionalHeaders, timeout);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#uploadData(java.lang.String, java.lang.String, java.lang.String, byte[], java.util.List, java.lang.Integer)
+	 */
 	@Override
 	public byte[] uploadData(String relativeUrl, String method, String contentType, byte[] data,
 			List<NameValuePair<String>> additionalHeaders, Integer timeout) throws URISyntaxException {
@@ -182,17 +270,26 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 		throw new UnsupportedOperationException("Method " + method + " is invalid for uploadData.");
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#deleteData(java.lang.String)
+	 */
 	@Override
 	public byte[] deleteData(String relativeUrl) throws URISyntaxException {
 		return execute(new HttpDelete(preProcessURI(relativeUrl)), null, null);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#uploadFile(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public byte[] uploadFile(String relativeUrl, String contentType, String sourceFileNamePath)
 			throws URISyntaxException, IOException {
 		return uploadFile(relativeUrl, contentType, sourceFileNamePath, null);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#uploadFile(java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
+	 */
 	@Override
 	public byte[] uploadFile(String relativeUrl, String contentType, String sourceFileNamePath, Integer timeout)
 			throws URISyntaxException, IOException {
@@ -205,11 +302,17 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#uploadString(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String uploadString(String relativeUrl, String contentType, String data) throws URISyntaxException {
 		return uploadString(relativeUrl, contentType, data, null);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#uploadString(java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
+	 */
 	@Override
 	public String uploadString(String relativeUrl, String contentType, String data, Integer timeout)
 			throws URISyntaxException {
@@ -218,11 +321,22 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 		return new String(execute(request, null, timeout));
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.server.IWebChannelConnection#executeRequest(com.onloupe.core.server.IWebRequest, int)
+	 */
 	@Override
 	public void executeRequest(IWebRequest request, int retries) throws IOException, Exception {
 		request.processRequest(this);
 	}
 
+	/**
+	 * Execute.
+	 *
+	 * @param request the request
+	 * @param additionalHeaders the additional headers
+	 * @param timeout the timeout
+	 * @return the byte[]
+	 */
 	private byte[] execute(HttpRequestBase request, List<NameValuePair<String>> additionalHeaders, Integer timeout) {
 		request = preProcessRequest(request, additionalHeaders);
 		
@@ -272,6 +386,12 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 		}
 	}
 
+	/**
+	 * Ensure request successful.
+	 *
+	 * @param status the status
+	 * @param requestUri the request uri
+	 */
 	private void ensureRequestSuccessful(StatusLine status, URI requestUri) {
 		switch (status.getStatusCode()) {
 		case HttpStatus.SC_NOT_FOUND:
@@ -285,6 +405,11 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 		}
 	}
 
+	/**
+	 * Authenticate.
+	 *
+	 * @throws Exception the exception
+	 */
 	public void authenticate() throws Exception {
 		if (this.enableLogging)
 			this.logger.write(LogMessageSeverity.VERBOSE, LOG_CATEGORY,
@@ -301,10 +426,22 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 		this.authenticationProvider.login(this, this.client);
 	}
 
+	/**
+	 * Gets the default request config.
+	 *
+	 * @return the default request config
+	 */
 	private static final RequestConfig getDefaultRequestConfig() {
 		return RequestConfig.custom().setConnectTimeout(120).setSocketTimeout(60000).build();
 	}
 
+	/**
+	 * Pre process URI.
+	 *
+	 * @param relativeUrl the relative url
+	 * @return the uri
+	 * @throws URISyntaxException the URI syntax exception
+	 */
 	private URI preProcessURI(String relativeUrl) throws URISyntaxException {
 		try {
 			return new URI(getBaseAddress() + relativeUrl);
@@ -313,6 +450,13 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 		}
 	}
 	
+	/**
+	 * Pre process request.
+	 *
+	 * @param request the request
+	 * @param additionalHeaders the additional headers
+	 * @return the http request base
+	 */
 	private HttpRequestBase preProcessRequest(HttpRequestBase request, List<NameValuePair<String>> additionalHeaders) {
 		if (additionalHeaders != null && !additionalHeaders.isEmpty()) {
 			for (NameValuePair<String> header : additionalHeaders) {
@@ -362,6 +506,11 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 		return request;
 	}
 
+	/**
+	 * Gets the base address.
+	 *
+	 * @return the base address
+	 */
 	private String getBaseAddress() {
 		boolean usePort = true;
 		if ((!this.useSSL) && ((this.port == 0) || (this.port == 80))) {
@@ -385,10 +534,21 @@ public class WebChannel implements IWebChannelConnection, Closeable {
 		return baseAddress.toString();
 	}
 	
+	/**
+	 * Gets the protocol name.
+	 *
+	 * @return the protocol name
+	 */
 	private String getProtocolName() {
 		return (this.useSSL ? "https" : "http");
 	}
 	
+    /**
+     * Gets the use compatiblility methods override.
+     *
+     * @param server the server
+     * @return the use compatiblility methods override
+     */
     private Boolean getUseCompatiblilityMethodsOverride(String server)
     {
         //don't forget that we have to lock shared collections, they aren't thread safe
@@ -406,6 +566,12 @@ public class WebChannel implements IWebChannelConnection, Closeable {
         return useCompatibilityMethods;
     }
 
+    /**
+     * Gets the use http version 10 override.
+     *
+     * @param server the server
+     * @return the use http version 10 override
+     */
     private Boolean getUseHttpVersion10Override(String server)
     {
         //don't forget that we have to lock shared collections, they aren't threadsafe
@@ -423,6 +589,12 @@ public class WebChannel implements IWebChannelConnection, Closeable {
         return useHttpVerison10;
     }
     
+    /**
+     * Sets the use compatiblility methods override.
+     *
+     * @param server the server
+     * @param useCompatibilityMethods the use compatibility methods
+     */
     private void setUseCompatiblilityMethodsOverride(String server, Boolean useCompatibilityMethods)
     {
         //remember: generic collections are not thread safe.
@@ -441,6 +613,12 @@ public class WebChannel implements IWebChannelConnection, Closeable {
         }
     }
     
+    /**
+     * Sets the use http version 10 override.
+     *
+     * @param server the server
+     * @param useHttpVersion10 the use http version 10
+     */
     private void setUseHttpVersion10Override(String server, Boolean useHttpVersion10)
     {
         //remember: generic collections are not threadsafe.
@@ -459,67 +637,145 @@ public class WebChannel implements IWebChannelConnection, Closeable {
         }
     }
 
+	/**
+	 * Gets the entry URI.
+	 *
+	 * @return the entry URI
+	 */
 	public String getEntryURI() {
 		return getBaseAddress().toString();
 	}
 
+	/**
+	 * Gets the host name.
+	 *
+	 * @return the host name
+	 */
 	public String getHostName() {
 		return this.hostName;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.io.Closeable#close()
+	 */
 	@Override
 	public void close() throws IOException {
 		IOUtils.closeQuietly(this.client);
 	}
 
+	/**
+	 * Checks if is enable logging.
+	 *
+	 * @return true, if is enable logging
+	 */
 	public boolean isEnableLogging() {
 		return this.enableLogging;
 	}
 
+	/**
+	 * Sets the enable logging.
+	 *
+	 * @param enableLogging the new enable logging
+	 */
 	public void setEnableLogging(boolean enableLogging) {
 		this.enableLogging = enableLogging;
 	}
 
+	/**
+	 * Gets the client.
+	 *
+	 * @return the client
+	 */
 	public CloseableHttpClient getClient() {
 		return this.client;
 	}
 
+	/**
+	 * Checks if is use SSL.
+	 *
+	 * @return true, if is use SSL
+	 */
 	public boolean isUseSSL() {
 		return this.useSSL;
 	}
 
+	/**
+	 * Gets the port.
+	 *
+	 * @return the port
+	 */
 	public int getPort() {
 		return this.port;
 	}
 
+	/**
+	 * Gets the application base directory.
+	 *
+	 * @return the application base directory
+	 */
 	public String getApplicationBaseDirectory() {
 		return this.applicationBaseDirectory;
 	}
 
+	/**
+	 * Checks if is use compatibility methods.
+	 *
+	 * @return true, if is use compatibility methods
+	 */
 	public boolean isUseCompatibilityMethods() {
 		return this.useCompatibilityMethods;
 	}
 
+	/**
+	 * Gets the logger.
+	 *
+	 * @return the logger
+	 */
 	public IClientLogger getLogger() {
 		return this.logger;
 	}
 
+	/**
+	 * Gets the app protocol version.
+	 *
+	 * @return the app protocol version
+	 */
 	public Version getAppProtocolVersion() {
 		return this.appProtocolVersion;
 	}
 
+	/**
+	 * Gets the authentication provider.
+	 *
+	 * @return the authentication provider
+	 */
 	public IWebAuthenticationProvider getAuthenticationProvider() {
 		return this.authenticationProvider;
 	}
 
+	/**
+	 * Sets the authentication provider.
+	 *
+	 * @param authenticationProvider the new authentication provider
+	 */
 	public void setAuthenticationProvider(IWebAuthenticationProvider authenticationProvider) {
 		this.authenticationProvider = authenticationProvider;
 	}
 
+	/**
+	 * Gets the connection state.
+	 *
+	 * @return the connection state
+	 */
 	public ChannelConnectionState getConnectionState() {
 		return this.connectionState;
 	}
 
+	/**
+	 * Sets the connection state.
+	 *
+	 * @param connectionState the new connection state
+	 */
 	public void setConnectionState(ChannelConnectionState connectionState) {
 		this.connectionState = connectionState;
 	}

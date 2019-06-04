@@ -6,12 +6,27 @@ import com.onloupe.core.serialization.IPacketFactory;
 import com.onloupe.core.serialization.IPacketReader;
 import com.onloupe.core.serialization.PacketDefinition;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating SessionPacket objects.
+ */
 public class SessionPacketFactory implements IPacketFactory {
+	
+	/** The session start info packet type. */
 	private String sessionStartInfoPacketType;
+	
+	/** The session end info packet type. */
 	private String sessionEndInfoPacketType;
+	
+	/** The session file packet type. */
 	private String sessionFilePacketType;
+	
+	/** The thread info packet type. */
 	private String threadInfoPacketType;
 
+	/**
+	 * Instantiates a new session packet factory.
+	 */
 	public SessionPacketFactory() {
 		// resolve the names of all the types we want to be able to get packets for
 		// this lets us do a faster switch in CreatePacket
@@ -58,9 +73,9 @@ public class SessionPacketFactory implements IPacketFactory {
 
 	/**
 	 * Register the packet factory with the packet reader for all packet types it
-	 * supports
-	 * 
-	 * @param packetReader
+	 * supports.
+	 *
+	 * @param packetReader the packet reader
 	 */
 	public final void register(IPacketReader packetReader) {
 		packetReader.registerFactory(this.sessionStartInfoPacketType, this);

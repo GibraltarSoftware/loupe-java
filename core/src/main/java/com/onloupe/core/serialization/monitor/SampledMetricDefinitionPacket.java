@@ -9,16 +9,19 @@ import com.onloupe.model.SampleType;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * A serializable sampled metric definition. Provides metadata for metrics based
  * on sampled values.
  */
 public abstract class SampledMetricDefinitionPacket extends MetricDefinitionPacket implements IPacket {
+	
+	/** The unit caption. */
 	private String unitCaption;
 
 	/**
-	 * Base implementation for creating a sampled metric definition packet
-	 * 
+	 * Base implementation for creating a sampled metric definition packet.
+	 *
 	 * @param metricTypeName The unique metric type
 	 * @param categoryName   The name of the category with which this definition is
 	 *                       associated.
@@ -29,8 +32,8 @@ public abstract class SampledMetricDefinitionPacket extends MetricDefinitionPack
 	}
 
 	/**
-	 * Base implementation for creating a sampled metric definition packet
-	 * 
+	 * Base implementation for creating a sampled metric definition packet.
+	 *
 	 * @param metricTypeName The unique metric type
 	 * @param categoryName   The name of the category with which this definition is
 	 *                       associated.
@@ -46,6 +49,12 @@ public abstract class SampledMetricDefinitionPacket extends MetricDefinitionPack
 		setUnitCaption(unitCaption);
 	}
 
+	/**
+	 * Compare to.
+	 *
+	 * @param other the other
+	 * @return the int
+	 */
 	public final int compareTo(SampledMetricDefinitionPacket other) {
 		// we just gateway to our base object.
 		return super.compareTo(other);
@@ -53,6 +62,8 @@ public abstract class SampledMetricDefinitionPacket extends MetricDefinitionPack
 
 	/**
 	 * The display caption for the calculated values captured under this metric.
+	 *
+	 * @return the unit caption
 	 */
 	public final String getUnitCaption() {
 		if (TypeUtils.isBlank(this.unitCaption)) {
@@ -63,6 +74,11 @@ public abstract class SampledMetricDefinitionPacket extends MetricDefinitionPack
 		return this.unitCaption;
 	}
 
+	/**
+	 * Sets the unit caption.
+	 *
+	 * @param value the new unit caption
+	 */
 	public final void setUnitCaption(String value) {
 		// We want to get rid of any leading/trailing white space, but make sure they
 		// aren't setting us to a null object
@@ -76,11 +92,10 @@ public abstract class SampledMetricDefinitionPacket extends MetricDefinitionPack
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -91,11 +106,10 @@ public abstract class SampledMetricDefinitionPacket extends MetricDefinitionPack
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
+	 *
+	 * @param other An object to compare with this object.
 	 * @return true if the current object is equal to the <paramref name="other" />
 	 *         parameter; otherwise, false.
-	 * 
-	 * @param other An object to compare with this object.
 	 */
 	public final boolean equals(SampledMetricDefinitionPacket other) {
 		// Careful - can be null
@@ -138,6 +152,7 @@ public abstract class SampledMetricDefinitionPacket extends MetricDefinitionPack
 	 */
 	protected abstract String onUnitCaptionGenerate();
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -150,6 +165,9 @@ public abstract class SampledMetricDefinitionPacket extends MetricDefinitionPack
 		return super.getRequiredPackets();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricDefinitionPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -159,6 +177,9 @@ public abstract class SampledMetricDefinitionPacket extends MetricDefinitionPack
 		definition.getFields().add("unitCaption", FieldType.STRING);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricDefinitionPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -166,6 +187,9 @@ public abstract class SampledMetricDefinitionPacket extends MetricDefinitionPack
 		packet.setField("unitCaption", this.unitCaption);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricDefinitionPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");
