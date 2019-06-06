@@ -4,7 +4,7 @@ import java.net.URI;
 
 import org.apache.http.client.HttpClient;
 
-// TODO: Auto-generated Javadoc
+
 /**
  *  
  *  Basic Authentication credentials for authenticating with the server.
@@ -73,7 +73,7 @@ public final class BasicAuthenticationProvider implements IServerAuthenticationP
 	}
 
 	/**
-	 *  <inheritdoc />.
+	 *  {@inheritDoc}
 	 *
 	 * @return true, if is authenticated
 	 */
@@ -84,7 +84,7 @@ public final class BasicAuthenticationProvider implements IServerAuthenticationP
 	}
 
 	/**
-	 *  <inheritdoc />.
+	 *  {@inheritDoc}
 	 *
 	 * @return the logout is supported
 	 */
@@ -94,7 +94,7 @@ public final class BasicAuthenticationProvider implements IServerAuthenticationP
 	}
 
 	/**
-	 *  <inheritdoc />.
+	 *  {@inheritDoc}
 	 *
 	 * @param entryUri the entry uri
 	 * @param client the client

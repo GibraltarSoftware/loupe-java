@@ -1,6 +1,6 @@
 package com.onloupe.core.server;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The event arguments for the connection state changed event.
  */

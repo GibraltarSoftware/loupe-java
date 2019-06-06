@@ -9,7 +9,7 @@ import com.onloupe.model.session.SessionStatus;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Marks the ending status of a session.
  */
@@ -109,7 +109,7 @@ public class SessionClosePacket extends GibraltarPacket implements IPacket, java
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override

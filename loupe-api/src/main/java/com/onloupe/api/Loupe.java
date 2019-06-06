@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+
 /**
  * This static class is the primary API for logging with the Loupe Agent.
  * 
@@ -37,17 +38,17 @@ import java.util.UUID;
  * The logging API provides different groups of methods for different levels of
  * simplicity verses flexibility.
  * </p>
- * <list type="bullet"> <item><strong>Trace Methods:</strong> Designed to mirror
+ * <ul> <li><strong>Trace Methods:</strong> Designed to mirror
  * the Trace class built into .NET, these provide the simplest API and are a
  * direct substitute for existing calls that use the Trace method (simply change
- * the class name from System.Diagnostics.Trace to Gibraltar.Agent.Log)</item>
- * <item><strong>Severity Methods:</strong> A method for each Loupe severity
+ * the class name from System.Diagnostics.Trace to Gibraltar.Agent.Log)</li>
+ * <li><strong>Severity Methods:</strong> A method for each Loupe severity
  * from Critical (the most severe) to Verbose (the least). These provide a full
  * featured API for logging directly to Loupe as part of your
- * application.</item> <item><strong>Write Methods:</strong> Used to forward log
+ * application.</li> <li><strong>Write Methods:</strong> Used to forward log
  * messages into the Loupe Agent from an external logging system or logging
  * aggregation class. These expose the most capability but are generally
- * unnecessary outside of the message forwarding scenario.</item> </list>
+ * unnecessary outside of the message forwarding scenario.</li> </ul>
  * <p>
  * <strong>Trace Methods</strong>
  * </p>
@@ -60,7 +61,7 @@ import java.util.UUID;
  * </p>
  * <p>
  * In addition to the direct replacement calls for the Trace API an additional
- * <see cref="TraceCritical(string, object[])">TraceCritical Method</see> method
+ * TraceCritical Method method
  * was added for logging fatal errors.
  * </p>
  * <p>
@@ -75,7 +76,7 @@ import java.util.UUID;
  * Trace.Close at the very end of your application's execution. This will ensure
  * that all Trace Listeners are shut down correctly, and the Agent will use this
  * to record that the session closed normally and start its shutdown procedure
- * by automatically calling <see cref="EndSession()">Log.EndSession</see>.
+ * by automatically calling Log.EndSession.
  * </p>
  * <p>
  * For more information, see <a href="Logging_Trace.html">Developer's Reference
@@ -89,16 +90,15 @@ import java.util.UUID;
  * commonly-needed features of Loupe's logging capability. In order from most to
  * least severe, these are:
  * </p>
- * <list type="bullet"> <item>
- * <see cref="Critical(string, string, string, object[])">Log.Critical</see>
- * </item> <item>
- * <see cref="Error(string, string, string, object[])">Log.Error</see> </item>
- * <item>
- * <see cref="Warning(string, string, string, object[])">Log.Warning</see>
- * </item> <item> <see cref="Information(string, string, string,
- * object[])">Log.Information</see> </item> <item>
- * <see cref="Verbose(string, string, string, object[])">Log.Verbose</see>
- * </item> </list>
+ * <ul> <li>
+ * Log.Critical
+ * </li> <li>
+ * Log.Error </li>
+ * <li>
+ * Log.Warning
+ * </li> <li> Log.Information </li> <li>
+ * Log.Verbose
+ * </li> </ul>
  * <p>
  * Each of these methods in their simplest form takes Category, Caption, and
  * Description instead of just a single Message to take best advantage of
@@ -133,8 +133,7 @@ import java.util.UUID;
  * <p>
  * Another common scenario supported by Write is an existing application with a
  * central class that all logging is being routed through. The
- * <see cref="Write(LogMessageSeverity, string, int, Exception, LogWriteMode,
- * string, string, string, string, object[])"> Log.Write</see> method is
+ *  Log.Write method is
  * designed to support this easily while still allowing you to take advantage of
  * the safe formatting and origin determination capabilities of the Loupe Agent.
  * </p>
@@ -148,8 +147,8 @@ import java.util.UUID;
  * </p>
  * <p>
  * The Log object will attempt to start the first time it is used, or any time a
- * call is made to <see cref="StartSession()">StartSession</see>. When it
- * starts, it will raise its <see cref="Initializing">Log.Initializing</see>
+ * call is made to StartSession. When it
+ * starts, it will raise its Log.Initializing
  * event to allow for configuration overrides to be done in code and for the
  * startup sequence to be canceled. If the startup is canceled, all API
  * functions continue to work but no Agent functionality is available. This is a
@@ -161,17 +160,17 @@ import java.util.UUID;
  * </p>
  * <p>
  * It's a best practice at the end of your application's normal execution path
- * to include a call to <see cref="EndSession()">Log.EndSession</see>. This
+ * to include a call to Log.EndSession. This
  * performs several functions:
  * </p>
- * <list type="number"> <item>It marks the session as ending normally.
+ * <ol> <li>It marks the session as ending normally.
  * Regardless of how the process exits after EndSession is called, it will not
- * be considered crashed.</item> <item>All queued information is flushed to disk
+ * be considered crashed.</li> <li>All queued information is flushed to disk
  * and all subsequent write requests are handled as WaitForCommit requests to
- * ensure that no messages are lost.</item> <item>Various internal changes are
+ * ensure that no messages are lost.</li> <li>Various internal changes are
  * made to ensure that the process will exit quickly. If no EndSession call is
  * made, the Agent may keep the process alive even if it normally would have
- * exited.</item> </list>
+ * exited.</li> </ol>
  * <p>
  * You can safely call EndSession multiple times.
  * </p>
@@ -181,19 +180,16 @@ import java.util.UUID;
  * <p>
  * The agent can be configured in the application configuration file, through
  * code, or both. To configure the agent in code you must subscribe to the
- * <see cref="Initializing">Log.Initializing</see> event before the agent is
- * started and then manipulate the <see cref="AgentConfiguration">Agent</see>
+ * Log.Initializing event before the agent is
+ * started and then manipulate the Agent
  * configuration object and its child objects. If any configuration was supplied
  * in the application configuration file that will have already been loaded into
  * the configuration objects when the event is raised.
  * </p>
  * 
- * @see "!:Logging_Trace.html" cat=Developer's Reference Logging - Using with
- *      Trace
- * @see "!:Logging_ExternalLogSystems.html" cat=Developer's Reference Logging -
- *      Using with External Log Systems
- * @see "!:Logging_DirectLogging.html" cat=Developer's Reference Logging - Using
- *      Loupe as a Log System
+ * @see <a href="Logging_Trace.html">Developer's Reference Logging - Using with Trace</a>
+ * @see <a href="Logging_ExternalLogSystems.html">Developer's Reference Logging - Using with External Log Systems</a>
+ * @see <a href="Logging_DirectLogging.html">Developer's Reference Logging - Using Loupe as a Log System</a>
  */
 public final class Loupe {
 	/**
@@ -201,12 +197,19 @@ public final class Loupe {
 	 */
 	public static final String PACKAGE_EXTENSION = "Log.PackageExtension";
 
+	/** The Constant THIS_LOG_SYSTEM. */
 	private static final String THIS_LOG_SYSTEM = "Loupe";
+	
+	/** The Constant CATEGORY. */
 	private static final String CATEGORY = "Log.Category";
+	
+	/** The Constant EXCEPTION_CATEGORY. */
 	private static final String EXCEPTION_CATEGORY = "Log.ExceptionCategory";
 	
+	/** The Constant QUEUED. */
 	private static final LogWriteMode QUEUED = LogWriteMode.QUEUED;
 
+	/** The Constant metricDefinitions. */
 	// Create a wrapped session summary so it's available to users of the agent.
 	private static final MetricDefinitionCollection metricDefinitions = Log.getMetrics();
 
@@ -227,12 +230,18 @@ public final class Loupe {
 	 * email can be used as a fall-back option. If sessions can't be sent on exit,
 	 * the property can still be set but will stay false. No exception will be
 	 * thrown.
-	 * 
+	 *
+	 * @return the send sessions on exit
 	 */
 	public static boolean getSendSessionsOnExit() {
 		return Log.getSendSessionsOnExit();
 	}
 
+	/**
+	 * Sets the send sessions on exit.
+	 *
+	 * @param value the new send sessions on exit
+	 */
 	private static void setSendSessionsOnExit(boolean value) {
 		// don't do jack if we aren't initialized.
 		if (!Log.isLoggingActive()) {
@@ -244,7 +253,9 @@ public final class Loupe {
 
 	/**
 	 * The version information for the Loupe Agent.
-	 * @throws IOException 
+	 *
+	 * @return the agent version
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static Version getAgentVersion() throws IOException {
 		return Log.getAgentVersion();
@@ -337,8 +348,9 @@ public final class Loupe {
 	 * rather than pass a direct value of null, to avoid compiler ambiguity over the
 	 * type of a simple null.
 	 * </p>
-	 * 
+	 *
 	 * @param exception   An Exception object to attach to this log message.
+	 * @param threadInfo the thread info
 	 * @param category    The application subsystem or logging category that the log
 	 *                    message is associated with, which supports a dot-delimited
 	 *                    hierarchy (e.g. the logger name in log4net).
@@ -465,8 +477,9 @@ public final class Loupe {
 	 * allowing the current thread execution to continue while Loupe processes the
 	 * queue on a separate thread.
 	 * </p>
-	 * 
+	 *
 	 * @param exception   An Exception object to attach to this log message.
+	 * @param threadInfo the thread info
 	 * @param writeMode   Whether to queue-and-return or wait-for-commit.
 	 * @param category    The application subsystem or logging category that the log
 	 *                    message is associated with, which supports a dot-delimited
@@ -760,8 +773,9 @@ public final class Loupe {
 	 * rather than pass a direct value of null, to avoid compiler ambiguity over the
 	 * type of a simple null.
 	 * </p>
-	 * 
+	 *
 	 * @param exception   An Exception object to attach to this log message.
+	 * @param threadInfo the thread info
 	 * @param category    The application subsystem or logging category that the log
 	 *                    message is associated with, which supports a dot-delimited
 	 *                    hierarchy (e.g. the logger name in log4net).
@@ -888,8 +902,9 @@ public final class Loupe {
 	 * allowing the current thread execution to continue while Loupe processes the
 	 * queue on a separate thread.
 	 * </p>
-	 * 
+	 *
 	 * @param exception   An Exception object to attach to this log message.
+	 * @param threadInfo the thread info
 	 * @param writeMode   Whether to queue-and-return or wait-for-commit.
 	 * @param category    The application subsystem or logging category that the log
 	 *                    message is associated with, which supports a dot-delimited
@@ -1185,8 +1200,9 @@ public final class Loupe {
 	 * rather than pass a direct value of null, to avoid compiler ambiguity over the
 	 * type of a simple null.
 	 * </p>
-	 * 
+	 *
 	 * @param exception   An Exception object to attach to this log message.
+	 * @param threadInfo the thread info
 	 * @param category    The application subsystem or logging category that the log
 	 *                    message is associated with, which supports a dot-delimited
 	 *                    hierarchy (e.g. the logger name in log4net).
@@ -1313,8 +1329,9 @@ public final class Loupe {
 	 * allowing the current thread execution to continue while Loupe processes the
 	 * queue on a separate thread.
 	 * </p>
-	 * 
+	 *
 	 * @param exception   An Exception object to attach to this log message.
+	 * @param threadInfo the thread info
 	 * @param writeMode   Whether to queue-and-return or wait-for-commit.
 	 * @param category    The application subsystem or logging category that the log
 	 *                    message is associated with, which supports a dot-delimited
@@ -1608,8 +1625,9 @@ public final class Loupe {
 	 * rather than pass a direct value of null, to avoid compiler ambiguity over the
 	 * type of a simple null.
 	 * </p>
-	 * 
+	 *
 	 * @param exception   An Exception object to attach to this log message.
+	 * @param threadInfo the thread info
 	 * @param category    The application subsystem or logging category that the log
 	 *                    message is associated with, which supports a dot-delimited
 	 *                    hierarchy (e.g. the logger name in log4net).
@@ -1668,9 +1686,10 @@ public final class Loupe {
 	 * the location where the provided exception was thrown from instead of the
 	 * caller of this method.
 	 * </p>
-	 * 
+	 *
 	 * @param exception            An Exception object to attach to this log
 	 *                             message.
+	 * @param threadInfo the thread info
 	 * @param attributeToException True to record this log message based on where
 	 *                             the exception was thrown, not where this method
 	 *                             was called
@@ -1802,8 +1821,9 @@ public final class Loupe {
 	 * allowing the current thread execution to continue while Loupe processes the
 	 * queue on a separate thread.
 	 * </p>
-	 * 
+	 *
 	 * @param exception   An Exception object to attach to this log message.
+	 * @param threadInfo the thread info
 	 * @param writeMode   Whether to queue-and-return or wait-for-commit.
 	 * @param category    The application subsystem or logging category that the log
 	 *                    message is associated with, which supports a dot-delimited
@@ -1871,9 +1891,10 @@ public final class Loupe {
 	 * allowing the current thread execution to continue while Loupe processes the
 	 * queue on a separate thread.
 	 * </p>
-	 * 
+	 *
 	 * @param exception            An Exception object to attach to this log
 	 *                             message.
+	 * @param threadInfo the thread info
 	 * @param attributeToException True to record this log message based on where
 	 *                             the exception was thrown, not where this method
 	 *                             was called
@@ -2283,8 +2304,9 @@ public final class Loupe {
 	 * rather than pass a direct value of null, to avoid compiler ambiguity over the
 	 * type of a simple null.
 	 * </p>
-	 * 
+	 *
 	 * @param exception   An Exception object to attach to this log message.
+	 * @param threadInfo the thread info
 	 * @param category    The application subsystem or logging category that the log
 	 *                    message is associated with, which supports a dot-delimited
 	 *                    hierarchy (e.g. the logger name in log4net).
@@ -2343,9 +2365,10 @@ public final class Loupe {
 	 * the location where the provided exception was thrown from instead of the
 	 * caller of this method.
 	 * </p>
-	 * 
+	 *
 	 * @param exception            An Exception object to attach to this log
 	 *                             message.
+	 * @param threadInfo the thread info
 	 * @param attributeToException True to record this log message based on where
 	 *                             the exception was thrown, not where this method
 	 *                             was called
@@ -2477,8 +2500,9 @@ public final class Loupe {
 	 * allowing the current thread execution to continue while Loupe processes the
 	 * queue on a separate thread.
 	 * </p>
-	 * 
+	 *
 	 * @param exception   An Exception object to attach to this log message.
+	 * @param threadInfo the thread info
 	 * @param writeMode   Whether to queue-and-return or wait-for-commit.
 	 * @param category    The application subsystem or logging category that the log
 	 *                    message is associated with, which supports a dot-delimited
@@ -2547,9 +2571,10 @@ public final class Loupe {
 	 * allowing the current thread execution to continue while Loupe processes the
 	 * queue on a separate thread.
 	 * </p>
-	 * 
+	 *
 	 * @param exception            An Exception object to attach to this log
 	 *                             message.
+	 * @param threadInfo the thread info
 	 * @param attributeToException True to record this log message based on where
 	 *                             the exception was thrown, not where this method
 	 *                             was called
@@ -2878,248 +2903,812 @@ public final class Loupe {
 	
 //////////////////////////////////////////////////new stuff
 
-	public static void critical(StackTraceElement element, ThreadInfo threadInfo, String logSystem, String category,
+	/**
+ * Critical.
+ *
+ * @param element the element
+ * @param threadInfo the thread info
+ * @param logSystem the log system
+ * @param category the category
+ * @param caption the caption
+ */
+public static void critical(StackTraceElement element, ThreadInfo threadInfo, String logSystem, String category,
 			String caption) {
 		critical(null, element, threadInfo, logSystem, category, caption);
 	}
 
+	/**
+	 * Critical.
+	 *
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void critical(StackTraceElement element, ThreadInfo threadInfo, String logSystem, String category,
 			String caption, String description, Object... args) {
 		critical(null, element, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Critical.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void critical(Throwable throwable, StackTraceElement element, ThreadInfo threadInfo,
 			String logSystem, String category, String caption) {
 		critical(throwable, element, threadInfo, logSystem, category, caption, null);
 	}
 	
+	/**
+	 * Critical.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void critical(int skipFrames, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		critical(skipFrames + 1, null, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Critical.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void critical(int skipFrames, Set<String> exclusions, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		critical(null, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Critical.
+	 *
+	 * @param throwable the throwable
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void critical(Throwable throwable, int skipFrames, Set<String> exclusions, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		critical(throwable, null, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Critical.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void critical(Throwable throwable, StackTraceElement element, ThreadInfo threadInfo, String logSystem, 
 			String category, String caption, String description, Object... args) {
 		critical(throwable, element, 1, null, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Critical.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void critical(Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption) {
 		critical(throwable, element, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, null);
 	}
 	
+	/**
+	 * Critical.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void critical(Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption, String description, Object... args) {
 		write(LogMessageSeverity.CRITICAL, throwable, element, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Error.
+	 *
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void error(StackTraceElement element, ThreadInfo threadInfo, String logSystem, String category,
 			String caption) {
 		error(null, element, threadInfo, logSystem, category, caption);
 	}
 
+	/**
+	 * Error.
+	 *
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void error(StackTraceElement element, ThreadInfo threadInfo, String logSystem, String category,
 			String caption, String description, Object... args) {
 		error(null, element, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Error.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void error(Throwable throwable, StackTraceElement element, ThreadInfo threadInfo,
 			String logSystem, String category, String caption) {
 		error(throwable, element, threadInfo, logSystem, category, caption, null);
 	}
 	
+	/**
+	 * Error.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void error(int skipFrames, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		error(skipFrames + 1, null, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Error.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void error(int skipFrames, Set<String> exclusions, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		error(null, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Error.
+	 *
+	 * @param throwable the throwable
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void error(Throwable throwable, int skipFrames, Set<String> exclusions, ThreadInfo threadInfo, String logSystem,
 			String category, String caption) {
 		error(throwable, null, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, null);
 	}
 	
+	/**
+	 * Error.
+	 *
+	 * @param throwable the throwable
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void error(Throwable throwable, int skipFrames, Set<String> exclusions, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		error(throwable, null, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Error.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void error(Throwable throwable, StackTraceElement element, ThreadInfo threadInfo, String logSystem, 
 			String category, String caption, String description, Object... args) {
 		error(throwable, element, 1, null, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Error.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void error(Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption) {
 		error(throwable, element, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, null);
 	}
 	
+	/**
+	 * Error.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void error(Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption, String description, Object... args) {
 		write(LogMessageSeverity.ERROR, throwable, element, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Warn.
+	 *
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void warn(String category, String caption) {
 		warn(null, null, LogSystems.LOUPE, category, caption);
 	}
 	
+	/**
+	 * Warn.
+	 *
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void warn(StackTraceElement element, ThreadInfo threadInfo, String logSystem, String category,
 			String caption) {
 		warn(null, element, threadInfo, logSystem, category, caption);
 	}
 
+	/**
+	 * Warn.
+	 *
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void warn(StackTraceElement element, ThreadInfo threadInfo, String logSystem, String category,
 			String caption, String description, Object... args) {
 		warn(null, element, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Warn.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void warn(Throwable throwable, StackTraceElement element, ThreadInfo threadInfo,
 			String logSystem, String category, String caption) {
 		warn(throwable, element, threadInfo, logSystem, category, caption, null);
 	}
 	
+	/**
+	 * Warn.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void warn(int skipFrames, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		warn(skipFrames + 1, null, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Warn.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void warn(int skipFrames, Set<String> exclusions, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		warn(null, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Warn.
+	 *
+	 * @param throwable the throwable
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void warn(Throwable throwable, int skipFrames, Set<String> exclusions, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		warn(throwable, null, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Warn.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void warn(Throwable throwable, StackTraceElement element, ThreadInfo threadInfo, String logSystem, 
 			String category, String caption, String description, Object... args) {
 		warn(throwable, element, 1, null, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Warn.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void warn(Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption) {
 		warn(throwable, element, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, null);
 	}
 	
+	/**
+	 * Warn.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void warn(Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption, String description, Object... args) {
 		write(LogMessageSeverity.WARNING, throwable, element, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Information.
+	 *
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void information(String category, String caption) {
 		information(null, null, LogSystems.LOUPE, category, caption);
 	}
 	
+	/**
+	 * Information.
+	 *
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void information(StackTraceElement element, ThreadInfo threadInfo, String logSystem, String category,
 			String caption) {
 		information(null, element, threadInfo, logSystem, category, caption);
 	}
 
+	/**
+	 * Information.
+	 *
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void information(StackTraceElement element, ThreadInfo threadInfo, String logSystem, String category,
 			String caption, String description, Object... args) {
 		information(null, element, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Information.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void information(Throwable throwable, StackTraceElement element, ThreadInfo threadInfo,
 			String logSystem, String category, String caption) {
 		information(throwable, element, threadInfo, logSystem, category, caption, null);
 	}
 	
+	/**
+	 * Information.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void information(int skipFrames, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		information(skipFrames + 1, null, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Information.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void information(int skipFrames, Set<String> exclusions, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		information(null, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Information.
+	 *
+	 * @param throwable the throwable
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void information(Throwable throwable, int skipFrames, Set<String> exclusions, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		information(throwable, null, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Information.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void information(Throwable throwable, StackTraceElement element, ThreadInfo threadInfo, String logSystem, 
 			String category, String caption, String description, Object... args) {
 		information(throwable, element, 1, null, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Information.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void information(Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption) {
 		information(throwable, element, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, null);
 	}
 	
+	/**
+	 * Information.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void information(Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption, String description, Object... args) {
 		write(LogMessageSeverity.INFORMATION, throwable, element, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Verbose.
+	 *
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void verbose(String category, String caption) {
 		verbose(null, null, LogSystems.LOUPE, category, caption);
 	}
 
+	/**
+	 * Verbose.
+	 *
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void verbose(StackTraceElement element, ThreadInfo threadInfo, String logSystem, String category,
 			String caption) {
 		verbose(null, element, threadInfo, logSystem, category, caption);
 	}
 
+	/**
+	 * Verbose.
+	 *
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void verbose(StackTraceElement element, ThreadInfo threadInfo, String logSystem, String category,
 			String caption, String description, Object... args) {
 		verbose(null, element, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Verbose.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void verbose(Throwable throwable, StackTraceElement element, ThreadInfo threadInfo, String logSystem,
 			String category, String caption) {
 		verbose(throwable, element, threadInfo, logSystem, category, caption, null);
 	}
 
+	/**
+	 * Verbose.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void verbose(int skipFrames, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		verbose(skipFrames + 1, null, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Verbose.
+	 *
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void verbose(int skipFrames, Set<String> exclusions, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		verbose(null, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Verbose.
+	 *
+	 * @param throwable the throwable
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void verbose(Throwable throwable, int skipFrames, Set<String> exclusions, ThreadInfo threadInfo, String logSystem,
 			String category, String caption, String description, Object... args) {
 		verbose(throwable, null, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 
+	/**
+	 * Verbose.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void verbose(Throwable throwable, StackTraceElement element, ThreadInfo threadInfo, String logSystem, 
 			String category, String caption, String description, Object... args) {
 		verbose(throwable, element, 1, null, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Verbose.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 */
 	public static void verbose(Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption) {
 		verbose(throwable, element, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, null);
 	}
 	
+	/**
+	 * Verbose.
+	 *
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void verbose(Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption, String description, Object... args) {
 		write(LogMessageSeverity.VERBOSE, throwable, element, skipFrames + 1, exclusions, threadInfo, logSystem, category, caption, description, args);
 	}
 	
+	/**
+	 * Write.
+	 *
+	 * @param severity the severity
+	 * @param throwable the throwable
+	 * @param element the element
+	 * @param skipFrames the skip frames
+	 * @param exclusions the exclusions
+	 * @param threadInfo the thread info
+	 * @param logSystem the log system
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void write(LogMessageSeverity severity, Throwable throwable, StackTraceElement element, int skipFrames, Set<String> exclusions, 
 			ThreadInfo threadInfo, String logSystem, String category, String caption, String description, Object... args) {
 		// don't do jack if we aren't initialized.
@@ -3149,10 +3738,8 @@ public final class Loupe {
 	 * <p>
 	 * This method provides an advanced use of Loupe log messages for use in wrapper
 	 * methods and for bridging simple logging systems into Loupe. Also see
-	 * <see cref=
-	 * "Verbose(Throwable,LogWriteMode,string,string,string,object[])">Verbose</see>
-	 * and <see cref=
-	 * "VerboseDetail(Throwable,LogWriteMode,string,string,string,string,object[])">VerboseDetail</see>
+	 * Verbose
+	 * and VerboseDetail
 	 * and their other overloads and related methods for simpler usage of XML
 	 * details when the other advanced hooks are not needed.
 	 * </p>
@@ -3166,8 +3753,7 @@ public final class Loupe {
 	 * automatically based on the indicated stack frame. Bridge logic adapting from
 	 * a logging system which already determines and provides information about the
 	 * originator (such as log4net) into Loupe should use the other overload of
-	 * <see cref=
-	 * "Write(LogMessageSeverity,string,IMessageSourceProvider,string,Exception,LogWriteMode,string,string,string,string,object[])">Write</see>,
+	 * Write,
 	 * passing a customized IMessageSourceProvider.
 	 * </p>
 	 * <p>
@@ -3175,7 +3761,7 @@ public final class Loupe {
 	 * Queued (the normal default, for optimal performance) and WaitForCommit (to
 	 * help ensure critical information makes it to disk, e.g. before exiting the
 	 * application upon return from this call). See the
-	 * <see cref="LogWriteMode">LogWriteMode</see> enum for more information.
+	 * LogWriteMode enum for more information.
 	 * </p>
 	 * <p>
 	 * This method also allows an optional Exception object to be attached to the
@@ -3221,6 +3807,21 @@ public final class Loupe {
 		logMessage.publishToLog();
 	}
 	
+	/**
+	 * Write.
+	 *
+	 * @param severity the severity
+	 * @param logSystem the log system
+	 * @param provider the provider
+	 * @param username the username
+	 * @param throwable the throwable
+	 * @param writeMode the write mode
+	 * @param detailsXml the details xml
+	 * @param category the category
+	 * @param caption the caption
+	 * @param description the description
+	 * @param args the args
+	 */
 	public static void write(LogMessageSeverity severity, String logSystem, IMessageSourceProvider provider, String username, Throwable throwable,
 			LogWriteMode writeMode, String detailsXml, String category, String caption, String description,
 			Object... args) {
@@ -3235,10 +3836,8 @@ public final class Loupe {
 	 * <p>
 	 * This method provides an advanced use of Loupe log messages for use in wrapper
 	 * methods and for bridging simple logging systems into Loupe. Also see
-	 * <see cref=
-	 * "Verbose(Throwable,LogWriteMode,string,string,string,object[])">Verbose</see>
-	 * and <see cref=
-	 * "VerboseDetail(Throwable,LogWriteMode,string,string,string,string,object[])">VerboseDetail</see>
+	 * Verbose
+	 * and VerboseDetail
 	 * and their other overloads and related methods for simpler usage of XML
 	 * details when the other advanced hooks are not needed.
 	 * </p>
@@ -3252,8 +3851,7 @@ public final class Loupe {
 	 * automatically based on the indicated stack frame. Bridge logic adapting from
 	 * a logging system which already determines and provides information about the
 	 * originator (such as log4net) into Loupe should use the other overload of
-	 * <see cref=
-	 * "Write(LogMessageSeverity,string,IMessageSourceProvider,string,Exception,LogWriteMode,string,string,string,string,object[])">Write</see>,
+	 * Write,
 	 * passing a customized IMessageSourceProvider.
 	 * </p>
 	 * <p>
@@ -3261,7 +3859,7 @@ public final class Loupe {
 	 * Queued (the normal default, for optimal performance) and WaitForCommit (to
 	 * help ensure critical information makes it to disk, e.g. before exiting the
 	 * application upon return from this call). See the
-	 * <see cref="LogWriteMode">LogWriteMode</see> enum for more information.
+	 * LogWriteMode enum for more information.
 	 * </p>
 	 * <p>
 	 * This method also allows an optional Exception object to be attached to the
@@ -3343,32 +3941,24 @@ public final class Loupe {
 	 * For localized exception catching (e.g. anticipating exceptions when opening a
 	 * file) we recommend logging an appropriate, specific log message with the
 	 * exception attached. (See
-	 * <see cref="TraceError(Throwable, string, object[])">TraceError</see>,
-	 * <see cref="Error(Throwable, LogWriteMode, string, string, string,
-	 * object[])">Error</see>, and
-	 * <see cref="Write(LogMessageSeverity, string, int, Exception, LogWriteMode,
-	 * string, string, string, string, object[])">Write</see> and other such
+	 * TraceError,
+	 * Error, and
+	 * Write and other such
 	 * methods; the message need not be of Error severity.)
 	 * </p>
 	 * 
-	 * <example> <code lang="CS" title="Record and Report exception" description=
-	 * "Shows an example of both the record and report exception commands. Only one needs to be used for any single exception.">
-		<![CDATA[
-	//this option records the exception but does not display any user interface.  
-	Log.RecordException(ex, "Exceptions", true);
-	
-	//this option records the exception and displays a user interface, optionally waiting for the user 
-	//to decide to continue or exit before returning.
-	Log.ReportException(ex, "Exceptions", true, true);]]>
-	</code> </example>
-	 * 
+	 *  {@code //this option records the exception but does not display any user interface.  
+	 * 	Log.RecordException(ex, "Exceptions", true);
+	 * 	
+	 * 	//this option records the exception and displays a user interface, optionally waiting for the user 
+	 * 	//to decide to continue or exit before returning.
+	 * 	Log.ReportException(ex, "Exceptions", true, true);}
+	 *
 	 * @param throwable   An exception object to record as a log message. This call
 	 *                    is ignored if null.
-	 * 
 	 * @param category    The application subsystem or logging category that the
 	 *                    message will be associated with.
-	 * @throws IOException
-	 * 
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void recordException(Throwable throwable, String category) throws IOException {
 		recordException(throwable, category, true);
@@ -3376,8 +3966,8 @@ public final class Loupe {
 
 	/**
 	 * Record an unexpected exception to the log without displaying a user prompt.
-	 *
-	 *
+	 * 
+	 * 
 	 * <p>
 	 * This method provides an easy way to record an exception as a separate message
 	 * which will be attributed to the code location which threw the exception
@@ -3397,35 +3987,28 @@ public final class Loupe {
 	 * For localized exception catching (e.g. anticipating exceptions when opening a
 	 * file) we recommend logging an appropriate, specific log message with the
 	 * exception attached. (See
-	 * <see cref="TraceError(Throwable, string, object[])">TraceError</see>,
-	 * <see cref="Error(Throwable, LogWriteMode, string, string, string,
-	 * object[])">Error</see>, and
-	 * <see cref="Write(LogMessageSeverity, string, int, Exception, LogWriteMode,
-	 * string, string, string, string, object[])">Write</see> and other such
+	 * TraceError,
+	 * Error, and
+	 * Write and other such
 	 * methods; the message need not be of Error severity.)
 	 * </p>
-	 *
-	 * <example> <code lang="CS" title="Record and Report exception" description=
-	 * "Shows an example of both the record and report exception commands. Only one needs to be used for any single exception.">
-	 <![CDATA[
-	 //this option records the exception but does not display any user interface.
-	 Log.RecordException(ex, "Exceptions", true);
-
-	 //this option records the exception and displays a user interface, optionally waiting for the user
-	 //to decide to continue or exit before returning.
-	 Log.ReportException(ex, "Exceptions", true, true);]]>
-	 </code> </example>
+	 * 
+	 *  {@code
+	 * 	 //this option records the exception but does not display any user interface.
+	 * 	 Log.RecordException(ex, "Exceptions", true);
+	 * 
+	 * 	 //this option records the exception and displays a user interface, optionally waiting for the user
+	 * 	 //to decide to continue or exit before returning.
+	 * 	 Log.ReportException(ex, "Exceptions", true, true);}
 	 *
 	 * @param throwable   An exception object to record as a log message. This call
 	 *                    is ignored if null.
-	 *
 	 * @param category    The application subsystem or logging category that the
 	 *                    message will be associated with.
 	 * @param canContinue True if the application can continue after this call,
 	 *                    false if this is a fatal error and the application should
 	 *                    not continue.
-	 * @throws IOException
-	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void recordException(Throwable throwable, String category, boolean canContinue) throws IOException {
 		if (throwable != null) {
@@ -3867,17 +4450,16 @@ public final class Loupe {
 	 * have crashed.
 	 * </p>
 	 * 
-	 * <overloads> Used to explicitly set the session state for the current session
-	 * and provide a reason. </overloads>
+	 *  Used to explicitly set the session state for the current session
+	 * and provide a reason. 
 	 * 
 	 * @param endingStatus   The explicit ending status to declare for this session,
-	 *                       <see cref="SessionStatus.Normal">Normal</see> or
-	 *                       <see cref="SessionStatus.Crashed">Crashed</see>.
+	 *                       Normal or
+	 *                       Crashed.
 	 * @param sourceProvider An IMessageSourceProvider object which supplies the
 	 *                       source information about this log message.
 	 * @param reason         A simple reason to declare why the application is
 	 *                       ending as Normal or as Crashed, or may be null.
-	 * @throws IOException 
 	 */
 	public static void shutdown(SessionStatus endingStatus, IMessageSourceProvider sourceProvider, String reason) {
 		try {
@@ -3911,17 +4493,16 @@ public final class Loupe {
 	 * have crashed.
 	 * </p>
 	 * 
-	 * <overloads> Used to explicitly set the session state for the current session
-	 * and provide a reason. </overloads>
+	 *  Used to explicitly set the session state for the current session
+	 * and provide a reason. 
 	 * 
 	 * @param endingStatus The explicit ending status to declare for this session,
-	 *                     <see cref="SessionStatus.Normal">Normal</see> or
-	 *                     <see cref="SessionStatus.Crashed">Crashed</see>.
+	 *                     Normal or
+	 *                     Crashed.
 	 * @param skipFrames   The number of stack frames to skip out to find the
 	 *                     original caller.
 	 * @param reason       A simple reason to declare why the application is ending
 	 *                     as Normal or as Crashed, or may be null.
-	 * @throws IOException 
 	 */
 	public static void shutdown(SessionStatus endingStatus, int skipFrames, String reason) {
 		try {
@@ -3954,15 +4535,14 @@ public final class Loupe {
 	 * have crashed.
 	 * </p>
 	 * 
-	 * <overloads> Used to explicitly set the session state for the current session
-	 * and provide a reason. </overloads>
+	 *  Used to explicitly set the session state for the current session
+	 * and provide a reason. 
 	 * 
 	 * @param endingStatus The explicit ending status to declare for this session,
-	 *                     <see cref="SessionStatus.Normal">Normal</see> or
-	 *                     <see cref="SessionStatus.Crashed">Crashed</see>.
+	 *                     Normal or
+	 *                     Crashed.
 	 * @param reason       A simple reason to declare why the application is ending
 	 *                     as Normal or as Crashed, or may be null.
-	 * @throws IOException 
 	 */
 	public static void shutdown(SessionStatus endingStatus, String reason) {
 		// A specified exit status attributed to our immediate caller with a specified
@@ -3997,12 +4577,11 @@ public final class Loupe {
 	 * have crashed.
 	 * </p>
 	 * 
-	 * <overloads> Used to explicitly set the session state for the current session
-	 * and provide a reason. </overloads>
+	 * Used to explicitly set the session state for the current session
+	 * and provide a reason.
 	 * 
 	 * @param reason A simple reason to declare why the application is ending as
 	 *               Normal, or may be null.
-	 * @throws IOException 
 	 */
 	public static void shutdown(String reason) {
 		// A specified exit status attributed to our immediate caller with a specified
@@ -4038,10 +4617,9 @@ public final class Loupe {
 	 * have crashed.
 	 * </p>
 	 * 
-	 * <overloads> This overload will declare a
-	 * <see cref="SessionStatus.Normal">Normal</see> ending state with no explicit
-	 * reason. </overloads>
-	 * @throws IOException 
+	 * This overload will declare a
+	 * Normal ending state with no explicit
+	 * reason.
 	 */
 	public static void shutdown() {
 		// A normal exit attributed to our immediate caller with no explicit reason.
@@ -4059,7 +4637,7 @@ public final class Loupe {
 	 * agent will raise an Initializing event which can be canceled. If it cancels
 	 * then the session has not been started. All calls to the agent are safe
 	 * whether it has been activated or not.
-	 * @throws IOException 
+	 * @throws IOException Exception in case of failed startup
 	 */
 	public static void start() throws IOException {
 		Log.start(null, 1, null);
@@ -4074,7 +4652,7 @@ public final class Loupe {
 	 *               be canceled. If it cancels then the session has not been
 	 *               started. All calls to the agent are safe whether it has been
 	 *               activated or not.
-	 * @throws IOException 
+	 * @throws IOException Exception in case of failed startup
 	 */
 	public static void start(String reason) throws IOException {
 		Log.start(null, 1, reason);
@@ -4091,7 +4669,7 @@ public final class Loupe {
 	 *                   which can be canceled. If it cancels then the session has
 	 *                   not been started. All calls to the agent are safe whether
 	 *                   it has been activated or not.
-	 * @throws IOException 
+	 * @throws IOException Exception in case of failed startup
 	 */
 	public static void start(int skipFrames, String reason) throws IOException {
 		Log.start(null, skipFrames + 1, reason);
@@ -4099,9 +4677,7 @@ public final class Loupe {
 
 	/**
 	 * Attempt to activate the agent.
-	 * 
-	 * @param reason         A caption for the reason the session is starting, or
-	 *                       null.
+	 *
 	 * @param sourceProvider An IMessageSourceProvider object which supplies the
 	 *                       source information about this log message. If the agent
 	 *                       is already active this call has no effect. When
@@ -4109,7 +4685,9 @@ public final class Loupe {
 	 *                       which can be canceled. If it cancels then the session
 	 *                       has not been started. All calls to the agent are safe
 	 *                       whether it has been activated or not.
-	 * @throws IOException 
+	 * @param reason         A caption for the reason the session is starting, or
+	 *                       null.
+	 * @throws IOException Exception in case of failed startup
 	 */
 	public static void start(IMessageSourceProvider sourceProvider, String reason) throws IOException {
 		Log.start(null, (sourceProvider == null) ? null : sourceProvider, reason);
@@ -4125,7 +4703,7 @@ public final class Loupe {
 	 *                      canceled. If it cancels then the session has not been
 	 *                      started. All calls to the agent are safe whether it has
 	 *                      been activated or not.
-	 * @throws IOException 
+	 * @throws IOException Exception in case of failed startup or null configuration object
 	 */
 	public static void start(AgentConfiguration configuration) throws IOException {
 		if (configuration == null) {
@@ -4146,7 +4724,7 @@ public final class Loupe {
 	 *                      Initializing event which can be canceled. If it cancels
 	 *                      then the session has not been started. All calls to the
 	 *                      agent are safe whether it has been activated or not.
-	 * @throws IOException 
+	 * @throws IOException Exception in case of failed startup or null configuration object
 	 */
 	public static void start(AgentConfiguration configuration, String reason) throws IOException {
 		if (configuration == null) {
@@ -4169,7 +4747,7 @@ public final class Loupe {
 	 *                      Initializing event which can be canceled. If it cancels
 	 *                      then the session has not been started. All calls to the
 	 *                      agent are safe whether it has been activated or not.
-	 * @throws IOException 
+	 * @throws IOException Exception in case of failed startup or null configuration object
 	 */
 	public static void start(AgentConfiguration configuration, int skipFrames, String reason) throws IOException {
 		if (configuration == null) {
@@ -4181,11 +4759,9 @@ public final class Loupe {
 
 	/**
 	 * Attempt to activate the agent.
-	 * 
+	 *
 	 * @param configuration  The Agent configuration to use instead of any
 	 *                       configuration in the app.config file.
-	 * @param reason         A caption for the reason the session is starting, or
-	 *                       null.
 	 * @param sourceProvider An IMessageSourceProvider object which supplies the
 	 *                       source information about this log message. If the agent
 	 *                       is already active this call has no effect. When
@@ -4193,7 +4769,9 @@ public final class Loupe {
 	 *                       which can be canceled. If it cancels then the session
 	 *                       has not been started. All calls to the agent are safe
 	 *                       whether it has been activated or not.
-	 * @throws IOException 
+	 * @param reason         A caption for the reason the session is starting, or
+	 *                       null.
+	 * @throws IOException Exception in case of failed startup or null configuration object
 	 */
 	public static void start(AgentConfiguration configuration, IMessageSourceProvider sourceProvider,
 			String reason) throws IOException {
@@ -4230,7 +4808,7 @@ public final class Loupe {
 	 *         complete immediately and return false. This prevents multiple
 	 *         simultaneous send attempts from consuming resources.
 	 *         </p>
-	 * @throws IOException 
+	 * @throws IOException Exception in case of failure to send sessions.
 	 * 
 	 */
 	public static Boolean sendSessions(SessionCriteria criteria) throws IOException {
@@ -4268,7 +4846,7 @@ public final class Loupe {
 	 *         complete immediately and return false. This prevents multiple
 	 *         simultaneous send attempts from consuming resources.
 	 *         </p>
-	 * @throws IOException 
+	 * @throws IOException Exception in case of failure to send sessions.
 	 * 
 	 */
 	public static Boolean sendSessions(java.util.function.Predicate<ISessionSummary> sessionMatchPredicate) throws IOException {
@@ -4305,7 +4883,7 @@ public final class Loupe {
 	 *         complete immediately and return false. This prevents multiple
 	 *         simultaneous send attempts from consuming resources.
 	 *         </p>
-	 * @throws IOException 
+	 * @throws IOException Exception in case of failure to send sessions.
 	 * 
 	 */
 	public static Boolean sendSessionsAsync(SessionCriteria criteria) throws IOException {
@@ -4343,7 +4921,7 @@ public final class Loupe {
 	 *         complete immediately and return false. This prevents multiple
 	 *         simultaneous send attempts from consuming resources.
 	 *         </p>
-	 * @throws IOException 
+	 * @throws IOException Exception in case of failure to send sessions.
 	 * 
 	 */
 	public static Boolean sendSessionsAsync(java.util.function.Predicate<ISessionSummary> sessionMatchPredicate) throws IOException {
@@ -4364,7 +4942,8 @@ public final class Loupe {
 	 * provided only this metrics collection is used. If there is a duplicate metric
 	 * in the data stream, that information will be discarded when the log file is
 	 * read (but there is no affect at runtime).
-	 * 
+	 *
+	 * @return the metric definitions
 	 */
 	public static MetricDefinitionCollection getMetricDefinitions() {
 		return metricDefinitions;
@@ -4373,8 +4952,9 @@ public final class Loupe {
 	/**
 	 * The common information about the active log session. This is always safe even
 	 * when logging is disabled.
-	 * 
-	 * @throws IOException
+	 *
+	 * @return the session summary
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static SessionSummary getSessionSummary() throws IOException {
 		return Log.getSessionSummary();

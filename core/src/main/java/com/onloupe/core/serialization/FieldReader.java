@@ -19,7 +19,7 @@ import com.onloupe.core.data.FileHeader;
 import com.onloupe.core.util.TimeConversion;
 import com.onloupe.model.exception.GibraltarException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Provides low-level decompression of the basic data types we pass over the
  * wire.

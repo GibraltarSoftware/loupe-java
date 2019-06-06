@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SessionSummaryPacket.
  */
@@ -1033,7 +1033,7 @@ public class SessionSummaryPacket extends GibraltarCachedPacket implements IPack
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override
@@ -1047,7 +1047,7 @@ public class SessionSummaryPacket extends GibraltarCachedPacket implements IPack
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(SessionSummaryPacket other) {

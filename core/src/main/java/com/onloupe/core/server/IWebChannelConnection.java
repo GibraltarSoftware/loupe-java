@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.onloupe.core.NameValuePair;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The low level web client connection used by the web channel.
  */

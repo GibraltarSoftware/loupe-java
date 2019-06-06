@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class TextParse.
  */

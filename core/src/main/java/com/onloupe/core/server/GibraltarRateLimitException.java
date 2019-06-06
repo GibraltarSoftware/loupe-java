@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 
 import com.onloupe.model.exception.GibraltarException;
 
-// TODO: Auto-generated Javadoc
+
 ///#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 /**

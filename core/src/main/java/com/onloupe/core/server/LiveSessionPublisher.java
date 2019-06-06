@@ -16,7 +16,7 @@ import com.onloupe.core.messaging.network.SendSessionCommandMessage;
 import com.onloupe.core.messaging.network.SessionHeaderMessage;
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Communicates between an Agent and a Loupe Server.
  */

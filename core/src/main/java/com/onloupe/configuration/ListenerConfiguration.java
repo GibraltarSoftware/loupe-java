@@ -2,7 +2,7 @@ package com.onloupe.configuration;
 
 import java.util.Properties;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Configuration information for the trace listener.
  */

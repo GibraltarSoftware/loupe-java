@@ -11,7 +11,7 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PacketWriter.
  */

@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class GibraltarPacket.
  */
@@ -63,7 +63,7 @@ public abstract class GibraltarPacket implements IMessengerPacket {
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override
@@ -77,7 +77,7 @@ public abstract class GibraltarPacket implements IMessengerPacket {
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(GibraltarPacket other) {

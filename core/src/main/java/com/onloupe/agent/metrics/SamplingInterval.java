@@ -1,6 +1,6 @@
 package com.onloupe.agent.metrics;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A suggested interval between value samples.
  */

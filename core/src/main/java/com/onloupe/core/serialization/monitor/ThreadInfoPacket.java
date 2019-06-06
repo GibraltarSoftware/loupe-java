@@ -8,7 +8,7 @@ import com.onloupe.model.IThreadInfo;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ThreadInfoPacket.
  */
@@ -170,7 +170,7 @@ public class ThreadInfoPacket extends GibraltarCachedPacket implements IPacket, 
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override
@@ -184,7 +184,7 @@ public class ThreadInfoPacket extends GibraltarCachedPacket implements IPacket, 
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(ThreadInfoPacket other) {

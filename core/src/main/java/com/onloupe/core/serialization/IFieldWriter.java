@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Standard interface for objects that can write individual serialized fields.
  */
@@ -36,7 +36,6 @@ public interface IFieldWriter {
 	 * Write a bool to the stream.
 	 *
 	 * @param value the value
-	 * @return A bool value.
 	 */
 	void write(boolean value);
 
@@ -52,7 +51,6 @@ public interface IFieldWriter {
 	 * Write an array of string to the stream.
 	 *
 	 * @param array the array
-	 * @return An array of string values.
 	 * @throws Exception the exception
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */

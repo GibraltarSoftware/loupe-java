@@ -1,6 +1,6 @@
 package com.onloupe.configuration;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Minimal configuration information for each messenger.
  */

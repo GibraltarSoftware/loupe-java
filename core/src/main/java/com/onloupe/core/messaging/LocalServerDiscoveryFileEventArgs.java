@@ -3,7 +3,7 @@ package com.onloupe.core.messaging;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent.Kind;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Event arguments for LocalServerDiscoveryFile events.
  */

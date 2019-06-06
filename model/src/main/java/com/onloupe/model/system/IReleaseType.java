@@ -1,6 +1,6 @@
 package com.onloupe.model.system;
 
-// TODO: Auto-generated Javadoc
+
 /** 
  Release types indicate the quality level and exposure of a release.
  

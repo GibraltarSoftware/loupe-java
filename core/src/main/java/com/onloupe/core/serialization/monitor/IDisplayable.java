@@ -1,6 +1,6 @@
 package com.onloupe.core.serialization.monitor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A standard interface for ensuring an item can be displayed in user interfaces
  * by providing an end user short caption and long description

@@ -2,7 +2,7 @@ package com.onloupe.core.messaging;
 
 import com.onloupe.configuration.IMessengerConfiguration;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Implement this interface to be a packet sink for the messaging system.
  */

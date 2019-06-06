@@ -2,7 +2,7 @@ package com.onloupe.core.serialization.monitor;
 
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Implemented by any extensible data object to connect to its unique Id which
  * it shares with its extension object.

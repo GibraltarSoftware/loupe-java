@@ -1,6 +1,6 @@
 package com.onloupe.core.serialization;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This is the set of encoding options for DateTime compression by
  * FieldReader/FieldWriter (for FieldType.DateTime and elements of

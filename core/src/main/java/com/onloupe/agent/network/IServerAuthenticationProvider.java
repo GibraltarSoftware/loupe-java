@@ -2,7 +2,7 @@ package com.onloupe.agent.network;
 
 import org.apache.http.client.HttpClient;
 
-// TODO: Auto-generated Javadoc
+
 /**
  *  
  *  Implemented to provide custom authentication for a web channel.

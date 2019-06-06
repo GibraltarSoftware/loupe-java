@@ -6,7 +6,7 @@ import com.onloupe.core.logging.Log;
 import com.onloupe.model.log.ILogMessage;
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * EventArgs for Notification events.
  */

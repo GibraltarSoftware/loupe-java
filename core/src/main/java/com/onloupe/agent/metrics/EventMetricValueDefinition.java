@@ -5,7 +5,7 @@ import com.onloupe.core.serialization.monitor.EventMetricValueDefinitionPacket;
 import com.onloupe.model.data.EventMetricValueTrend;
 import com.onloupe.model.metric.MemberType;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Defines one value that can be associated with an event metric, created via
  * eventMetricDefinition.AddValue(...);

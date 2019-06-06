@@ -9,9 +9,9 @@ import java.time.temporal.ChronoUnit;
 
 import com.onloupe.model.exception.GibraltarException;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * Helper class to assist with c# -> Java temporal behavior, and converting time definitions to manageable surrogates.
+ * Helper class to assist with C# to Java temporal behavior, and converting time definitions to manageable surrogates.
  * 
  * 1 tick = 100 nanos. The Loupe server deals in ticks and java has no native type for this, so we need to improvise.
  * 

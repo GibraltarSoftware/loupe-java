@@ -1,6 +1,6 @@
 package com.onloupe.agent;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * An interface by which conversion classes can provide the details of the
  * source of a log message.

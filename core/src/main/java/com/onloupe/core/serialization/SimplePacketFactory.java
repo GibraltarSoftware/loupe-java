@@ -3,7 +3,7 @@ package com.onloupe.core.serialization;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * SimplePacketFactory is the IPacketFactory used when an IPacket implementation
  * knows how to use when a type.

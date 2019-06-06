@@ -11,7 +11,7 @@ import com.onloupe.core.serialization.SerializedPacket;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * One raw data sample of an event metric
  * 
@@ -60,7 +60,7 @@ public class EventMetricSamplePacket extends MetricSamplePacket implements IDyna
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override

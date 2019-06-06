@@ -2,7 +2,7 @@ package com.onloupe.core.serialization;
 
 import java.io.IOException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Implemented to support writing packets
  * 

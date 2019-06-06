@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Consolidates storage summary information for all packet types and fragments
  * in a session.

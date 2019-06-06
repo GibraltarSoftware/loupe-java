@@ -3,7 +3,7 @@ package com.onloupe.core.serialization;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface IPacketReader.
  */

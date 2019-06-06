@@ -2,7 +2,7 @@ package com.onloupe.core.server;
 
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * HTTP Client logging interface.
  */

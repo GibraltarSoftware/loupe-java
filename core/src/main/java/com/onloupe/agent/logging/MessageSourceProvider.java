@@ -5,7 +5,7 @@ import java.util.Set;
 import com.onloupe.agent.IMessageSourceProvider;
 import com.onloupe.core.CommonCentralLogic;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A basic class to determine the source of a log message and act as an
  * IMessageSourceProvider.

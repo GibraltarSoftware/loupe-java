@@ -46,7 +46,7 @@ import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.session.ISessionSummary;
 import com.onloupe.model.session.SessionStatus;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The local collection repository, a minimalistic repository.
  */
@@ -809,14 +809,14 @@ public class LocalRepository {
 	 * Retrieves all the sessions that match the conditions defined by the specified
 	 * predicate.
 	 *
-	 * @param match The <see cref="System.Predicate{T}">Predicate</see> delegate
+	 * @param match The Predicate delegate
 	 *              that defines the conditions of the sessions to search for.
 	 * 
-	 *              The <see cref="System.Predicate{T}">Predicate</see> is a
+	 *              The Predicate is a
 	 *              delegate to a method that returns true if the object passed to
 	 *              it matches the conditions defined in the delegate. The sessions
 	 *              of the repository are individually passed to the
-	 *              <see cref="System.Predicate{T}">Predicate</see> delegate, moving
+	 *              Predicate delegate, moving
 	 *              forward in the List, starting with the first session and ending
 	 *              with the last session.
 	 * @return A List containing all the sessions that match the conditions defined

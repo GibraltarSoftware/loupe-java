@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Manages the cached credentials for the current process
  * 

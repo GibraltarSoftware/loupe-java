@@ -4,7 +4,7 @@ import com.onloupe.core.logging.Log;
 import com.onloupe.core.logging.LogWriteMode;
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Client logger implementation for our core Loupe logging interface.
  */

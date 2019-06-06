@@ -3,7 +3,7 @@ package com.onloupe.core.serialization.monitor;
 import com.onloupe.core.metrics.Metric;
 import com.onloupe.core.metrics.MetricDefinition;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The serializeable representation of a custom sampled metric.
  */
@@ -38,7 +38,7 @@ public class CustomSampledMetricPacket extends SampledMetricPacket
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override

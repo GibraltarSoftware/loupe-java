@@ -4,7 +4,7 @@ import java.util.Set;
 
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * An intermediary class to log a Gibraltar log message including an XML details
  * string.

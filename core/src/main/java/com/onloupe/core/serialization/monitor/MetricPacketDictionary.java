@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A collection of performance counter metric packets, keyed by their unique ID.
  * This is the persistable form of a performance counter metric.

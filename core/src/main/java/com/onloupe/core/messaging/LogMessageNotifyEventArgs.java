@@ -1,6 +1,6 @@
 package com.onloupe.core.messaging;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * EventArgs for LogMessage notify events.
  */

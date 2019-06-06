@@ -39,7 +39,7 @@ import com.onloupe.model.exception.GibraltarException;
 import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Provides in-order communication with a remote web server.
  */

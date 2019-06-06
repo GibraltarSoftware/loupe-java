@@ -1,6 +1,6 @@
 package com.onloupe.core;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Simple class that contains a name and corresponding value
  * 

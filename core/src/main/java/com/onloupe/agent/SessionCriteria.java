@@ -1,6 +1,6 @@
 package com.onloupe.agent;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Selection criteria for session inclusion in a session package.
  */

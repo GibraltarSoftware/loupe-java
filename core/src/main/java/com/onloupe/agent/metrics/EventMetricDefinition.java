@@ -32,7 +32,7 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.SampleType;
 import com.onloupe.model.metric.MemberType;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The definition of an event metric, which must be registered before any
  * specific event metric instance can be created or sampled.
@@ -66,9 +66,9 @@ import com.onloupe.model.metric.MemberType;
  * </p>
  * <p>
  * To define an event metric with attributes, apply the
- * <see cref="EventMetricAttribute">EventMetric attribute to the source
+ * EventMetric attribute to the source
  * code for any class, struct, or interface, and apply the
- * <see cref="EventMetricValueAttribute">EventMetricValue attribute to
+ * EventMetricValue attribute to
  * desired members to define the value columns. This approach provides a simple
  * and powerful way to design and collect event metrics for your application.
  * See the EventMetric Class Overview for an
@@ -1181,7 +1181,7 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * Any number of different values can be recorded along with each event to
 	 * provide additional summarization and filtering ability for later client
 	 * analysis. While the definition is being built (with
-	 * <see cref="AddValue">AddValue the current set of value definitions can
+	 * AddValue the current set of value definitions can
 	 * be examined as an array snapshot returned by this property. Changes to the
 	 * array will only affect that copy.
 	 *
@@ -1356,10 +1356,9 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 *                             will be created if it does not already exist.
 	 *                             </p>
 	 * 
-	 *                             <exception caption="" cref=
-	 *                             "ArgumentNullException">No metricData object was
-	 *                             provided. <exception caption="" cref=
-	 *                             "ArgumentException">This event metric definition
+	 *                             @throws NullPointerException No metricData object was
+	 *                             provided. 
+	 *                             @throws IllegalArgumentException This event metric definition
 	 *                             is not bound to sample automatically from a user
 	 *                             data object. CreateSample() and SetValue() must
 	 *                             be used to specify the data values
@@ -1370,8 +1369,6 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 *                              See the
 	 *                             EventMetric Class
 	 *                             Overview for an example.
-	 *                             <code title="" description="" lang=
-	 *                             "neutral"></code>
 	 */
 	public void writeSample(Object metricData, String fallbackInstanceName) {
 		if (metricData == null) {
@@ -1446,7 +1443,7 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * 
 	 * @param metricData A data object to sample, compatible with the binding type
 	 *                   of this definition.
-	 *                   <exception caption="" cref="ArgumentException">This event
+	 *                   @throws IllegalArgumentException This event
 	 *                   metric definition is not bound to sample automatically from
 	 *                   a user data object. CreateSample() and SetValue() must be
 	 *                   used to specify the data values directly.&lt;br /&gt;
@@ -1520,8 +1517,7 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * @param fallbackInstanceName The instance name to fall back on if a given
 	 *                             definition does not specify an instance name
 	 *                             binding (may be null).
-	 *                             <exception caption="" cref=
-	 *                             "ArgumentException">The specified
+	 *                             @throws IllegalArgumentException The specified
 	 *                             metricDataObjectType does not have an EventMetric
 	 *                             attribute &lt;br /&gt; &lt;br /&gt; -or- &lt;br
 	 *                             /&gt; &lt;br /&gt; The specified Type does not
@@ -1545,8 +1541,6 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 *                             event metric.  See the
 	 *                             EventMetric Class
 	 *                             Overview for an example.
-	 *                             <code title="" description="" lang=
-	 *                             "neutral"></code>
 	 */
 	public static void write(Object metricData, String fallbackInstanceName) {
 		EventMetricDefinition[] allDefinitions = registerAll(metricData);
@@ -1572,7 +1566,7 @@ public final class EventMetricDefinition implements IMetricDefinition {
 	 * 
 	 * @param metricData A user data object defining event metrics by attributes on
 	 *                   itself or its interfaces or any inherited type.
-	 *                   <exception caption="" cref="ArgumentException">The
+	 *                   @throws IllegalArgumentException The
 	 *                   specified metricDataObjectType does not have an EventMetric
 	 *                   attribute &lt;br /&gt; &lt;br /&gt; -or- &lt;br /&gt;
 	 *                   &lt;br /&gt; The specified Type does not have a usable

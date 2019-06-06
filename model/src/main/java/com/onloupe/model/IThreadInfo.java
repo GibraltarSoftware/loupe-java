@@ -1,6 +1,6 @@
 package com.onloupe.model;
 
-// TODO: Auto-generated Javadoc
+
 /** 
  An interface for accessing information about a thread.
 */

@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.onloupe.agent.SessionCriteria;
 import com.onloupe.model.log.ILogMessage;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Provides an interface to send network packets to the remote computer.
  */

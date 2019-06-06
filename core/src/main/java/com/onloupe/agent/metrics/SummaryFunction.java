@@ -1,6 +1,6 @@
 package com.onloupe.agent.metrics;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Indicates the default way to interpret multiple values for display purposes.
  */

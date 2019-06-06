@@ -12,7 +12,7 @@ import com.onloupe.core.data.FileHeader;
 import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Reads a packet data stream, recreating the packets it contains.
  */

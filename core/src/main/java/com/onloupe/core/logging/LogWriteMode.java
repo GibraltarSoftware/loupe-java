@@ -1,6 +1,6 @@
 package com.onloupe.core.logging;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Selects the performance trade-off for writing a given message to the log.
  * 
@@ -16,7 +16,7 @@ package com.onloupe.core.logging;
  * queue-and-return behavior.
  * </p>
  * <p>
- * Queued<br/>
+ * Queued
  * This setting indicates that the caller prefers to continue execution as soon
  * as possible and only cares that the message be placed on the queue to be
  * eventually written into the log file on disk. Messages written with this mode
@@ -27,7 +27,7 @@ package com.onloupe.core.logging;
  * those scenarios.
  * </p>
  * <p>
- * WaitForCommit<br/>
+ * WaitForCommit
  * This setting indicates that the caller needs to make sure this message makes
  * it into the log file on disk because the application is exiting or may crash
  * when it continues. The call will force a flush of the queue and block until

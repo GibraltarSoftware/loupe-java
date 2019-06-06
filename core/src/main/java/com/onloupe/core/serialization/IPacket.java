@@ -2,7 +2,7 @@ package com.onloupe.core.serialization;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This is the key interface objects implement to be serializable by Gibraltar.
  * 

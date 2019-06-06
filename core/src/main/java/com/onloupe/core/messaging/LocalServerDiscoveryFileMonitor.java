@@ -22,7 +22,7 @@ import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Monitors the discovery directory of the local file system for discovery file
  * changes.

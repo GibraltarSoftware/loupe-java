@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The central publisher for messaging.
  */

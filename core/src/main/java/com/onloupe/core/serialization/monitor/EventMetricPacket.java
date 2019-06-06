@@ -8,7 +8,7 @@ import com.onloupe.core.serialization.SerializedPacket;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The serializeable representation of a custom sampled metric.
  */
@@ -42,7 +42,7 @@ public class EventMetricPacket extends MetricPacket implements ICachedPacket {
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override

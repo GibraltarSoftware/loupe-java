@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.onloupe.core.server.data.DataConverter;
 import com.onloupe.core.server.data.SessionXml;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Informs the server that the session is complete (assuming it is a protocol
  * 1.2 or higher server)

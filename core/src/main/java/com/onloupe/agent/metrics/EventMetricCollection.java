@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.onloupe.core.util.OutObject;
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The collection of event metrics for a given event metric definition.
  */

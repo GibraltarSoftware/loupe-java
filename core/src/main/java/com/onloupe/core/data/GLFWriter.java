@@ -17,7 +17,7 @@ import com.onloupe.core.serialization.PacketWriter;
 import com.onloupe.core.util.IOUtils;
 import com.onloupe.model.session.SessionStatus;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class GLFWriter.
  */

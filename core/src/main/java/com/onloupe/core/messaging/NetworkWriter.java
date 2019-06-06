@@ -21,7 +21,7 @@ import com.onloupe.core.serialization.monitor.ThreadInfoPacket;
 import com.onloupe.core.server.NetworkConnectionOptions;
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Used by the agent to write session data to a network socket.
  */

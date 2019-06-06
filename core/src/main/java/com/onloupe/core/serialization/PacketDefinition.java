@@ -18,7 +18,7 @@ import java.util.Stack;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Holds the metadata needed to correctly interpret the stream of fields
  * associated with a serialized packet.

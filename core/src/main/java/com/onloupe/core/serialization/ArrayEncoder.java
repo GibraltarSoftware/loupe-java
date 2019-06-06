@@ -3,7 +3,7 @@ package com.onloupe.core.serialization;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This helper class implements an enhanced run length encoding strategy to
  * compress arrays. It's enhanced in that it has an optimization for the case of
@@ -11,9 +11,8 @@ import java.lang.reflect.InvocationTargetException;
  * negative value. This avoind the waste of preceding each value with a
  * runlength of 1 as would occur in classic RLE encoding.
  * 
- * <typeparam name="T">Type of value contained in the array</typeparam>
  *
- * @param <T> the generic type
+ * @param <T> Type of value contained in the array
  */
 public class ArrayEncoder<T> {
 	

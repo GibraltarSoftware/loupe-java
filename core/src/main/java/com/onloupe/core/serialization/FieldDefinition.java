@@ -1,6 +1,6 @@
 package com.onloupe.core.serialization;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * FieldDefinition is only used internally by PacketDefinition to hold the name
  * and type of a field.

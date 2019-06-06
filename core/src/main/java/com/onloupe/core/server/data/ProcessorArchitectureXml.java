@@ -1,6 +1,6 @@
 package com.onloupe.core.server.data;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Enum ProcessorArchitectureXml.
  */

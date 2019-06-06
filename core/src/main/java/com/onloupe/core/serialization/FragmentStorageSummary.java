@@ -2,7 +2,7 @@ package com.onloupe.core.serialization;
 
 import java.time.OffsetDateTime;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Records a summary of size for one specific session fragment.
  */

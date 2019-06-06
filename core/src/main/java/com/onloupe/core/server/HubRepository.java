@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Information about the capabilities and status of a server repository.
  */

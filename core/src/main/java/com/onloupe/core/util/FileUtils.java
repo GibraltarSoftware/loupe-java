@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A class to provide common wrappers and direct access to low-level file calls.
  */

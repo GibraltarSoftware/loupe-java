@@ -15,7 +15,7 @@ import com.onloupe.core.serialization.monitor.CustomSampledMetricSamplePacket;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.metric.MemberType;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SampledMetric.
  */
@@ -564,14 +564,14 @@ public final class SampledMetric {
 	 * matching sampling type. For example, consider a metric designed to record
 	 * disk utilization in bytes / second. This can be done by:
 	 * </p>
-	 * <list type="number"> <item> Recording with each sample the total number of
+	 * <ol> <li> Recording with each sample the total number of
 	 * bytes written from the start of the process to the current point. This would
-	 * use the Total Count Sampling Type. </item>
-	 * <item> Recording with each sample the number of bytes written since the last
+	 * use the Total Count Sampling Type. </li>
+	 * <li> Recording with each sample the number of bytes written since the last
 	 * sample. This would use the IncrementalCount Sampling
-	 * Type. </item> <item> Recording with each sample the bytes per second
+	 * Type. </li> <li> Recording with each sample the bytes per second
 	 * since the last sample. This would use the RawCount
-	 * Sampling Type. </item> </list>
+	 * Sampling Type. </li> </ol>
 	 * <p>
 	 * <strong>Fraction Sampling Formats</strong>
 	 * </p>
@@ -582,18 +582,18 @@ public final class SampledMetric {
 	 * example, consider a metric designed to record percent disk utilization (as a
 	 * percentage of working time). This can be done by:
 	 * </p>
-	 * <list type="number"> <item> Recording with each sample the total number of
+	 * <ol> <li> Recording with each sample the total number of
 	 * ticks spent writing to disk as the value and the total number of ticks spent
 	 * servicing requests as the base value. This would use the TotalFraction
-	 * Sampling Type. </item> <item> Recording with
+	 * Sampling Type. </li> <li> Recording with
 	 * each sample the number of ticks spent writing to disk since the last sample
 	 * as the value and the number of ticks spent servicing client requests since
 	 * the last sample as the base value. This would use the IncrementalFraction
-	 * Sampling Type. </item> <item> Recording with
+	 * Sampling Type. </li> <li> Recording with
 	 * each sample the number of ticks spent writing per second as the value and the
 	 * number of ticks spent servicing client requests per second as the base value.
 	 * This would use the RawFraction Sampling Type.
-	 * </item> </list>
+	 * </li> </ol>
 	 * <p>
 	 * The advantage of the fractional sampling types over simply doing the division
 	 * yourself is primarily the additional safety aspects built into Loupe (such as

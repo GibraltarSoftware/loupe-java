@@ -9,7 +9,7 @@ import com.onloupe.core.serialization.monitor.EventMetricValueDefinitionPacket;
 import com.onloupe.core.util.OutObject;
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A collection of event values for the parent event metric definition.
  * 

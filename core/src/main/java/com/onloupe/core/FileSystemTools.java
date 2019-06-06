@@ -19,7 +19,7 @@ import com.onloupe.core.util.FileUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.exception.LoupeFileSystemException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Common routines for manipulating files and directories that extend the .NET
  * framework

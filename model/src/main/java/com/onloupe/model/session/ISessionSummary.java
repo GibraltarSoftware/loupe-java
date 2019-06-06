@@ -11,7 +11,7 @@ import com.onloupe.model.system.ApplicationType;
 import com.onloupe.model.system.OSBootMode;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /** An interface for accessing Summary information about the current session.
  
  	<p>The session summary includes all of the information that is available in

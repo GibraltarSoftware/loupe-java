@@ -10,7 +10,7 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.session.ISessionSummary;
 import com.onloupe.model.session.SessionStatus;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Compares sessions to the supplied session criteria to determine if they match.
  */

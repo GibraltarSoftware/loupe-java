@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 import com.onloupe.agent.metrics.SamplingType;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface SampledMetricValue.
  */

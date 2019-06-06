@@ -2,7 +2,7 @@ package com.onloupe.core.server;
 
 import com.onloupe.configuration.ServerConfiguration;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class HubConnectionStatus.
  */

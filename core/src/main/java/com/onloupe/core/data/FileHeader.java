@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Generates and parses the binary header used at the start of a Gibraltar Log
  * File.

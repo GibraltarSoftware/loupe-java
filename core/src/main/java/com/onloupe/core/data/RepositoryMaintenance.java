@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Performs repository level maintenance such as purging for size. Should be
  * used with collection repositories only.

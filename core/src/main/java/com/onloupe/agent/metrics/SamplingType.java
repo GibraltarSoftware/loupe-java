@@ -1,6 +1,6 @@
 package com.onloupe.agent.metrics;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Determines what the raw data for a given sampled metric is, and how it has to
  * be processed to produce final data point values for display.

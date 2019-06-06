@@ -15,7 +15,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Authentication credentials for a repository to a shared data service.
  */

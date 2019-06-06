@@ -9,7 +9,7 @@ import com.onloupe.core.util.LogSystems;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Base class for log message template classes.
  * 

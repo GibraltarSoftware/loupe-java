@@ -1,6 +1,6 @@
 package com.onloupe.core.data;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * An event handler for the New Sessions Event Arguments.
  */

@@ -6,7 +6,7 @@ import java.util.UUID;
 import com.onloupe.core.logging.Log;
 import com.onloupe.core.serialization.monitor.MetricSamplePacket;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A single raw sample of a metric.
  * 

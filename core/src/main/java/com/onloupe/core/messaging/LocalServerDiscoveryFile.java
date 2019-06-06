@@ -16,7 +16,7 @@ import java.nio.file.StandardOpenOption;
 import com.onloupe.core.util.FileUtils;
 import com.onloupe.core.util.SystemUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * IP Configuration information for a live stream proxy running on the local
  * computer.

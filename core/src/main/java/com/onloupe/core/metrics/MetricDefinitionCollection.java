@@ -9,7 +9,7 @@ import java.util.UUID;
 import com.onloupe.core.util.OutObject;
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /** 
  A collection of metric definitions, keyed by their unique Id and Key.
  

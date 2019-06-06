@@ -3,13 +3,13 @@ package com.onloupe.agent.logging;
 import com.onloupe.agent.IMessageSourceProvider;
 import com.onloupe.core.CommonCentralLogic;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Serves as an IMessageSourceProvider to attribute a message to the code
  * location which threw an Exception.
  * 
  * This class looks at the
- * <see CREF="System.Diagnostics.StackTrace">StackTrace</see> of a thrown
+ * StackTrace of a thrown
  * Exception, rather than the current call stack, to attribute a message to the
  * code location which threw that Exception rather than to where the call is
  * made to log the Exception.

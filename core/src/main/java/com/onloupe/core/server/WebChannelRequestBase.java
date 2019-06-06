@@ -2,7 +2,7 @@ package com.onloupe.core.server;
 
 import java.io.IOException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * An abstract implementation of a web request that simplifies making new
  * requests.

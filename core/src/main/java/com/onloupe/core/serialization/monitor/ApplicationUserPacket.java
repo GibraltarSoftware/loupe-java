@@ -8,7 +8,7 @@ import com.onloupe.core.util.TypeUtils;
 
 import java.util.HashMap;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ApplicationUserPacket.
  */
@@ -249,7 +249,7 @@ public class ApplicationUserPacket extends GibraltarCachedPacket implements IPac
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override
@@ -263,7 +263,7 @@ public class ApplicationUserPacket extends GibraltarCachedPacket implements IPac
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(ApplicationUserPacket other) {

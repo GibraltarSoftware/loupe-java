@@ -2,7 +2,7 @@ package com.onloupe.core.server;
 
 import org.apache.http.StatusLine;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * An exception thrown to indicate a connection failure on the web channel.
  */

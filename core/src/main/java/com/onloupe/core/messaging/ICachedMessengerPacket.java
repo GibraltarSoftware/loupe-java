@@ -2,7 +2,7 @@ package com.onloupe.core.messaging;
 
 import com.onloupe.core.serialization.ICachedPacket;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This interface is required to be a publishable cached packet.
  */

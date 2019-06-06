@@ -36,7 +36,7 @@ import com.onloupe.model.system.ApplicationType;
 import com.onloupe.model.system.OSBootMode;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Summary information about the entire session.
  * 

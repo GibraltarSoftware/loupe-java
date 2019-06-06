@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SessionFragmentPacket.
  */
@@ -103,7 +103,7 @@ public class SessionFragmentPacket extends GibraltarCachedPacket implements IPac
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override
@@ -117,7 +117,7 @@ public class SessionFragmentPacket extends GibraltarCachedPacket implements IPac
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(SessionFragmentPacket other) {

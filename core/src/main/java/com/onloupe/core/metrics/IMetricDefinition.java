@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.onloupe.agent.metrics.SamplingInterval;
 import com.onloupe.model.SampleType;
 
-// TODO: Auto-generated Javadoc
+
 /** 
  The definition of a single metric that has been captured.  
  

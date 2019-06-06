@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import com.onloupe.core.data.SessionHeader;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Tracks session headers and fragments from one or more fragments
  * 

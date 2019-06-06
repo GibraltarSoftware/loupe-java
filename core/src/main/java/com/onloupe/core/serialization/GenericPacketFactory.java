@@ -2,7 +2,7 @@ package com.onloupe.core.serialization;
 
 import java.io.IOException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Helper class used by PacketFactory to wrapper the creation of GenericPacket.
  */

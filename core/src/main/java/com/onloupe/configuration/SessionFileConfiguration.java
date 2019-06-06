@@ -4,7 +4,7 @@ import java.util.Properties;
 
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * File Messenger Configuration.
  */

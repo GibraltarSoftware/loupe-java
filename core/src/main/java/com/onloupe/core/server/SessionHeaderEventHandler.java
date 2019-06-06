@@ -1,6 +1,6 @@
 package com.onloupe.core.server;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Delegate for handling session header events.
  */

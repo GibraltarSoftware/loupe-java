@@ -9,7 +9,7 @@ import java.util.UUID;
 import com.onloupe.core.data.BinarySerializer;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Requests a new live view stream.
  */

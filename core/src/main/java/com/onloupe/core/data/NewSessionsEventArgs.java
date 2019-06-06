@@ -2,7 +2,7 @@ package com.onloupe.core.data;
 
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Supplies summary information about new sessions that are available to be
  * retrieved or just retrieved into the repository.

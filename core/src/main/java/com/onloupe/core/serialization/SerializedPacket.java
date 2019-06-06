@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SerializedPacket.
  */

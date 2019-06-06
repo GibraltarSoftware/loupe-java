@@ -15,7 +15,7 @@ import com.onloupe.core.server.HubStatus;
 import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.TimeConversion;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Performs constant, background publishing of sessions from the repository.
  */

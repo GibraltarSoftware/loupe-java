@@ -3,7 +3,7 @@ package com.onloupe.core.metrics;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A single display-ready metric value.
  * 

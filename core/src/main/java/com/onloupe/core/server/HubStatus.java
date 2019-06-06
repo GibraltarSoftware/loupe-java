@@ -2,7 +2,7 @@ package com.onloupe.core.server;
 
 import com.onloupe.core.server.data.HubStatusXml;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The current status of a server that is accessible over the network.
  */

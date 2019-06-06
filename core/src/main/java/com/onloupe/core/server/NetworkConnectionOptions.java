@@ -2,7 +2,7 @@ package com.onloupe.core.server;
 
 import java.util.Locale;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Connection options used to establish a socket from the local system to an
  * endpoint.

@@ -9,7 +9,7 @@ import com.onloupe.model.data.IExceptionInfo;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ExceptionInfoPacket.
  */
@@ -138,7 +138,7 @@ public class ExceptionInfoPacket extends GibraltarPacket implements IPacket, IEx
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override
@@ -152,7 +152,7 @@ public class ExceptionInfoPacket extends GibraltarPacket implements IPacket, IEx
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(ExceptionInfoPacket other) {

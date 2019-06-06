@@ -2,7 +2,7 @@ package com.onloupe.core.serialization;
 
 import com.onloupe.model.exception.GibraltarException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This is a base class for any new serialization Exception types we define and
  * for generic exceptions generated in Serialization.

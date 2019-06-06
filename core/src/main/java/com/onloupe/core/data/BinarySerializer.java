@@ -18,7 +18,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import com.onloupe.core.util.TimeConversion;
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Provides basic binary serialization for platform independent simple
  * serialization.

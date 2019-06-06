@@ -9,7 +9,7 @@ import java.nio.channels.FileChannel.MapMode;
 import com.onloupe.core.serialization.FragmentStorageSummary;
 import com.onloupe.core.util.FileUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Reads a GLF file.
  */

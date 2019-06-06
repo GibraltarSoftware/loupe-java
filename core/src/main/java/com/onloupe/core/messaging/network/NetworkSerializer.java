@@ -9,7 +9,7 @@ import java.io.PipedOutputStream;
 import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.PacketHeader;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Used to serialize network packets across a TCP socket.
  */

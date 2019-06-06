@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 
 import com.onloupe.core.serialization.IPacket;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This interface is required to be a publishable packet.
  */

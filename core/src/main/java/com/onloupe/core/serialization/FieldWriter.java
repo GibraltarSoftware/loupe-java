@@ -16,7 +16,7 @@ import com.onloupe.core.data.FileHeader;
 import com.onloupe.core.util.TimeConversion;
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Provides low-level compression of the basic data types we pass over the wire.
  * 
@@ -24,16 +24,16 @@ import com.onloupe.core.util.TypeUtils;
  * FieldReader which will reinstate the original stream of basic data types.
  */
 public class FieldWriter implements IFieldWriter {
-	
+
 	/** The buffer. */
 	private ByteArrayOutputStream buffer;
-	
+
 	/** The major version. */
 	private int majorVersion;
-	
+
 	/** The minor version. */
 	private int minorVersion;
-	
+
 	/** The reference time. */
 	private LocalDateTime referenceTime;
 
@@ -48,7 +48,7 @@ public class FieldWriter implements IFieldWriter {
 	 * @param majorVersion Major version of the serialization protocol
 	 * @param minorVersion Minor version of the serialization protocol
 	 * @throws NoSuchMethodException the no such method exception
-	 * @throws SecurityException the security exception
+	 * @throws SecurityException     the security exception
 	 */
 	public FieldWriter(ByteArrayOutputStream buffer, int majorVersion, int minorVersion)
 			throws NoSuchMethodException, SecurityException {
@@ -63,7 +63,7 @@ public class FieldWriter implements IFieldWriter {
 	 * encoding for strings.
 	 *
 	 * @throws NoSuchMethodException the no such method exception
-	 * @throws SecurityException the security exception
+	 * @throws SecurityException     the security exception
 	 */
 	public FieldWriter() throws NoSuchMethodException, SecurityException {
 		this(new ByteArrayOutputStream(), FileHeader.defaultMajorVersion, FileHeader.defaultMinorVersion);
@@ -89,20 +89,20 @@ public class FieldWriter implements IFieldWriter {
 	 *
 	 * @param value     The object (or boxed integral value) to write.
 	 * @param fieldType The field type to write the value out as.
-	 * @throws Exception the exception
+	 * @throws Exception                the exception
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	@Override
 	public final void write(Object value, FieldType fieldType) throws Exception {
 		switch (fieldType) {
 		case BOOL:
-			write(value != null ? (boolean)value : false);
+			write(value != null ? (boolean) value : false);
 			break;
 		case STRING:
-			write((String)value);
+			write((String) value);
 			break;
 		case STRING_ARRAY:
-			write((String[])value);
+			write((String[]) value);
 			break;
 		case INT:
 			write(TypeUtils.safeInt(value));
@@ -114,13 +114,13 @@ public class FieldWriter implements IFieldWriter {
 			write(TypeUtils.safeDouble(value));
 			break;
 		case DURATION:
-			write((Duration)value);
+			write((Duration) value);
 			break;
 		case DATE_TIME:
-			write((LocalDateTime)value);
+			write((LocalDateTime) value);
 			break;
 		case DATE_TIME_OFFSET:
-			write((OffsetDateTime)value);
+			write((OffsetDateTime) value);
 			break;
 		case GUID:
 			write(TypeUtils.safeUUID(value));
@@ -134,7 +134,6 @@ public class FieldWriter implements IFieldWriter {
 	 * Write a bool to the stream.
 	 *
 	 * @param value the value
-	 * @return A bool value.
 	 */
 	@Override
 	public final void write(boolean value) {
@@ -155,7 +154,7 @@ public class FieldWriter implements IFieldWriter {
 		} else if (value.length() == 0) {
 			writeByte((byte) 0);
 		} else {
-			byte[] bytes = value.getBytes(java.nio.charset.StandardCharsets.UTF_8); //we always serialize as UTF-8.
+			byte[] bytes = value.getBytes(java.nio.charset.StandardCharsets.UTF_8); // we always serialize as UTF-8.
 			writePositive(bytes.length);
 			writeBytes(bytes);
 		}
@@ -165,8 +164,7 @@ public class FieldWriter implements IFieldWriter {
 	 * Write an array of string to the stream.
 	 *
 	 * @param array the array
-	 * @return An array of string values.
-	 * @throws Exception the exception
+	 * @throws Exception                the exception
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	@Override

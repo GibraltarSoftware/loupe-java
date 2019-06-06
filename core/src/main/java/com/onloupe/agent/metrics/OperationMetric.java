@@ -12,7 +12,7 @@ import com.onloupe.core.util.OutObject;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Record an event metric for a single execution of a data operation
  * 

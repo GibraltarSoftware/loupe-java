@@ -1,6 +1,6 @@
 package com.onloupe.core.data;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The different path types that Gibraltar uses.
  */

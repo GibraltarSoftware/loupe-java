@@ -19,7 +19,7 @@ import com.onloupe.core.serialization.monitor.AssemblyInfoPacket;
 import com.onloupe.core.util.SystemUtils;
 import com.onloupe.model.metric.MetricSampleInterval;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The central listener that manages the configuration of the individual
  * listeners.

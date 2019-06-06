@@ -6,7 +6,7 @@ import com.onloupe.core.server.data.DataConverter;
 import com.onloupe.core.server.data.SessionStatusXml;
 import com.onloupe.core.server.data.SessionXml;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Uploads a session XML document to the endpoint of the web channel.
  */

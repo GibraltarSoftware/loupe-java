@@ -54,7 +54,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Handles interfacing with a single log file for the purpose of writing log
  * messages.
@@ -1136,7 +1136,7 @@ public final class Log {
 	 * alert the user because the error does not impact their work flow or will be
 	 * otherwise handled gracefully within the application. For unanticipated errors
 	 * which disrupt a user activity, see the
-	 * <see CREF="ReportException">ReportException</see> method.
+	 * ReportException method.
 	 * </p>
 	 *
 	 * @param sourceProvider An IMessageSourceProvider object which supplies the
@@ -1382,8 +1382,8 @@ public final class Log {
 	 * </p>
 	 *
 	 * @param endingStatus   The explicit ending status to declare for this session,
-	 *                       <see cref="SessionStatus.Normal">Normal</see> or
-	 *                       <see cref="SessionStatus.Crashed">Crashed</see>.
+	 *                       Normal or
+	 *                       Crashed.
 	 * @param sourceProvider An IMessageSourceProvider object which supplies the
 	 *                       source information about this log message.
 	 * @param reason         A simple reason to declare why the application is
@@ -1521,8 +1521,8 @@ public final class Log {
 	 * </p>
 	 *
 	 * @param endingStatus The explicit ending status to declare for this session,
-	 *                     <see cref="SessionStatus.Normal">Normal</see> or
-	 *                     <see cref="SessionStatus.Crashed">Crashed</see>.
+	 *                     Normal or
+	 *                     Crashed.
 	 * @param skipFrames   The number of stack frames to skip out to find the
 	 *                     original caller.
 	 * @param reason       A simple reason to declare why the application is ending

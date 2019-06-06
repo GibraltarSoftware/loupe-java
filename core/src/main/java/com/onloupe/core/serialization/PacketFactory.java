@@ -2,7 +2,7 @@ package com.onloupe.core.serialization;
 
 import java.util.HashMap;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This helper class is used by PacketReader to manage the list of
  * IPacketFactory classes used to deserialize a stream of packets.

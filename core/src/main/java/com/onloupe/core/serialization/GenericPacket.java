@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This is the class returned by PacketReader when an unknown packet type is
  * read from the input stream. This class is designed to allow the underlying
@@ -160,7 +160,6 @@ public final class GenericPacket implements IPacket {
 	 * appropriate IPacketFactory is registered.
 	 *
 	 * @param definition the definition
-	 * @return The original PacketDefinition read from the input stream
 	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {

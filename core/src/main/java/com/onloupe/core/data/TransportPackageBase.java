@@ -13,7 +13,7 @@ import com.onloupe.core.monitor.LocalRepository;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class TransportPackageBase.
  */

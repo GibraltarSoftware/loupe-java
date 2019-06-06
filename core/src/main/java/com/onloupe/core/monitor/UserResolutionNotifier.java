@@ -9,7 +9,7 @@ import com.onloupe.core.messaging.PacketEventArgs;
 import com.onloupe.core.serialization.monitor.LogMessagePacket;
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Monitors packets going through the publisher to add user information as
  * needed.

@@ -2,7 +2,7 @@ package com.onloupe.core.monitor;
 
 import java.time.OffsetDateTime;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Arguments for the ResolveUser Event.
  */

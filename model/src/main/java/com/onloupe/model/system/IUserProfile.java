@@ -3,7 +3,7 @@ package com.onloupe.model.system;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  *  
  *  A single user of the system.

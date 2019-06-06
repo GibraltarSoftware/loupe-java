@@ -5,7 +5,7 @@ import java.io.OutputStream;
 
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Command for retrieving the list of sesion headers.
  */

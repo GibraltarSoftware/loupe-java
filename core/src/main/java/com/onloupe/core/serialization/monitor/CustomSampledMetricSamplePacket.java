@@ -8,7 +8,7 @@ import com.onloupe.core.serialization.SerializedPacket;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * One raw data sample of a custom sampled metric
  * 
@@ -116,7 +116,7 @@ public class CustomSampledMetricSamplePacket extends SampledMetricSamplePacket i
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override

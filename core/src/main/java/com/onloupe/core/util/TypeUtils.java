@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class TypeUtils.
  */
@@ -23,7 +23,6 @@ public class TypeUtils {
 	 *
 	 * @param clazz the clazz
 	 * @param superInterfaces the super interfaces
-	 * @return the super interfaces
 	 */
 	@SuppressWarnings("rawtypes")
 	public static void getSuperInterfaces(Class clazz, Set<Class> superInterfaces) {

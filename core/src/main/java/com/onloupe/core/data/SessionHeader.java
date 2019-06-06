@@ -21,7 +21,7 @@ import com.onloupe.model.system.ApplicationType;
 import com.onloupe.model.system.OSBootMode;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Used at the start of a data stream to contain the session summary
  * 
@@ -1946,7 +1946,7 @@ public final class SessionHeader implements ISessionSummary {
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other"/>
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	public boolean equals(SessionHeader other) {
@@ -1959,13 +1959,13 @@ public final class SessionHeader implements ISessionSummary {
 	}
 
 	/**
-	 * Determines whether the specified <see cref="T:System.Object"/> is equal to
-	 * the current <see cref="T:System.Object"/>.
+	 * Determines whether the specified  is equal to
+	 * the current .
 	 *
-	 * @param obj The <see cref="T:System.Object"/> to compare with the current
-	 *            <see cref="T:System.Object"/>.
-	 * @return true if the specified <see cref="T:System.Object"/> is equal to the
-	 *         current <see cref="T:System.Object"/>; otherwise, false.
+	 * @param obj The  to compare with the current
+	 *            .
+	 * @return true if the specified  is equal to the
+	 *         current ; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -1975,7 +1975,7 @@ public final class SessionHeader implements ISessionSummary {
 	/**
 	 * Serves as a hash function for a particular type.
 	 * 
-	 * @return A hash code for the current <see cref="T:System.Object"/>.
+	 * @return A hash code for the current .
 	 * 
 	 *         
 	 */

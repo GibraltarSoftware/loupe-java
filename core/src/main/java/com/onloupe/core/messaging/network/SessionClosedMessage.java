@@ -8,7 +8,7 @@ import java.util.UUID;
 import com.onloupe.core.data.BinarySerializer;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Indicates that the identified session has been closed.
  */

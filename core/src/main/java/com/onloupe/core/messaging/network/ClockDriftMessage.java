@@ -12,7 +12,7 @@ import com.onloupe.core.data.BinarySerializer;
 import com.onloupe.core.util.TimeConversion;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Used to determine the latency and relative clock drift of a connection.
  */

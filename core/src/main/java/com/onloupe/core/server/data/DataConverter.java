@@ -35,7 +35,7 @@ import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.session.ISessionSummary;
 import com.onloupe.model.system.OSBootMode;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Convert between data representations of common repository objects.
  */

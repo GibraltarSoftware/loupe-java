@@ -7,7 +7,7 @@ import com.onloupe.core.serialization.SerializedPacket;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A command to be processed by the messaging system.
  */

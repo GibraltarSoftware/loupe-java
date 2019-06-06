@@ -2,7 +2,7 @@ package com.onloupe.core.server;
 
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Information used in the CredentialsRequired event.
  */

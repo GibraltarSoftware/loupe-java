@@ -9,7 +9,7 @@ import com.onloupe.core.data.BinarySerializer;
 import com.onloupe.core.util.PacketHeader;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A packet of data that can be serialized across the network.
  */

@@ -21,7 +21,7 @@ import com.onloupe.core.CommonCentralLogic;
 import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.TimeConversion;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A class to hold a file lock for this process (app domain) and pass it fairly
  * to other waiting threads before release.

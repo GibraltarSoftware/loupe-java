@@ -27,7 +27,7 @@ import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A web channel request to upload a session file or full session stream.
  */

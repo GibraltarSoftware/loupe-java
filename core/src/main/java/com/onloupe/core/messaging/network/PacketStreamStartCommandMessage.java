@@ -5,7 +5,7 @@ import java.io.OutputStream;
 
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Informs the receiver to start a new packet serializer for the subsequent
  * data.

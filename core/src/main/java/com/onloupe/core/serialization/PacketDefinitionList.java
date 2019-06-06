@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Helper class used by PacketRead and PacketWriter to maintain a cache of
  * PacketDefinition instances for used IPacket types.
@@ -135,10 +135,9 @@ public final class PacketDefinitionList implements java.lang.Iterable<PacketDefi
 	/**
 	 * Returns an enumerator that iterates through the collection.
 	 * 
-	 * @return A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can
+	 * @return A  that can
 	 *         be used to iterate through the collection.
 	 * 
-	 *         <filterpriority>1</filterpriority>
 	 */
 	@Override
 	public Iterator<PacketDefinition> iterator() {
@@ -148,7 +147,7 @@ public final class PacketDefinitionList implements java.lang.Iterable<PacketDefi
 	/**
 	 * Returns an enumerator that iterates through a collection.
 	 * 
-	 * @return An <see cref="T:System.Collections.IEnumerator"/> object that can be
+	 * @return An  object that can be
 	 *         used to iterate through the collection.
 	 * 
 	 *         

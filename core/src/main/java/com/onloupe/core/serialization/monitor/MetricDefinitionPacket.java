@@ -11,7 +11,7 @@ import com.onloupe.model.metric.MetricSampleInterval;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Defines a metric that has been captured. Specific metrics extend this class.
  * Each time a metric is captured, a MetricSample is recorded.
@@ -395,7 +395,7 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override

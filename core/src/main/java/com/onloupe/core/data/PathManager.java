@@ -14,7 +14,7 @@ import com.onloupe.core.util.SystemUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.exception.GibraltarException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Determines the correct physical paths to use for various Gibraltar scenarios.
  */

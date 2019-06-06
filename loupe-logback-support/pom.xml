@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.onloupe</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0</version>
+		<version>1.0.0</version>
 	</parent>
 
 	<artifactId>loupe-logback-support</artifactId>
@@ -60,7 +60,7 @@
   		<dependency>
 			<groupId>com.onloupe</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0</version>
+			<version>1.0.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

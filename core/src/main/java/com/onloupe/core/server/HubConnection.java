@@ -21,7 +21,7 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A web channel specifically designed to work with the Gibraltar Hub.
  */

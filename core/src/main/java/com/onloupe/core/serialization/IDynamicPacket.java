@@ -1,6 +1,6 @@
 package com.onloupe.core.serialization;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Most packets have a static structure of fields that is the same for all
  * packet instances. But some packets are dynamic in that the number and type of

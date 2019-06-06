@@ -35,7 +35,7 @@ import com.onloupe.model.exception.GibraltarException;
 import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.session.ISessionSummary;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Packages up sessions collected on the local computer and sends them via email
  * or file transport.
@@ -295,9 +295,6 @@ public class Packager {
 	 * @param repository               The specific repository on the server for a
 	 *                                 private server. Only applies to a private
 	 *                                 server.
-	 * @return The Package Send Event Arguments object that was also used for the
-	 *         EndSend event. The EndSend event will be raised when the send
-	 *         operation completes.
 	 * @throws Exception the exception
 	 * @exception GibraltarException The server couldn't be contacted or there was a
 	 *                               communication error.
@@ -355,9 +352,6 @@ public class Packager {
 	 * @param repository               The specific repository on the server for a
 	 *                                 private server. Only applies to a private
 	 *                                 server.
-	 * @return The Package Send Event Arguments object that was also used for the
-	 *         EndSend event. The EndSend event will be raised when the send
-	 *         operation completes.
 	 * @throws Exception the exception
 	 * @exception GibraltarException The server couldn't be contacted or there was a
 	 *                               communication error

@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class FieldDefinitionCollection.
  */
@@ -145,7 +145,7 @@ public class FieldDefinitionCollection {
 	 * @param array      The one-dimensional array that is the destination of the
 	 *                   elements copied from collection. The array must have
 	 *                   zero-based indexing.
-	 * @param arrayIndex The zero-based index in <paramref name="array"/> at which
+	 * @param arrayIndex The zero-based index in  at which
 	 *                   copying begins.
 	 */
 	public final void copyTo(FieldDefinition[] array, int arrayIndex) {

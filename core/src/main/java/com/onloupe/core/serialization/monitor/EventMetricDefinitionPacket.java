@@ -10,7 +10,7 @@ import com.onloupe.model.SampleType;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A serializable event metric definition. Provides metadata for metrics based
  * on events.
@@ -69,7 +69,7 @@ public final class EventMetricDefinitionPacket extends MetricDefinitionPacket im
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override

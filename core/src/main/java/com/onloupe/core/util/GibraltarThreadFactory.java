@@ -3,7 +3,7 @@ package com.onloupe.core.util;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A configurable copy of the DefaultThreadFactory, because Java could not possibly
  * allow us to configure the native one.

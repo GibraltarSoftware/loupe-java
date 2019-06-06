@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 import com.onloupe.model.session.ISessionSummary;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A standard collection for session summaries that provides indexing by session
  * id.

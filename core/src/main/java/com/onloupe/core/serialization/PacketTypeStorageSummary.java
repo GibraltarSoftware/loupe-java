@@ -1,6 +1,6 @@
 package com.onloupe.core.serialization;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Records a summary of packet count and aggregate size for one specific packet
  * type.

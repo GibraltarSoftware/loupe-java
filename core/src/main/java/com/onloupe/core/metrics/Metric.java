@@ -13,7 +13,7 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.SampleType;
 import com.onloupe.model.metric.MetricSampleInterval;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A single metric that has been captured. A metric is a single measured value
  * over time.

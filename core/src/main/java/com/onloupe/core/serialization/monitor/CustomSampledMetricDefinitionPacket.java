@@ -6,7 +6,7 @@ import com.onloupe.core.serialization.IPacket;
 import com.onloupe.core.serialization.PacketDefinition;
 import com.onloupe.core.serialization.SerializedPacket;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The serializeable representation of a custom sampled metric.
  */
@@ -74,7 +74,7 @@ public class CustomSampledMetricDefinitionPacket extends SampledMetricDefinition
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override

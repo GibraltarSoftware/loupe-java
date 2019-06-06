@@ -4,7 +4,7 @@ import org.apache.http.StatusLine;
 
 import com.onloupe.model.exception.GibraltarException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The base class for all exceptions thrown by the Web Channel.
  */

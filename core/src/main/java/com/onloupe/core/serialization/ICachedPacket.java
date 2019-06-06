@@ -2,7 +2,7 @@ package com.onloupe.core.serialization;
 
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Implemented on invariant packets that can be cached
  * 

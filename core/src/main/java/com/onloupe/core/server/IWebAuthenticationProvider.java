@@ -6,7 +6,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Implemented to provide custom authentication for a web channel.
  */

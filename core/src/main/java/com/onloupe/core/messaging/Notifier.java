@@ -9,7 +9,7 @@ import com.onloupe.core.serialization.monitor.LogMessagePacket;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Generates notifications from scanning log messages.
  */

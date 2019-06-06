@@ -1,6 +1,6 @@
 package com.onloupe.core;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * An interface to get the Name of NameValuePair&lt;TValue&gt; of any value
  * type.

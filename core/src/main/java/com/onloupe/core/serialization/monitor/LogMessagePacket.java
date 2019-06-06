@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LogMessagePacket.
  */
@@ -609,7 +609,7 @@ public class LogMessagePacket extends GibraltarPacket implements IPacket, ILogMe
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override

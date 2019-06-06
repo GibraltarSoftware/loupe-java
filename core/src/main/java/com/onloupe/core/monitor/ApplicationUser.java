@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.onloupe.core.serialization.monitor.ApplicationUserPacket;
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Extended information for a single application user.
  */

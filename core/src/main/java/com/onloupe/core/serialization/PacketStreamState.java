@@ -2,7 +2,7 @@ package com.onloupe.core.serialization;
 
 import java.time.LocalDateTime;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Inter-field state information tracked while serializing or deserializing a packet stream
  *

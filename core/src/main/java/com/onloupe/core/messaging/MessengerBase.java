@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A baseline implementation of a messenger that provides common messenger
  * functionality.

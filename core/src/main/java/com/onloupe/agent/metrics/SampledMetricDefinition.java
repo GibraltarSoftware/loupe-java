@@ -35,7 +35,7 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.SampleType;
 import com.onloupe.model.metric.MemberType;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The definition of a user-defined sampled metric
  * 
@@ -165,10 +165,10 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 *                      Multiple metric instances can then be created (each with
 	 *                      its own instance name) from the same metric definition.
 	 * 
-	 *                      <exception caption="" cref="ArgumentNullException">The
+	 *                      @throws NullPointerException The
 	 *                      provided metricsSystem, categoryName, or counterName was
 	 *                      null.
-	 *                      <exception caption="" cref="ArgumentException">There is
+	 *                      @throws IllegalArgumentException There is
 	 *                      already a metric definition for the same key, but it is
 	 *                      not a sampled metric.&lt;br /&gt;-or-&lt;br /&gt; There
 	 *                      is already a sampled metric definition for the same key

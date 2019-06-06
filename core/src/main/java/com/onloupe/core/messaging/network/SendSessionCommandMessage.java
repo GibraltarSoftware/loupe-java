@@ -9,7 +9,7 @@ import com.onloupe.agent.SessionCriteria;
 import com.onloupe.core.data.BinarySerializer;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A command to have the agent send sessions to the server immediately.
  */

@@ -1,6 +1,6 @@
 package com.onloupe.core.serialization;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This is the set of data types that can be read/written using
  * FieldReader/FieldWriter.

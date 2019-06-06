@@ -2,7 +2,7 @@ package com.onloupe.core.logging;
 
 import com.onloupe.configuration.AgentConfiguration;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Event arguments for the Log.Initializing event of the Gibraltar Agent Logging
  * class.

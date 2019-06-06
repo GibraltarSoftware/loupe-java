@@ -11,7 +11,7 @@ import java.util.Locale;
 import com.onloupe.core.serialization.FieldType;
 import com.onloupe.model.data.ProcessorArchitecture;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class AssemblyInfoPacket.
  */

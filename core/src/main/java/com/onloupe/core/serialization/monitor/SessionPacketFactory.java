@@ -6,7 +6,7 @@ import com.onloupe.core.serialization.IPacketFactory;
 import com.onloupe.core.serialization.IPacketReader;
 import com.onloupe.core.serialization.PacketDefinition;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A factory for creating SessionPacket objects.
  */

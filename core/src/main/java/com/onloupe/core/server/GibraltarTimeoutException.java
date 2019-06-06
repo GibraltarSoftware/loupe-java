@@ -2,7 +2,7 @@ package com.onloupe.core.server;
 
 import com.onloupe.model.exception.GibraltarException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Thrown when an operation times out.
  */

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Defines a metric that has been captured. Specific metrics extend this class.
  * Each time a metric is captured, a MetricSample is recorded.
@@ -205,7 +205,7 @@ public abstract class MetricPacket extends GibraltarCachedPacket
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override

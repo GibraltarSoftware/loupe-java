@@ -13,7 +13,7 @@ import com.onloupe.core.serialization.monitor.IDisplayable;
 import com.onloupe.core.serialization.monitor.ThreadInfoPacket;
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ThreadInfo.
  */

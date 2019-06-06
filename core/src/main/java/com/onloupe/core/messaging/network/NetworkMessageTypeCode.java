@@ -1,6 +1,6 @@
 package com.onloupe.core.messaging.network;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Enum NetworkMessageTypeCode.
  */

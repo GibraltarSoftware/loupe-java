@@ -11,7 +11,7 @@ import com.onloupe.core.data.BinarySerializer;
 import com.onloupe.core.data.SessionHeader;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Contains the session summary information for a remote session.
  */

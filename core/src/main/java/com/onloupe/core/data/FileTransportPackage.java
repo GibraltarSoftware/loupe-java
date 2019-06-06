@@ -2,7 +2,7 @@ package com.onloupe.core.data;
 
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A transport package that is just being written out to a file.
  */

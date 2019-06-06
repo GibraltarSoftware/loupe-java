@@ -1,6 +1,6 @@
 package com.onloupe.core.messaging;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The behavior of the messenger when there are too many messages in the queue.
  */

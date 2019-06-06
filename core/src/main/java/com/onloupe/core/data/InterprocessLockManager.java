@@ -9,7 +9,7 @@ import java.util.Observer;
 
 import com.onloupe.core.util.IOUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A multiprocess lock manager for repositories. This class is a singleton.
  * 

@@ -3,7 +3,7 @@ package com.onloupe.core.util;
 import com.onloupe.core.messaging.network.NetworkMessageTypeCode;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PacketHeader.
  */

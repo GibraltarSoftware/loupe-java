@@ -3,7 +3,7 @@ package com.onloupe.core.server;
 import com.onloupe.core.server.data.DataConverter;
 import com.onloupe.core.server.data.HubConfigurationXml;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Get the current hub configuration information for the hub
  * 

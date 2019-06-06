@@ -16,7 +16,7 @@ import com.onloupe.core.util.SystemUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.metric.MemberType;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class EventMetric.
  */
@@ -93,9 +93,10 @@ public final class EventMetric {
 	 *                   created automatically as needed when Write is called.
 	 *                   </p>
 	 * 
-	 * @see Write(object) Write Method
-	 *      <exception caption="" cref="ArgumentNullException">Thrown if metricData
-	 *      is null. <exception caption="" cref="ArgumentException">The specified
+	 * @see #write(Object metricData) Write Method
+	 *      @throws NullPointerException Thrown if metricData
+	 *      is null.
+	 *      @throws IllegalArgumentException The specified
 	 *      metricDataObjectType does not have an EventMetric attribute &lt;br /&gt;
 	 *      &lt;br /&gt; -or- &lt;br /&gt; &lt;br /&gt; The specified Type does not
 	 *      have a usable EventMetric attribute, so it can't be used to define an
@@ -109,9 +110,8 @@ public final class EventMetric {
 	 *      not allowed, so no metric can be defined.&lt;br /&gt; &lt;br /&gt; -or-
 	 *      &lt;br /&gt; &lt;br /&gt; The specified Type's EventMetric attribute's
 	 *      3-part Key is already used for a metric definition which is not an event
-	 *      metric. <example> See the <see cref="EventMetric">EventMetric Class
-	 *      Overview</see> for an example.
-	 *      <code title="" description="" lang="neutral"></code></example>
+	 *      metric.  See the EventMetric Class
+	 *      Overview for an example.
 	 */
 	public static void register(Object metricData) {
 		// we need a live object, not a null object or we'll fail
@@ -322,9 +322,9 @@ public final class EventMetric {
 	 * EventMetric.Write(userDataObject).
 	 * </p>
 	 * 
-	 * @return The new metric sample object. <example> See the
-	 *         <see cref="EventMetric">EventMetric Class Overview</see> for an
-	 *         example. </example>
+	 * @return The new metric sample object.  See the
+	 *         EventMetric Class Overview for an
+	 *         example. 
 	 */
 	public EventMetricSample createSample() {
 		return new EventMetricSample(this, new EventMetricSamplePacket(this));
@@ -400,9 +400,9 @@ public final class EventMetric {
 	 * The provided user data object must be assignable to the bound type which
 	 * defined this event metric via attributes.
 	 * 
-	 * @param metricData The object to retrieve metric values from. <example> See
-	 *                   the <see cref="EventMetric">EventMetric Class
-	 *                   Overview</see> for an example. </example>
+	 * @param metricData The object to retrieve metric values from.  See
+	 *                   the EventMetric Class
+	 *                   Overview for an example. 
 	 */
 	public void writeSample(Object metricData) {
 		// use our normal create sample method, but write it out immediately!
@@ -420,9 +420,9 @@ public final class EventMetric {
 	 *                             definition from
 	 * @param fallbackInstanceName The instance name to fall back on if a definition
 	 *                             does not specify an instance name binding (may be
-	 *                             null). <example> See the
-	 *                             <see cref="EventMetric">EventMetric Class
-	 *                             Overview</see> for an example. </example>
+	 *                             null).  See the
+	 *                             EventMetric Class
+	 *                             Overview for an example. 
 	 */
 	public static void write(Object metricData, String fallbackInstanceName) {
 		// The real logic is in EventMetricDefinition.
@@ -437,8 +437,8 @@ public final class EventMetric {
 	 * defined this event metric via attributes.
 	 * 
 	 * @param metricData The object to retrieve both metric values and definition
-	 *                   from <example> See the <see cref="EventMetric">EventMetric
-	 *                   Class Overview</see> for an example. </example>
+	 *                   from  See the EventMetric
+	 *                   Class Overview for an example. 
 	 */
 	public static void write(Object metricData) {
 		// The real logic is in EventMetricDefinition.

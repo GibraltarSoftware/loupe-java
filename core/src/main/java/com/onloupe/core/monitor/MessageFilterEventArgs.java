@@ -2,7 +2,7 @@ package com.onloupe.core.monitor;
 
 import com.onloupe.model.log.ILogMessage;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * EventArgs for Message Filter events.
  */

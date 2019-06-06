@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 import com.onloupe.core.server.data.ClientRepositoryStatusXml;
 import com.onloupe.core.server.data.ClientRepositoryXml;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Uploads the state of a client repository, adding it if necessary.
  */

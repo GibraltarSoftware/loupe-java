@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import com.onloupe.core.util.FileUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class AgentConfiguration.
  */

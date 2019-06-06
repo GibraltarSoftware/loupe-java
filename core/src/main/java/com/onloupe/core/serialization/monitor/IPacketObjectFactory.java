@@ -1,6 +1,6 @@
 package com.onloupe.core.serialization.monitor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Implement to support derived object creation from serialized packets
  * 
@@ -9,13 +9,10 @@ package com.onloupe.core.serialization.monitor;
  * derived from to create useful features. To support third party developers
  * deriving new objects, this interface is used to allow a raw persistable
  * packet to specify the correct derived type of its associated data object.
- * 
- * <typeparam name="DataObjectType">The base object</typeparam>
- * <typeparam name="ParentObjectType">The base type of object that collects this
- * base object</typeparam>
  *
- * @param <DataObjectType> the generic type
- * @param <ParentObjectType> the generic type
+ * @param <DataObjectType> The base object
+ * @param <ParentObjectType> The base type of object that collects this
+ * base object
  */
 public interface IPacketObjectFactory<DataObjectType, ParentObjectType> {
 	

@@ -9,7 +9,7 @@ import java.util.Observable;
 
 import com.onloupe.core.util.TimeConversion;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Represents an exclusive lock on a repository within a process and between
  * processes.

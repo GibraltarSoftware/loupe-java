@@ -6,7 +6,7 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.system.ApplicationType;
 import com.onloupe.model.system.Version;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The configuration of the publisher.
  */

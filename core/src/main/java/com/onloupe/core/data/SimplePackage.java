@@ -27,7 +27,7 @@ import com.onloupe.model.exception.GibraltarException;
 import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.session.SessionStatus;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A very simple implementation of the Package type for use within the agent
  * 

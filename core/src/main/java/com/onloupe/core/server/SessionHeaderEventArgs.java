@@ -2,7 +2,7 @@ package com.onloupe.core.server;
 
 import com.onloupe.core.data.SessionHeader;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Event arguments for session header changes.
  */

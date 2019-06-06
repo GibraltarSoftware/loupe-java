@@ -33,7 +33,7 @@ import com.onloupe.model.data.ISessionSummaryCollection;
 import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.session.ISessionSummary;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Publishes sessions from the specified repository to a remote destination
  * repository.

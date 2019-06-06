@@ -12,7 +12,7 @@ import com.onloupe.model.data.EventMetricValueTrend;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A serializable event value definition. Provides metadata for one value
  * associated with an event
@@ -184,7 +184,7 @@ public class EventMetricValueDefinitionPacket extends GibraltarCachedPacket impl
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override

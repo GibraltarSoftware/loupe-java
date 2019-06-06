@@ -9,7 +9,7 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.SampleType;
 import com.onloupe.model.metric.MetricSampleInterval;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The definition of a single metric that has been captured.
  * 

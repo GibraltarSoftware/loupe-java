@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import com.onloupe.core.util.TypeUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A (sorted) collection of Application User objects.
  */
@@ -440,10 +440,9 @@ public final class ApplicationUserCollection {
 	 * Returns an enumerator that iterates through the ApplicationUserCollection (in
 	 * sorted order).
 	 * 
-	 * @return A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can
+	 * @return A  that can
 	 *         be used to iterate through the collection.
 	 * 
-	 *         <filterpriority>1</filterpriority>
 	 */
 	public Iterator<ApplicationUser> iterator() {
 		synchronized (this.lock) {

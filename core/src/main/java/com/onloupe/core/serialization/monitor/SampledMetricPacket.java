@@ -1,6 +1,6 @@
 package com.onloupe.core.serialization.monitor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A serializable sampled metric definition. Provides metadata for metrics based
  * on sampled values.
@@ -33,7 +33,7 @@ public abstract class SampledMetricPacket extends MetricPacket {
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	@Override
@@ -47,7 +47,7 @@ public abstract class SampledMetricPacket extends MetricPacket {
 	 * type.
 	 *
 	 * @param other An object to compare with this object.
-	 * @return true if the current object is equal to the <paramref name="other" />
+	 * @return true if the current object is equal to the 
 	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(SampledMetricPacket other) {

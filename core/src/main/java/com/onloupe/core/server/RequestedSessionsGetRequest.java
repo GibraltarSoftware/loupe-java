@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.onloupe.core.server.data.DataConverter;
 import com.onloupe.core.server.data.SessionsListXml;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Get the requested sessions for a client from the server.
  */

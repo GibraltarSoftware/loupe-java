@@ -1,6 +1,6 @@
 package com.onloupe.core.server;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The delegate for handling the Credentials Required event.
  */

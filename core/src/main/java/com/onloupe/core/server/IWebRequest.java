@@ -2,7 +2,7 @@ package com.onloupe.core.server;
 
 import java.io.IOException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The format of a web request provided to the GibraltarWebClient.
  */

@@ -27,7 +27,7 @@ import com.onloupe.core.util.SystemUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The base class for different network clients that talk to a server.
  */

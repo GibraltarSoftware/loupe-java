@@ -11,7 +11,7 @@ import com.onloupe.core.monitor.LocalRepository;
 import com.onloupe.model.data.ISessionSummaryCollection;
 import com.onloupe.model.session.ISessionSummary;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The session summary collection implementation for the local collection
  * repository.
@@ -57,10 +57,9 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	/**
 	 * Returns an enumerator that iterates through the collection.
 	 * 
-	 * @return A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can
+	 * @return A  that can
 	 *         be used to iterate through the collection.
 	 * 
-	 *         <filterpriority>1</filterpriority>
 	 */
 	public final Iterator<ISessionSummary> getEnumerator() {
 		return this.list.iterator();
@@ -89,7 +88,7 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 
 	/**
 	 * Removes all items from the
-	 * <see cref="T:System.Collections.Generic.ICollection`1"/>.
+	 * .
 	 */
 	public final void clear() {
 		synchronized (this.lock) {
@@ -112,13 +111,13 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 
 	/**
 	 * Determines whether the
-	 * <see cref="T:System.Collections.Generic.ICollection`1"/> contains a specific
+	 *  contains a specific
 	 * value.
 	 *
 	 * @param item The object to locate in the
-	 *             <see cref="T:System.Collections.Generic.ICollection`1"/>.
-	 * @return true if <paramref name="item"/> is found in the
-	 *         <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise,
+	 *             .
+	 * @return true if  is found in the
+	 *         ; otherwise,
 	 *         false.
 	 */
 	public final boolean contains(ISessionSummary item) {
@@ -133,16 +132,16 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 
 	/**
 	 * Copies the elements of the
-	 * <see cref="T:System.Collections.Generic.ICollection`1"/> to an
-	 * <see cref="T:System.Array"/>, starting at a particular
-	 * <see cref="T:System.Array"/> index.
+	 *  to an
+	 * , starting at a particular
+	 *  index.
 	 *
-	 * @param array      The one-dimensional <see cref="T:System.Array"/> that is
+	 * @param array      The one-dimensional  that is
 	 *                   the destination of the elements copied from
-	 *                   <see cref="T:System.Collections.Generic.ICollection`1"/>.
-	 *                   The <see cref="T:System.Array"/> must have zero-based
+	 *                   .
+	 *                   The  must have zero-based
 	 *                   indexing.
-	 * @param arrayIndex The zero-based index in <paramref name="array"/> at which
+	 * @param arrayIndex The zero-based index in  at which
 	 *                   copying begins.
 	 */
 	public final void copyTo(ISessionSummary[] array, int arrayIndex) {
@@ -153,15 +152,15 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 
 	/**
 	 * Removes the first occurrence of a specific object from the
-	 * <see cref="T:System.Collections.Generic.ICollection`1"/>.
+	 * .
 	 *
 	 * @param item The object to remove from the
-	 *             <see cref="T:System.Collections.Generic.ICollection`1"/>.
-	 * @return true if <paramref name="item"/> was successfully removed from the
-	 *         <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise,
-	 *         false. This method also returns false if <paramref name="item"/> is
+	 *             .
+	 * @return true if  was successfully removed from the
+	 *         ; otherwise,
+	 *         false. This method also returns false if  is
 	 *         not found in the original
-	 *         <see cref="T:System.Collections.Generic.ICollection`1"/>.
+	 *         .
 	 */
 	public final boolean remove(ISessionSummary item) {
 		return removeItem(item);
@@ -191,10 +190,10 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 
 	/**
 	 * Gets the number of elements contained in the
-	 * <see cref="T:System.Collections.Generic.ICollection`1"/>.
+	 * .
 	 * 
 	 * @return The number of elements contained in the
-	 *         <see cref="T:System.Collections.Generic.ICollection`1"/>.
+	 *         .
 	 * 
 	 */
 	public final int getCount() {
@@ -203,9 +202,9 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 
 	/**
 	 * Gets a value indicating whether the
-	 * <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+	 *  is read-only.
 	 * 
-	 * @return true if the <see cref="T:System.Collections.Generic.ICollection`1"/>
+	 * @return true if the 
 	 *         is read-only; otherwise, false.
 	 * 
 	 */
@@ -217,22 +216,21 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	 * Searches for an element that matches the conditions defined by the specified
 	 * predicate, and returns the first occurrence within the entire List.
 	 * 
-	 * @param match The <see cref="System.Predicate{T}">Predicate</see> delegate
+	 * @param match The Predicate delegate
 	 *              that defines the conditions of the elements to search for.
 	 * 
-	 *              The <see cref="System.Predicate{T}">Predicate</see> is a
+	 *              The Predicate is a
 	 *              delegate to a method that returns true if the object passed to
 	 *              it matches the conditions defined in the delegate. The elements
 	 *              of the current List are individually passed to the
-	 *              <see cref="System.Predicate{T}">Predicate</see> delegate, moving
+	 *              Predicate delegate, moving
 	 *              forward in the List, starting with the first element and ending
 	 *              with the last element. Processing is stopped when a match is
 	 *              found.
 	 * 
 	 * @return The first element that matches the conditions defined by the
 	 *         specified predicate, if found; otherwise, null.
-	 *         <exception caption="Argument Null Exception" cref=
-	 *         "System.ArgumentNullException">match is a null reference (Nothing in
+	 *         @throws NullPointerException match is a null reference (Nothing in
 	 *         Visual Basic)
 	 */
 	@Override
@@ -257,21 +255,20 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	 * Retrieves all the elements that match the conditions defined by the specified
 	 * predicate.
 	 * 
-	 * @param match The <see cref="System.Predicate{T}">Predicate</see> delegate
+	 * @param match The Predicate delegate
 	 *              that defines the conditions of the elements to search for.
 	 * 
-	 *              The <see cref="System.Predicate{T}">Predicate</see> is a
+	 *              The Predicate is a
 	 *              delegate to a method that returns true if the object passed to
 	 *              it matches the conditions defined in the delegate. The elements
 	 *              of the current List are individually passed to the
-	 *              <see cref="System.Predicate{T}">Predicate</see> delegate, moving
+	 *              Predicate delegate, moving
 	 *              forward in the List, starting with the first element and ending
 	 *              with the last element.
 	 * 
 	 * @return A List containing all the elements that match the conditions defined
 	 *         by the specified predicate, if found; otherwise, an empty List.
-	 *         <exception caption="Argument Null Exception" cref=
-	 *         "System.ArgumentNullException">match is a null reference (Nothing in
+	 *         @throws NullPointerException match is a null reference (Nothing in
 	 *         Visual Basic)
 	 */
 	@Override
@@ -329,11 +326,11 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 
 	/**
 	 * Determines the index of a specific item in the
-	 * <see cref="T:System.Collections.Generic.IList`1"/>.
+	 * .
 	 *
 	 * @param item The object to locate in the
-	 *             <see cref="T:System.Collections.Generic.IList`1"/>.
-	 * @return The index of <paramref name="item"/> if found in the list; otherwise,
+	 *             .
+	 * @return The index of  if found in the list; otherwise,
 	 *         -1.
 	 */
 	public final int indexOf(ISessionSummary item) {
@@ -343,13 +340,13 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	}
 
 	/**
-	 * Inserts an item to the <see cref="T:System.Collections.Generic.IList`1"/> at
+	 * Inserts an item to the  at
 	 * the specified index.
 	 *
-	 * @param index The zero-based index at which <paramref name="item"/> should be
+	 * @param index The zero-based index at which  should be
 	 *              inserted.
 	 * @param item  The object to insert into the
-	 *              <see cref="T:System.Collections.Generic.IList`1"/>.
+	 *              .
 	 */
 	public final void insert(int index, ISessionSummary item) {
 		throw new UnsupportedOperationException(
@@ -357,7 +354,7 @@ public class SessionSummaryCollection implements ISessionSummaryCollection {
 	}
 
 	/**
-	 * Removes the <see cref="T:System.Collections.Generic.IList`1"/> item at the
+	 * Removes the  item at the
 	 * specified index.
 	 *
 	 * @param index The zero-based index of the item to remove.

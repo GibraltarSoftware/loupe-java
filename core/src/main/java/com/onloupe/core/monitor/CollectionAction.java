@@ -1,6 +1,6 @@
 package com.onloupe.core.monitor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The different possible actions that were performed on a collection.
  */
