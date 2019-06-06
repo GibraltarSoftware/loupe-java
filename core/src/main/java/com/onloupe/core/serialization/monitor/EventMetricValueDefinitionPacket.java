@@ -12,22 +12,35 @@ import com.onloupe.model.data.EventMetricValueTrend;
 import java.util.List;
 import java.util.UUID;
 
+
 /**
  * A serializable event value definition. Provides metadata for one value
  * associated with an event
  */
 public class EventMetricValueDefinitionPacket extends GibraltarCachedPacket implements ICachedPacket, IDisplayable {
+	
+	/** The name. */
 	private String name;
+	
+	/** The caption. */
 	private String caption;
+	
+	/** The description. */
 	private String description;
+	
+	/** The unit caption. */
 	private String unitCaption;
+	
+	/** The default trend. */
 	private EventMetricValueTrend defaultTrend = EventMetricValueTrend.AVERAGE;
+	
+	/** The event definition packet id. */
 	private UUID eventDefinitionPacketId;
 
 	/**
 	 * Creates an event metric definition packet for the provided event metric
-	 * information
-	 * 
+	 * information.
+	 *
 	 * @param definition  The event metric definition for this value.
 	 * @param name        The unique name of this event value within the definition.
 	 * @param type        The simple type of the data being stored in this value.
@@ -48,17 +61,26 @@ public class EventMetricValueDefinitionPacket extends GibraltarCachedPacket impl
 	/**
 	 * The default way that individual samples will be aggregated to create a
 	 * graphable trend.
+	 *
+	 * @return the default trend
 	 */
 	public final EventMetricValueTrend getDefaultTrend() {
 		return this.defaultTrend;
 	}
 
+	/**
+	 * Sets the default trend.
+	 *
+	 * @param value the new default trend
+	 */
 	public final void setDefaultTrend(EventMetricValueTrend value) {
 		this.defaultTrend = value;
 	}
 
 	/**
 	 * The unique name for this value within the event definition.
+	 *
+	 * @return the name
 	 */
 	public final String getName() {
 		return this.name;
@@ -66,24 +88,38 @@ public class EventMetricValueDefinitionPacket extends GibraltarCachedPacket impl
 
 	/**
 	 * The end-user display caption for this value.
+	 *
+	 * @return the caption
 	 */
 	@Override
 	public final String getCaption() {
 		return this.caption;
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	public final void setCaption(String value) {
 		this.caption = value == null ? getName() : value.trim();
 	}
 
 	/**
 	 * The end-user description for this value.
+	 *
+	 * @return the description
 	 */
 	@Override
 	public final String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * Sets the description.
+	 *
+	 * @param value the new description
+	 */
 	public final void setDescription(String value) {
 		this.description = value == null ? null : value.trim();
 	}
@@ -93,6 +129,11 @@ public class EventMetricValueDefinitionPacket extends GibraltarCachedPacket impl
 	 */
 	private java.lang.Class type;
 
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	public final java.lang.Class getType() {
 		return this.type;
 	}
@@ -102,21 +143,38 @@ public class EventMetricValueDefinitionPacket extends GibraltarCachedPacket impl
 	 */
 	private java.lang.Class serializedType;
 
+	/**
+	 * Gets the serialized type.
+	 *
+	 * @return the serialized type
+	 */
 	public final java.lang.Class getSerializedType() {
 		return this.serializedType;
 	}
 
+	/**
+	 * Sets the serialized type.
+	 *
+	 * @param value the new serialized type
+	 */
 	private void setSerializedType(java.lang.Class value) {
 		this.serializedType = value;
 	}
 
 	/**
-	 * The units of measure for the data captured with this value (if numeric)
+	 * The units of measure for the data captured with this value (if numeric).
+	 *
+	 * @return the unit caption
 	 */
 	public final String getUnitCaption() {
 		return this.unitCaption;
 	}
 
+	/**
+	 * Sets the unit caption.
+	 *
+	 * @param value the new unit caption
+	 */
 	public final void setUnitCaption(String value) {
 		this.unitCaption = value == null ? null : value.trim();
 	}
@@ -124,11 +182,10 @@ public class EventMetricValueDefinitionPacket extends GibraltarCachedPacket impl
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -198,11 +255,14 @@ public class EventMetricValueDefinitionPacket extends GibraltarCachedPacket impl
 
 	/**
 	 * The unique Id of the definition of this event value.
+	 *
+	 * @return the definition id
 	 */
 	public final UUID getDefinitionId() {
 		return this.eventDefinitionPacketId;
 	}
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -216,6 +276,9 @@ public class EventMetricValueDefinitionPacket extends GibraltarCachedPacket impl
 		return super.getRequiredPackets();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -231,6 +294,9 @@ public class EventMetricValueDefinitionPacket extends GibraltarCachedPacket impl
 		definition.getFields().add("unitCaption", FieldType.STRING);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -245,15 +311,18 @@ public class EventMetricValueDefinitionPacket extends GibraltarCachedPacket impl
 		packet.setField("unitCaption", this.unitCaption);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");
 	}
 
 	/**
-	 * Translate provided type to the effective serializable type
-	 * 
-	 * @param originalType
+	 * Translate provided type to the effective serializable type.
+	 *
+	 * @param originalType the new type
 	 */
 	private void setType(java.lang.Class originalType) {
 		this.type = originalType;

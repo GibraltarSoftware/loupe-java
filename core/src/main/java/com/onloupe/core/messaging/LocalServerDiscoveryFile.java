@@ -16,14 +16,14 @@ import java.nio.file.StandardOpenOption;
 import com.onloupe.core.util.FileUtils;
 import com.onloupe.core.util.SystemUtils;
 
+
 /**
  * IP Configuration information for a live stream proxy running on the local
- * computer
+ * computer.
  */
 public class LocalServerDiscoveryFile {
-	/**
-	 * A file matching filter for discovery files
-	 */
+	
+	/** A file matching filter for discovery files. */
 	public static final FileFilter FILE_FILTER = new FileFilter() {
 		@Override
 		public boolean accept(File file) {
@@ -32,10 +32,10 @@ public class LocalServerDiscoveryFile {
 	};
 
 	/**
-	 * Load the specified file as a local server discovery file
-	 * 
+	 * Load the specified file as a local server discovery file.
+	 *
 	 * @param fileNamePath The fully qualified file to load
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public LocalServerDiscoveryFile(String fileNamePath) throws IOException {
 		setFileNamePath(fileNamePath);
@@ -49,28 +49,44 @@ public class LocalServerDiscoveryFile {
 		}
 	}
 
-	/**
-	 * The TCP port to publish information to (for agents)
-	 */
+	/** The TCP port to publish information to (for agents). */
 	private int publisherPort;
 
+	/**
+	 * Gets the publisher port.
+	 *
+	 * @return the publisher port
+	 */
 	public final int getPublisherPort() {
 		return this.publisherPort;
 	}
 
+	/**
+	 * Sets the publisher port.
+	 *
+	 * @param value the new publisher port
+	 */
 	private void setPublisherPort(int value) {
 		this.publisherPort = value;
 	}
 
-	/**
-	 * The TCP port for subscribers to get information from (for analyst)
-	 */
+	/** The TCP port for subscribers to get information from (for analyst). */
 	private int subscriberPort;
 
+	/**
+	 * Gets the subscriber port.
+	 *
+	 * @return the subscriber port
+	 */
 	public final int getSubscriberPort() {
 		return this.subscriberPort;
 	}
 
+	/**
+	 * Sets the subscriber port.
+	 *
+	 * @param value the new subscriber port
+	 */
 	private void setSubscriberPort(int value) {
 		this.subscriberPort = value;
 	}
@@ -80,16 +96,28 @@ public class LocalServerDiscoveryFile {
 	 */
 	private int processId;
 
+	/**
+	 * Gets the process id.
+	 *
+	 * @return the process id
+	 */
 	public final int getProcessId() {
 		return this.processId;
 	}
 
+	/**
+	 * Sets the process id.
+	 *
+	 * @param value the new process id
+	 */
 	private void setProcessId(int value) {
 		this.processId = value;
 	}
 
 	/**
-	 * Indicates if the socket proxy host is still running
+	 * Indicates if the socket proxy host is still running.
+	 *
+	 * @return true, if is alive
 	 */
 	public final boolean isAlive() {
 		boolean isAlive = (new File(getFileNamePath())).isFile();
@@ -118,15 +146,23 @@ public class LocalServerDiscoveryFile {
 		return isAlive;
 	}
 
-	/**
-	 * The fully qualified file name and path for the discovery file
-	 */
+	/** The fully qualified file name and path for the discovery file. */
 	private String fileNamePath;
 
+	/**
+	 * Gets the file name path.
+	 *
+	 * @return the file name path
+	 */
 	public final String getFileNamePath() {
 		return this.fileNamePath;
 	}
 
+	/**
+	 * Sets the file name path.
+	 *
+	 * @param value the new file name path
+	 */
 	private void setFileNamePath(String value) {
 		this.fileNamePath = value;
 	}

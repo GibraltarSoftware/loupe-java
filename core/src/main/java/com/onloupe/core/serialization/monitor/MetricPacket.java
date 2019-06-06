@@ -12,19 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 /**
  * Defines a metric that has been captured. Specific metrics extend this class.
  * Each time a metric is captured, a MetricSample is recorded.
  */
 public abstract class MetricPacket extends GibraltarCachedPacket
 		implements IPacket, IPacketObjectFactory<Metric, MetricDefinition>, IDisplayable {
+	
+	/** The definition id. */
 	// our metric definition data (this gets written out)
 	private UUID definitionId;
+	
+	/** The instance name. */
 	private String instanceName;
 
+	/** The metric definition packet. */
 	// internal tracking information (this does NOT get written out)
 	private MetricDefinitionPacket metricDefinitionPacket; // we just persist the ID when we get around to this.
+	
+	/** The name. */
 	private String name;
+	
+	/** The persisted. */
 	private boolean persisted;
 
 	/**
@@ -61,11 +71,18 @@ public abstract class MetricPacket extends GibraltarCachedPacket
 
 	/**
 	 * The unique Id of the metric definition.
+	 *
+	 * @return the definition id
 	 */
 	public final UUID getDefinitionId() {
 		return this.definitionId;
 	}
 
+	/**
+	 * Sets the definition id.
+	 *
+	 * @param value the new definition id
+	 */
 	private void setDefinitionId(UUID value) {
 		this.definitionId = value;
 	}
@@ -75,17 +92,26 @@ public abstract class MetricPacket extends GibraltarCachedPacket
 	 * 
 	 * The name is for comparing the same metric in different sessions. They will
 	 * have the same name but not the same Id.
+	 *
+	 * @return the name
 	 */
 	public final String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Sets the name.
+	 *
+	 * @param value the new name
+	 */
 	private void setName(String value) {
 		this.name = value;
 	}
 
 	/**
 	 * A short display string for this metric packet.
+	 *
+	 * @return the caption
 	 */
 	@Override
 	public String getCaption() {
@@ -111,6 +137,8 @@ public abstract class MetricPacket extends GibraltarCachedPacket
 
 	/**
 	 * The metric definition's description.
+	 *
+	 * @return the description
 	 */
 	@Override
 	public String getDescription() {
@@ -120,31 +148,45 @@ public abstract class MetricPacket extends GibraltarCachedPacket
 	/**
 	 * The metric instance name (unique within the counter name). May be null or
 	 * empty if no instance name is required.
+	 *
+	 * @return the instance name
 	 */
 	public final String getInstanceName() {
 		return this.instanceName;
 	}
 
+	/**
+	 * Sets the instance name.
+	 *
+	 * @param value the new instance name
+	 */
 	private void setInstanceName(String value) {
 		this.instanceName = value;
 	}
 
 	/**
 	 * Indicates whether the metric packet has been written to the log stream yet.
+	 *
+	 * @return the persisted
 	 */
 	public final boolean getPersisted() {
 		return this.persisted;
 	}
 
+	/**
+	 * Sets the persisted.
+	 *
+	 * @param value the new persisted
+	 */
 	private void setPersisted(boolean value) {
 		this.persisted = value;
 	}
 
 	/**
-	 * Compare this object to another to determine sort order
-	 * 
-	 * @param other
-	 * @return
+	 * Compare this object to another to determine sort order.
+	 *
+	 * @param other the other
+	 * @return the int
 	 */
 	public final int compareTo(MetricPacket other) {
 		// quick identity comparison based on guid
@@ -161,11 +203,10 @@ public abstract class MetricPacket extends GibraltarCachedPacket
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -216,11 +257,18 @@ public abstract class MetricPacket extends GibraltarCachedPacket
 
 	/**
 	 * The current metric definition packet. Setting to null is not allowed.
+	 *
+	 * @return the definition packet
 	 */
 	public final MetricDefinitionPacket getDefinitionPacket() {
 		return this.metricDefinitionPacket;
 	}
 
+	/**
+	 * Sets the definition packet.
+	 *
+	 * @param value the new definition packet
+	 */
 	private void setDefinitionPacket(MetricDefinitionPacket value) {
 		if (value == null) {
 			throw new NullPointerException("value");
@@ -244,6 +292,7 @@ public abstract class MetricPacket extends GibraltarCachedPacket
 	// serialization methods know to recurse object
 	// structures looking for the interface.
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -261,6 +310,9 @@ public abstract class MetricPacket extends GibraltarCachedPacket
 		return requiredPackets;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -271,6 +323,9 @@ public abstract class MetricPacket extends GibraltarCachedPacket
 		definition.getFields().add("definitionId", FieldType.GUID);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -282,11 +337,17 @@ public abstract class MetricPacket extends GibraltarCachedPacket
 		setPersisted(true);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.IPacketObjectFactory#getDataObject(java.lang.Object)
+	 */
 	@Override
 	public Metric getDataObject(MetricDefinition optionalParent) {
 		// we don't implement this; our derived class always should.

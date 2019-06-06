@@ -8,6 +8,7 @@ import com.onloupe.core.serialization.SerializedPacket;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+
 /**
  * The base class for a single sampled metric data sample.
  * 
@@ -18,7 +19,11 @@ import java.util.List;
  * depending on the particular metric type being logged.
  */
 public abstract class SampledMetricSamplePacket extends MetricSamplePacket implements IPacket {
+	
+	/** The raw timestamp. */
 	private OffsetDateTime rawTimestamp;
+	
+	/** The raw value. */
 	private double rawValue;
 
 	/**
@@ -40,9 +45,9 @@ public abstract class SampledMetricSamplePacket extends MetricSamplePacket imple
 	 * Metrics using a sample type of AverageFraction and DeltaFraction should not
 	 * use this method because they require a base value as well as a raw value.
 	 * </p>
-	 * 
-	 * @param rawValue The raw data value
+	 *
 	 * @param packet   The metric this sample is for
+	 * @param rawValue The raw data value
 	 */
 	protected SampledMetricSamplePacket(SampledMetricPacket packet, double rawValue) {
 		super(packet);
@@ -60,10 +65,10 @@ public abstract class SampledMetricSamplePacket extends MetricSamplePacket imple
 	 * Metrics using a sample type of AverageFraction and DeltaFraction should not
 	 * use this method because they require a base value as well as a raw value.
 	 * </p>
-	 * 
+	 *
+	 * @param packet       The metric this sample is for
 	 * @param rawValue     The raw data value
 	 * @param rawTimeStamp The exact date and time the raw value was determined
-	 * @param packet       The metric this sample is for
 	 */
 	protected SampledMetricSamplePacket(SampledMetricPacket packet, double rawValue, OffsetDateTime rawTimeStamp) {
 		super(packet);
@@ -77,7 +82,9 @@ public abstract class SampledMetricSamplePacket extends MetricSamplePacket imple
 	/**
 	 * Compares this sampled metric packet with another. See general CompareTo
 	 * documentation for specifics.
-	 * 
+	 *
+	 * @param other the other
+	 * @return the int
 	 */
 	public final int compareTo(SampledMetricSamplePacket other) {
 		// we really are just forwarding to the default comparitor; we are just casting
@@ -88,11 +95,10 @@ public abstract class SampledMetricSamplePacket extends MetricSamplePacket imple
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -103,11 +109,10 @@ public abstract class SampledMetricSamplePacket extends MetricSamplePacket imple
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(SampledMetricSamplePacket other) {
 		// Careful - can be null
@@ -150,11 +155,18 @@ public abstract class SampledMetricSamplePacket extends MetricSamplePacket imple
 	 * given the proper duration. For example, if you want to know bytes per second
 	 * you need to know exactly when the underlying bytes metric was determined,
 	 * which may not be when it was recorded to the log file.
+	 *
+	 * @return the raw timestamp
 	 */
 	public final OffsetDateTime getRawTimestamp() {
 		return this.rawTimestamp;
 	}
 
+	/**
+	 * Sets the raw timestamp.
+	 *
+	 * @param value the new raw timestamp
+	 */
 	protected final void setRawTimestamp(OffsetDateTime value) {
 		this.rawTimestamp = value;
 	}
@@ -165,15 +177,23 @@ public abstract class SampledMetricSamplePacket extends MetricSamplePacket imple
 	 * The raw value generally can't be used directly but instead must be processed
 	 * by comparing the raw values of two different samples and their time
 	 * difference to determine the effective sampled metric value.
+	 *
+	 * @return the raw value
 	 */
 	public final double getRawValue() {
 		return this.rawValue;
 	}
 
+	/**
+	 * Sets the raw value.
+	 *
+	 * @param value the new raw value
+	 */
 	protected final void setRawValue(double value) {
 		this.rawValue = value;
 	}
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -186,6 +206,9 @@ public abstract class SampledMetricSamplePacket extends MetricSamplePacket imple
 		return super.getRequiredPackets();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricSamplePacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -196,6 +219,9 @@ public abstract class SampledMetricSamplePacket extends MetricSamplePacket imple
 		definition.getFields().add("rawValue", FieldType.DOUBLE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricSamplePacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -204,6 +230,9 @@ public abstract class SampledMetricSamplePacket extends MetricSamplePacket imple
 		packet.setField("rawValue", this.rawValue);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.MetricSamplePacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");

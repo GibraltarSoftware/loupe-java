@@ -1,33 +1,41 @@
 package com.onloupe.core.server.data;
 
+
+/**
+ * The Enum BootModeXml.
+ */
 public enum BootModeXml {
 
-	/**
-	 * <remarks/>
-	 */
+	/** The unknown. */
 	UNKNOWN,
 
-	/**
-	 * <remarks/>
-	 */
+	/** The normal. */
 	NORMAL,
 
-	/**
-	 * <remarks/>
-	 */
+	/** The failsafe. */
 	FAILSAFE,
 
-	/**
-	 * <remarks/>
-	 */
+	/** The failsafewithnetwork. */
 	FAILSAFEWITHNETWORK;
 
+	/** The Constant SIZE. */
 	public static final int SIZE = java.lang.Integer.SIZE;
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return this.ordinal();
 	}
 
+	/**
+	 * For value.
+	 *
+	 * @param value the value
+	 * @return the boot mode xml
+	 */
 	public static BootModeXml forValue(int value) {
 		return values()[value];
 	}

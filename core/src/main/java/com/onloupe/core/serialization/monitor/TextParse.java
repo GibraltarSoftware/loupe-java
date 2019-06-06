@@ -4,21 +4,39 @@ import java.util.Arrays;
 
 import com.onloupe.core.util.TypeUtils;
 
+
+/**
+ * The Class TextParse.
+ */
 public final class TextParse {
+	
 	/**
-	 * Splits a dot-delimited class name
-	 * 
-	 * @param className
-	 * @return
+	 * Splits a dot-delimited class name.
+	 *
+	 * @param className the class name
+	 * @return the string[]
 	 */
 	public static String[] className(String className) {
 		return splitStringWithTrim(className);
 	}
 
+	/**
+	 * Split string with trim.
+	 *
+	 * @param source the source
+	 * @return the string[]
+	 */
 	public static String[] splitStringWithTrim(String source) {
 		return splitStringWithTrim(source, null);
 	}
 
+	/**
+	 * Split string with trim.
+	 *
+	 * @param source the source
+	 * @param additionalIgnoreCharacters the additional ignore characters
+	 * @return the string[]
+	 */
 	public static String[] splitStringWithTrim(String source, char[] additionalIgnoreCharacters) {
 		if (source == null) {
 			return new String[0];

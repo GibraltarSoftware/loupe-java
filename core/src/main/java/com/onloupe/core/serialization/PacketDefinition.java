@@ -18,9 +18,10 @@ import java.util.Stack;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+
 /**
  * Holds the metadata needed to correctly interpret the stream of fields
- * associated with a serialized packet
+ * associated with a serialized packet.
  */
 public final class PacketDefinition implements java.lang.Iterable<FieldDefinition> {
 	/**
@@ -58,6 +59,12 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 		return definition;
 	}
 
+	/**
+	 * Calculate definitions.
+	 *
+	 * @param packet the packet
+	 * @return the packet definition
+	 */
 	private static PacketDefinition calculateDefinitions(IPacket packet) {
 		// We iterate from the type we are passed down the object hierarchy looking for
 		// IPacket implementations. Then, on the way back up, we link together
@@ -121,11 +128,11 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 	 * Returns a PacketDefinition from the stream (including nested PacketDefinition
 	 * objects for cases in which an IPacket is subclassed and has serialized state
 	 * at multiple levels).
-	 * 
+	 *
 	 * @param reader Stream to read data from
 	 * @return PacketDefinition (including nested definitions for subclassed
 	 *         packets)
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static PacketDefinition readPacketDefinition(IFieldReader reader) throws IOException {
 		boolean cachedPacket = reader.readBool();
@@ -151,39 +158,94 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 		return topLevelDefinition;
 	}
 
+	/** The implements I packet. */
 	private boolean implementsIPacket;
+	
+	/** The cachable. */
 	private boolean cachable;
+	
+	/** The type name. */
 	private String typeName;
+	
+	/** The version. */
 	private int version;
+	
+	/** The dynamic type name. */
 	private String dynamicTypeName;
+	
+	/** The fields. */
 	private final FieldDefinitionCollection fields = new FieldDefinitionCollection();
+	
+	/** The parent packet. */
 	private PacketDefinition parentPacket;
+	
+	/** The write method. */
 	private java.lang.reflect.Method writeMethod;
+	
+	/** The read method. */
 	private java.lang.reflect.Method readMethod;
+	
+	/** The read method assigned. */
 	private boolean readMethodAssigned;
+	
+	/** The sub packets. */
 	private List<PacketDefinition> subPackets;
+	
+	/** The packet count. */
 	private int packetCount;
 
+	/**
+	 * Sets the dynamic type name.
+	 *
+	 * @param value the new dynamic type name
+	 */
 	public void setDynamicTypeName(String value) { this.dynamicTypeName = value; }
 
+	/**
+	 * Gets the packet count.
+	 *
+	 * @return the packet count
+	 */
 	public int getPacketCount() {
 		return this.packetCount;
 	}
 
+	/**
+	 * Sets the packet count.
+	 *
+	 * @param value the new packet count
+	 */
 	public void setPacketCount(int value) {
 		this.packetCount = value;
 	}
 
+	/** The packet size. */
 	private long packetSize;
 
+	/**
+	 * Gets the packet size.
+	 *
+	 * @return the packet size
+	 */
 	public long getPacketSize() {
 		return this.packetSize;
 	}
 
+	/**
+	 * Sets the packet size.
+	 *
+	 * @param value the new packet size
+	 */
 	public void setPacketSize(long value) {
 		this.packetSize = value;
 	}
 
+	/**
+	 * Instantiates a new packet definition.
+	 *
+	 * @param reader the reader
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private PacketDefinition(IFieldReader reader) throws IOException {
 		this.typeName = reader.readString();
 		this.version = reader.readInt();
@@ -210,16 +272,30 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 
 	/**
 	 * Create a packet definition, initialized for a type that doesn't support writing any fields.
-	 * @param typeName
+	 *
+	 * @param typeName the type name
 	 */
 	public PacketDefinition(String typeName) {
 		this(typeName, -1,  null);
 	}
 
+	/**
+	 * Instantiates a new packet definition.
+	 *
+	 * @param typeName the type name
+	 * @param version the version
+	 */
 	public PacketDefinition(String typeName, int version) {
 		this(typeName, version, null);
 	}
 
+	/**
+	 * Instantiates a new packet definition.
+	 *
+	 * @param typeName the type name
+	 * @param version the version
+	 * @param baseDefinition the base definition
+	 */
 	public PacketDefinition(String typeName, int version, PacketDefinition baseDefinition) {
 		this.typeName = typeName;
 		this.version = version;
@@ -228,24 +304,59 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 	}
 
 
+	/**
+	 * Gets the implements I packet.
+	 *
+	 * @return the implements I packet
+	 */
 	public boolean getImplementsIPacket() { return this.implementsIPacket; }
 
+	/**
+	 * Checks if is cachable.
+	 *
+	 * @return true, if is cachable
+	 */
 	public boolean isCachable() {
 		return this.cachable;
 	}
 
+	/**
+	 * Sets the checks if is cacheable.
+	 *
+	 * @param value the new checks if is cacheable
+	 */
 	public void setIsCacheable(boolean value){ this.cachable = value; }
 
+	/**
+	 * Gets the type name.
+	 *
+	 * @return the type name
+	 */
 	public String getTypeName() {
 		return this.typeName;
 	}
 
+	/**
+	 * Gets the version.
+	 *
+	 * @return the version
+	 */
 	public int getVersion() {
 		return this.version;
 	}
 
+	/**
+	 * Sets the version.
+	 *
+	 * @param value the new version
+	 */
 	public void setVersion(int value) { this.version = value; }
 
+	/**
+	 * Gets the qualified type name.
+	 *
+	 * @return the qualified type name
+	 */
 	public String getQualifiedTypeName() {
 		if (this.dynamicTypeName == null) {
 			return this.typeName;
@@ -254,18 +365,31 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 		}
 	}
 
+	/**
+	 * Gets the fields.
+	 *
+	 * @return the fields
+	 */
 	public FieldDefinitionCollection getFields() {
 		return this.fields;
 	}
 
 	/**
 	 * This list allows for the possiblity of a Packet that aggregates other
-	 * sub-packets
+	 * sub-packets.
+	 *
+	 * @return the sub packets
 	 */
 	public List<PacketDefinition> getSubPackets() {
 		return this.subPackets;
 	}
 
+	/**
+	 * Write definition.
+	 *
+	 * @param writer the writer
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void writeDefinition(IFieldWriter writer) throws IOException {
 		writer.write(this.cachable);
 		int nestingDepth = getNestingDepth();
@@ -274,6 +398,11 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 		writeDefinitionForThisLevel(writer);
 	}
 
+	/**
+	 * Gets the nesting depth.
+	 *
+	 * @return the nesting depth
+	 */
 	public int getNestingDepth() {
 		if (this.parentPacket == null) {
 			return 1;
@@ -283,8 +412,9 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 	}
 
 	/**
-	 * Get the definition of the next super type that implements IPacket
-	 * @return
+	 * Get the definition of the next super type that implements IPacket.
+	 *
+	 * @return the parent I packet
 	 */
 	public PacketDefinition getParentIPacket() {
 		PacketDefinition parentIPacket = parentPacket;
@@ -297,12 +427,19 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 
 	/**
 	 * Get the definition of the next super type, regardless of whether it implements IPacket or not.
-	 * @return
+	 *
+	 * @return the parent packet
 	 */
 	public PacketDefinition getParentPacket() {
 		return this.parentPacket;
 	}
 
+	/**
+	 * Write definition for this level.
+	 *
+	 * @param writer the writer
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void writeDefinitionForThisLevel(IFieldWriter writer) throws IOException {
 		if (this.parentPacket != null) {
 			this.parentPacket.writeDefinitionForThisLevel(writer);
@@ -327,8 +464,8 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 	}
 
 	/**
-	 * Get the lossless equivalent type for serialization
-	 * 
+	 * Get the lossless equivalent type for serialization.
+	 *
 	 * @param type A .NET type to serialize
 	 * @return The Field Type that will provide lossless serialization If no
 	 *         lossless type is found, an exception will be thrown.
@@ -342,8 +479,8 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 	}
 
 	/**
-	 * Get the lossless equivalent type for serialization
-	 * 
+	 * Get the lossless equivalent type for serialization.
+	 *
 	 * @param type     A .NET type to serialize
 	 * @return The optimal field type for the provided type, or UNKNOWN if none could
 	 *         be determined.
@@ -391,9 +528,9 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 	/**
 	 * Request the packet object write out all of its fields.
 	 *
-	 * @param packet
-	 * @param writer
-	 * @throws Exception
+	 * @param packet the packet
+	 * @param writer the writer
+	 * @throws Exception the exception
 	 */
 	public void writeFields(IPacket packet, IFieldWriter writer) throws Exception {
 		if (packet instanceof GenericPacket) {
@@ -413,8 +550,10 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 
 	/**
 	 * Write the serialized packet (and its super packets) to the provided field writer.
-	 * @param serializedPacket
-	 * @param writer
+	 *
+	 * @param serializedPacket the serialized packet
+	 * @param writer the writer
+	 * @throws Exception the exception
 	 */
 	protected void writeToOutput(SerializedPacket serializedPacket, IFieldWriter writer) throws Exception {
 		// We need all of our base classes to write out before us
@@ -430,6 +569,13 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 		}
 	}
 
+	/**
+	 * Gets the required packets.
+	 *
+	 * @param packet the packet
+	 * @return the required packets
+	 * @throws Exception the exception
+	 */
 	public List<IPacket> getRequiredPackets(IPacket packet) throws Exception {
 		List<IPacket> requiredPackets = packet.getRequiredPackets();
 
@@ -440,6 +586,12 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 		return requiredPackets.stream().distinct().collect(Collectors.toList());
 	}
 
+	/**
+	 * Read fields.
+	 *
+	 * @param packet the packet
+	 * @param reader the reader
+	 */
 	public void readFields(IPacket packet, IFieldReader reader) {
 		IDynamicPacket dynamicPacket = packet instanceof IDynamicPacket ? (IDynamicPacket) packet : null;
 		if (dynamicPacket != null) {
@@ -454,6 +606,15 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 		packet.readFields(outermostIPacketDefinition, serializedPacket);
 	}
 
+	/**
+	 * Read serialized packets.
+	 *
+	 * @param type the type
+	 * @param definition the definition
+	 * @param packet the packet
+	 * @param reader the reader
+	 * @return the serialized packet
+	 */
 	private static SerializedPacket readSerializedPackets(java.lang.Class type, PacketDefinition definition, IPacket packet, IFieldReader reader) {
 		SerializedPacket superPacket = null;
 		Exception basePacketException = null;
@@ -534,10 +695,10 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 	/**
 	 * Find the method only if it is explicitly declared at this level of the type
 	 * hierarchy.
-	 * 
-	 * @param type
-	 * @param methodName
-	 * @param methodArgTypes
+	 *
+	 * @param type the type
+	 * @param methodName the method name
+	 * @param methodArgTypes the method arg types
 	 * @return The method found or null if it wasn't found.
 	 */
 	public static Method getIPacketMethod(java.lang.Class type, String methodName, java.lang.Class[] methodArgTypes) {
@@ -549,6 +710,9 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Iterable#iterator()
+	 */
 	@Override
 	public Iterator<FieldDefinition> iterator() {
 		return this.fields.iterator();
@@ -557,6 +721,9 @@ public final class PacketDefinition implements java.lang.Iterable<FieldDefinitio
 	/**
 	 * Compare this PacketDefinition to another to verify that they are equivalent
 	 * for purposes of order-dependant field deserialization.
+	 *
+	 * @param other the other
+	 * @return true, if successful
 	 */
 	public boolean equals(PacketDefinition other) {
 		// Verify that base packets are equivalent

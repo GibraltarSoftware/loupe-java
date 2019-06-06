@@ -16,6 +16,7 @@ import com.onloupe.core.data.FileHeader;
 import com.onloupe.core.util.TimeConversion;
 import com.onloupe.core.util.TypeUtils;
 
+
 /**
  * Provides low-level compression of the basic data types we pass over the wire.
  * 
@@ -23,22 +24,31 @@ import com.onloupe.core.util.TypeUtils;
  * FieldReader which will reinstate the original stream of basic data types.
  */
 public class FieldWriter implements IFieldWriter {
+
+	/** The buffer. */
 	private ByteArrayOutputStream buffer;
+
+	/** The major version. */
 	private int majorVersion;
+
+	/** The minor version. */
 	private int minorVersion;
+
+	/** The reference time. */
 	private LocalDateTime referenceTime;
 
+	/** The string array writer. */
 	private final ArrayEncoder<String> stringArrayWriter;
 
 	/**
 	 * Initialize a FieldWriter to write to the specified stream using the provided
 	 * encoding for strings.
-	 * 
+	 *
 	 * @param buffer       Buffer to write data into
 	 * @param majorVersion Major version of the serialization protocol
 	 * @param minorVersion Minor version of the serialization protocol
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException     the security exception
 	 */
 	public FieldWriter(ByteArrayOutputStream buffer, int majorVersion, int minorVersion)
 			throws NoSuchMethodException, SecurityException {
@@ -51,18 +61,19 @@ public class FieldWriter implements IFieldWriter {
 	/**
 	 * Initialize a FieldWriter to write to the specified stream using the provided
 	 * encoding for strings.
-	 * 
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
+	 *
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException     the security exception
 	 */
 	public FieldWriter() throws NoSuchMethodException, SecurityException {
 		this(new ByteArrayOutputStream(), FileHeader.defaultMajorVersion, FileHeader.defaultMinorVersion);
 	}
 
 	/**
-	 * Write an object to the stream as its serializable type
-	 * 
+	 * Write an object to the stream as its serializable type.
+	 *
 	 * @param value The object (or boxed integral value) to write.
+	 * @throws Exception the exception
 	 */
 	@Override
 	public final void write(Object value) throws Exception {
@@ -74,25 +85,24 @@ public class FieldWriter implements IFieldWriter {
 	}
 
 	/**
-	 * Write an object to the stream as its serializable type
-	 * 
+	 * Write an object to the stream as its serializable type.
+	 *
 	 * @param value     The object (or boxed integral value) to write.
 	 * @param fieldType The field type to write the value out as.
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
+	 * @throws Exception                the exception
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	@Override
 	public final void write(Object value, FieldType fieldType) throws Exception {
 		switch (fieldType) {
 		case BOOL:
-			write(value != null ? (boolean)value : false);
+			write(value != null ? (boolean) value : false);
 			break;
 		case STRING:
-			write((String)value);
+			write((String) value);
 			break;
 		case STRING_ARRAY:
-			write((String[])value);
+			write((String[]) value);
 			break;
 		case INT:
 			write(TypeUtils.safeInt(value));
@@ -104,13 +114,13 @@ public class FieldWriter implements IFieldWriter {
 			write(TypeUtils.safeDouble(value));
 			break;
 		case DURATION:
-			write((Duration)value);
+			write((Duration) value);
 			break;
 		case DATE_TIME:
-			write((LocalDateTime)value);
+			write((LocalDateTime) value);
 			break;
 		case DATE_TIME_OFFSET:
-			write((OffsetDateTime)value);
+			write((OffsetDateTime) value);
 			break;
 		case GUID:
 			write(TypeUtils.safeUUID(value));
@@ -122,8 +132,8 @@ public class FieldWriter implements IFieldWriter {
 
 	/**
 	 * Write a bool to the stream.
-	 * 
-	 * @return A bool value.
+	 *
+	 * @param value the value
 	 */
 	@Override
 	public final void write(boolean value) {
@@ -133,6 +143,8 @@ public class FieldWriter implements IFieldWriter {
 	/**
 	 * Write a string to the stream.
 	 *
+	 * @param value the value
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void write(String value) throws IOException {
@@ -142,7 +154,7 @@ public class FieldWriter implements IFieldWriter {
 		} else if (value.length() == 0) {
 			writeByte((byte) 0);
 		} else {
-			byte[] bytes = value.getBytes(java.nio.charset.StandardCharsets.UTF_8); //we always serialize as UTF-8.
+			byte[] bytes = value.getBytes(java.nio.charset.StandardCharsets.UTF_8); // we always serialize as UTF-8.
 			writePositive(bytes.length);
 			writeBytes(bytes);
 		}
@@ -150,12 +162,10 @@ public class FieldWriter implements IFieldWriter {
 
 	/**
 	 * Write an array of string to the stream.
-	 * 
-	 * @return An array of string values.
-	 * @throws IOException
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
+	 *
+	 * @param array the array
+	 * @throws Exception                the exception
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	@Override
 	public final void write(String[] array) throws Exception {
@@ -168,7 +178,8 @@ public class FieldWriter implements IFieldWriter {
 	 * The value is written 7 bits at a time (starting with the least-significant
 	 * bits) until there are no more bits to write. The eighth bit of each byte
 	 * stored is used to indicate whether there are more bytes following this one.
-	 * 
+	 *
+	 * @param value the value
 	 */
 	@Override
 	public final void write(int value) {
@@ -283,8 +294,8 @@ public class FieldWriter implements IFieldWriter {
 
 	/**
 	 * Efficiently encodes a packet length as a variable length byte array using
-	 * 7-bit encoding
-	 * 
+	 * 7-bit encoding.
+	 *
 	 * @param length Packet length to be encoded
 	 * @return Returns a MemoryStream containing the encoded length
 	 */
@@ -308,7 +319,9 @@ public class FieldWriter implements IFieldWriter {
 	 * similar way to how we optimize UInt64. The difference is just that in this
 	 * case we are interested in the high-order bits whereas with UInt64 we are
 	 * interested in the low order bits.
-	 * 
+	 *
+	 * @param value the value
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void write(double value) throws IOException {
@@ -343,7 +356,9 @@ public class FieldWriter implements IFieldWriter {
 	}
 
 	/**
-	 * Stores a Duration value to the stream
+	 * Stores a Duration value to the stream.
+	 *
+	 * @param value the value
 	 */
 	@Override
 	public final void write(Duration value) {
@@ -351,7 +366,9 @@ public class FieldWriter implements IFieldWriter {
 	}
 
 	/**
-	 * Stores a DateTime value to the stream
+	 * Stores a DateTime value to the stream.
+	 *
+	 * @param value the value
 	 */
 	@Override
 	public final void write(LocalDateTime value) {
@@ -360,7 +377,9 @@ public class FieldWriter implements IFieldWriter {
 	}
 
 	/**
-	 * Stores a DateTime value to the stream
+	 * Stores a DateTime value to the stream.
+	 *
+	 * @param value the value
 	 */
 	@Override
 	public final void write(OffsetDateTime value) {
@@ -388,9 +407,9 @@ public class FieldWriter implements IFieldWriter {
 	}
 
 	/**
-	 * Stores a DateTime value to the stream
-	 * 
-	 * 
+	 * Stores a DateTime value to the stream.
+	 *
+	 * @param value the value
 	 */
 	public final void writeTimestamp(LocalDateTime value) // change to Timestamp value if we make it?
 	{
@@ -419,7 +438,10 @@ public class FieldWriter implements IFieldWriter {
 	}
 
 	/**
-	 * Stores a 128-bit Guid value to the stream
+	 * Stores a 128-bit Guid value to the stream.
+	 *
+	 * @param value the value
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void write(UUID value) throws IOException {
@@ -470,13 +492,20 @@ public class FieldWriter implements IFieldWriter {
 
 	/**
 	 * Helper method to write a single byte to the underlying stream.
-	 * 
+	 *
 	 * @param values byte array to be written
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private void writeBytes(byte[] values) throws IOException {
 		this.buffer.write(values);
 	}
 
+	/**
+	 * To bytes.
+	 *
+	 * @param value the value
+	 * @return the byte[]
+	 */
 	private byte[] toBytes(long value) {
 		// FROM:
 		// https://stackoverflow.com/questions/4485128/how-do-i-convert-long-to-byte-and-back-in-java/29132118#29132118
@@ -486,8 +515,8 @@ public class FieldWriter implements IFieldWriter {
 
 	/**
 	 * Number of valid bytes in the underlying ByteArrayOutputStream. Not seekable.
-	 * 
-	 * @return
+	 *
+	 * @return the length
 	 */
 	@Override
 	public int getLength() {

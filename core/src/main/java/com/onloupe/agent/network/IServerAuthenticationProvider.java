@@ -2,22 +2,31 @@ package com.onloupe.agent.network;
 
 import org.apache.http.client.HttpClient;
 
-/** 
- Implemented to provide custom authentication for a web channel
-*/
+
+/**
+ *  
+ *  Implemented to provide custom authentication for a web channel.
+ */
 public interface IServerAuthenticationProvider
 {
-	/** 
-	 Indicates if the authentication provider believes it has authenticated with the channel
-	 
-	 If false then no logout will be attempted, and any request that requires authentication will
-	 cause a login attempt without waiting for an authentication failure.
-	*/
+	
+	/**
+	 *  
+	 * 	 Indicates if the authentication provider believes it has authenticated with the channel
+	 * 	 
+	 * 	 If false then no logout will be attempted, and any request that requires authentication will
+	 * 	 cause a login attempt without waiting for an authentication failure.
+	 *
+	 * @return true, if is authenticated
+	 */
 	boolean isAuthenticated();
 
-	/** 
-	 indicates if the authentication provider can perform a logout
-	*/
+	/**
+	 *  
+	 * 	 indicates if the authentication provider can perform a logout.
+	 *
+	 * @return the logout is supported
+	 */
 	boolean getLogoutIsSupported();
 
 	/** 

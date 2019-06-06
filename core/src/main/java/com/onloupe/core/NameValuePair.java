@@ -1,35 +1,53 @@
 package com.onloupe.core;
 
+
 /**
  * Simple class that contains a name and corresponding value
  * 
  * NameValuePairs are compared to each other by Name for sorting purposes.
+ *
+ * @param <TValue> the generic type
  */
 @Deprecated
 public class NameValuePair<TValue> implements IName {
-	/**
-	 * The name of the item
-	 */
+	
+	/** The name of the item. */
 	private String name;
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.IName#getName()
+	 */
 	@Override
 	public final String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Sets the name.
+	 *
+	 * @param value the new name
+	 */
 	public final void setName(String value) {
 		this.name = value;
 	}
 
-	/**
-	 * The value of the item
-	 */
+	/** The value of the item. */
 	private TValue value;
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public final TValue getValue() {
 		return this.value;
 	}
 
+	/**
+	 * Sets the value.
+	 *
+	 * @param value the new value
+	 */
 	public final void setValue(TValue value) {
 		this.value = value;
 	}
@@ -37,7 +55,7 @@ public class NameValuePair<TValue> implements IName {
 	/**
 	 * Default constructor used to initialize the class
 	 * 
-	 * No Remarks
+	 * No Remarks.
 	 */
 	public NameValuePair() {
 		setName("");
@@ -45,8 +63,8 @@ public class NameValuePair<TValue> implements IName {
 	}
 
 	/**
-	 * Default constructor used to initialize the class
-	 * 
+	 * Default constructor used to initialize the class.
+	 *
 	 * @param name  The name of the item
 	 * @param value The value of the corresponding item No Remarks
 	 */

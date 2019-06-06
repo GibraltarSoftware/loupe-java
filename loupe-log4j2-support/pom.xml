@@ -1,27 +1,67 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.onloupe</groupId>
-    <artifactId>parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
-  <artifactId>loupe-log4j2-support</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0</version>
-  
-  <dependencies>
-  		<dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.onloupe</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	<artifactId>loupe-log4j2-support</artifactId>
+
+	<name>Loupe Log4j2 Appender</name>
+	<description>Custom appender to integrate Loupe with Log4j2.</description>
+	<url>https://onloupe.com/</url>
+	
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	
+	<developers>
+		<developer>
+			<name>Ryan Kelliher</name>
+			<email>ryan@gibraltarsoftware.com</email>
+			<roles>
+				<role>Principal Software Development Engineer</role>
+			</roles>
+			<organization>Gibraltar Software, Inc.</organization>
+			<organizationUrl>https://onloupe.com/</organizationUrl>
+		</developer>
+		<developer>
+			<name>Kendall Miller</name>
+			<email>kendall@gibraltarsoftware.com</email>
+			<roles>
+				<role>Chief Executive Officer</role>
+				<role>Chief Software Architect</role>
+				<role>Grand Technical Poo Bah</role>
+			</roles>
+			<organization>Gibraltar Software, Inc.</organization>
+			<organizationUrl>https://onloupe.com/</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/GibraltarSoftware/loupe-java.git</connection>
+		<developerConnection>scm:git:ssh://github.com:GibraltarSoftware/loupe-java.git</developerConnection>
+		<url>http://github.com/GibraltarSoftware/loupe-java/tree/master</url>
+	</scm>
+
+	<dependencies>
+		<dependency>
 			<groupId>com.onloupe</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0.0</version>
 			<scope>compile</scope>
 		</dependency>
-	    <dependency>
-	      <groupId>org.apache.logging.log4j</groupId>
-	      <artifactId>log4j-core</artifactId>
-	      <scope>compile</scope>
-	      <optional>true</optional>
-	    </dependency>
-  </dependencies>
-  
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<scope>compile</scope>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
 </project>

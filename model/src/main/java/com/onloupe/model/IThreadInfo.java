@@ -1,38 +1,57 @@
 package com.onloupe.model;
 
+
 /** 
  An interface for accessing information about a thread.
 */
 public interface IThreadInfo
 {
 
-	/** 
-	 The managed thread ID of the thread which originated this log message.
-	*/
+
+	/**
+	 * Gets the thread id.
+	 *
+	 * @return the thread id
+	 */
 	long getThreadId();
 
-	/** 
-	 The name of the thread which originated this log message.
-	*/
+	/**
+	 *  
+	 * 	 The name of the thread which originated this log message.
+	 *
+	 * @return the thread name
+	 */
 	String getThreadName();
 
-	/** 
-	 The application domain identifier of the app domain which originated this log message.
-	*/
+	/**
+	 *  
+	 * 	 The application domain identifier of the app domain which originated this log message.
+	 *
+	 * @return the domain id
+	 */
 	int getDomainId();
 
-	/** 
-	 The friendly name of the app domain which originated this log message.
-	*/
+	/**
+	 *  
+	 * 	 The friendly name of the app domain which originated this log message.
+	 *
+	 * @return the domain name
+	 */
 	String getDomainName();
 
-	/** 
-	 Indicates whether the thread which originated this log message is a background thread.
-	*/
+	/**
+	 *  
+	 * 	 Indicates whether the thread which originated this log message is a background thread.
+	 *
+	 * @return true, if is background
+	 */
 	boolean isBackground();
 
-	/** 
-	 Indicates whether the thread which originated this log message is a threadpool thread.
-	*/
+	/**
+	 *  
+	 * 	 Indicates whether the thread which originated this log message is a threadpool thread.
+	 *
+	 * @return true, if is thread pool thread
+	 */
 	boolean isThreadPoolThread();
 }

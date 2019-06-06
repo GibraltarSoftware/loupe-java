@@ -9,6 +9,7 @@ import java.util.Observer;
 
 import com.onloupe.core.util.IOUtils;
 
+
 /**
  * A multiprocess lock manager for repositories. This class is a singleton.
  * 
@@ -18,15 +19,27 @@ import com.onloupe.core.util.IOUtils;
  */
 public final class InterprocessLockManager implements Observer {
 
+	/** The g lock. */
 	private final Object gLock = new Object();
+	
+	/** The g proxies. */
 	private final Map<String, InterprocessLockProxy> gProxies = new HashMap<String, InterprocessLockProxy>();
 
+	/** The interprocess lock manager. */
 	private static InterprocessLockManager interprocessLockManager;
 
+	/**
+	 * Instantiates a new interprocess lock manager.
+	 */
 	private InterprocessLockManager() {
 
 	}
 
+	/**
+	 * Gets the single instance of InterprocessLockManager.
+	 *
+	 * @return single instance of InterprocessLockManager
+	 */
 	public static InterprocessLockManager getInstance() {
 		if (interprocessLockManager == null) {
 			interprocessLockManager = new InterprocessLockManager();
@@ -36,7 +49,7 @@ public final class InterprocessLockManager implements Observer {
 
 	/**
 	 * Attempt to lock the repository with the provided index path.
-	 * 
+	 *
 	 * @param requester      The object that is requesting the lock (useful for
 	 *                       debugging purposes)
 	 * @param indexPath      The fully qualified path to the directory containing
@@ -47,7 +60,6 @@ public final class InterprocessLockManager implements Observer {
 	 *                       before giving up.
 	 * @return A Repository Lock object if the lock could be obtained or Null if the
 	 *         lock timed out.
-	 * @throws IOException
 	 */
 	public InterprocessLock lock(Object requester, String indexPath, String lockName, int timeoutSeconds) {
 		return lock(requester, indexPath, lockName, timeoutSeconds, false);
@@ -55,7 +67,7 @@ public final class InterprocessLockManager implements Observer {
 
 	/**
 	 * Attempt to lock the repository with the provided index path.
-	 * 
+	 *
 	 * @param requester      The object that is requesting the lock (useful for
 	 *                       debugging purposes)
 	 * @param indexPath      The fully qualified path to the directory containing
@@ -68,7 +80,6 @@ public final class InterprocessLockManager implements Observer {
 	 *                       left around for reuse.
 	 * @return A Repository Lock object if the lock could be obtained or Null if the
 	 *         lock timed out.
-	 * @throws IOException
 	 */
 	public InterprocessLock lock(Object requester, String indexPath, String lockName, int timeoutSeconds,
 			boolean deleteOnClose) {
@@ -138,7 +149,7 @@ public final class InterprocessLockManager implements Observer {
 
 	/**
 	 * Query whether a particular lock is available without holding on to it.
-	 * 
+	 *
 	 * @param requester The object that is querying the lock (useful for debugging
 	 *                  purposes)
 	 * @param indexPath The fully qualified path to the directory containing the
@@ -147,7 +158,7 @@ public final class InterprocessLockManager implements Observer {
 	 *                  index and this name)
 	 * @return True if the lock could have been obtained. False if the lock could
 	 *         not be obtained without waiting.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public boolean queryLockAvailable(Object requester, String indexPath, String lockName) throws IOException {
 		Path file = InterprocessLockProxy.getLockFileName(indexPath, lockName);
@@ -165,6 +176,9 @@ public final class InterprocessLockManager implements Observer {
 		return lockAvailable;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		InterprocessLockProxy lockProxy = (InterprocessLockProxy) o;
@@ -175,6 +189,11 @@ public final class InterprocessLockManager implements Observer {
 		}
 	}
 
+	/**
+	 * Lock proxy disposed.
+	 *
+	 * @param disposingProxy the disposing proxy
+	 */
 	private void lockProxyDisposed(InterprocessLockProxy disposingProxy) {
 		synchronized (this.gLock) {
 			String lockKey = disposingProxy.getFullName();

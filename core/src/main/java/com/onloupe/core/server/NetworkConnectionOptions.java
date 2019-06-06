@@ -2,13 +2,23 @@ package com.onloupe.core.server;
 
 import java.util.Locale;
 
+
 /**
  * Connection options used to establish a socket from the local system to an
- * endpoint
+ * endpoint.
  */
 public class NetworkConnectionOptions {
+	
+	/** The hash code. */
 	private volatile int hashCode;
 
+	/**
+	 * Instantiates a new network connection options.
+	 *
+	 * @param port the port
+	 * @param hostName the host name
+	 * @param useSsl the use ssl
+	 */
 	public NetworkConnectionOptions(int port, String hostName, boolean useSsl) {
 		super();
 		this.port = port;
@@ -16,6 +26,14 @@ public class NetworkConnectionOptions {
 		this.useSsl = useSsl;
 	}
 
+	/**
+	 * Instantiates a new network connection options.
+	 *
+	 * @param _HashCode the hash code
+	 * @param port the port
+	 * @param hostName the host name
+	 * @param useSsl the use ssl
+	 */
 	public NetworkConnectionOptions(int _HashCode, int port, String hostName, boolean useSsl) {
 		super();
 		this.hashCode = _HashCode;
@@ -24,28 +42,44 @@ public class NetworkConnectionOptions {
 		this.useSsl = useSsl;
 	}
 
-	/**
-	 * The TCP Port to connect to
-	 */
+	/** The TCP Port to connect to. */
 	private int port;
 
+	/**
+	 * Gets the port.
+	 *
+	 * @return the port
+	 */
 	public final int getPort() {
 		return this.port;
 	}
 
+	/**
+	 * Sets the port.
+	 *
+	 * @param value the new port
+	 */
 	public final void setPort(int value) {
 		this.port = value;
 	}
 
-	/**
-	 * The host name or IP Address to connect to
-	 */
+	/** The host name or IP Address to connect to. */
 	private String hostName;
 
+	/**
+	 * Gets the host name.
+	 *
+	 * @return the host name
+	 */
 	public final String getHostName() {
 		return this.hostName;
 	}
 
+	/**
+	 * Sets the host name.
+	 *
+	 * @param value the new host name
+	 */
 	public final void setHostName(String value) {
 		this.hostName = value;
 	}
@@ -55,32 +89,36 @@ public class NetworkConnectionOptions {
 	 */
 	private boolean useSsl;
 
+	/**
+	 * Gets the use ssl.
+	 *
+	 * @return the use ssl
+	 */
 	public final boolean getUseSsl() {
 		return this.useSsl;
 	}
 
+	/**
+	 * Sets the use ssl.
+	 *
+	 * @param value the new use ssl
+	 */
 	public final void setUseSsl(boolean value) {
 		this.useSsl = value;
 	}
 
 	/**
-	 * Create a copy of this set of connection options
-	 * 
-	 * @return
+	 * Create a copy of this set of connection options.
+	 *
+	 * @return the network connection options
 	 */
 	@Override
 	public final NetworkConnectionOptions clone() {
 		return new NetworkConnectionOptions(getPort(), getHostName(), getUseSsl());
 	}
 
-	/**
-	 * Returns a <see cref="T:System.String"/> that represents the current
-	 * <see cref="T:System.Object"/>.
-	 * 
-	 * @return A <see cref="T:System.String"/> that represents the current
-	 *         <see cref="T:System.Object"/>.
-	 * 
-	 *         <filterpriority>2</filterpriority>
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
@@ -135,18 +173,8 @@ public class NetworkConnectionOptions {
 		return compare;
 	}
 
-	/**
-	 * Determines whether the specified <see cref="T:System.Object"/> is equal to
-	 * the current <see cref="T:System.Object"/>.
-	 * 
-	 * @return true if the specified <see cref="T:System.Object"/> is equal to the
-	 *         current <see cref="T:System.Object"/>; otherwise, false.
-	 * 
-	 * @param obj The <see cref="T:System.Object"/> to compare with the current
-	 *            <see cref="T:System.Object"/>.
-	 * @exception T:System.NullReferenceException The <paramref name="obj"/>
-	 *                                            parameter is null.
-	 *                                            <filterpriority>2</filterpriority>
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -157,11 +185,10 @@ public class NetworkConnectionOptions {
 	}
 
 	/**
-	 * Determines if the provided NetworkConnectionOptions object is identical to
-	 * this object.
-	 * 
-	 * @param other The NetworkConnectionOptions object to compare this object to
-	 * @return True if the objects represent the same data.
+	 * Equals.
+	 *
+	 * @param other the other
+	 * @return true, if successful
 	 */
 	public final boolean equals(NetworkConnectionOptions other) {
 		if (compareTo(other) == 0) {
@@ -192,6 +219,9 @@ public class NetworkConnectionOptions {
 		return this.hashCode;
 	}
 
+	/**
+	 * Calculate hash.
+	 */
 	private void calculateHash() {
 		int myHash = (new Boolean(getUseSsl())).hashCode();
 		myHash ^= (new Integer(getPort())).hashCode();

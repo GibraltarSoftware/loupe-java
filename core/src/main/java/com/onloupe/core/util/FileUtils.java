@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+
 /**
  * A class to provide common wrappers and direct access to low-level file calls.
  */
@@ -37,9 +38,9 @@ public final class FileUtils {
 	/**
 	 * Delete a file with no exception being thrown. Uses DeleteFile method if not
 	 * running under Mono.
-	 * 
-	 * @param fileName
-	 * @return
+	 *
+	 * @param file the file
+	 * @return true, if successful
 	 */
 	public static boolean safeDeleteFile(File file) {
 		if (file == null)
@@ -56,20 +57,23 @@ public final class FileUtils {
 	    return file.delete();
 	}
 
+	/**
+	 * Safe delete file.
+	 *
+	 * @param fileName the file name
+	 * @return true, if successful
+	 */
 	public static boolean safeDeleteFile(String fileName) {
 		return safeDeleteFile(new File(fileName));
 	}
 	
 	/**
 	 * Get a persistent lock on a file without opening it.
-	 * 
+	 *
 	 * @param fileName     The full-path file name to create or open.
-	 * @param creationMode An action to take on files that exist and do not exist
-	 * @param fileAccess   Desired access to the object, which can be read, write,
-	 *                     or both
-	 * @param fileShare    The sharing mode of an object, which can be read, write,
-	 *                     both, or none
-	 * @return
+	 * @param mode the mode
+	 * @param shared the shared
+	 * @return the file lock
 	 */
 	public static FileLock getFileLock(String fileName, String mode, boolean shared) {
 		try (RandomAccessFile file = new RandomAccessFile(new File(fileName), mode)) {
@@ -79,6 +83,12 @@ public final class FileUtils {
 		}
 	}
 	
+	/**
+	 * Gets the base file name.
+	 *
+	 * @param fileName the file name
+	 * @return the base file name
+	 */
 	public static String getBaseFileName(String fileName) {
 		if (TypeUtils.isBlank(fileName))
 			return null;
@@ -87,6 +97,12 @@ public final class FileUtils {
 	    return (index == -1) ? fileName : fileName.substring(0, index);
 	}
 	
+	/**
+	 * Gets the file extension.
+	 *
+	 * @param fileName the file name
+	 * @return the file extension
+	 */
 	public static String getFileExtension(String fileName) {
 		if (TypeUtils.isBlank(fileName))
 			return null;
@@ -95,6 +111,13 @@ public final class FileUtils {
 	    return (index == -1) ? null : fileName.substring(index);
 	}
 	
+	/**
+	 * Checks if is file newer.
+	 *
+	 * @param file the file
+	 * @param reference the reference
+	 * @return true, if is file newer
+	 */
 	public static boolean isFileNewer(final File file, final File reference) {
 		if (file == null || reference == null)
 			return false;
@@ -105,6 +128,12 @@ public final class FileUtils {
 		return file.lastModified() > reference.lastModified();
 	}
 	
+	/**
+	 * Gets the path.
+	 *
+	 * @param path the path
+	 * @return the path
+	 */
 	public static Path getPath(String path) {		
 		try {
 			return Paths.get(path);

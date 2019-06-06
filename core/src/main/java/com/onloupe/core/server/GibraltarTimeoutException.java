@@ -2,13 +2,13 @@ package com.onloupe.core.server;
 
 import com.onloupe.model.exception.GibraltarException;
 
+
 /**
- * Thrown when an operation times out
+ * Thrown when an operation times out.
  */
 public class GibraltarTimeoutException extends GibraltarException {
-	/**
-	 * 
-	 */
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**

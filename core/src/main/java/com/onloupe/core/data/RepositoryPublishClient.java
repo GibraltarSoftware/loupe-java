@@ -33,26 +33,39 @@ import com.onloupe.model.data.ISessionSummaryCollection;
 import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.session.ISessionSummary;
 
+
 /**
  * Publishes sessions from the specified repository to a remote destination
  * repository.
  */
 public class RepositoryPublishClient implements Closeable {
+	
+	/** The Constant LOG_CATEGORY. */
 	public static final String LOG_CATEGORY = "Loupe.Repository.Publish";
 
+	/** The source repository. */
 	private LocalRepository sourceRepository;
+	
+	/** The product name. */
 	private String productName;
+	
+	/** The application name. */
 	private String applicationName;
+	
+	/** The hub connection. */
 	private HubConnection hubConnection;
 
+	/** The active. */
 	private volatile boolean active;
+	
+	/** The closed. */
 	private volatile boolean closed;
 
 	/**
 	 * Create a new repository publish engine for the specified repository.
-	 * 
+	 *
 	 * @param source The repository to publish
-	 * @throws IOException 
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public RepositoryPublishClient(LocalRepository source) throws IOException {
 		this(source, null, null, Log.getConfiguration().getServer());
@@ -93,6 +106,8 @@ public class RepositoryPublishClient implements Closeable {
 
 	/**
 	 * The repository this publish engine is associated with.
+	 *
+	 * @return the repository
 	 */
 	public final LocalRepository getRepository() {
 		return this.sourceRepository;
@@ -101,6 +116,8 @@ public class RepositoryPublishClient implements Closeable {
 	/**
 	 * Indicates if this is the active repository publish engine for the specified
 	 * repository.
+	 *
+	 * @return true, if is active
 	 */
 	public final boolean isActive() {
 		return this.active;
@@ -109,11 +126,11 @@ public class RepositoryPublishClient implements Closeable {
 	/**
 	 * Attempts to connect to the server and returns information about the
 	 * connection status.
-	 * 
+	 *
 	 * @return True if the configuration is valid and the server is available, false
 	 *         otherwise.
-	 * @throws Exception
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public final HubConnectionStatus canConnect() throws IOException, Exception {
 		return this.hubConnection.canConnect();
@@ -121,12 +138,11 @@ public class RepositoryPublishClient implements Closeable {
 
 	/**
 	 * Publish qualifying local sessions and upload any details requested by the
-	 * server
-	 * 
-	 * @param async
+	 * server.
+	 *
 	 * @param purgeSentSessions Indicates if the session should be purged from the
 	 *                          repository once it has been sent successfully.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void publishSessions(boolean purgeSentSessions) throws IOException {
 		if (this.active) {
@@ -150,13 +166,13 @@ public class RepositoryPublishClient implements Closeable {
 	/**
 	 * Send the specified session with details, even if other publishers are
 	 * running.
-	 * 
-	 * @param sessionId
-	 * @param maxRetries
+	 *
+	 * @param sessionId the session id
+	 * @param maxRetries the max retries
 	 * @param purgeSentSession Indicates if the session should be purged from the
 	 *                         repository once it has been sent successfully. Throws
 	 *                         an exception if it fails
-	 * @throws IOException
+	 * @throws Exception the exception
 	 */
 	public final void uploadSession(UUID sessionId, int maxRetries, boolean purgeSentSession) throws Exception {
 		performSessionDataUpload(sessionId, maxRetries, purgeSentSession);
@@ -166,7 +182,9 @@ public class RepositoryPublishClient implements Closeable {
 	 * Performs application-defined tasks associated with freeing, releasing, or
 	 * resetting unmanaged resources.
 	 * 
-	 * <filterpriority>2</filterpriority>
+	 * 
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void close() throws IOException {
@@ -179,8 +197,10 @@ public class RepositoryPublishClient implements Closeable {
 	/**
 	 * Publish the latest session data and find out what sessions should be
 	 * uploaded.
-	 * 
-	 * @throws IOException
+	 *
+	 * @param sessions the sessions
+	 * @param maxRetries the max retries
+	 * @param purgeSentSessions the purge sent sessions
 	 */
 	private void asyncPublishSessions(List<ISessionSummary> sessions, int maxRetries, boolean purgeSentSessions) {
 		try {
@@ -228,9 +248,8 @@ public class RepositoryPublishClient implements Closeable {
 
 	/**
 	 * Find out what sessions the server wants details for.
-	 * 
-	 * @throws Exception
-	 * @throws IOException
+	 *
+	 * @return the requested sessions
 	 */
 
 	private List<UUID> getRequestedSessions() {
@@ -281,10 +300,10 @@ public class RepositoryPublishClient implements Closeable {
 
 	/**
 	 * Find the list of all sessions that haven't been published yet and match our
-	 * filter
-	 * 
-	 * @return
-	 * @throws IOException
+	 * filter.
+	 *
+	 * @return the sessions
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private List<ISessionSummary> getSessions() throws IOException {
 		// find the list of all sessions that haven't been published yet and match our
@@ -312,10 +331,10 @@ public class RepositoryPublishClient implements Closeable {
 	}
 
 	/**
-	 * A predicate filter for the repository to identify unsent, qualifying sessions
-	 * 
-	 * @param candidateSession
-	 * @return
+	 * A predicate filter for the repository to identify unsent, qualifying sessions.
+	 *
+	 * @param candidateSession the candidate session
+	 * @return true, if successful
 	 */
 	private boolean unsentSessionsPredicate(ISessionSummary candidateSession) {
 		boolean matchesPredicate = candidateSession.isNew();
@@ -334,14 +353,14 @@ public class RepositoryPublishClient implements Closeable {
 	/**
 	 * Sends a session, either as a single stream or a set of fragments, to the
 	 * server.
-	 * 
-	 * @param sessionId
+	 *
+	 * @param sessionId the session id
 	 * @param maxRetries        The maximum number of times to retry the session
 	 *                          data upload.
 	 * @param purgeSentSessions Indicates whether to purge sessions that have been
 	 *                          successfully sent from the repository
 	 * @return Throws an exception if the upload fails.
-	 * @throws IOException
+	 * @throws Exception the exception
 	 */
 	private void performSessionDataUpload(UUID sessionId, int maxRetries, boolean purgeSentSessions) throws Exception {
 		this.sourceRepository.refresh(); // we want a picture of the latest data as of the start of this process.
@@ -410,15 +429,15 @@ public class RepositoryPublishClient implements Closeable {
 	/**
 	 * Sends a merged session stream or a single session fragment file to the
 	 * server.
-	 * 
-	 * @param sessionId
-	 * @param fileId
+	 *
+	 * @param sessionId the session id
+	 * @param fileId the file id
 	 * @param maxRetries        The maximum number of times to retry the session
 	 *                          data upload.
 	 * @param purgeSentSessions Indicates whether to purge sessions that have been
 	 *                          successfully sent from the repository
 	 * @return Throws an exception if the upload fails.
-	 * @throws IOException
+	 * @throws Exception the exception
 	 */
 	private void performSessionFileUpload(UUID sessionId, UUID fileId, int maxRetries,
 			boolean purgeSentSessions) throws Exception {
@@ -446,10 +465,10 @@ public class RepositoryPublishClient implements Closeable {
 
 	/**
 	 * Upload the session summary for one session.
-	 * 
-	 * @param sessionSummary
-	 * @throws Exception
-	 * @throws IOException
+	 *
+	 * @param sessionSummary the session summary
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	private void performSessionHeaderUpload(ISessionSummary sessionSummary) throws IOException, Exception {
 		SessionXml sessionSummaryXml = DataConverter.toSessionXml(sessionSummary);
@@ -458,10 +477,10 @@ public class RepositoryPublishClient implements Closeable {
 
 	/**
 	 * Upload the session summary for one session.
-	 * 
-	 * @param sessionSummary
-	 * @throws Exception
-	 * @throws IOException
+	 *
+	 * @param sessionSummary the session summary
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	private void performSessionHeaderUpload(SessionXml sessionSummary) throws IOException, Exception {
 		UUID sessionId = UUID.fromString(sessionSummary.getid());
@@ -487,9 +506,10 @@ public class RepositoryPublishClient implements Closeable {
 
 	/**
 	 * Mark the specified session as being complete.
-	 * 
-	 * @throws Exception
-	 * @throws IOException
+	 *
+	 * @param sessionId the session id
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	private void performSessionMarkComplete(UUID sessionId) throws IOException, Exception {
 		SessionMarkComplete uploadRequest = new SessionMarkComplete(sessionId, this.sourceRepository.getId());

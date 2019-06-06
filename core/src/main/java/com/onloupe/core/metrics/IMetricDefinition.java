@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.onloupe.agent.metrics.SamplingInterval;
 import com.onloupe.model.SampleType;
 
+
 /** 
  The definition of a single metric that has been captured.  
  
@@ -14,50 +15,74 @@ import com.onloupe.model.SampleType;
 */
 public interface IMetricDefinition
 {
-	/** 
-	 The unique Id of this metric definition packet.  This can reliably be used as a key to refer to this item, within the same session which created it.
-	 
-	 The Id is limited to a specific session, and thus identifies a consistent unchanged definition. The
-	 Id can <b>not</b> be used to identify a definition across different sessions, which could have different
-	 actual definitions due to changing user code.  See the Key property to identify a metric definition across
-	 different sessions.
-	*/
+	
+	/**
+	 *  
+	 * 	 The unique Id of this metric definition packet.  This can reliably be used as a key to refer to this item, within the same session which created it.
+	 * 	 
+	 * 	 The Id is limited to a specific session, and thus identifies a consistent unchanged definition. The
+	 * 	 Id can <b>not</b> be used to identify a definition across different sessions, which could have different
+	 * 	 actual definitions due to changing user code.  See the Key property to identify a metric definition across
+	 * 	 different sessions.
+	 *
+	 * @return the id
+	 */
 	UUID getId();
 
-	/** 
-	 The name of the metric definition being captured.  
-	 
-	 The Key is the combination of metrics system label, category name, and counter name to uniquely
-	 identify a specific metric definition.  It can also identify the same definition across different sessions.
-	 They will have the same name but not the same Id.
-	*/
+	/**
+	 *  
+	 * 	 The name of the metric definition being captured.  
+	 * 	 
+	 * 	 The Key is the combination of metrics system label, category name, and counter name to uniquely
+	 * 	 identify a specific metric definition.  It can also identify the same definition across different sessions.
+	 * 	 They will have the same name but not the same Id.
+	 *
+	 * @return the key
+	 */
 	String getKey();
 	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	String getName();
 
-	/** 
-	 A short display string for this metric definition, suitable for end-user display.
-	*/
+	/**
+	 *  
+	 * 	 A short display string for this metric definition, suitable for end-user display.
+	 *
+	 * @return the caption
+	 */
 	String getCaption();
 
-	/** 
-	 A description of what is tracked by this metric, suitable for end-user display.
-	*/
+	/**
+	 *  
+	 * 	 A description of what is tracked by this metric, suitable for end-user display.
+	 *
+	 * @return the description
+	 */
 	String getDescription();
 
-	/** 
-	 The recommended default display interval for graphing. 
-	*/
+	/**
+	 *  
+	 * 	 The recommended default display interval for graphing.
+	 *
+	 * @return the interval
+	 */
 	SamplingInterval getInterval();
 
-	/** 
-	 The metric capture system label under which this metric definition was created.
-	 
-	 This label distinguish metrics defined and captured by different libraries from each other,
-	 ensuring that metrics defined by different development groups will fall under separate namespaces and not
-	 require category names to be globally unique across third party libraries linked by an application.
-	 Pick your own label which will uniquely identify your library or namespace.
-	*/
+	/**
+	 *  
+	 * 	 The metric capture system label under which this metric definition was created.
+	 * 	 
+	 * 	 This label distinguish metrics defined and captured by different libraries from each other,
+	 * 	 ensuring that metrics defined by different development groups will fall under separate namespaces and not
+	 * 	 require category names to be globally unique across third party libraries linked by an application.
+	 * 	 Pick your own label which will uniquely identify your library or namespace.
+	 *
+	 * @return the metrics system
+	 */
 	String getMetricsSystem();
 
 	/*
@@ -77,28 +102,40 @@ public interface IMetricDefinition
 	MetricCollection Metrics { get; }
 	*/
 
-	/** 
-	 The category of this metric for display purposes. This can be a period delimited string to represent a variable height hierarchy.
-	*/
+	/**
+	 *  
+	 * 	 The category of this metric for display purposes. This can be a period delimited string to represent a variable height hierarchy.
+	 *
+	 * @return the category name
+	 */
 	String getCategoryName();
 
-	/** 
-	 The display name of this metric (unique within the category name).
-	*/
+	/**
+	 *  
+	 * 	 The display name of this metric (unique within the category name).
+	 *
+	 * @return the counter name
+	 */
 	String getCounterName();
 
-	/** 
-	 The sample type of the metric.  Indicates whether the metric represents discrete events or a continuous value.
-	*/
+	/**
+	 *  
+	 * 	 The sample type of the metric.  Indicates whether the metric represents discrete events or a continuous value.
+	 *
+	 * @return the sample type
+	 */
 	SampleType getSampleType();
 
-	/** 
-	 Indicates if the definition can still be changed or is read-only because an metric instance has been created from it.
-	 
-	 If a metric definition is read-only, that means the definition can't be changed in a way that would invalidate
-	 metrics or metric samples recorded with it.  Display-only values (such as captions and descriptions) can always be changed,
-	 and new metrics can always be added to a metric definition.
-	*/
+	/**
+	 *  
+	 * 	 Indicates if the definition can still be changed or is read-only because an metric instance has been created from it.
+	 * 	 
+	 * 	 If a metric definition is read-only, that means the definition can't be changed in a way that would invalidate
+	 * 	 metrics or metric samples recorded with it.  Display-only values (such as captions and descriptions) can always be changed,
+	 * 	 and new metrics can always be added to a metric definition.
+	 *
+	 * @return true, if is read only
+	 */
 	boolean isReadOnly();
 
 	/*
@@ -125,6 +162,11 @@ public interface IMetricDefinition
 	object Lock { get; }
 	*/
 	
+	/**
+	 * Gets the lock.
+	 *
+	 * @return the lock
+	 */
 	Object getLock();
 
 }

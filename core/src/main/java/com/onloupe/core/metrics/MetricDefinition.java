@@ -9,6 +9,7 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.SampleType;
 import com.onloupe.model.metric.MetricSampleInterval;
 
+
 /**
  * The definition of a single metric that has been captured.
  * 
@@ -18,14 +19,25 @@ import com.onloupe.model.metric.MetricSampleInterval;
  * 
  */
 public class MetricDefinition implements IDisplayable {
+	
+	/** The definitions. */
 	private MetricDefinitionCollection definitions;
+	
+	/** The packet. */
 	private MetricDefinitionPacket packet;
+	
+	/** The metrics. */
 	private MetricCollection metrics;
 
+	/** The lock. */
 	private final Object lock = new Object();
 
+	/** The category names. */
 	private String[] categoryNames; // the parsed array of the category name hierarchy, period delimited
 
+	/**
+	 * Instantiates a new metric definition.
+	 */
 	public MetricDefinition() {
 		// TODO Auto-generated constructor stub
 	}
@@ -91,6 +103,8 @@ public class MetricDefinition implements IDisplayable {
 	 * 
 	 * The key can be used to compare the same definition across different instances
 	 * (e.g. sessions). This Id is always unique to a particular instance.
+	 *
+	 * @return the id
 	 */
 	public final UUID getId() {
 		return this.packet.getID();
@@ -101,6 +115,8 @@ public class MetricDefinition implements IDisplayable {
 	 * 
 	 * The name is for comparing the same definition in different sessions. They
 	 * will have the same name but not the same Id.
+	 *
+	 * @return the name
 	 */
 	public final String getName() {
 		return this.packet.getName();
@@ -109,12 +125,19 @@ public class MetricDefinition implements IDisplayable {
 	/**
 	 * A short display string for this metric definition, suitable for end-user
 	 * display.
+	 *
+	 * @return the caption
 	 */
 	@Override
 	public final String getCaption() {
 		return this.packet.getCaption();
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	public final void setCaption(String value) {
 		this.packet.setCaption(value);
 	}
@@ -122,23 +145,37 @@ public class MetricDefinition implements IDisplayable {
 	/**
 	 * A description of what is tracked by this metric, suitable for end-user
 	 * display.
+	 *
+	 * @return the description
 	 */
 	@Override
 	public final String getDescription() {
 		return this.packet.getDescription();
 	}
 
+	/**
+	 * Sets the description.
+	 *
+	 * @param value the new description
+	 */
 	public final void setDescription(String value) {
 		this.packet.setDescription(value);
 	}
 
 	/**
 	 * The recommended default display interval for graphing.
+	 *
+	 * @return the interval
 	 */
 	public final MetricSampleInterval getInterval() {
 		return this.packet.getInterval();
 	}
 
+	/**
+	 * Sets the interval.
+	 *
+	 * @param value the new interval
+	 */
 	protected final void setInterval(MetricSampleInterval value) {
 		this.packet.setInterval(value);
 	}
@@ -151,6 +188,8 @@ public class MetricDefinition implements IDisplayable {
 	 * not require category names to be globally unique. If you are creating a new
 	 * metric, pick your own metric type that will uniquely identify your library or
 	 * namespace.
+	 *
+	 * @return the metric type name
 	 */
 	public final String getMetricTypeName() {
 		return this.packet.getMetricTypeName();
@@ -165,6 +204,8 @@ public class MetricDefinition implements IDisplayable {
 	 * that has been loaded from a database or data file. The static metrics
 	 * collection is for the metrics being actively captured in the current process,
 	 * not for metrics that are being read or manipulated.
+	 *
+	 * @return the definitions
 	 */
 	public final MetricDefinitionCollection getDefinitions() {
 		return this.definitions;
@@ -174,6 +215,8 @@ public class MetricDefinition implements IDisplayable {
 	 * The set of metrics that use this definition.
 	 * 
 	 * All metrics with the same definition are of the same object type.
+	 *
+	 * @return the metrics
 	 */
 	public MetricCollection getMetrics() {
 		return this.metrics;
@@ -182,6 +225,8 @@ public class MetricDefinition implements IDisplayable {
 	/**
 	 * The category of this metric for display purposes. This can be a period
 	 * delimited string to represent a variable height hierarchy
+	 *
+	 * @return the category name
 	 */
 	public final String getCategoryName() {
 		return this.packet.getCategoryName();
@@ -190,6 +235,8 @@ public class MetricDefinition implements IDisplayable {
 	/**
 	 * An array of the individual category names within the specified category name
 	 * which is period delimited.
+	 *
+	 * @return the category names
 	 */
 	public final String[] getCategoryNames() {
 		// have we parsed it yet? We don't want to do this every time, it ain't cheap.
@@ -203,6 +250,8 @@ public class MetricDefinition implements IDisplayable {
 
 	/**
 	 * The display name of this metric (unique within the category name).
+	 *
+	 * @return the counter name
 	 */
 	public final String getCounterName() {
 		return this.packet.getCounterName();
@@ -211,6 +260,8 @@ public class MetricDefinition implements IDisplayable {
 	/**
 	 * The sample type of the metric. Indicates whether the metric represents
 	 * discrete events or a continuous value.
+	 *
+	 * @return the sample type
 	 */
 	public final SampleType getSampleType() {
 		return this.packet.getSampleType();
@@ -292,6 +343,8 @@ public class MetricDefinition implements IDisplayable {
 	 * source such as a file. This flag indicates whether this metric definition is
 	 * for playback purposes (it represents previously recorded data) or is part of
 	 * the active metric capture capability of the current process.
+	 *
+	 * @return true, if is live
 	 */
 	public final boolean isLive() {
 		return this.packet.isLive();
@@ -304,11 +357,18 @@ public class MetricDefinition implements IDisplayable {
 	 * changed in a way that would invalidate metrics or metric samples recorded
 	 * with it. Display-only values (such as captions and descriptions) can always
 	 * be changed, and new metrics can always be added to a metric definition.
+	 *
+	 * @return true, if is read only
 	 */
 	public final boolean isReadOnly() {
 		return this.packet.isReadOnly();
 	}
 
+	/**
+	 * Sets the checks if is read only.
+	 *
+	 * @param value the new checks if is read only
+	 */
 	public final void setIsReadOnly(boolean value) {
 		this.packet.setIsReadOnly(value);
 	}
@@ -323,6 +383,8 @@ public class MetricDefinition implements IDisplayable {
 
 	/**
 	 * Object Change Locking object.
+	 *
+	 * @return the lock
 	 */
 	public final Object getLock() {
 		return this.lock;
@@ -399,15 +461,13 @@ public class MetricDefinition implements IDisplayable {
 
 	/**
 	 * Calculate the string key for a metric definition.
-	 * 
+	 *
 	 * @param metricTypeName The unique metric type
 	 * @param categoryName   The name of the performance counter category
 	 *                       (performance object) with which this performance
 	 *                       counter is associated.
 	 * @param counterName    The name of the performance counter.
 	 * @return The unique string key for this item
-	 * @exception ArgumentNullException The provided metricsSystem, categoryName, or
-	 *                                  counterName was null.
 	 */
 	public static String getKey(String metricTypeName, String categoryName, String counterName) {
 		return getKey(metricTypeName, categoryName, counterName, null);
@@ -415,7 +475,7 @@ public class MetricDefinition implements IDisplayable {
 
 	/**
 	 * Calculate the string key for a metric.
-	 * 
+	 *
 	 * @param metricTypeName The unique metric type
 	 * @param categoryName   The name of the performance counter category
 	 *                       (performance object) with which this performance
@@ -425,8 +485,6 @@ public class MetricDefinition implements IDisplayable {
 	 *                       or an empty string (""), if the category contains a
 	 *                       single instance.
 	 * @return The unique string key for this item
-	 * @exception ArgumentNullException The provided metricsSystem, categoryName, or
-	 *                                  counterName was null.
 	 */
 	public static String getKey(String metricTypeName, String categoryName, String counterName, String instanceName) {
 		String key;
@@ -458,11 +516,11 @@ public class MetricDefinition implements IDisplayable {
 
 	/**
 	 * Takes an instance name or complete metric name and normalizes it to a metric
-	 * name so it can be used to look up a metric
-	 * 
+	 * name so it can be used to look up a metric.
+	 *
 	 * @param metricDefinition The metric definition to look for metrics within
 	 * @param metricKey        The instance name or complete metric name
-	 * @return
+	 * @return the string
 	 */
 	public static String normalizeKey(MetricDefinition metricDefinition, String metricKey) {
 		String returnVal;
@@ -512,7 +570,9 @@ public class MetricDefinition implements IDisplayable {
 	}
 
 	/**
-	 * The underlying packet
+	 * The underlying packet.
+	 *
+	 * @return the packet
 	 */
 	public MetricDefinitionPacket getPacket() {
 		return this.packet;

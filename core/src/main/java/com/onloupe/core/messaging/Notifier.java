@@ -9,32 +9,66 @@ import com.onloupe.core.serialization.monitor.LogMessagePacket;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
+
 /**
- * Generates notifications from scanning log messages
+ * Generates notifications from scanning log messages.
  */
 public class Notifier {
+	
+	/** The Constant NOTIFIER_CATEGORY_BASE. */
 	private static final String NOTIFIER_CATEGORY_BASE = "Gibraltar.Agent.Notifier";
+	
+	/** The Constant NOTIFIER_THREAD_BASE. */
 	private static final String NOTIFIER_THREAD_BASE = "Gibraltar Notifier";
+	
+	/** The Constant BURST_MILLISECOND_LATENCY. */
 	private static final int BURST_MILLISECOND_LATENCY = 28;
 	
+	/** The message queue lock. */
 	private final Object messageQueueLock = new Object();
+	
+	/** The message dispatch thread lock. */
 	private final Object messageDispatchThreadLock = new Object();
+	
+	/** The minimum severity. */
 	private LogMessageSeverity minimumSeverity;
+	
+	/** The group messages. */
 	private boolean groupMessages;
+	
+	/** The notifier name. */
 	private String notifierName;
+	
+	/** The notifier category name. */
 	private String notifierCategoryName;
+	
+	/** The message queue. */
 	private ConcurrentLinkedQueue<LogMessagePacket> messageQueue; // LOCKED BY QUEUELOCK
 
+	/** The message dispatch thread. */
 	private Thread messageDispatchThread; // LOCKED BY THREADLOCK
+	
+	/** The message dispatch thread failed. */
 	private volatile boolean messageDispatchThreadFailed; // LOCKED BY THREADLOCK (and volatile to allow quick reading
+															
+															/** The message queue max length. */
 															// outside the lock)
 	private int messageQueueMaxLength = 2000; // LOCKED BY QUEUELOCK
+	
+	/** The burst collection wait. */
 	private OffsetDateTime burstCollectionWait; // LOCKED BY QUEUELOCK
 
+	/** The last notify completed. */
 	private OffsetDateTime lastNotifyCompleted; // Not locked. Single-threaded use inside the dispatch loop only.
+	
+	/** The minimum wait next notify. */
 	private Duration minimumWaitNextNotify; // Not locked. Single-threaded use inside the dispatch
+												
+												/** The next notify after. */
 												// loop only.
 	private OffsetDateTime nextNotifyAfter; // Not locked. Single-threaded modify inside the dispatch loop only.
+	
+	/** The event error source provider. */
 	private MessageSourceProvider eventErrorSourceProvider; // Not locked. Single-threaded use inside the dispatch loop
 																// only.
 																// BY
@@ -82,15 +116,28 @@ public class Notifier {
 	/**
 	 * Get the CategoryName for this Notifier instance, as determined from the
 	 * provided notifier name.
+	 *
+	 * @return the notifier category name
 	 */
 	public final String getNotifierCategoryName() {
 		return this.notifierCategoryName;
 	}
 
+	/**
+	 * Publisher log message notify.
+	 *
+	 * @param sender the sender
+	 * @param e the e
+	 */
 	private void publisherLogMessageNotify(Object sender, LogMessageNotifyEventArgs e) {
 		queuePacket(e.packet);
 	}
 
+	/**
+	 * Queue packet.
+	 *
+	 * @param messengerPacket the messenger packet
+	 */
 	private void queuePacket(IMessengerPacket messengerPacket) {
 		LogMessagePacket packet = messengerPacket instanceof LogMessagePacket ? (LogMessagePacket) messengerPacket
 				: null;
@@ -106,6 +153,9 @@ public class Notifier {
 		return;
 	}
 
+	/**
+	 * Ensure notification thread is valid.
+	 */
 	private void ensureNotificationThreadIsValid() {
 		// See if for some mystical reason our notification dispatch thread failed.
 		if (this.messageDispatchThreadFailed) // Check it outside the lock for efficiency. Valid because it's volatile.
@@ -124,6 +174,9 @@ public class Notifier {
 		}
 	}
 
+	/**
+	 * Creates the notification dispatch thread.
+	 */
 	private void createNotificationDispatchThread() {
 		synchronized (this.messageDispatchThreadLock) {
 			// Clear the dispatch thread failed flag so no one else tries to create our
@@ -147,6 +200,9 @@ public class Notifier {
 		}
 	}
 
+	/**
+	 * Notification dispatch main.
+	 */
 	private void notificationDispatchMain() {
 //		try {
 //			Publisher.threadMustNotNotify(); // Suppress notification about any messages issued on this thread so we
@@ -278,6 +334,11 @@ public class Notifier {
 //		}
 	}
 
+	/**
+	 * Gets the event error source provider.
+	 *
+	 * @return the event error source provider
+	 */
 	private MessageSourceProvider getEventErrorSourceProvider() {
 		if (this.eventErrorSourceProvider == null) {
 			this.eventErrorSourceProvider = new MessageSourceProvider("Gibraltar.Messaging.Notifier",

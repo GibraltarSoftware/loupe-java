@@ -10,22 +10,49 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.session.ISessionSummary;
 import com.onloupe.model.session.SessionStatus;
 
+
 /**
- * Compares sessions to the supplied session criteria to determine if they match
+ * Compares sessions to the supplied session criteria to determine if they match.
  */
 public class SessionCriteriaPredicate implements Predicate<ISessionSummary> {
+	
+	/** The product name. */
 	private String productName;
+	
+	/** The application name. */
 	private String applicationName;
+	
+	/** The criteria. */
 	private EnumSet<SessionCriteria> criteria;
 
+	/** The active session. */
 	private boolean activeSession;
+	
+	/** The new sessions. */
 	private boolean newSessions;
+	
+	/** The completed sessions. */
 	private boolean completedSessions;
+	
+	/** The crashed sessions. */
 	private boolean crashedSessions;
+	
+	/** The critical sessions. */
 	private boolean criticalSessions;
+	
+	/** The error sessions. */
 	private boolean errorSessions;
+	
+	/** The warning sessions. */
 	private boolean warningSessions;
 
+	/**
+	 * Instantiates a new session criteria predicate.
+	 *
+	 * @param productName the product name
+	 * @param applicationName the application name
+	 * @param criteria the criteria
+	 */
 	public SessionCriteriaPredicate(String productName, String applicationName, EnumSet<SessionCriteria> criteria) {
 		this.productName = productName;
 		this.applicationName = applicationName;
@@ -43,18 +70,36 @@ public class SessionCriteriaPredicate implements Predicate<ISessionSummary> {
 		this.warningSessions = criteria.contains(SessionCriteria.WARNING);
 	}
 
+	/**
+	 * Gets the criteria.
+	 *
+	 * @return the criteria
+	 */
 	public final EnumSet<SessionCriteria> getCriteria() {
 		return criteria;
 	}
 
+	/**
+	 * Gets the application.
+	 *
+	 * @return the application
+	 */
 	public final String getApplication() {
 		return this.applicationName;
 	}
 
+	/**
+	 * Gets the product.
+	 *
+	 * @return the product
+	 */
 	public final String getProduct() {
 		return this.productName;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.util.function.Predicate#test(java.lang.Object)
+	 */
 	@Override
 	public boolean test(ISessionSummary sessionSummary) {
 		if (!sessionSummary.getProduct().equalsIgnoreCase(this.productName)) {

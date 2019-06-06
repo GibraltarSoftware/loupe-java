@@ -10,15 +10,35 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
+
+/**
+ * The Class SessionFragmentPacket.
+ */
 public class SessionFragmentPacket extends GibraltarCachedPacket implements IPacket {
+	
+	/** The file start date time. */
 	private OffsetDateTime fileStartDateTime;
+	
+	/** The file end date time. */
 	private OffsetDateTime fileEndDateTime;
+	
+	/** The last file. */
 	private boolean lastFile;
 
+	/**
+	 * Gets the file start date time.
+	 *
+	 * @return the file start date time
+	 */
 	public final OffsetDateTime getFileStartDateTime() {
 		return this.fileStartDateTime;
 	}
 
+	/**
+	 * Sets the file start date time.
+	 *
+	 * @param value the new file start date time
+	 */
 	public final void setFileStartDateTime(OffsetDateTime value) {
 		this.fileStartDateTime = value;
 		if (getTimestamp().equals(TimeConversion.MIN)) {
@@ -26,33 +46,53 @@ public class SessionFragmentPacket extends GibraltarCachedPacket implements IPac
 		}
 	}
 
+	/**
+	 * Gets the file end date time.
+	 *
+	 * @return the file end date time
+	 */
 	public final OffsetDateTime getFileEndDateTime() {
 		return this.fileEndDateTime;
 	}
 
+	/**
+	 * Sets the file end date time.
+	 *
+	 * @param value the new file end date time
+	 */
 	public final void setFileEndDateTime(OffsetDateTime value) {
 		this.fileEndDateTime = value;
 	}
 
+	/**
+	 * Checks if is last file.
+	 *
+	 * @return true, if is last file
+	 */
 	public final boolean isLastFile() {
 		return this.lastFile;
 	}
 
+	/**
+	 * Sets the checks if is last file.
+	 *
+	 * @param value the new checks if is last file
+	 */
 	public final void setIsLastFile(boolean value) {
 		this.lastFile = value;
 	}
 
 	/**
 	 * Create a new session file packet for the provided FileID.
-	 * 
-	 * @param _FileID
+	 *
+	 * @param _FileID the file ID
 	 */
 	public SessionFragmentPacket(UUID _FileID) {
 		super(_FileID, true);
 	}
 
 	/**
-	 * Used during rehydration
+	 * Used during rehydration.
 	 */
 	public SessionFragmentPacket() {
 		super(false);
@@ -61,11 +101,10 @@ public class SessionFragmentPacket extends GibraltarCachedPacket implements IPac
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -76,11 +115,10 @@ public class SessionFragmentPacket extends GibraltarCachedPacket implements IPac
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(SessionFragmentPacket other) {
 		// Careful - can be null
@@ -118,6 +156,7 @@ public class SessionFragmentPacket extends GibraltarCachedPacket implements IPac
 		return myHash;
 	}
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -132,7 +171,8 @@ public class SessionFragmentPacket extends GibraltarCachedPacket implements IPac
 
 	/**
 	 * Populate a definition for this packet.
-	 * 
+	 *
+	 * @param definition the definition
 	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
@@ -146,8 +186,8 @@ public class SessionFragmentPacket extends GibraltarCachedPacket implements IPac
 	}
 
 	/**
-	 * Write out all of the fields for the current packet
-	 * 
+	 * Write out all of the fields for the current packet.
+	 *
 	 * @param definition The definition that was used to perisist the packet.
 	 * @param packet     The serialized packet to populate with data
 	 */

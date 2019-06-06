@@ -1,14 +1,28 @@
 package com.onloupe.core.serialization.monitor;
 
+
 /**
  * A serializable sampled metric definition. Provides metadata for metrics based
  * on sampled values.
  */
 public abstract class SampledMetricPacket extends MetricPacket {
+	
+	/**
+	 * Instantiates a new sampled metric packet.
+	 *
+	 * @param metricDefinitionPacket the metric definition packet
+	 * @param instanceName the instance name
+	 */
 	protected SampledMetricPacket(SampledMetricDefinitionPacket metricDefinitionPacket, String instanceName) {
 		super(metricDefinitionPacket, instanceName);
 	}
 
+	/**
+	 * Compare to.
+	 *
+	 * @param other the other
+	 * @return the int
+	 */
 	public final int compareTo(SampledMetricPacket other) {
 		// we just gateway to our base object.
 		return super.compareTo(other);
@@ -17,11 +31,10 @@ public abstract class SampledMetricPacket extends MetricPacket {
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -32,11 +45,10 @@ public abstract class SampledMetricPacket extends MetricPacket {
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(SampledMetricPacket other) {
 		return super.equals(other);

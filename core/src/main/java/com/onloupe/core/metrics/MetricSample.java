@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.onloupe.core.logging.Log;
 import com.onloupe.core.serialization.monitor.MetricSamplePacket;
 
+
 /**
  * A single raw sample of a metric.
  * 
@@ -17,7 +18,11 @@ import com.onloupe.core.serialization.monitor.MetricSamplePacket;
  * 
  */
 public abstract class MetricSample {
+	
+	/** The metric. */
 	private Metric metric;
+	
+	/** The metric sample packet. */
 	private MetricSamplePacket metricSamplePacket;
 
 	/**
@@ -50,7 +55,9 @@ public abstract class MetricSample {
 	}
 
 	/**
-	 * The unique id of this sample
+	 * The unique id of this sample.
+	 *
+	 * @return the id
 	 */
 	public UUID getId() {
 		return this.metricSamplePacket.getID();
@@ -58,6 +65,8 @@ public abstract class MetricSample {
 
 	/**
 	 * The metric this sample relates to.
+	 *
+	 * @return the metric
 	 */
 	public Metric getMetric() {
 		return this.metric;
@@ -66,6 +75,8 @@ public abstract class MetricSample {
 	/**
 	 * The increasing sequence number of all sample packets for this metric to be
 	 * used as an absolute order sort.
+	 *
+	 * @return the sequence
 	 */
 	public long getSequence() {
 		return this.metricSamplePacket.getSequence();
@@ -73,6 +84,8 @@ public abstract class MetricSample {
 
 	/**
 	 * The exact date and time the metric was captured.
+	 *
+	 * @return the timestamp
 	 */
 	public OffsetDateTime getTimestamp() {
 		return this.metricSamplePacket.getTimestamp();
@@ -80,6 +93,8 @@ public abstract class MetricSample {
 
 	/**
 	 * The raw value of the metric.
+	 *
+	 * @return the value
 	 */
 	public abstract double getValue();
 
@@ -105,8 +120,8 @@ public abstract class MetricSample {
 	 * how they should be sorted relative to each other.
 	 * 
 	 * MetricSample instances are sorted by their Sequence number property.
-	 * 
-	 * @param other
+	 *
+	 * @param other the other
 	 * @return 0 for an exact match, otherwise the relationship between the two for
 	 *         sorting.
 	 */
@@ -166,7 +181,9 @@ public abstract class MetricSample {
 	}
 
 	/**
-	 * The raw metric sample packet
+	 * The raw metric sample packet.
+	 *
+	 * @return the packet
 	 */
 	public MetricSamplePacket getPacket() {
 		return this.metricSamplePacket;

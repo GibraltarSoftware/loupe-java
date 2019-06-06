@@ -3,22 +3,22 @@ package com.onloupe.model.data;
 public enum ProcessorArchitecture {
 
 	/**
-	 * <remarks/>
+	 * 
 	 */
 	UNKNOWN,
 
 	/**
-	 * <remarks/>
+	 * 
 	 */
 	X86,
 
 	/**
-	 * <remarks/>
+	 * 
 	 */
 	AMD64,
 
 	/**
-	 * <remarks/>
+	 * 
 	 */
 	IA64;
 

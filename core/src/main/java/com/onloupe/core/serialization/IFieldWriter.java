@@ -7,49 +7,52 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+
 /**
- * Standard interface for objects that can write individual serialized fields
+ * Standard interface for objects that can write individual serialized fields.
  */
 public interface IFieldWriter {
 
 	/**
-	 * Write an object to the stream as its serializable type
-	 * 
+	 * Write an object to the stream as its serializable type.
+	 *
 	 * @param value The object (or boxed integral value) to write.
-	 * @throws Exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	void write(Object value) throws IOException, Exception;
 
 	/**
-	 * Write an object to the stream as its serializable type
-	 * 
+	 * Write an object to the stream as its serializable type.
+	 *
 	 * @param value     The object (or boxed integral value) to write.
 	 * @param fieldType The field type to write the value out as.
-	 * @throws Exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	void write(Object value, FieldType fieldType) throws IOException, Exception;
 
 	/**
 	 * Write a bool to the stream.
-	 * 
-	 * @return A bool value.
+	 *
+	 * @param value the value
 	 */
 	void write(boolean value);
 
 	/**
 	 * Write a string to the stream.
+	 *
+	 * @param value the value
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	void write(String value) throws IOException;
 
 	/**
 	 * Write an array of string to the stream.
-	 * 
-	 * @return An array of string values.
-	 * @throws IOException
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws Exception
+	 *
+	 * @param array the array
+	 * @throws Exception the exception
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	void write(String[] array) throws Exception;
 
@@ -109,27 +112,38 @@ public interface IFieldWriter {
 	 * similar way to how we optimize UInt64. The difference is just that in this
 	 * case we are interested in the high-order bits whereas with UInt64 we are
 	 * interested in the low order bits.
-	 * 
+	 *
+	 * @param value the value
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	void write(double value) throws IOException;
 
 	/**
-	 * Stores a Duration value to the stream
+	 * Stores a Duration value to the stream.
+	 *
+	 * @param value the value
 	 */
 	void write(Duration value);
 
 	/**
-	 * Stores a DateTime value to the stream
+	 * Stores a DateTime value to the stream.
+	 *
+	 * @param value the value
 	 */
 	void write(LocalDateTime value);
 
 	/**
-	 * Stores a DateTime value to the stream
+	 * Stores a DateTime value to the stream.
+	 *
+	 * @param value the value
 	 */
 	void write(OffsetDateTime value);
 
 	/**
-	 * Stores a 128-bit Guid value to the stream
+	 * Stores a 128-bit Guid value to the stream.
+	 *
+	 * @param value the value
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	void write(UUID value) throws IOException;
 
@@ -143,8 +157,8 @@ public interface IFieldWriter {
 
 	/**
 	 * Number of valid bytes in the underlying ByteArrayOutputStream. Not seekable.
-	 * 
-	 * @return
+	 *
+	 * @return the length
 	 */
 	public int getLength();
 }

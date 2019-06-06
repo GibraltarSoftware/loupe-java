@@ -6,8 +6,17 @@ import java.io.IOException;
 import com.onloupe.configuration.AgentConfiguration;
 import com.onloupe.core.logging.Log;
 
+
+/**
+ * The Class LoupeManagementBean.
+ */
 public class LoupeManagementBean implements Closeable {
 
+	/**
+	 * Start.
+	 *
+	 * @param configuration the configuration
+	 */
 	public void start(AgentConfiguration configuration) {
 		try {
 			Log.start(configuration);
@@ -16,6 +25,9 @@ public class LoupeManagementBean implements Closeable {
 		}
 	}
 	
+	/**
+	 * Start.
+	 */
 	public void start() {
 		try {
 			Log.start();
@@ -24,6 +36,9 @@ public class LoupeManagementBean implements Closeable {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.io.Closeable#close()
+	 */
 	@Override
 	public void close() throws IOException {
 		Log.shutdown();

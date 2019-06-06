@@ -9,47 +9,85 @@ import com.onloupe.model.session.SessionStatus;
 import java.util.List;
 import java.util.UUID;
 
+
 /**
  * Marks the ending status of a session.
  */
 public class SessionClosePacket extends GibraltarPacket implements IPacket, java.lang.Comparable<SessionClosePacket> {
 
+	/** The id. */
 	private UUID id;
+	
+	/** The ending status. */
 	private SessionStatus endingStatus;
 
+	/**
+	 * Instantiates a new session close packet.
+	 */
 	public SessionClosePacket() {
 		// we aren't a cacheable packet so we have our own GUID
 		setId(UUID.randomUUID());
 		setEndingStatus(SessionStatus.NORMAL);
 	}
 
+	/**
+	 * Instantiates a new session close packet.
+	 *
+	 * @param endingStatus the ending status
+	 */
 	public SessionClosePacket(SessionStatus endingStatus) {
 		// we aren't a cacheable packet so we have our own GUID
 		setId(UUID.randomUUID());
 		setEndingStatus(endingStatus);
 	}
 
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public final UUID getId() {
 		return this.id;
 	}
 
+	/**
+	 * Sets the id.
+	 *
+	 * @param value the new id
+	 */
 	private void setId(UUID value) {
 		this.id = value;
 	}
 
+	/**
+	 * Gets the ending status.
+	 *
+	 * @return the ending status
+	 */
 	public final SessionStatus getEndingStatus() {
 		return this.endingStatus;
 	}
 
+	/**
+	 * Sets the ending status.
+	 *
+	 * @param value the new ending status
+	 */
 	public final void setEndingStatus(SessionStatus value) {
 		this.endingStatus = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return String.format("Session Close: Status is %1$s", this.endingStatus);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
 	@Override
 	public final int compareTo(SessionClosePacket other) {
 		// First do a quick match on Guid. this is the only case we want to return zero
@@ -69,11 +107,10 @@ public class SessionClosePacket extends GibraltarPacket implements IPacket, java
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -141,6 +178,9 @@ public class SessionClosePacket extends GibraltarPacket implements IPacket, java
 		return super.getRequiredPackets();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -151,6 +191,9 @@ public class SessionClosePacket extends GibraltarPacket implements IPacket, java
 		definition.getFields().add("Status", FieldType.INT);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -159,6 +202,9 @@ public class SessionClosePacket extends GibraltarPacket implements IPacket, java
 		packet.setField("Status", this.endingStatus.getValue());
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");

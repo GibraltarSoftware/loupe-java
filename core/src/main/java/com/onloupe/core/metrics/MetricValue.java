@@ -3,6 +3,7 @@ package com.onloupe.core.metrics;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
+
 /**
  * A single display-ready metric value.
  * 
@@ -12,12 +13,20 @@ import java.time.OffsetDateTime;
  * 
  */
 public class MetricValue {
+	
+	/** The sequence. */
 	private long sequence;
+	
+	/** The value. */
 	private double value;
+	
+	/** The time stamp. */
 	private OffsetDateTime timeStamp;
 
 	/**
 	 * The exact date and time the metric was captured.
+	 *
+	 * @return the timestamp
 	 */
 	public OffsetDateTime getTimestamp() {
 		return this.timeStamp;
@@ -25,6 +34,8 @@ public class MetricValue {
 
 	/**
 	 * The date and time the metric was captured in the effective time zone.
+	 *
+	 * @return the local timestamp
 	 */
 	public final LocalDateTime getLocalTimestamp() {
 		return getTimestamp().toLocalDateTime();
@@ -32,6 +43,8 @@ public class MetricValue {
 
 	/**
 	 * The value of the metric.
+	 *
+	 * @return the value
 	 */
 	public final double getValue() {
 		return this.value;
@@ -40,7 +53,9 @@ public class MetricValue {
 	/**
 	 * The value of the metric multiplied by 100 to handle raw percentage display
 	 * 
-	 * This value is scaled by 100 even if the underlying metric is not a percentage
+	 * This value is scaled by 100 even if the underlying metric is not a percentage.
+	 *
+	 * @return the percentage value
 	 */
 	public final double getPercentageValue() {
 		return this.value * 100;
@@ -49,6 +64,8 @@ public class MetricValue {
 	/**
 	 * The increasing sequence number of all sample packets for this metric to be
 	 * used as an absolute order sort.
+	 *
+	 * @return the sequence
 	 */
 	public final long getSequence() {
 		return this.sequence;

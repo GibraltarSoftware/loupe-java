@@ -9,24 +9,39 @@ import java.io.PipedOutputStream;
 import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.PacketHeader;
 
+
 /**
- * Used to serialize network packets across a TCP socket
+ * Used to serialize network packets across a TCP socket.
  */
 public class NetworkSerializer implements Closeable {
+	
+	/** The lock. */
 	private final Object lock = new Object();
+	
+	/** The output stream. */
 	private final PipedOutputStream outputStream = new PipedOutputStream();
+	
+	/** The input stream. */
 	private final PipedInputStream inputStream = new PipedInputStream();
+	
+	/** The read buffer. */
 	private final BufferedInputStream readBuffer;
 
+	/**
+	 * Instantiates a new network serializer.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public NetworkSerializer() throws IOException {
 		inputStream.connect(outputStream);
 		readBuffer = new BufferedInputStream(inputStream);
 	}
 
 	/**
-	 * The unused data that has been provided to the serializer
-	 * 
-	 * @throws IOException
+	 * The unused data that has been provided to the serializer.
+	 *
+	 * @return the unused data
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final byte[] getUnusedData() throws IOException {
 		synchronized (lock) {
@@ -44,9 +59,10 @@ public class NetworkSerializer implements Closeable {
 	}
 
 	/**
-	 * Indicates if there is any unused data in the network serializer
-	 * 
-	 * @throws IOException
+	 * Indicates if there is any unused data in the network serializer.
+	 *
+	 * @return the have unused data
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final boolean getHaveUnusedData() throws IOException {
 		synchronized (lock) {
@@ -56,11 +72,11 @@ public class NetworkSerializer implements Closeable {
 	}
 
 	/**
-	 * Add more information to the serializer stream
-	 * 
-	 * @param buffer
-	 * @param length
-	 * @throws IOException
+	 * Add more information to the serializer stream.
+	 *
+	 * @param buffer the buffer
+	 * @param length the length
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void appendData(byte[] buffer, int length) throws IOException {
 		synchronized (lock) {
@@ -69,12 +85,13 @@ public class NetworkSerializer implements Closeable {
 	}
 
 	/**
-	 * Read the next network packets in the buffer
-	 * 
+	 * Read the next network packets in the buffer.
+	 *
 	 * @return A complete packet or null if there isn't enough data to make a packet
 	 *         Since packets may be spread across multiple packets the serializer
 	 *         keeps a buffer of any unused bytes for the next read. This means a
 	 *         Read call may return zero or one network packets
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final NetworkMessage readNext() throws IOException // make it wait
 	{
@@ -94,8 +111,8 @@ public class NetworkSerializer implements Closeable {
 	/**
 	 * Performs application-defined tasks associated with freeing, releasing, or
 	 * resetting unmanaged resources.
-	 * 
-	 * <filterpriority>2</filterpriority>
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void close() throws IOException {
 		IOUtils.closeQuietly(readBuffer);

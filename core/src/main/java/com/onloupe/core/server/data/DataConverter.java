@@ -35,13 +35,19 @@ import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.session.ISessionSummary;
 import com.onloupe.model.system.OSBootMode;
 
+
 /**
- * Convert between data representations of common repository objects
+ * Convert between data representations of common repository objects.
  */
 public final class DataConverter {
 
+	/** The Constant documentBuilderFactory. */
 	private static final DocumentBuilderFactory documentBuilderFactory;
+	
+	/** The Constant documentBuilderFactoryNSAware. */
 	private static final DocumentBuilderFactory documentBuilderFactoryNSAware;
+	
+	/** The Constant transformerFactory. */
 	private static final TransformerFactory transformerFactory;
 
 	
@@ -55,16 +61,16 @@ public final class DataConverter {
 
 	/**
 	 * Extract all of the data fields from a folder XML structure, validating it.
-	 * 
-	 * @param folderXml
-	 * @param id
-	 * @param version
-	 * @param deleted
-	 * @param name
-	 * @param parentFolderId
-	 * @param typeName
-	 * @param selectCriteriaXml
-	 * @param invalidMessage
+	 *
+	 * @param folderXml the folder xml
+	 * @param id the id
+	 * @param version the version
+	 * @param deleted the deleted
+	 * @param name the name
+	 * @param parentFolderId the parent folder id
+	 * @param typeName the type name
+	 * @param selectCriteriaXml the select criteria xml
+	 * @param invalidMessage the invalid message
 	 * @return True if the structure is valid, false otherwise.
 	 */
 	public static boolean fromFolderXml(FolderXml folderXml, UUID id, Long version, Boolean deleted, String name,
@@ -119,11 +125,11 @@ public final class DataConverter {
 
 	/**
 	 * Convert a byte array to a Server Configuration XML object without relying on
-	 * XML Serializer
-	 * 
-	 * @param rawData
-	 * @return
-	 * @throws Exception
+	 * XML Serializer.
+	 *
+	 * @param rawData the raw data
+	 * @return the hub configuration xml
+	 * @throws Exception the exception
 	 */
 	public static HubConfigurationXml byteArrayToHubConfigurationXml(byte[] rawData) throws Exception {
 		HubConfigurationXml configurationXml = new HubConfigurationXml();
@@ -271,11 +277,11 @@ public final class DataConverter {
 
 	/**
 	 * Convert a byte array to sessions list XML object without relying on XML
-	 * Serializer
-	 * 
-	 * @param rawData
-	 * @return
-	 * @throws Exception
+	 * Serializer.
+	 *
+	 * @param rawData the raw data
+	 * @return the sessions list xml
+	 * @throws Exception the exception
 	 */
 	public static SessionsListXml byteArrayToSessionsListXml(byte[] rawData) throws Exception {
 		SessionsListXml sessionsListXml = new SessionsListXml();
@@ -328,10 +334,10 @@ public final class DataConverter {
 	/**
 	 * Convert a raw byte array to a session files list without using .NET XML
 	 * Serialization
-	 * 
-	 * @param rawData
-	 * @return
-	 * @throws Exception
+	 *
+	 * @param rawData the raw data
+	 * @return the session files list xml
+	 * @throws Exception the exception
 	 */
 	public static SessionFilesListXml byteArrayToSessionFilesListXml(byte[] rawData) throws Exception {
 		SessionFilesListXml sessionsFilesListXml = new SessionFilesListXml();
@@ -383,11 +389,11 @@ public final class DataConverter {
 
 	/**
 	 * Converts a session XML object to a byte array without relying on XML
-	 * Serializer
-	 * 
-	 * @param sessionXml
-	 * @return
-	 * @throws ParserConfigurationException
+	 * Serializer.
+	 *
+	 * @param sessionXml the session xml
+	 * @return the byte[]
+	 * @throws Exception the exception
 	 */
 	public static byte[] sessionXmlToByteArray(SessionXml sessionXml) throws Exception {
 		Document xml = documentBuilderFactoryNSAware.newDocumentBuilder().newDocument();
@@ -482,6 +488,13 @@ public final class DataConverter {
 		return writer.toString().getBytes();
 	}
 
+	/**
+	 * Date time offset xml to xml writer.
+	 *
+	 * @param parent the parent
+	 * @param elementName the element name
+	 * @param dateTimeOffsetXml the date time offset xml
+	 */
 	private static void dateTimeOffsetXmlToXmlWriter(Element parent, String elementName,
 			DateTimeOffsetXml dateTimeOffsetXml) {
 		if (dateTimeOffsetXml == null) {
@@ -496,9 +509,17 @@ public final class DataConverter {
 	}
 
 	/**
-	 * convert a client repository set of information from its field form to XML
-	 * 
-	 * @return
+	 * convert a client repository set of information from its field form to XML.
+	 *
+	 * @param id the id
+	 * @param hostName the host name
+	 * @param computerKey the computer key
+	 * @param statusName the status name
+	 * @param addedDt the added dt
+	 * @param currentSessionsVersion the current sessions version
+	 * @param publicKey the public key
+	 * @param lastContactDt the last contact dt
+	 * @return the client repository xml
 	 */
 	public static ClientRepositoryXml toClientRepositoryXml(UUID id, String hostName, String computerKey,
 			String statusName, OffsetDateTime addedDt, long currentSessionsVersion, String publicKey,
@@ -519,11 +540,11 @@ public final class DataConverter {
 
 	/**
 	 * Create a single session XML object from its minimal raw information.
-	 * 
-	 * @param id
-	 * @param version
-	 * @param deleted
-	 * @return
+	 *
+	 * @param id the id
+	 * @param version the version
+	 * @param deleted the deleted
+	 * @return the session xml
 	 */
 	public static SessionXml toSessionXml(UUID id, long version, boolean deleted) {
 		SessionXml newObject = new SessionXml();
@@ -536,9 +557,10 @@ public final class DataConverter {
 	}
 
 	/**
-	 * Create a sessionXml from the session summary provided
-	 * 
-	 * @return
+	 * Create a sessionXml from the session summary provided.
+	 *
+	 * @param sessionSummary the session summary
+	 * @return the session xml
 	 */
 	public static SessionXml toSessionXml(ISessionSummary sessionSummary) {
 		if (sessionSummary == null) {
@@ -572,7 +594,63 @@ public final class DataConverter {
 	}
 
 	/**
-	 * Create a single session XML object from its detail information
+	 * Create a single session XML object from its detail information.
+	 *
+	 * @param id the id
+	 * @param version the version
+	 * @param deleted the deleted
+	 * @param isComplete the is complete
+	 * @param isNew the is new
+	 * @param addedDt the added dt
+	 * @param updatedDt the updated dt
+	 * @param updatedUser the updated user
+	 * @param productName the product name
+	 * @param applicationName the application name
+	 * @param environmentName the environment name
+	 * @param promotionLevelName the promotion level name
+	 * @param applicationVersion the application version
+	 * @param applicationTypeName the application type name
+	 * @param applicationDescription the application description
+	 * @param caption the caption
+	 * @param statusName the status name
+	 * @param timeZoneCaption the time zone caption
+	 * @param startDt the start dt
+	 * @param endDt the end dt
+	 * @param duration the duration
+	 * @param agentVersion the agent version
+	 * @param userName the user name
+	 * @param userDomainName the user domain name
+	 * @param hostName the host name
+	 * @param dNSDomainName the d NS domain name
+	 * @param messageCount the message count
+	 * @param criticalMessageCount the critical message count
+	 * @param errorMessageCount the error message count
+	 * @param warningMessageCount the warning message count
+	 * @param oSPlatformCode the o S platform code
+	 * @param oSVersion the o S version
+	 * @param oSServicePack the o S service pack
+	 * @param oSCultureName the o S culture name
+	 * @param oSArchitectureName the o S architecture name
+	 * @param oSBootModeName the o S boot mode name
+	 * @param oSSuiteMaskCode the o S suite mask code
+	 * @param oSProductTypeCode the o S product type code
+	 * @param runtimeVersion the runtime version
+	 * @param runtimeArchitectureName the runtime architecture name
+	 * @param currentCultureName the current culture name
+	 * @param currentUICultureName the current UI culture name
+	 * @param memoryMB the memory MB
+	 * @param processors the processors
+	 * @param processorCores the processor cores
+	 * @param userInteractive the user interactive
+	 * @param terminalServer the terminal server
+	 * @param screenWidth the screen width
+	 * @param screenHeight the screen height
+	 * @param colorDepth the color depth
+	 * @param commandLine the command line
+	 * @param fileAvailable the file available
+	 * @param fileSize the file size
+	 * @param properties the properties
+	 * @return the session xml
 	 */
 	public static SessionXml toSessionXml(UUID id, long version, boolean deleted, boolean isComplete, boolean isNew,
 			OffsetDateTime addedDt, OffsetDateTime updatedDt, String updatedUser, String productName,
@@ -648,10 +726,10 @@ public final class DataConverter {
 	}
 
 	/**
-	 * Convert a properties dictionary to a session property XML array
-	 * 
-	 * @param properties
-	 * @return
+	 * Convert a properties dictionary to a session property XML array.
+	 *
+	 * @param properties the properties
+	 * @return the session property xml[]
 	 */
 	public static SessionPropertyXml[] toSessionPropertiesXml(Map<String, String> properties) {
 		if ((properties == null) || (properties.isEmpty())) {
@@ -672,11 +750,11 @@ public final class DataConverter {
 
 	/**
 	 * Create a single session property object from its raw data elements.
-	 * 
-	 * @param id
-	 * @param name
-	 * @param value
-	 * @return
+	 *
+	 * @param id the id
+	 * @param name the name
+	 * @param value the value
+	 * @return the session property xml
 	 */
 	public static SessionPropertyXml toSessionPropertyXml(UUID id, String name, String value) {
 		SessionPropertyXml newObject = new SessionPropertyXml();
@@ -690,11 +768,11 @@ public final class DataConverter {
 
 	/**
 	 * Create a single session file object from its raw data elements.
-	 * 
-	 * @param id
-	 * @param sequence
-	 * @param version
-	 * @return
+	 *
+	 * @param id the id
+	 * @param sequence the sequence
+	 * @param version the version
+	 * @return the session file xml
 	 */
 	public static SessionFileXml toSessionFileXml(UUID id, int sequence, long version) {
 		SessionFileXml newObject = new SessionFileXml();
@@ -708,39 +786,39 @@ public final class DataConverter {
 
 	/**
 	 * Convert an application type to its XML equivalent.
-	 * 
-	 * @param typeName
-	 * @return
+	 *
+	 * @param typeName the type name
+	 * @return the application type xml
 	 */
 	public static ApplicationTypeXml toApplicationTypeXml(String typeName) {
 		return ApplicationTypeXml.valueOf(typeName);
 	}
 
 	/**
-	 * Convert a boot mode to its XML equivalent
-	 * 
-	 * @param typeName
-	 * @return
+	 * Convert a boot mode to its XML equivalent.
+	 *
+	 * @param typeName the type name
+	 * @return the boot mode xml
 	 */
 	public static BootModeXml toBootModeXml(String typeName) {
 		return BootModeXml.valueOf(typeName);
 	}
 
 	/**
-	 * Convert a boot mode to its XML equivalent
-	 * 
-	 * @param statusName
-	 * @return
+	 * Convert a boot mode to its XML equivalent.
+	 *
+	 * @param statusName the status name
+	 * @return the client repository status xml
 	 */
 	public static ClientRepositoryStatusXml toClientRepositoryStatusXml(String statusName) {
 		return ClientRepositoryStatusXml.valueOf(statusName);
 	}
 
 	/**
-	 * Convert a folder type to its XML equivalent
-	 * 
-	 * @param typeName
-	 * @return
+	 * Convert a folder type to its XML equivalent.
+	 *
+	 * @param typeName the type name
+	 * @return the folder type xml
 	 */
 	public static FolderTypeXml toFolderType(String typeName) {
 		return FolderTypeXml.valueOf(typeName);
@@ -748,9 +826,9 @@ public final class DataConverter {
 
 	/**
 	 * Convert a processor architecture to its XML equivalent.
-	 * 
-	 * @param statusName
-	 * @return
+	 *
+	 * @param statusName the status name
+	 * @return the processor architecture xml
 	 */
 	public static ProcessorArchitectureXml toProcessorArchitectureXml(String statusName) {
 		return ProcessorArchitectureXml.valueOf(statusName);
@@ -758,9 +836,9 @@ public final class DataConverter {
 
 	/**
 	 * Convert a session status to its XML equivalent.
-	 * 
-	 * @param statusName
-	 * @return
+	 *
+	 * @param statusName the status name
+	 * @return the session status xml
 	 */
 	public static SessionStatusXml toSessionStatusXml(String statusName) {
 		return SessionStatusXml.valueOf(statusName);
@@ -768,9 +846,9 @@ public final class DataConverter {
 
 	/**
 	 * Convert a DateTimeOffset value to its XML equivalent.
-	 * 
-	 * @param dateTime
-	 * @return
+	 *
+	 * @param dateTime the date time
+	 * @return the date time offset xml
 	 */
 	public static DateTimeOffsetXml toDateTimeOffsetXml(OffsetDateTime dateTime) {
 		DateTimeOffsetXml newObject = new DateTimeOffsetXml();
@@ -781,10 +859,10 @@ public final class DataConverter {
 	}
 
 	/**
-	 * Convert the DateTimeOffset XML structure to its native form
-	 * 
-	 * @param dateTime
-	 * @return
+	 * Convert the DateTimeOffset XML structure to its native form.
+	 *
+	 * @param dateTime the date time
+	 * @return the offset date time
 	 */
 	public static OffsetDateTime fromDateTimeOffsetXml(DateTimeOffsetXml dateTime) {
 		if (dateTime == null) {
@@ -797,39 +875,39 @@ public final class DataConverter {
 
 	/**
 	 * Convert a log message severity to its XML equivalent.
-	 * 
-	 * @param severityName
-	 * @return
+	 *
+	 * @param severityName the severity name
+	 * @return the log message severity xml
 	 */
 	public static LogMessageSeverityXml toLogMessageSeverityXml(String severityName) {
 		return LogMessageSeverityXml.valueOf(severityName);
 	}
 
 	/**
-	 * Convert a log message severity XML to its native form
-	 * 
-	 * @param severityName
-	 * @return
+	 * Convert a log message severity XML to its native form.
+	 *
+	 * @param severityName the severity name
+	 * @return the log message severity
 	 */
 	public static LogMessageSeverity fromLogMessageSeverityXml(String severityName) {
 		return LogMessageSeverity.valueOf(severityName);
 	}
 
 	/**
-	 * Convert the provided processor architecture to our normal enumeration
-	 * 
-	 * @param architectureXml
-	 * @return
+	 * Convert the provided processor architecture to our normal enumeration.
+	 *
+	 * @param architectureXml the architecture xml
+	 * @return the processor architecture
 	 */
 	public static ProcessorArchitecture fromProcessorArchitectureXml(ProcessorArchitectureXml architectureXml) {
 		return ProcessorArchitecture.valueOf(architectureXml.toString());
 	}
 
 	/**
-	 * Convert the provided bot mode to our normal enumeration
-	 * 
-	 * @param bootModeXml
-	 * @return
+	 * Convert the provided bot mode to our normal enumeration.
+	 *
+	 * @param bootModeXml the boot mode xml
+	 * @return the OS boot mode
 	 */
 	public static OSBootMode fromBootModeXml(BootModeXml bootModeXml) {
 		return OSBootMode.valueOf(bootModeXml.toString());

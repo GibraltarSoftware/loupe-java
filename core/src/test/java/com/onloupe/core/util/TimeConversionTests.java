@@ -1,10 +1,16 @@
 package com.onloupe.core.util;
 
+import java.awt.font.NumericShaper.Range;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Assertions;
@@ -73,5 +79,19 @@ public class TimeConversionTests {
 				TimeConversion.fromEpochTicks(-67890, ZoneOffset.UTC);
 			}
 		});
+	}
+	
+	@Test
+	public void removeRange() {
+		List<Integer> list = IntStream.range(0, 10).boxed().collect(Collectors.toList());
+		
+		System.out.print(list.toString());
+
+		int committedListSize = 3;
+		for (int i = list.size() - 1; i >= committedListSize; i--) {
+			list.remove(i);
+		}
+		
+		System.out.print(list.toString());
 	}
 }

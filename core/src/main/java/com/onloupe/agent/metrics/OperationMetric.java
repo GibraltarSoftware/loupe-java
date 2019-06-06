@@ -12,6 +12,7 @@ import com.onloupe.core.util.OutObject;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
+
 /**
  * Record an event metric for a single execution of a data operation
  * 
@@ -26,27 +27,34 @@ import com.onloupe.model.log.LogMessageSeverity;
 public class OperationMetric implements Closeable {
 	// constants we use in place of what was previously on the attribute for the
 	// class
-	/**
-	 * The metric type name
-	 */
+	/** The metric type name. */
 	public static final String METRIC_TYPE_NAME = "Gibraltar Software";
 
-	/**
-	 * The metric counter name
-	 */
+	/** The metric counter name. */
 	public static final String METRIC_COUNTER_NAME = "Operation";
 
-	/**
-	 * The metric counter description
-	 */
+	/** The metric counter description. */
 	public static final String METRIC_DEFINITION_DESCRIPTION = "Information about each time a data operation is performed";
 
+	/** The init time. */
 	private LocalDateTime initTime;
+	
+	/** The duration. */
 	private Duration duration = Duration.ZERO;
+	
+	/** The category. */
 	private String category;
+	
+	/** The operation name. */
 	private String operationName;
+	
+	/** The end message. */
 	private String endMessage;
+	
+	/** The args. */
 	private Object[] args;
+	
+	/** The closed. */
 	private boolean closed;
 
 	/**
@@ -113,6 +121,8 @@ public class OperationMetric implements Closeable {
 
 	/**
 	 * The operation that was executed.
+	 *
+	 * @return the operation name
 	 */
 	public final String getOperationName() {
 		return this.operationName;
@@ -123,7 +133,9 @@ public class OperationMetric implements Closeable {
 	 * resetting unmanaged resources. Calling Dispose() (automatic when a using
 	 * statement ends) will generate the metric.
 	 * 
-	 * <filterpriority>2</filterpriority>
+	 * 
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void close() throws IOException {
@@ -221,6 +233,9 @@ public class OperationMetric implements Closeable {
 		}
 	}
 
+	/**
+	 * Stop and record metric.
+	 */
 	private void stopAndRecordMetric() {
 		// record our end time
 		if (this.initTime != null) {

@@ -18,27 +18,28 @@ import org.apache.commons.codec.digest.DigestUtils;
 import com.onloupe.core.util.TimeConversion;
 import com.onloupe.core.util.TypeUtils;
 
+
 /**
  * Provides basic binary serialization for platform independent simple
- * serialization
+ * serialization.
  */
 public final class BinarySerializer {
 
 	/**
-	 * Serialize a boolean value to a byte array with a single byte
-	 * 
-	 * @param hostValue
-	 * @return
+	 * Serialize a boolean value to a byte array with a single byte.
+	 *
+	 * @param hostValue the host value
+	 * @return the byte[]
 	 */
 	public static byte[] serializeValue(boolean hostValue) {
 		return hostValue ? new byte[] { 0x1 } : new byte[] { 0x0 };
 	}
 
 	/**
-	 * Serialize a GUID to a 16 byte array
-	 * 
-	 * @param hostValue
-	 * @return
+	 * Serialize a GUID to a 16 byte array.
+	 *
+	 * @param hostValue the host value
+	 * @return the byte[]
 	 */
 	public static byte[] serializeValue(UUID hostValue) {
 		byte[] javaUUID = ByteBuffer.allocate(Long.BYTES + Long.BYTES).putLong(hostValue.getMostSignificantBits())
@@ -61,9 +62,9 @@ public final class BinarySerializer {
 	}
 
 	/**
-	 * Serialize a string to a byte array
-	 * 
-	 * @param hostValue
+	 * Serialize a string to a byte array.
+	 *
+	 * @param hostValue the host value
 	 * @return The byte array for the string Serializes the length in the first byte
 	 *         then each character with one byte character encoding
 	 */
@@ -93,9 +94,9 @@ public final class BinarySerializer {
 	}
 
 	/**
-	 * Serialize a date time to a byte array
-	 * 
-	 * @param hostValue
+	 * Serialize a date time to a byte array.
+	 *
+	 * @param hostValue the host value
 	 * @return Uses the date time offset encoding with the local time zone.
 	 */
 	public static byte[] serializeValue(LocalDateTime hostValue) {
@@ -104,8 +105,8 @@ public final class BinarySerializer {
 
 	/**
 	 * Serialize a date time and offset to a byte array.
-	 * 
-	 * @param hostValue
+	 *
+	 * @param hostValue the host value
 	 * @return Encodes the date time offset as a string in ISO 8601 standard
 	 *         formatting
 	 */
@@ -115,18 +116,18 @@ public final class BinarySerializer {
 	}
 
 	/**
-	 * Serialize a Duration to a byte array
-	 * 
-	 * @param hostValue
-	 * @return
+	 * Serialize a Duration to a byte array.
+	 *
+	 * @param hostValue the host value
+	 * @return the byte[]
 	 */
 	public static byte[] serializeValue(Duration hostValue) {
 		return serializeValue(TimeConversion.durationInTicks(hostValue));
 	}
 
 	/**
-	 * Create a network-byte-order array of the host value
-	 * 
+	 * Create a network-byte-order array of the host value.
+	 *
 	 * @param hostValue The host value to be serialized
 	 * @return A byte array of each byte of the value in network byte order
 	 */
@@ -135,8 +136,8 @@ public final class BinarySerializer {
 	}
 
 	/**
-	 * Create a network-byte-order array of the host value
-	 * 
+	 * Create a network-byte-order array of the host value.
+	 *
 	 * @param hostValue The host value to be serialized
 	 * @return A byte array of each byte of the value in network byte order
 	 */
@@ -147,8 +148,8 @@ public final class BinarySerializer {
 	}
 
 	/**
-	 * Create a network-byte-order array of the host value
-	 * 
+	 * Create a network-byte-order array of the host value.
+	 *
 	 * @param hostValue The host value to be serialized
 	 * @return A byte array of each byte of the value in network byte order
 	 */
@@ -157,46 +158,66 @@ public final class BinarySerializer {
 	}
 
 	/**
-	 * Deserialize a Duration value from the provided stream
-	 * 
-	 * @throws IOException
+	 * Deserialize a Duration value from the provided stream.
+	 *
+	 * @param inputStream the input stream
+	 * @return the duration
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static Duration deserializeDuration(InputStream inputStream) throws IOException {
 		DataInputStream stream = new DataInputStream(inputStream);
 		return Duration.ofNanos(Math.multiplyExact(100, stream.readLong()));
 	}
 
+	/**
+	 * Deserialize duration.
+	 *
+	 * @param buffer the buffer
+	 * @return the duration
+	 */
 	public static Duration deserializeDuration(ByteBuffer buffer) {
 		return Duration.ofNanos(Math.multiplyExact(100, buffer.getLong()));
 	}
 
 	/**
-	 * Deserialize a date and time value from the provided stream
-	 * 
-	 * @throws IOException
+	 * Deserialize a date and time value from the provided stream.
+	 *
+	 * @param inputStream the input stream
+	 * @return the local date time
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static LocalDateTime deserializeLocalDateTime(InputStream inputStream) throws IOException {
 		return deserializeOffsetDateTimeValue(inputStream).toLocalDateTime();
 	}
 
 	/**
-	 * Deserialize a date time offset value from the provided buffer
-	 * 
-	 * @param buffer
+	 * Deserialize a date time offset value from the provided buffer.
+	 *
+	 * @param buffer the buffer
+	 * @return the offset date time
 	 */
 	public static OffsetDateTime deserializeOffsetDateTimeValue(ByteBuffer buffer) {
 		return OffsetDateTime.parse(deserializeStringValue(buffer), TimeConversion.CS_DATETIMEOFFSET_FORMAT);
 	}
 
 	/**
-	 * Deserialize a date time offset value from the provided stream
-	 * 
-	 * @throws IOException
+	 * Deserialize a date time offset value from the provided stream.
+	 *
+	 * @param inputStream the input stream
+	 * @return the offset date time
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static OffsetDateTime deserializeOffsetDateTimeValue(InputStream inputStream) throws IOException {
 		return OffsetDateTime.parse(deserializeStringValue(inputStream), TimeConversion.CS_DATETIMEOFFSET_FORMAT);
 	}
 
+	/**
+	 * Deserialize int.
+	 *
+	 * @param inputStream the input stream
+	 * @return the int
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static int deserializeInt(InputStream inputStream) throws IOException {
 		int ch1 = inputStream.read();
 		int ch2 = inputStream.read();
@@ -207,12 +228,26 @@ public final class BinarySerializer {
 		return ((ch1 << 24) + (ch2 << 16) + (ch3 << 8) + (ch4 << 0));
 	}
 	
+	/**
+	 * Deserialize short.
+	 *
+	 * @param inputStream the input stream
+	 * @return the short
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static short deserializeShort(InputStream inputStream) throws IOException {
         byte[] curValue = new byte[Short.BYTES];
         inputStream.read(curValue, 0, curValue.length);
         return ByteBuffer.wrap(curValue).getShort();
 	}
 
+	/**
+	 * Deserialize long.
+	 *
+	 * @param inputStream the input stream
+	 * @return the long
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static long deserializeLong(InputStream inputStream) throws IOException {
         byte[] curValue = new byte[Long.BYTES];
         inputStream.read(curValue, 0, curValue.length);
@@ -220,9 +255,10 @@ public final class BinarySerializer {
 	}
 	
 	/**
-	 * Deserialize a GUID value from the provided buffer
-	 * 
-	 * @param buffer
+	 * Deserialize a GUID value from the provided buffer.
+	 *
+	 * @param buffer the buffer
+	 * @return the uuid
 	 */
 	public static UUID deserializeUUIDValue(ByteBuffer buffer) {
 		byte[] dotNetMostSignificantBits = new byte[8];
@@ -234,9 +270,11 @@ public final class BinarySerializer {
 	}
 
 	/**
-	 * Deserialize a GUID value from the provided stream
-	 * 
-	 * @throws IOException
+	 * Deserialize a GUID value from the provided stream.
+	 *
+	 * @param inputStream the input stream
+	 * @return the uuid
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static UUID deserializeUUIDValue(InputStream inputStream) throws IOException {
 		byte[] dotNetMostSignificantBits = new byte[8];
@@ -247,6 +285,13 @@ public final class BinarySerializer {
 		return deserializeDotNetGUIDValue(dotNetMostSignificantBits, leastSignificantBits);
 	}
 
+	/**
+	 * Deserialize dot net GUID value.
+	 *
+	 * @param mostSignificantBits the most significant bits
+	 * @param leastSignificantBits the least significant bits
+	 * @return the uuid
+	 */
 	private static UUID deserializeDotNetGUIDValue(byte[] mostSignificantBits, byte[] leastSignificantBits) {
 		//now we have to reorder the most significant bits from the .NET format DWORD-WORD-WORD little endian
 		//to the Java format.
@@ -265,9 +310,11 @@ public final class BinarySerializer {
 	}
 
 	/**
-	 * Deserialize a boolean value from the provided stream
+	 * Deserialize a boolean value from the provided stream.
 	 *
-	 * @throws IOException
+	 * @param inputStream the input stream
+	 * @return true, if successful
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static boolean deserializeBooleanValue(InputStream inputStream) throws IOException {
 		return inputStream.read() == 0 ? false : true;
@@ -275,17 +322,20 @@ public final class BinarySerializer {
 	}
 
 	/**
-	 * Deserialize a boolean value from the provided buffer
-	 * 
-	 * @param buffer
+	 * Deserialize a boolean value from the provided buffer.
+	 *
+	 * @param buffer the buffer
+	 * @return true, if successful
 	 */
 	public static boolean deserializeBooleanValue(ByteBuffer buffer) {
 		return buffer.get() == 0 ? false : true;
 	}
 
 	/**
-	 * Deserialize a string value from the provided stream
-	 * 
+	 * Deserialize a string value from the provided stream.
+	 *
+	 * @param buffer the buffer
+	 * @return the string
 	 */
 	public static String deserializeStringValue(ByteBuffer buffer) {
 		// first get the length of the string
@@ -303,9 +353,11 @@ public final class BinarySerializer {
 	}
 
 	/**
-	 * Deserialize a string value from the provided stream
-	 * 
-	 * @throws IOException
+	 * Deserialize a string value from the provided stream.
+	 *
+	 * @param inputStream the input stream
+	 * @return the string
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static String deserializeStringValue(InputStream inputStream) throws IOException {
 		// first get the length of the string
@@ -322,10 +374,10 @@ public final class BinarySerializer {
 	}
 
 	/**
-	 * Calculate a CRC for the provided byte array
-	 * 
-	 * @param data
-	 * @param length
+	 * Calculate a CRC for the provided byte array.
+	 *
+	 * @param data the data
+	 * @param length the length
 	 * @return A 4 byte CRC value created by calculating an MD5 hash of the provided
 	 *         byte array
 	 */

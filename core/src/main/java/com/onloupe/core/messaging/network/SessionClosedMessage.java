@@ -8,39 +8,56 @@ import java.util.UUID;
 import com.onloupe.core.data.BinarySerializer;
 import com.onloupe.model.system.Version;
 
+
 /**
  * Indicates that the identified session has been closed.
  */
 public class SessionClosedMessage extends NetworkMessage {
+	
+	/** The session id. */
 	private UUID sessionId;
 
+	/**
+	 * Instantiates a new session closed message.
+	 */
 	public SessionClosedMessage() {
 		setTypeCode(NetworkMessageTypeCode.SESSION_CLOSED);
 		setVersion(new Version(1, 0));
 	}
 
 	/**
-	 * Create a new session closed message for the specified session id
-	 * 
-	 * @param sessionId
+	 * Create a new session closed message for the specified session id.
+	 *
+	 * @param sessionId the session id
 	 */
 	public SessionClosedMessage(UUID sessionId) {
 		this();
 		setSessionId(sessionId);
 	}
 
+	/**
+	 * Gets the session id.
+	 *
+	 * @return the session id
+	 */
 	public final UUID getSessionId() {
 		return this.sessionId;
 	}
 
+	/**
+	 * Sets the session id.
+	 *
+	 * @param value the new session id
+	 */
 	private void setSessionId(UUID value) {
 		this.sessionId = value;
 	}
 
 	/**
-	 * Write the packet to the stream
-	 * 
-	 * @throws IOException
+	 * Write the packet to the stream.
+	 *
+	 * @param stream the stream
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void onWrite(OutputStream stream) throws IOException {
@@ -48,9 +65,10 @@ public class SessionClosedMessage extends NetworkMessage {
 	}
 
 	/**
-	 * Read packet data from the stream
-	 * 
-	 * @throws IOException
+	 * Read packet data from the stream.
+	 *
+	 * @param stream the stream
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void onRead(InputStream stream) throws IOException {

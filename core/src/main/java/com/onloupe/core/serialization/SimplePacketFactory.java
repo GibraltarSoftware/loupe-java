@@ -3,11 +3,14 @@ package com.onloupe.core.serialization;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
+
 /**
  * SimplePacketFactory is the IPacketFactory used when an IPacket implementation
- * knows how to use when a type
+ * knows how to use when a type.
  */
 public class SimplePacketFactory implements IPacketFactory {
+	
+	/** The constructor. */
 	private java.lang.reflect.Constructor constructor;
 
 	/**
@@ -34,6 +37,8 @@ public class SimplePacketFactory implements IPacketFactory {
 	/**
 	 * This method is used by caller to detect if the constructor failed. This is
 	 * necessary because we suppress exceptions in release builds.
+	 *
+	 * @return true, if is valid
 	 */
 	public final boolean isValid() {
 		return this.constructor != null;
@@ -42,10 +47,13 @@ public class SimplePacketFactory implements IPacketFactory {
 	/**
 	 * This is the method that is invoked on an IPacketFactory to create an IPacket
 	 * from the data in an IFieldReader given a specified PacketDefinition.
-	 * 
+	 *
 	 * @param definition Definition of the fields expected in the next packet
 	 * @param reader     Data stream to be read
 	 * @return An IPacket corresponding to the PacketDefinition and the stream data
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws InvocationTargetException the invocation target exception
+	 * @throws InstantiationException the instantiation exception
 	 */
 	@Override
 	public final IPacket createPacket(PacketDefinition definition, IFieldReader reader) throws IllegalAccessException, InvocationTargetException, InstantiationException {

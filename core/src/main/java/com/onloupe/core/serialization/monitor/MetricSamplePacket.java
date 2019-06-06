@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 /**
  * Base object for all metric sample packets
  * 
@@ -18,14 +19,20 @@ import java.util.UUID;
  * downstream object as appropriate.
  */
 public abstract class MetricSamplePacket extends GibraltarPacket implements IPacket, IDisplayable {
+	
+	/** The metric packet. */
 	private MetricPacket metricPacket;
+	
+	/** The id. */
 	private UUID id;
+	
+	/** The metric id. */
 	private UUID metricId;
 
 	/**
 	 * Create a new metric sample for the provided metric.
-	 * 
-	 * @param metric The metric this sample applies to
+	 *
+	 * @param metricPacket the metric packet
 	 */
 	protected MetricSamplePacket(MetricPacket metricPacket) {
 		if (metricPacket == null) {
@@ -40,17 +47,26 @@ public abstract class MetricSamplePacket extends GibraltarPacket implements IPac
 
 	/**
 	 * The globally unique Id if this metric sample packet.
+	 *
+	 * @return the id
 	 */
 	public final UUID getID() {
 		return this.id;
 	}
 
+	/**
+	 * Sets the id.
+	 *
+	 * @param value the new id
+	 */
 	private void setID(UUID value) {
 		this.id = value;
 	}
 
 	/**
 	 * The display caption of the metric this sample is for.
+	 *
+	 * @return the caption
 	 */
 	@Override
 	public String getCaption() {
@@ -59,6 +75,8 @@ public abstract class MetricSamplePacket extends GibraltarPacket implements IPac
 
 	/**
 	 * The description of the metric this sample is for.
+	 *
+	 * @return the description
 	 */
 	@Override
 	public String getDescription() {
@@ -67,22 +85,36 @@ public abstract class MetricSamplePacket extends GibraltarPacket implements IPac
 
 	/**
 	 * The unique Id of the metric we are associated with.
+	 *
+	 * @return the metric id
 	 */
 	public final UUID getMetricId() {
 		return this.metricId;
 	}
 
+	/**
+	 * Sets the metric id.
+	 *
+	 * @param value the new metric id
+	 */
 	private void setMetricId(UUID value) {
 		this.metricId = value;
 	}
 
 	/**
 	 * The performance counter metric packet this sample is for.
+	 *
+	 * @return the metric packet
 	 */
 	public final MetricPacket getMetricPacket() {
 		return this.metricPacket;
 	}
 
+	/**
+	 * Sets the metric packet.
+	 *
+	 * @param value the new metric packet
+	 */
 	public final void setMetricPacket(MetricPacket value) {
 		// make sure the packet has the same Guid as our current GUID so the user isn't
 		// pulling a funny one
@@ -109,19 +141,38 @@ public abstract class MetricSamplePacket extends GibraltarPacket implements IPac
 	 */
 	private boolean persisted;
 
+	/**
+	 * Gets the persisted.
+	 *
+	 * @return the persisted
+	 */
 	public final boolean getPersisted() {
 		return this.persisted;
 	}
 
+	/**
+	 * Sets the persisted.
+	 *
+	 * @param value the new persisted
+	 */
 	private void setPersisted(boolean value) {
 		this.persisted = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return String.format("%1$tc: %2$s", getTimestamp(), getCaption());
 	}
 
+	/**
+	 * Compare to.
+	 *
+	 * @param other the other
+	 * @return the int
+	 */
 	public final int compareTo(MetricSamplePacket other) {
 		// First do a quick match on Guid. this is the only case we want to return zero
 		// (an exact match)
@@ -140,11 +191,10 @@ public abstract class MetricSamplePacket extends GibraltarPacket implements IPac
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -210,6 +260,7 @@ public abstract class MetricSamplePacket extends GibraltarPacket implements IPac
 	// serialization methods know to recurse object
 	// structures looking for the interface.
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -227,6 +278,9 @@ public abstract class MetricSamplePacket extends GibraltarPacket implements IPac
 		return requiredPackets;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -237,6 +291,9 @@ public abstract class MetricSamplePacket extends GibraltarPacket implements IPac
 		definition.getFields().add("metricPacketId", FieldType.GUID);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -249,6 +306,9 @@ public abstract class MetricSamplePacket extends GibraltarPacket implements IPac
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");

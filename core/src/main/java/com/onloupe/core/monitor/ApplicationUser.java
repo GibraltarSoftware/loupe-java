@@ -7,12 +7,22 @@ import java.util.UUID;
 import com.onloupe.core.serialization.monitor.ApplicationUserPacket;
 import com.onloupe.core.util.TypeUtils;
 
+
 /**
- * Extended information for a single application user
+ * Extended information for a single application user.
  */
 public class ApplicationUser implements Comparable<ApplicationUser> {
+	
+	/** The packet. */
 	private ApplicationUserPacket packet;
 
+	/**
+	 * Instantiates a new application user.
+	 *
+	 * @param userName the user name
+	 * @param timestamp the timestamp
+	 * @param sequence the sequence
+	 */
 	public ApplicationUser(String userName, OffsetDateTime timestamp, long sequence) {
 		this.packet = new ApplicationUserPacket();
 		this.packet.setTimestamp(timestamp);
@@ -20,16 +30,28 @@ public class ApplicationUser implements Comparable<ApplicationUser> {
 		this.packet.setFullyQualifiedUserName(userName);
 	}
 
+	/**
+	 * Instantiates a new application user.
+	 *
+	 * @param packet the packet
+	 */
 	public ApplicationUser(ApplicationUserPacket packet) {
 		this.packet = packet;
 	}
 
+	/**
+	 * Gets the packet.
+	 *
+	 * @return the packet
+	 */
 	public final ApplicationUserPacket getPacket() {
 		return this.packet;
 	}
 
 	/**
-	 * The unique id of this application user in this session
+	 * The unique id of this application user in this session.
+	 *
+	 * @return the id
 	 */
 	public final UUID getId() {
 		return this.packet.getID();
@@ -37,11 +59,18 @@ public class ApplicationUser implements Comparable<ApplicationUser> {
 
 	/**
 	 * Optional. An absolute, unique key for the user to use as a primary match
+	 *
+	 * @return the key
 	 */
 	public final String getKey() {
 		return this.packet.getKey();
 	}
 
+	/**
+	 * Sets the key.
+	 *
+	 * @param value the new key
+	 */
 	public final void setKey(String value) {
 		this.packet.setKey(value);
 	}
@@ -49,102 +78,162 @@ public class ApplicationUser implements Comparable<ApplicationUser> {
 	/**
 	 * The fully qualified user name
 	 * 
-	 * If Key isn't specified this value is used as the alternate key
+	 * If Key isn't specified this value is used as the alternate key.
+	 *
+	 * @return the fully qualified user name
 	 */
 	public final String getFullyQualifiedUserName() {
 		return this.packet.getFullyQualifiedUserName();
 	}
 
 	/**
-	 * A display label for the user (such as their full name)
+	 * A display label for the user (such as their full name).
+	 *
+	 * @return the caption
 	 */
 	public final String getCaption() {
 		return this.packet.getCaption();
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	public final void setCaption(String value) {
 		this.packet.setCaption(value);
 	}
 
 	/**
 	 * Optional. A title for the user (e.g. job title)
+	 *
+	 * @return the title
 	 */
 	public final String getTitle() {
 		return this.packet.getTitle();
 	}
 
+	/**
+	 * Sets the title.
+	 *
+	 * @param value the new title
+	 */
 	public final void setTitle(String value) {
 		this.packet.setTitle(value);
 	}
 
 	/**
 	 * Optional. A primary email address for the user
+	 *
+	 * @return the email address
 	 */
 	public final String getEmailAddress() {
 		return this.packet.getEmailAddress();
 	}
 
+	/**
+	 * Sets the email address.
+	 *
+	 * @param value the new email address
+	 */
 	public final void setEmailAddress(String value) {
 		this.packet.setEmailAddress(value);
 	}
 
 	/**
 	 * Optional. A phone number or other telecommunication alias
+	 *
+	 * @return the phone
 	 */
 	public final String getPhone() {
 		return this.packet.getPhone();
 	}
 
+	/**
+	 * Sets the phone.
+	 *
+	 * @param value the new phone
+	 */
 	public final void setPhone(String value) {
 		this.packet.setPhone(value);
 	}
 
 	/**
 	 * Optional. A label for the organization this user is a part of
+	 *
+	 * @return the organization
 	 */
 	public final String getOrganization() {
 		return this.packet.getOrganization();
 	}
 
+	/**
+	 * Sets the organization.
+	 *
+	 * @param value the new organization
+	 */
 	public final void setOrganization(String value) {
 		this.packet.setOrganization(value);
 	}
 
 	/**
 	 * Optional. A primary role for this user with respect to this application
+	 *
+	 * @return the role
 	 */
 	public final String getRole() {
 		return this.packet.getRole();
 	}
 
+	/**
+	 * Sets the role.
+	 *
+	 * @param value the new role
+	 */
 	public final void setRole(String value) {
 		this.packet.setRole(value);
 	}
 
 	/**
 	 * Optional. The primary tenant this user is a part of.
+	 *
+	 * @return the tenant
 	 */
 	public final String getTenant() {
 		return this.packet.getTenant();
 	}
 
+	/**
+	 * Sets the tenant.
+	 *
+	 * @param value the new tenant
+	 */
 	public final void setTenant(String value) {
 		this.packet.setTenant(value);
 	}
 
 	/**
 	 * Optional. The time zone the user is associated with
+	 *
+	 * @return the time zone code
 	 */
 	public final String getTimeZoneCode() {
 		return this.packet.getTimeZoneCode();
 	}
 
+	/**
+	 * Sets the time zone code.
+	 *
+	 * @param value the new time zone code
+	 */
 	public final void setTimeZoneCode(String value) {
 		this.packet.setTimeZoneCode(value);
 	}
 
 	/**
-	 * Application provided properties
+	 * Application provided properties.
+	 *
+	 * @return the properties
 	 */
 	public final Map<String, String> getProperties() {
 		return this.packet.getProperties();

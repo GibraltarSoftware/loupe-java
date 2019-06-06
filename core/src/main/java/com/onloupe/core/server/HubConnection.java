@@ -21,17 +21,22 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.system.Version;
 
+
 /**
  * A web channel specifically designed to work with the Gibraltar Hub.
  */
 public class HubConnection implements Closeable {
-	/**
-	 * The web request header to add for our hash
-	 */
+	
+	/** The web request header to add for our hash. */
 	public static final String SHA1_HASH_HEADER = "X-Gibraltar-Hash";
 
+	/** The Constant LOG_CATEGORY. */
 	public static final String LOG_CATEGORY = "Loupe.Repository.Hub";
+	
+	/** The Constant SDS_SERVER_NAME. */
 	public static final String SDS_SERVER_NAME = "hub.gibraltarsoftware.com";
+	
+	/** The Constant SDS_ENTRY_PATH. */
 	private static final String SDS_ENTRY_PATH = "/Customers/%s";
 
 	/**
@@ -44,64 +49,102 @@ public class HubConnection implements Closeable {
 	 */
 	public static final Version hub38ProtocolVersion = new Version(1, 4);
 
-	/**
-	 * The latest version of the protocol we understand
-	 */
+	/** The latest version of the protocol we understand. */
 	public static final Version clientProtocolVersion = hub38ProtocolVersion;
 
+	/** The lock. */
 	private final Object lock = new Object();
+	
+	/** The channel lock. */
 	private final Object channelLock = new Object();
 
+	/** The root configuration. */
 	// these are the root connection parameters from the configuration.
 	private ServerConfiguration rootConfiguration;
 
+	/** The test url. */
 	private String testUrl;
+	
+	/** The current channel. */
 	private WebChannel currentChannel; // the current hub we're connected to. //PROTECTED BY CHANNELLOCK
+	
+	/** The enable logging. */
 	private boolean enableLogging; // PROTECTED BY LOCK
 
+	/** The status lock. */
 	// status information
 	private final Object statusLock = new Object();
+	
+	/** The have tried to connect. */
 	private volatile boolean haveTriedToConnect; // volatile instead of lock to avoid locks in locks
+	
+	/** The hub repository. */
 	private HubRepository hubRepository; // PROTECTED BY STATUSLOCK
+	
+	/** The hub status. */
 	private HubConnectionStatus hubStatus; // PROTECTED BY STATUSLOCK
 
 	// Security information. if SupplyCredentials is set, then the other three items
+	/** The use credentials. */
 	// must be set.
 	private boolean useCredentials; // PROTECTED BY LOCK
+	
+	/** The use repository credentials. */
 	private boolean useRepositoryCredentials; // PROTECTED BY LOCK
+	
+	/** The client repository id. */
 	private UUID clientRepositoryId; // PROTECTED BY LOCK
+	
+	/** The key container name. */
 	private String keyContainerName; // PROTECTED BY LOCK
+	
+	/** The use machine store. */
 	private boolean useMachineStore; // PROTECTED BY LOCK
 
 	/**
-	 * Create a new server connection using the provided configuration
-	 * 
-	 * @param configuration
+	 * Create a new server connection using the provided configuration.
+	 *
+	 * @param configuration the configuration
 	 */
 	public HubConnection(ServerConfiguration configuration) {
 		this.rootConfiguration = configuration;
 	}
 
-	/**
-	 * The logger to use in this process
-	 */
+	/** The logger to use in this process. */
 	private static IClientLogger logger;
 
+	/**
+	 * Gets the logger.
+	 *
+	 * @return the logger
+	 */
 	public static IClientLogger getLogger() {
 		return logger;
 	}
 
+	/**
+	 * Sets the logger.
+	 *
+	 * @param value the new logger
+	 */
 	public static void setLogger(IClientLogger value) {
 		logger = value;
 	}
 
 	/**
 	 * Indicates if logging for events on the web channel is enabled or not.
+	 *
+	 * @return the enable logging
 	 */
 	public final boolean getEnableLogging() {
 		return this.enableLogging;
 	}
 
+	/**
+	 * Sets the enable logging.
+	 *
+	 * @param value the new enable logging
+	 */
 	public final void setEnableLogging(boolean value) {
 		synchronized (this.lock) {
 			if (value != this.enableLogging) {
@@ -124,6 +167,11 @@ public class HubConnection implements Closeable {
 	/**
 	 * Identify our relationship Id and credential configuration for communicating
 	 * with the server.
+	 *
+	 * @param clientRepositoryId the client repository id
+	 * @param useApiKey the use api key
+	 * @param keyContainerName the key container name
+	 * @param useMachineStore the use machine store
 	 */
 	public final void setCredentials(UUID clientRepositoryId, boolean useApiKey, String keyContainerName,
 			boolean useMachineStore) {
@@ -152,11 +200,11 @@ public class HubConnection implements Closeable {
 	 * 
 	 * This method will keep the connection if it is made, improving efficiency if
 	 * you are then going to use the connection.
-	 * 
+	 *
 	 * @return True if the configuration is valid and the server is available, false
 	 *         otherwise.
-	 * @throws Exception
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	@SuppressWarnings("incomplete-switch")
 	public final HubConnectionStatus canConnect() throws IOException, Exception {
@@ -227,11 +275,11 @@ public class HubConnection implements Closeable {
 	/**
 	 * Attempts to connected to the specified hub and returns information about the
 	 * connection status. The connection is then dropped.
-	 * 
+	 *
 	 * @param configuration The configuration to test
 	 * @return The connection status information
-	 * @throws Exception
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public static HubConnectionStatus canConnect(ServerConfiguration configuration) throws IOException, Exception {
 		HubConnectionStatus connectionStatus = connect(configuration);
@@ -256,12 +304,12 @@ public class HubConnection implements Closeable {
 
 	/**
 	 * Execute the provided request.
-	 * 
-	 * @param newRequest
+	 *
+	 * @param newRequest the new request
 	 * @param maxRetries The maximum number of times to retry the connection. Use -1
 	 *                   to retry indefinitely.
-	 * @throws Exception
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public final void executeRequest(IWebRequest newRequest, int maxRetries) throws IOException, Exception {
 		// make sure we have a channel
@@ -303,12 +351,11 @@ public class HubConnection implements Closeable {
 	/**
 	 * Create a new subscription to this hub for the supplied repository information
 	 * and shared secret.
-	 * 
-	 * @param repositoryXml
-	 * 
+	 *
+	 * @param repositoryXml the repository xml
 	 * @return The client repository information retrieved from the server.
-	 * @throws Exception
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public final ClientRepositoryXml createSubscription(ClientRepositoryXml repositoryXml)
 			throws IOException, Exception {
@@ -341,10 +388,10 @@ public class HubConnection implements Closeable {
 	}
 
 	/**
-	 * Authenticate now (instead of waiting for a request to fail)
-	 * 
-	 * @throws Exception
-	 * @throws IOException
+	 * Authenticate now (instead of waiting for a request to fail).
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public final void authenticate() throws IOException, Exception {
 		// get the current connection and authenticate it
@@ -355,8 +402,10 @@ public class HubConnection implements Closeable {
 	/**
 	 * Indicates if the connection is currently authenticated.
 	 * 
-	 * <value>False if no connection, connection doesn't support authentication, or
-	 * connection is not authenticated.</value>
+	 * False if no connection, connection doesn't support authentication, or
+	 * connection is not authenticated.
+	 *
+	 * @return true, if is authenticated
 	 */
 	public final boolean isAuthenticated() {
 		boolean isAuthenticated = false;
@@ -376,7 +425,9 @@ public class HubConnection implements Closeable {
 	 * Indicates if the connection is currently connected without attempting a new
 	 * connection
 	 * 
-	 * <value>False if no connection. Connection may fail at any time.</value>
+	 * False if no connection. Connection may fail at any time.
+	 *
+	 * @return true, if is connected
 	 */
 	public final boolean isConnected() {
 		boolean isConnected = false;
@@ -402,11 +453,11 @@ public class HubConnection implements Closeable {
 	/**
 	 * Information about the remote repository
 	 * 
-	 * Returns null when no server can be contacted
-	 * 
-	 * @return
-	 * @throws Exception
-	 * @throws IOException
+	 * Returns null when no server can be contacted.
+	 *
+	 * @return the repository
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public final HubRepository getRepository() throws IOException, Exception {
 		ensureConnectAttempted();
@@ -416,11 +467,11 @@ public class HubConnection implements Closeable {
 	}
 
 	/**
-	 * The current connection status
-	 * 
-	 * @return
-	 * @throws Exception
-	 * @throws IOException
+	 * The current connection status.
+	 *
+	 * @return the status
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public final HubConnectionStatus getStatus() throws IOException, Exception {
 		ensureConnectAttempted();
@@ -432,9 +483,9 @@ public class HubConnection implements Closeable {
 	/**
 	 * Reset the current connection and re-establish it, getting the latest hub
 	 * configuration.
-	 * 
-	 * @throws Exception
-	 * @throws IOException
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public final void reconnect() throws IOException, Exception {
 		resetChannel();
@@ -444,7 +495,9 @@ public class HubConnection implements Closeable {
 	 * Performs application-defined tasks associated with freeing, releasing, or
 	 * resetting unmanaged resources.
 	 * 
-	 * <filterpriority>2</filterpriority>
+	 * 
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void close() throws IOException {
@@ -453,9 +506,9 @@ public class HubConnection implements Closeable {
 
 	/**
 	 * Make sure we've at least tried to connect to the hub.
-	 * 
-	 * @throws Exception
-	 * @throws IOException
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	private void ensureConnectAttempted() throws IOException, Exception {
 		if (!haveTriedToConnect) {
@@ -463,6 +516,13 @@ public class HubConnection implements Closeable {
 		}
 	}
 
+	/**
+	 * Gets the current channel.
+	 *
+	 * @return the current channel
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
+	 */
 	private WebChannel getCurrentChannel() throws IOException, Exception {
 		WebChannel currentChannel;
 		synchronized (this.channelLock) {
@@ -504,6 +564,11 @@ public class HubConnection implements Closeable {
 		return currentChannel;
 	}
 
+	/**
+	 * Sets the current channel.
+	 *
+	 * @param channel the new current channel
+	 */
 	private void setCurrentChannel(WebChannel channel) {
 		synchronized (this.channelLock) {
 			// are they the SAME? if so nothing to do
@@ -530,9 +595,10 @@ public class HubConnection implements Closeable {
 
 	/**
 	 * Get a test URL to access through a web browser.
-	 * 
-	 * @throws Exception
-	 * @throws IOException
+	 *
+	 * @return the end user test url
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public final String getEndUserTestUrl() throws IOException, Exception {
 		if (TypeUtils.isBlank(this.testUrl)) {
@@ -579,9 +645,10 @@ public class HubConnection implements Closeable {
 
 	/**
 	 * The URL to the server's version info structure.
-	 * 
-	 * @throws Exception
-	 * @throws IOException
+	 *
+	 * @return the update url
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	public final String getUpdateUrl() throws IOException, Exception {
 		String testUrl = getEndUserTestUrl(); // we are relying on the implementation of this pointing to the base of
@@ -591,10 +658,10 @@ public class HubConnection implements Closeable {
 
 	/**
 	 * Reset the stored channel and reconnect.
-	 * 
-	 * @return
-	 * @throws Exception
-	 * @throws IOException
+	 *
+	 * @return the web channel
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	private WebChannel resetChannel() throws IOException, Exception {
 		// force the channel to drop..
@@ -605,12 +672,12 @@ public class HubConnection implements Closeable {
 	}
 
 	/**
-	 * Connect to the hub (or another hub if the configured hub is redirecting)
-	 * 
+	 * Connect to the hub (or another hub if the configured hub is redirecting).
+	 *
 	 * @return The last web channel it was able to connect to after processing
 	 *         redirections, if that channel is available.
-	 * @throws Exception
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception the exception
 	 */
 	private HubConnectionStatus connect() throws IOException, Exception {
 		HubConnectionStatus connectionStatus = connect(this.rootConfiguration);
@@ -634,12 +701,11 @@ public class HubConnection implements Closeable {
 	}
 
 	/**
-	 * Connects to the specified hub (or another hub if this hub is redirecting)
-	 * 
+	 * Connects to the specified hub (or another hub if this hub is redirecting).
+	 *
+	 * @param configuration the configuration
 	 * @return The last web channel it was able to connect to after processing
 	 *         redirections.
-	 * @throws Exception
-	 * @throws IOException
 	 */
 	private static HubConnectionStatus connect(ServerConfiguration configuration) {
 		WebChannel channel = null;
@@ -783,6 +849,9 @@ public class HubConnection implements Closeable {
 	/**
 	 * Create a web channel to the specified server configuration. Low level
 	 * primitive that does no redirection.
+	 *
+	 * @param configuration the configuration
+	 * @return the web channel
 	 */
 	private static WebChannel createChannel(ServerConfiguration configuration) {
 		WebChannel channel;
@@ -806,6 +875,10 @@ public class HubConnection implements Closeable {
 	/**
 	 * Combines application base directory (if not null) and repository (if not
 	 * null) into one merged path.
+	 *
+	 * @param applicationBaseDirectory the application base directory
+	 * @param repository the repository
+	 * @return the string
 	 */
 	private static String effectiveApplicationBaseDirectory(String applicationBaseDirectory, String repository) {
 		String effectivePath = (applicationBaseDirectory != null) ? applicationBaseDirectory : "";
@@ -829,12 +902,12 @@ public class HubConnection implements Closeable {
 	/**
 	 * Indicates if we're on the original configured server (the "root") or have
 	 * been redirected.
-	 * 
-	 * @param hostName
-	 * @param port
-	 * @param useSsl
-	 * @param applicationBaseDirectory
-	 * @return
+	 *
+	 * @param hostName the host name
+	 * @param port the port
+	 * @param useSsl the use ssl
+	 * @param applicationBaseDirectory the application base directory
+	 * @return true, if is root hub
 	 */
 	private boolean isRootHub(String hostName, int port, boolean useSsl, String applicationBaseDirectory) {
 		boolean isSameHub = true;

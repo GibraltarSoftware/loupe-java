@@ -1,5 +1,6 @@
 package com.onloupe.core.serialization;
 
+
 /**
  * This is the set of encoding options for DateTime compression by
  * FieldReader/FieldWriter (for FieldType.DateTime and elements of
@@ -30,19 +31,35 @@ package com.onloupe.core.serialization;
  * 
  */
 public enum DateTimeEncoding {
-	RAW_TICKS(0), // Timestamp given by absolute Ticks (.NET, which are 100-nanosecond clicks)
+	
+	/** The raw ticks. */
+	RAW_TICKS(0), 
+ /** The new reference. */
+ // Timestamp given by absolute Ticks (.NET, which are 100-nanosecond clicks)
 	NEW_REFERENCE(1), // Set ReferenceTime to this timestamp, by absolute Ticks (.NET)
 
 	// Read as if the names are in reverse... eg. as how many "16-ms ticks later"
-	// than ReferenceTime
-	LATER_TICKS_NET(4), // Timestamp is this many .NET Ticks later than ReferenceTime
+	/** The later ticks net. */
+ // than ReferenceTime
+	LATER_TICKS_NET(4), 
+ /** The earlier ticks net. */
+ // Timestamp is this many .NET Ticks later than ReferenceTime
 	EARLIER_TICKS_NET(5); // ...earlier than ReferenceTime (equivalent to factor=1)
 
-	public static final int SIZE = java.lang.Integer.SIZE;
+	/** The Constant SIZE. */
+ public static final int SIZE = java.lang.Integer.SIZE;
 
+	/** The int value. */
 	private int intValue;
+	
+	/** The mappings. */
 	private static java.util.HashMap<Integer, DateTimeEncoding> mappings;
 
+	/**
+	 * Gets the mappings.
+	 *
+	 * @return the mappings
+	 */
 	private static java.util.HashMap<Integer, DateTimeEncoding> getMappings() {
 		if (mappings == null) {
 			synchronized (DateTimeEncoding.class) {
@@ -54,15 +71,31 @@ public enum DateTimeEncoding {
 		return mappings;
 	}
 
+	/**
+	 * Instantiates a new date time encoding.
+	 *
+	 * @param value the value
+	 */
 	private DateTimeEncoding(int value) {
 		this.intValue = value;
 		getMappings().put(value, this);
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public int getValue() {
 		return this.intValue;
 	}
 
+	/**
+	 * For value.
+	 *
+	 * @param value the value
+	 * @return the date time encoding
+	 */
 	public static DateTimeEncoding forValue(int value) {
 		return getMappings().get(value);
 	}

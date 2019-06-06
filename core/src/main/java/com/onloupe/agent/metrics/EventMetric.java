@@ -16,15 +16,24 @@ import com.onloupe.core.util.SystemUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.metric.MemberType;
 
+
+/**
+ * The Class EventMetric.
+ */
 public final class EventMetric {
+	
+	/** The packet. */
 	private EventMetricPacket packet;
+	
+	/** The metric definition. */
 	private EventMetricDefinition metricDefinition;
 
 	/**
 	 * Creates a new event metric object from the metric definition looked up with
 	 * the provided key information. The metric definition must already exist or an
 	 * exception will be raised.
-	 * 
+	 *
+	 * @param collection the collection
 	 * @param metricTypeName The unique metric type
 	 * @param categoryName   The name of the category with which this definition is
 	 *                       associated.
@@ -65,7 +74,7 @@ public final class EventMetric {
 	 *                   looking for attributes across the entire inheritance of an
 	 *                   object instance or Type has been done (e.g. outside of a
 	 *                   critical path) so that the first call to
-	 *                   <see cref="Write(object)">Write</see> will not have to do
+	 *                   Write will not have to do
 	 *                   that work within a critical path. Results are cached
 	 *                   internally, so redundant calls to this method will not
 	 *                   repeat the scan for types already scanned (including as
@@ -73,9 +82,8 @@ public final class EventMetric {
 	 *                   </p>
 	 *                   <p>
 	 *                   If a live object is given (not just a Type) then the
-	 *                   member(s) decorated with an <see cref=
-	 *                   "EventMetricInstanceNameAttribute">EventMetricInstanceNameAttribute
-	 *                   Class</see> will be queried and used to also register an
+	 *                   member(s) decorated with an EventMetricInstanceNameAttribute
+	 *                   Class will be queried and used to also register an
 	 *                   event metric instance with the returned name
 	 *                   </p>
 	 *                   <p>
@@ -85,9 +93,10 @@ public final class EventMetric {
 	 *                   created automatically as needed when Write is called.
 	 *                   </p>
 	 * 
-	 * @see Write(object) Write Method
-	 *      <exception caption="" cref="ArgumentNullException">Thrown if metricData
-	 *      is null. <exception caption="" cref="ArgumentException">The specified
+	 * @see #write(Object metricData) Write Method
+	 *      @throws NullPointerException Thrown if metricData
+	 *      is null.
+	 *      @throws IllegalArgumentException The specified
 	 *      metricDataObjectType does not have an EventMetric attribute &lt;br /&gt;
 	 *      &lt;br /&gt; -or- &lt;br /&gt; &lt;br /&gt; The specified Type does not
 	 *      have a usable EventMetric attribute, so it can't be used to define an
@@ -101,9 +110,8 @@ public final class EventMetric {
 	 *      not allowed, so no metric can be defined.&lt;br /&gt; &lt;br /&gt; -or-
 	 *      &lt;br /&gt; &lt;br /&gt; The specified Type's EventMetric attribute's
 	 *      3-part Key is already used for a metric definition which is not an event
-	 *      metric. <example> See the <see cref="EventMetric">EventMetric Class
-	 *      Overview</see> for an example.
-	 *      <code title="" description="" lang="neutral"></code></example>
+	 *      metric.  See the EventMetric Class
+	 *      Overview for an example.
 	 */
 	public static void register(Object metricData) {
 		// we need a live object, not a null object or we'll fail
@@ -153,8 +161,6 @@ public final class EventMetric {
 	 * @param instanceName The desired instance name (may be null for the default
 	 *                     instance).
 	 * @return The EventMetric object for the requested event metric instance.
-	 *         <example> See the <see cref="EventMetric">EventMetric Class
-	 *         Overview</see> for an example. </example>
 	 */
 	public static EventMetric register(EventMetricDefinition definition, String instanceName) {
 		if (definition == null) {
@@ -316,9 +322,9 @@ public final class EventMetric {
 	 * EventMetric.Write(userDataObject).
 	 * </p>
 	 * 
-	 * @return The new metric sample object. <example> See the
-	 *         <see cref="EventMetric">EventMetric Class Overview</see> for an
-	 *         example. </example>
+	 * @return The new metric sample object.  See the
+	 *         EventMetric Class Overview for an
+	 *         example. 
 	 */
 	public EventMetricSample createSample() {
 		return new EventMetricSample(this, new EventMetricSamplePacket(this));
@@ -394,9 +400,9 @@ public final class EventMetric {
 	 * The provided user data object must be assignable to the bound type which
 	 * defined this event metric via attributes.
 	 * 
-	 * @param metricData The object to retrieve metric values from. <example> See
-	 *                   the <see cref="EventMetric">EventMetric Class
-	 *                   Overview</see> for an example. </example>
+	 * @param metricData The object to retrieve metric values from.  See
+	 *                   the EventMetric Class
+	 *                   Overview for an example. 
 	 */
 	public void writeSample(Object metricData) {
 		// use our normal create sample method, but write it out immediately!
@@ -414,9 +420,9 @@ public final class EventMetric {
 	 *                             definition from
 	 * @param fallbackInstanceName The instance name to fall back on if a definition
 	 *                             does not specify an instance name binding (may be
-	 *                             null). <example> See the
-	 *                             <see cref="EventMetric">EventMetric Class
-	 *                             Overview</see> for an example. </example>
+	 *                             null).  See the
+	 *                             EventMetric Class
+	 *                             Overview for an example. 
 	 */
 	public static void write(Object metricData, String fallbackInstanceName) {
 		// The real logic is in EventMetricDefinition.
@@ -431,8 +437,8 @@ public final class EventMetric {
 	 * defined this event metric via attributes.
 	 * 
 	 * @param metricData The object to retrieve both metric values and definition
-	 *                   from <example> See the <see cref="EventMetric">EventMetric
-	 *                   Class Overview</see> for an example. </example>
+	 *                   from  See the EventMetric
+	 *                   Class Overview for an example. 
 	 */
 	public static void write(Object metricData) {
 		// The real logic is in EventMetricDefinition.
@@ -502,11 +508,18 @@ public final class EventMetric {
 
 	/**
 	 * The definition of this event metric.
+	 *
+	 * @return the definition
 	 */
 	public EventMetricDefinition getDefinition() {
 		return this.metricDefinition;
 	}
 
+	/**
+	 * Gets the packet.
+	 *
+	 * @return the packet
+	 */
 	public EventMetricPacket getPacket() {
 		return packet;
 	}
@@ -520,6 +533,8 @@ public final class EventMetric {
 	 * across different sessions, which could have different actual definitions due
 	 * to changing user code. See the Key property to identify a metric definition
 	 * across different sessions.
+	 *
+	 * @return the id
 	 */
 	public UUID getId() {
 		return this.packet.getID();
@@ -532,6 +547,8 @@ public final class EventMetric {
 	 * and counter name of the metric definition, along with the instance name, to
 	 * uniquely identify a specific metric instance of a specific metric definition.
 	 * It can also identify the same metric instance across different sessions.
+	 *
+	 * @return the key
 	 */
 	public String getKey() {
 		return this.packet.getName();
@@ -539,6 +556,8 @@ public final class EventMetric {
 
 	/**
 	 * A short caption of what the metric tracks, suitable for end-user display.
+	 *
+	 * @return the caption
 	 */
 	public String getCaption() {
 		return this.packet.getCaption();
@@ -547,6 +566,8 @@ public final class EventMetric {
 	/**
 	 * A description of what is tracked by this metric, suitable for end-user
 	 * display.
+	 *
+	 * @return the description
 	 */
 	public String getDescription() {
 		return this.packet.getDescription();
@@ -554,6 +575,8 @@ public final class EventMetric {
 
 	/**
 	 * The metrics capture system label of this metric definition.
+	 *
+	 * @return the metrics system
 	 */
 	public String getMetricsSystem() {
 		return this.metricDefinition.getMetricsSystem();
@@ -562,6 +585,8 @@ public final class EventMetric {
 	/**
 	 * The category of this metric for display purposes. Category is the top
 	 * displayed hierarchy.
+	 *
+	 * @return the category name
 	 */
 	public String getCategoryName() {
 		return this.metricDefinition.getCategoryName();
@@ -569,6 +594,8 @@ public final class EventMetric {
 
 	/**
 	 * The display name of this metric (unique within the category name).
+	 *
+	 * @return the counter name
 	 */
 	public String getCounterName() {
 		return this.metricDefinition.getCounterName();
@@ -576,6 +603,8 @@ public final class EventMetric {
 
 	/**
 	 * Gets the instance name for this event metric.
+	 *
+	 * @return the instance name
 	 */
 	public String getInstanceName() {
 		return this.packet.getInstanceName();
@@ -588,6 +617,8 @@ public final class EventMetric {
 	 * The default instance has a null instance name. This property is provided as a
 	 * convenience to simplify client code so you don't have to distinguish empty
 	 * strings or null.
+	 *
+	 * @return true, if is default
 	 */
 	public boolean isDefault() {
 		return (TypeUtils.isBlank(this.packet.getInstanceName()));

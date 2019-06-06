@@ -16,27 +16,39 @@ import org.xml.sax.SAXException;
 import com.onloupe.core.server.data.ClientRepositoryStatusXml;
 import com.onloupe.core.server.data.ClientRepositoryXml;
 
+
 /**
  * Uploads the state of a client repository, adding it if necessary.
  */
 public class ClientRepositoryUploadRequest extends WebChannelRequestBase {
+	
 	/**
-	 * Create a new sessions version request
+	 * Create a new sessions version request.
+	 *
+	 * @param repositoryXml the repository xml
 	 */
 	public ClientRepositoryUploadRequest(ClientRepositoryXml repositoryXml) {
 		super(true, true);
 		setInputRepository(repositoryXml);
 	}
 
-	/**
-	 * The repository data to commit to the server
-	 */
+	/** The repository data to commit to the server. */
 	private ClientRepositoryXml inputRepository;
 
+	/**
+	 * Gets the input repository.
+	 *
+	 * @return the input repository
+	 */
 	public final ClientRepositoryXml getInputRepository() {
 		return this.inputRepository;
 	}
 
+	/**
+	 * Sets the input repository.
+	 *
+	 * @param value the new input repository
+	 */
 	private void setInputRepository(ClientRepositoryXml value) {
 		this.inputRepository = value;
 	}
@@ -46,19 +58,29 @@ public class ClientRepositoryUploadRequest extends WebChannelRequestBase {
 	 */
 	private ClientRepositoryXml responseRepository;
 
+	/**
+	 * Gets the response repository.
+	 *
+	 * @return the response repository
+	 */
 	public final ClientRepositoryXml getResponseRepository() {
 		return this.responseRepository;
 	}
 
+	/**
+	 * Sets the response repository.
+	 *
+	 * @param value the new response repository
+	 */
 	private void setResponseRepository(ClientRepositoryXml value) {
 		this.responseRepository = value;
 	}
 
 	/**
 	 * Implemented by inheritors to perform the request on the provided web client.
-	 * 
-	 * @param connection
-	 * @throws Exception
+	 *
+	 * @param connection the connection
+	 * @throws Exception the exception
 	 */
 	@Override
 	protected void onProcessRequest(IWebChannelConnection connection) throws Exception {
@@ -87,11 +109,23 @@ public class ClientRepositoryUploadRequest extends WebChannelRequestBase {
 		}
 	}
 
+	/**
+	 * Generate resource uri.
+	 *
+	 * @return the string
+	 */
 	private String generateResourceUri() {
 		UUID repositoryId = UUID.fromString(getInputRepository().getid()); // to make sure we have a valid GUID
 		return String.format("/Hub/Repositories/%1$s/Repository.xml", repositoryId);
 	}
 
+	/**
+	 * Convert xml to byte array.
+	 *
+	 * @param xmlFragment the xml fragment
+	 * @return the byte[]
+	 * @throws ParserConfigurationException the parser configuration exception
+	 */
 	protected static byte[] convertXmlToByteArray(ClientRepositoryXml xmlFragment) throws ParserConfigurationException {
 		// we want to get a byte array
 		DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();

@@ -46,81 +46,140 @@ import com.onloupe.model.log.LogMessageSeverity;
 import com.onloupe.model.session.ISessionSummary;
 import com.onloupe.model.session.SessionStatus;
 
+
 /**
- * The local collection repository, a minimalistic repository
+ * The local collection repository, a minimalistic repository.
  */
 public class LocalRepository {
-	/**
-	 * The log category
-	 */
+	
+	/** The log category. */
 	protected static final String LOG_CATEGORY = "Loupe.Local Repository";
 
+	/** The Constant REPOSITORY_TEMP_FOLDER. */
 	private static final String REPOSITORY_TEMP_FOLDER = "Temp";
+	
+	/** The Constant REPOSITORY_ARCHIVE_FOLDER. */
 	public static final String REPOSITORY_ARCHIVE_FOLDER = "Archive";
+	
+	/** The Constant REPOSITORY_KEY_FILE. */
 	public static final String REPOSITORY_KEY_FILE = "repository.gak";
+	
+	/** The Constant COMPUTER_KEY_FILE. */
 	public static final String COMPUTER_KEY_FILE = "computer.gak";
 
+	/** The lock. */
 	private final Object lock = new Object();
+	
+	/** The queue lock. */
 	private final Object queueLock = new Object();
+	
+	/** The refresh requests. */
 	private final ConcurrentLinkedQueue<RefreshRequest> refreshRequests = new ConcurrentLinkedQueue<RefreshRequest>(); // protected
 																														// by
-	// QUEUELOCK
+	/** The caption. */
+																														// QUEUELOCK
 	private String caption;
+	
+	/** The repository path. */
 	private String repositoryPath;
+	
+	/** The repository id. */
 	private UUID repositoryId;
+	
+	/** The repository temp path. */
 	private String repositoryTempPath;
+	
+	/** The session lock folder. */
 	private String sessionLockFolder;
 
+	/** The session cache. */
 	private Map<UUID, SessionFileInfo<File>> sessionCache; // protected by LOCK
+	
+	/** The logging enabled. */
 	private boolean loggingEnabled;
+	
+	/** The repository archive path. */
 	private String repositoryArchivePath;
+	
+	/** The async refresh thread active. */
 	private boolean asyncRefreshThreadActive; // protected by QUEUELOCK
 	
 	/**
-	 * A single request to refresh our local cache of file information
+	 * A single request to refresh our local cache of file information.
 	 */
 	private static class RefreshRequest {
+		
+		/**
+		 * Instantiates a new refresh request.
+		 *
+		 * @param force the force
+		 * @param sessionCriteria the session criteria
+		 */
 		public RefreshRequest(boolean force, EnumSet<SessionCriteria> sessionCriteria) {
 			setCriteria(sessionCriteria);
 			setForce(force);
 			setTimestamp(LocalDateTime.now());
 		}
 
-		/**
-		 * When the request was made
-		 */
+		/** When the request was made. */
 		private LocalDateTime timestamp = LocalDateTime.MIN;
 
+		/**
+		 * Gets the timestamp.
+		 *
+		 * @return the timestamp
+		 */
 		public final LocalDateTime getTimestamp() {
 			return this.timestamp;
 		}
 
+		/**
+		 * Sets the timestamp.
+		 *
+		 * @param value the new timestamp
+		 */
 		private void setTimestamp(LocalDateTime value) {
 			this.timestamp = value;
 		}
 
-		/**
-		 * What sessions should be covered by the request
-		 */
+		/** What sessions should be covered by the request. */
 		private EnumSet<SessionCriteria> criteria;
 
+		/**
+		 * Gets the criteria.
+		 *
+		 * @return the criteria
+		 */
 		public final EnumSet<SessionCriteria> getCriteria() {
 			return this.criteria;
 		}
 
+		/**
+		 * Sets the criteria.
+		 *
+		 * @param value the new criteria
+		 */
 		private void setCriteria(EnumSet<SessionCriteria> value) {
 			this.criteria = value;
 		}
 
-		/**
-		 * If a refresh should be forced even if we don't think the data is dirty
-		 */
+		/** If a refresh should be forced even if we don't think the data is dirty. */
 		private boolean force;
 
+		/**
+		 * Gets the force.
+		 *
+		 * @return the force
+		 */
 		public final boolean getForce() {
 			return this.force;
 		}
 
+		/**
+		 * Sets the force.
+		 *
+		 * @param value the new force
+		 */
 		private void setForce(boolean value) {
 			this.force = value;
 		}
@@ -128,10 +187,10 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Open a specific local repository
-	 * 
+	 * Open a specific local repository.
+	 *
 	 * @param productName The product name for operations in this repository
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 
 	public LocalRepository(String productName) throws IOException {
@@ -139,12 +198,12 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Open a specific local repository
+	 * Open a specific local repository.
 	 *
 	 * @param productName  The product name for operations in this repository
 	 * @param overridePath The path to use instead of the default path for the
 	 *                     repository
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public LocalRepository(String productName, String overridePath) throws IOException {
 		
@@ -233,7 +292,10 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Calculate the best path for the log folder and the repository
+	 * Calculate the best path for the log folder and the repository.
+	 *
+	 * @param productName the product name
+	 * @return the string
 	 */
 
 	public static String CalculateRepositoryPath(String productName) {
@@ -241,7 +303,11 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Calculate the best path for the log folder and the repository
+	 * Calculate the best path for the log folder and the repository.
+	 *
+	 * @param productName the product name
+	 * @param overridePath the override path
+	 * @return the string
 	 */
 	public static String calculateRepositoryPath(String productName, String overridePath) {
 		String repositoryFolder = PathManager.findBestPath(PathType.COLLECTION, overridePath);
@@ -260,7 +326,9 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Calculate the best path for the default
+	 * Calculate the best path for the default.
+	 *
+	 * @return the default repository path
 	 */
 	public static String getDefaultRepositoryPath() {
 		return PathManager.findBestPath(PathType.COLLECTION, null);
@@ -268,6 +336,8 @@ public class LocalRepository {
 
 	/**
 	 * A unique id for this repository.
+	 *
+	 * @return the id
 	 */
 	public final UUID getId() {
 		return this.repositoryId;
@@ -275,6 +345,8 @@ public class LocalRepository {
 
 	/**
 	 * Indicates if there are unsaved changes.
+	 *
+	 * @return true, if is dirty
 	 */
 	public final boolean isDirty() {
 		return false;
@@ -283,6 +355,8 @@ public class LocalRepository {
 	/**
 	 * Indicates if the repository is read only (sessions can't be added or
 	 * removed).
+	 *
+	 * @return true, if is read only
 	 */
 	public final boolean isReadOnly() {
 		return false;
@@ -290,6 +364,8 @@ public class LocalRepository {
 
 	/**
 	 * The unique name for this repository (typically the file name or URI).
+	 *
+	 * @return the name
 	 */
 	public final String getName() {
 		return this.repositoryPath;
@@ -297,6 +373,8 @@ public class LocalRepository {
 
 	/**
 	 * A short end-user caption to display for the repository.
+	 *
+	 * @return the caption
 	 */
 	public final String getCaption() {
 		return this.caption;
@@ -304,6 +382,8 @@ public class LocalRepository {
 
 	/**
 	 * An extended end-user description of the repository.
+	 *
+	 * @return the description
 	 */
 	public final String getDescription() {
 		return this.repositoryPath;
@@ -311,6 +391,8 @@ public class LocalRepository {
 
 	/**
 	 * Indicates if the repository supports fragment files or not. Most do.
+	 *
+	 * @return the supports fragments
 	 */
 	public final boolean getSupportsFragments() {
 		return true;
@@ -318,11 +400,11 @@ public class LocalRepository {
 
 	/**
 	 * Retrieve the ids of the sessions files known locally for the specified
-	 * session
-	 * 
-	 * @param sessionId
-	 * @return
-	 * @throws IOException
+	 * session.
+	 *
+	 * @param sessionId the session id
+	 * @return the session file ids
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final List<UUID> getSessionFileIds(UUID sessionId) throws IOException {
 		List<UUID> sessionFileIds = new ArrayList<UUID>();
@@ -354,24 +436,31 @@ public class LocalRepository {
 
 	/**
 	 * Indicates if the database should log operations to Gibraltar or not.
+	 *
+	 * @return true, if is logging enabled
 	 */
 	public final boolean isLoggingEnabled() {
 		return this.loggingEnabled;
 	}
 
+	/**
+	 * Sets the checks if is logging enabled.
+	 *
+	 * @param value the new checks if is logging enabled
+	 */
 	public final void setIsLoggingEnabled(boolean value) {
 		this.loggingEnabled = value;
 	}
 
 	/**
-	 * Get a generic stream for the contents of a session file
-	 * 
+	 * Get a generic stream for the contents of a session file.
+	 *
 	 * @param sessionId The unique Id of the session to retrieve the stream for.
 	 * @param fileId    The unique Id of the session file to retrieve the stream
 	 *                  for.
 	 * @return A stream that should be immediately copied and then disposed. If no
 	 *         file could be found with the provided Id an exception will be thrown.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final RandomAccessFile loadSessionFile(UUID sessionId, UUID fileId) throws IOException {
 		RandomAccessFile file = tryLoadSessionFile(sessionId, fileId);
@@ -384,11 +473,13 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Try to get a stream pointing to a live file
-	 * 
+	 * Try to get a stream pointing to a live file.
+	 *
+	 * @param sessionId the session id
+	 * @param fileId the file id
 	 * @return True if a file stream was found, false otherwise
-	 * @return A stream that should be immediately copied and then disposed.
-	 * @throws IOException
+	 * A stream that should be immediately copied and then disposed.
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final RandomAccessFile tryLoadSessionFile(UUID sessionId, UUID fileId) throws IOException {
 		ensureCacheLoaded();
@@ -414,9 +505,10 @@ public class LocalRepository {
 	/**
 	 * Find the session fragments in our local repository for the specified session
 	 * Id.
-	 * 
-	 * @param sessionId
-	 * @throws IOException
+	 *
+	 * @param sessionId the session id
+	 * @return the session file info
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final SessionFileInfo<File> loadSessionFiles(UUID sessionId) throws IOException {
 		ensureCacheLoaded();
@@ -431,27 +523,32 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Perform an immediate, synchronous refresh
-	 * 
-	 * @throws IOException
+	 * Perform an immediate, synchronous refresh.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void refresh() throws IOException {
 		refresh(false, true, EnumSet.of(SessionCriteria.ALL_SESSIONS));
 	}
 
 	/**
-	 * Update the local repository with the latest information from the file system
-	 * 
-	 * @throws IOException
+	 * Update the local repository with the latest information from the file system.
+	 *
+	 * @param async the async
+	 * @param force the force
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void refresh(boolean async, boolean force) throws IOException {
 		refresh(async, force, EnumSet.of(SessionCriteria.ALL_SESSIONS));
 	}
 
 	/**
-	 * Update the local repository with the latest information from the file system
-	 * 
-	 * @throws IOException
+	 * Update the local repository with the latest information from the file system.
+	 *
+	 * @param async the async
+	 * @param force the force
+	 * @param sessionCriteria the session criteria
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void refresh(boolean async, boolean force, EnumSet<SessionCriteria> sessionCriteria) throws IOException {
 		if (async) {
@@ -480,8 +577,8 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Remove a session from the repository and all folders by its Id
-	 * 
+	 * Remove a session from the repository and all folders by its Id.
+	 *
 	 * @param sessionId The unique Id of the session to be removed
 	 * @return True if a session existed and was removed, false otherwise. If no
 	 *         session is found with the specified Id then no exception is thrown.
@@ -490,7 +587,7 @@ public class LocalRepository {
 	 *         it exists) then an exception is thrown. The session will be removed
 	 *         from all folders that may reference it as well as user history and
 	 *         preferences.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final boolean remove(UUID sessionId) throws IOException {
 		synchronized (this.lock) {
@@ -517,8 +614,8 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Remove sessions from the repository and all folders by its Id
-	 * 
+	 * Remove sessions from the repository and all folders by its Id.
+	 *
 	 * @param sessionIds An array of the unique Ids of the sessions to be removed
 	 * @return True if a session existed and was removed, false otherwise. If no
 	 *         sessions are found with the specified Ids then no exception is
@@ -527,7 +624,7 @@ public class LocalRepository {
 	 *         more of the specified sessions (and it exists) then an exception is
 	 *         thrown. The sessions will be removed from all folders that may
 	 *         reference it as well as user history and preferences.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final boolean remove(List<UUID> sessionIds) throws IOException {
 		boolean fileRemoved = false;
@@ -538,8 +635,8 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Remove a session from the repository and all folders by its Id
-	 * 
+	 * Remove a session from the repository and all folders by its Id.
+	 *
 	 * @param sessionId The unique Id of the session to be removed
 	 * @param fileId    The unique Id of the session fragment to be removed
 	 * @return True if a session existed and was removed, false otherwise. If no
@@ -549,7 +646,7 @@ public class LocalRepository {
 	 *         it exists) then an exception is thrown. The session will be removed
 	 *         from all folders that may reference it as well as user history and
 	 *         preferences.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final boolean remove(UUID sessionId, UUID fileId) throws IOException {
 		synchronized (this.lock) {
@@ -582,12 +679,12 @@ public class LocalRepository {
 
 	/**
 	 * Find if session data (more than just the header information) exists for a
-	 * session with the provided Id
-	 * 
+	 * session with the provided Id.
+	 *
 	 * @param sessionId The unique Id of the session to be checked.
 	 * @return True if the repository has at least some session data in the
 	 *         repository, false otherwise.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final boolean sessionDataExists(UUID sessionId) throws IOException {
 		synchronized (this.lock) {
@@ -598,13 +695,13 @@ public class LocalRepository {
 
 	/**
 	 * Find if session data (more than just the header information) exists for a
-	 * session with the provided Id
-	 * 
+	 * session with the provided Id.
+	 *
 	 * @param sessionId The unique Id of the session to be checked.
 	 * @param fileId    The unique Id of the session fragment to be checked.
 	 * @return True if the repository has the indicated session fragment in the
 	 *         repository, false otherwise.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final boolean sessionDataExists(UUID sessionId, UUID fileId) throws IOException {
 		synchronized (this.lock) {
@@ -623,11 +720,11 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Find if a session exists with the provided Id
-	 * 
+	 * Find if a session exists with the provided Id.
+	 *
 	 * @param sessionId The unique Id of the session to be checked.
 	 * @return True if the session exists in the repository, false otherwise.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final boolean sessionExists(UUID sessionId) throws IOException {
 		synchronized (this.lock) {
@@ -637,12 +734,12 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Find if the session is running with the provided Id
-	 * 
+	 * Find if the session is running with the provided Id.
+	 *
 	 * @param sessionId The unique Id of the session to be checked.
 	 * @return True if the session exists in the repository and is running, false
 	 *         otherwise.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final boolean sessionIsRunning(UUID sessionId) throws IOException {
 		synchronized (this.lock) {
@@ -659,13 +756,13 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Set or clear the New flag for a sessions
-	 * 
+	 * Set or clear the New flag for a sessions.
+	 *
 	 * @param sessionId The session to affect
 	 * @param isNew     True to mark the sessions as new, false to mark them as not
 	 *                  new.
 	 * @return True if a session was changed, false otherwise.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final boolean setSessionNew(UUID sessionId, boolean isNew) throws IOException {
 		boolean modifiedAnyFile = false;
@@ -683,13 +780,13 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Set or clear the New flag for a list of sessions
-	 * 
+	 * Set or clear the New flag for a list of sessions.
+	 *
 	 * @param sessionIds The sessions to affect
 	 * @param isNew      True to mark the sessions as new, false to mark them as not
 	 *                   new.
 	 * @return True if a session was changed, false otherwise.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final boolean setSessionsNew(List<UUID> sessionIds, boolean isNew) throws IOException {
 		boolean modifiedAnyFile = false;
@@ -711,21 +808,20 @@ public class LocalRepository {
 	/**
 	 * Retrieves all the sessions that match the conditions defined by the specified
 	 * predicate.
-	 * 
-	 * @param match The <see cref="System.Predicate{T}">Predicate</see> delegate
+	 *
+	 * @param match The Predicate delegate
 	 *              that defines the conditions of the sessions to search for.
 	 * 
-	 *              The <see cref="System.Predicate{T}">Predicate</see> is a
+	 *              The Predicate is a
 	 *              delegate to a method that returns true if the object passed to
 	 *              it matches the conditions defined in the delegate. The sessions
 	 *              of the repository are individually passed to the
-	 *              <see cref="System.Predicate{T}">Predicate</see> delegate, moving
+	 *              Predicate delegate, moving
 	 *              forward in the List, starting with the first session and ending
 	 *              with the last session.
-	 * 
 	 * @return A List containing all the sessions that match the conditions defined
 	 *         by the specified predicate, if found; otherwise, an empty List.
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final ISessionSummaryCollection find(java.util.function.Predicate<ISessionSummary> match)
 			throws IOException {
@@ -759,6 +855,8 @@ public class LocalRepository {
 	 * The supplied collection is a binding list and supports update events for the
 	 * individual sessions and contents of the repository.
 	 * </p>
+	 *
+	 * @return the sessions
 	 */
 	public ISessionSummaryCollection getSessions() {
 		throw new UnsupportedOperationException(
@@ -766,7 +864,9 @@ public class LocalRepository {
 	}
 
 	/**
-	 * A temporary path within the repository that can be used to store working data
+	 * A temporary path within the repository that can be used to store working data.
+	 *
+	 * @return the temp path
 	 */
 	public final String getTempPath() {
 		return this.repositoryTempPath;
@@ -774,11 +874,10 @@ public class LocalRepository {
 
 	/**
 	 * Attempt to load the session header from the specified file, returning null if
-	 * it can't be loaded
-	 * 
+	 * it can't be loaded.
+	 *
 	 * @param sessionFileNamePath The full file name &amp; path
 	 * @return The session header, or null if it can't be loaded
-	 * @throws IOException
 	 */
 	public static SessionHeader loadSessionHeader(String sessionFileNamePath) {
 		SessionHeader header = null;
@@ -801,38 +900,46 @@ public class LocalRepository {
 	}
 
 	/**
-	 * The path on disk to the repository
+	 * The path on disk to the repository.
+	 *
+	 * @return the repository path
 	 */
 	public final Path getRepositoryPath() {
 		return this.repositoryPath != null ? Paths.get(this.repositoryPath) : null;
 	}
 
 	/**
-	 * The path on disk to the repository session locks
+	 * The path on disk to the repository session locks.
+	 *
+	 * @return the repository lock path
 	 */
 	protected final String getRepositoryLockPath() {
 		return this.sessionLockFolder;
 	}
 
 	/**
-	 * Called by the base class to refresh cached data
-	 * 
-	 * @param force
+	 * Called by the base class to refresh cached data.
+	 *
+	 * @param force the force
 	 */
 	protected void onRefresh(boolean force) {
 
 	}
 
 	/**
-	 * The current session cache
-	 * 
-	 * @throws IOException
+	 * The current session cache.
+	 *
+	 * @return the session cache
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	protected Map<UUID, SessionFileInfo<File>> getSessionCache() throws IOException {
 		ensureCacheLoaded();
 		return this.sessionCache;
 	}
 
+	/**
+	 * Async refresh.
+	 */
 	private void asyncRefresh() {
 		boolean exitSet = false;
 		try {
@@ -875,6 +982,13 @@ public class LocalRepository {
 		}
 	}
 
+	/**
+	 * Perform refresh.
+	 *
+	 * @param force the force
+	 * @param sessionCriteria the session criteria
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void performRefresh(boolean force, EnumSet<SessionCriteria> sessionCriteria) throws IOException {
 		if (force) {
 			updateCache(sessionCriteria);
@@ -885,6 +999,11 @@ public class LocalRepository {
 		onRefresh(force);
 	}
 
+	/**
+	 * Ensure cache loaded.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void ensureCacheLoaded() throws IOException {
 		synchronized (this.lock) {
 			if (this.sessionCache == null) {
@@ -893,6 +1012,9 @@ public class LocalRepository {
 		}
 	}
 
+	/**
+	 * Invalidate cache.
+	 */
 	private void invalidateCache() {
 		synchronized (this.lock) {
 			this.sessionCache = null;
@@ -901,11 +1023,11 @@ public class LocalRepository {
 
 	/**
 	 * Finds the specified file fragment in the provided session if it exists.
-	 * 
-	 * @param fileId
-	 * @param sessionFileInfo
-	 * @return
-	 * @throws IOException
+	 *
+	 * @param sessionFileInfo the session file info
+	 * @param fileId the file id
+	 * @return the file
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private static File findFragment(SessionFileInfo<File> sessionFileInfo, UUID fileId) throws IOException {
 		File file = null;
@@ -920,15 +1042,21 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Immediately update the cache from disk
-	 * 
-	 * @throws IOException
+	 * Immediately update the cache from disk.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 
 	protected final void updateCache() throws IOException {
 		updateCache(EnumSet.of(SessionCriteria.ALL_SESSIONS));
 	}
 
+	/**
+	 * Update cache.
+	 *
+	 * @param sessionCriteria the session criteria
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	protected final void updateCache(EnumSet<SessionCriteria> sessionCriteria) throws IOException {
 		synchronized (this.lock) {
 			Map<UUID, SessionFileInfo<File>> newSessionCache = loadSessions(sessionCriteria);
@@ -938,10 +1066,11 @@ public class LocalRepository {
 
 	/**
 	 * Scan the repository directory for all of the log files for this repository an
-	 * build an index on the fly
-	 * 
+	 * build an index on the fly.
+	 *
+	 * @param sessionCriteria the session criteria
 	 * @return A new index of the sessions in the folder
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private Map<UUID, SessionFileInfo<File>> loadSessions(EnumSet<SessionCriteria> sessionCriteria) throws IOException {
 		if (this.loggingEnabled) {
@@ -988,13 +1117,12 @@ public class LocalRepository {
 	}
 
 	/**
-	 * 
-	 * 
-	 * @param directory
-	 * @param sessions
-	 * @param crashConversionCandidates
-	 * @param isNew
-	 * @throws IOException
+	 * Load sessions from directory.
+	 *
+	 * @param directory the directory
+	 * @param sessions the sessions
+	 * @param crashConversionCandidates the crash conversion candidates
+	 * @param isNew the is new
 	 */
 	private void loadSessionsFromDirectory(String directory, HashMap<UUID, SessionFileInfo<File>> sessions,
 			HashMap<UUID, SessionFileInfo<File>> crashConversionCandidates, boolean isNew) {
@@ -1054,11 +1182,11 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Indicates if the current session is running
-	 * 
-	 * @param sessionId
-	 * @return
-	 * @throws IOException
+	 * Indicates if the current session is running.
+	 *
+	 * @param sessionId the session id
+	 * @return true, if is session running
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private boolean isSessionRunning(UUID sessionId) throws IOException {
 		// this method is faster than actually acquiring the lock
@@ -1073,10 +1201,9 @@ public class LocalRepository {
 	/**
 	 * Checks a running session to see if it should be converted to a crashed
 	 * session, and if so converts it.
-	 * 
+	 *
 	 * @param session The full set of session information
 	 * @return True if it was changed, false otherwise.
-	 * @throws IOException
 	 */
 	private boolean checkAndPerformCrashedSessionConversion(SessionFileInfo<File> session) {
 		boolean haveChanges = false;
@@ -1154,24 +1281,23 @@ public class LocalRepository {
 	}
 
 	/**
-	 * Get the current running session lock
-	 * 
-	 * @param sessionId
+	 * Get the current running session lock.
+	 *
+	 * @param sessionId the session id
 	 * @return Null if the lock couldn't be acquired, the InterprocessLock otherwise
-	 * @throws IOException
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private InterprocessLock getRunningSessionLock(UUID sessionId) throws IOException {
 		return InterprocessLockManager.getInstance().lock(this, this.sessionLockFolder, sessionId.toString(), 0, true);
 	}
 
 	/**
-	 * Changes the new status of a single session
-	 * 
-	 * @param destinationDirectory
-	 * @param sessionId
-	 * @param isNew
-	 * @return
-	 * @throws IOException
+	 * Changes the new status of a single session.
+	 *
+	 * @param destinationDirectory the destination directory
+	 * @param sessionId the session id
+	 * @param isNew the is new
+	 * @return true, if successful
 	 */
 	private boolean setSessionNew(String destinationDirectory, UUID sessionId, boolean isNew) {
 		boolean modifiedAnyFile = false;

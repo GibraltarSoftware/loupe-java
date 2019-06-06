@@ -36,6 +36,7 @@ import com.onloupe.model.system.ApplicationType;
 import com.onloupe.model.system.OSBootMode;
 import com.onloupe.model.system.Version;
 
+
 /**
  * Summary information about the entire session.
  * 
@@ -53,15 +54,31 @@ public class SessionSummary implements ISessionSummary {
 	 */
 	public static final String UNKNOWN_APPLICATION = "Unknown Application";
 
+	/** The is live. */
 	private boolean isLive;
+	
+	/** The packet. */
 	private SessionSummaryPacket packet;
+	
+	/** The critical count. */
 	private int criticalCount;
+	
+	/** The error count. */
 	private int errorCount;
+	
+	/** The warning count. */
 	private int warningCount;
+	
+	/** The message count. */
 	private int messageCount;
+	
+	/** The session status. */
 	volatile private SessionStatus sessionStatus;
+	
+	/** The agent app type. */
 	private ApplicationType agentAppType;
 
+	/** The privacy enabled. */
 	private boolean privacyEnabled;
 
 	/**
@@ -70,7 +87,9 @@ public class SessionSummary implements ISessionSummary {
 	 * 
 	 * This constructor figures out all of the summary information when invoked,
 	 * which can take a moment.
-	 * @throws IOException 
+	 *
+	 * @param configuration the configuration
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public SessionSummary(AgentConfiguration configuration) throws IOException {
 		this.isLive = true;
@@ -254,6 +273,11 @@ public class SessionSummary implements ISessionSummary {
 		this.packet.setCaption(this.packet.getApplicationName());
 	}
 
+	/**
+	 * Instantiates a new session summary.
+	 *
+	 * @param packet the packet
+	 */
 	public SessionSummary(SessionSummaryPacket packet) {
 		if (packet == null) {
 			throw new NullPointerException("packet");
@@ -266,6 +290,12 @@ public class SessionSummary implements ISessionSummary {
 	/**
 	 * Overrides the native recorded product and application information with the
 	 * specified values to reflect the server rules.
+	 *
+	 * @param productName the product name
+	 * @param applicationName the application name
+	 * @param applicationVersion the application version
+	 * @param environmentName the environment name
+	 * @param promotionLevelName the promotion level name
 	 */
 	public final void applyMappingOverrides(String productName, String applicationName, Version applicationVersion,
 			String environmentName, String promotionLevelName) {
@@ -279,7 +309,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The unique Id of the session
+	 * The unique Id of the session.
+	 *
+	 * @return the id
 	 */
 	@Override
 	public final UUID getId() {
@@ -287,7 +319,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The link to this item on the server
+	 * The link to this item on the server.
+	 *
+	 * @return the uri
 	 */
 	@Override
 	public final URI getUri() {
@@ -295,7 +329,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * Indicates if the session has ever been viewed or exported
+	 * Indicates if the session has ever been viewed or exported.
+	 *
+	 * @return true, if is new
 	 */
 	@Override
 	public final boolean isNew() {
@@ -304,7 +340,9 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * Indicates if all of the session data is stored that is expected to be
-	 * available
+	 * available.
+	 *
+	 * @return true, if is complete
 	 */
 	@Override
 	public final boolean isComplete() {
@@ -317,6 +355,8 @@ public class SessionSummary implements ISessionSummary {
 	 * The session summary can be transfered separately from the session details and
 	 * isn't subject to pruning so it may be around long before or after the
 	 * detailed data is.
+	 *
+	 * @return the checks for data
 	 */
 	@Override
 	public final boolean getHasData() {
@@ -325,6 +365,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The unique Id of the local computer.
+	 *
+	 * @return the computer id
 	 */
 	@Override
 	public final UUID getComputerId() {
@@ -332,7 +374,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The display caption of the time zone where the session was recorded
+	 * The display caption of the time zone where the session was recorded.
+	 *
+	 * @return the time zone caption
 	 */
 	@Override
 	public final String getTimeZoneCaption() {
@@ -340,7 +384,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The date and time the session started
+	 * The date and time the session started.
+	 *
+	 * @return the start date time
 	 */
 	@Override
 	public final OffsetDateTime getStartDateTime() {
@@ -348,7 +394,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The date and time the session started
+	 * The date and time the session started.
+	 *
+	 * @return the display start date time
 	 */
 	@Override
 	public final OffsetDateTime getDisplayStartDateTime() {
@@ -356,7 +404,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The date and time the session ended or was last confirmed running
+	 * The date and time the session ended or was last confirmed running.
+	 *
+	 * @return the end date time
 	 */
 	@Override
 	public final OffsetDateTime getEndDateTime() {
@@ -368,13 +418,20 @@ public class SessionSummary implements ISessionSummary {
 		return this.packet.getEndDateTime();
 	}
 
+	/**
+	 * Sets the end date time.
+	 *
+	 * @param value the new end date time
+	 */
 	public final void setEndDateTime(OffsetDateTime value) {
 		this.packet.setEndDateTime(value);
 	}
 
 	/**
 	 * The date and time the session ended or was last confirmed running in the time
-	 * zone the user has requested for display
+	 * zone the user has requested for display.
+	 *
+	 * @return the display end date time
 	 */
 	@Override
 	public final OffsetDateTime getDisplayEndDateTime() {
@@ -384,6 +441,8 @@ public class SessionSummary implements ISessionSummary {
 	/**
 	 * The time range between the start and end of this session, or the last message
 	 * logged if the session ended unexpectedly.
+	 *
+	 * @return the duration
 	 */
 	@Override
 	public final Duration getDuration() {
@@ -391,7 +450,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The date and time the session was added to the repository
+	 * The date and time the session was added to the repository.
+	 *
+	 * @return the added date time
 	 */
 	@Override
 	public final OffsetDateTime getAddedDateTime() {
@@ -400,7 +461,9 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The date and time the session was added to the repository in the time zone
-	 * the user has requested for display
+	 * the user has requested for display.
+	 *
+	 * @return the display added date time
 	 */
 	@Override
 	public final OffsetDateTime getDisplayAddedDateTime() {
@@ -408,7 +471,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The date and time the session was added to the repository
+	 * The date and time the session was added to the repository.
+	 *
+	 * @return the updated date time
 	 */
 	@Override
 	public final OffsetDateTime getUpdatedDateTime() {
@@ -417,7 +482,9 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The date and time the session header was last updated locally in the time
-	 * zone the user has requested for display
+	 * zone the user has requested for display.
+	 *
+	 * @return the display updated date time
 	 */
 	@Override
 	public final OffsetDateTime getDisplayUpdatedDateTime() {
@@ -428,6 +495,8 @@ public class SessionSummary implements ISessionSummary {
 	 * The time range between the start and end of this session, or the last message
 	 * logged if the session ended unexpectedly. Formatted as a string in HH:MM:SS
 	 * format.
+	 *
+	 * @return the duration short
 	 */
 	public final String getDurationShort() {
 		String formattedDuration;
@@ -450,13 +519,20 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * A display caption for the session
+	 * A display caption for the session.
+	 *
+	 * @return the caption
 	 */
 	@Override
 	public final String getCaption() {
 		return this.packet.getCaption();
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	public final void setCaption(String value) {
 		if (!this.packet.getCaption().equals(value)) {
 			this.packet.setCaption(value);
@@ -464,7 +540,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The product name of the application that recorded the session
+	 * The product name of the application that recorded the session.
+	 *
+	 * @return the product
 	 */
 	@Override
 	public final String getProduct() {
@@ -472,7 +550,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The title of the application that recorded the session
+	 * The title of the application that recorded the session.
+	 *
+	 * @return the application
 	 */
 	@Override
 	public final String getApplication() {
@@ -486,6 +566,8 @@ public class SessionSummary implements ISessionSummary {
 	 * the hosting environment. If a value is provided it will be carried with the
 	 * session data to upstream servers and clients. If the corresponding entry does
 	 * not exist it will be automatically created.
+	 *
+	 * @return the environment
 	 */
 	@Override
 	public final String getEnvironment() {
@@ -500,6 +582,8 @@ public class SessionSummary implements ISessionSummary {
 	 * value is provided it will be carried with the session data to upstream
 	 * servers and clients. If the corresponding entry does not exist it will be
 	 * automatically created.
+	 *
+	 * @return the promotion level
 	 */
 	@Override
 	public final String getPromotionLevel() {
@@ -509,6 +593,8 @@ public class SessionSummary implements ISessionSummary {
 	/**
 	 * The type of process the application ran as (as declared or detected for
 	 * recording). (See AgentAppType for internal Agent use.)
+	 *
+	 * @return the application type
 	 */
 	@Override
 	public final ApplicationType getApplicationType() {
@@ -517,6 +603,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The type of process the application ran as (as seen by the Agent internally).
+	 *
+	 * @return the agent app type
 	 */
 	public final ApplicationType getAgentAppType() {
 		return this.agentAppType;
@@ -524,6 +612,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The description of the application from its manifest.
+	 *
+	 * @return the application description
 	 */
 	@Override
 	public final String getApplicationDescription() {
@@ -531,7 +621,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The version of the application that recorded the session
+	 * The version of the application that recorded the session.
+	 *
+	 * @return the application version
 	 */
 	@Override
 	public final Version getApplicationVersion() {
@@ -539,7 +631,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The version of the Gibraltar Agent used to monitor the session
+	 * The version of the Gibraltar Agent used to monitor the session.
+	 *
+	 * @return the agent version
 	 */
 	@Override
 	public final Version getAgentVersion() {
@@ -550,6 +644,8 @@ public class SessionSummary implements ISessionSummary {
 	 * The host name / NetBIOS name of the computer that recorded the session
 	 * 
 	 * Does not include the domain name portion of the fully qualified DNS name.
+	 *
+	 * @return the host name
 	 */
 	@Override
 	public final String getHostName() {
@@ -560,6 +656,8 @@ public class SessionSummary implements ISessionSummary {
 	 * The DNS domain name of the computer that recorded the session. May be empty.
 	 * 
 	 * Does not include the host name portion of the fully qualified DNS name.
+	 *
+	 * @return the dns domain name
 	 */
 	@Override
 	public final String getDnsDomainName() {
@@ -568,6 +666,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The fully qualified user name of the user the application was run as.
+	 *
+	 * @return the fully qualified user name
 	 */
 	@Override
 	public final String getFullyQualifiedUserName() {
@@ -575,7 +675,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The user Id that was used to run the session
+	 * The user Id that was used to run the session.
+	 *
+	 * @return the user name
 	 */
 	@Override
 	public final String getUserName() {
@@ -583,7 +685,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The domain of the user id that was used to run the session
+	 * The domain of the user id that was used to run the session.
+	 *
+	 * @return the user domain name
 	 */
 	@Override
 	public final String getUserDomainName() {
@@ -592,7 +696,9 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The version information of the installed operating system (without service
-	 * pack or patches)
+	 * pack or patches).
+	 *
+	 * @return the OS version
 	 */
 	@Override
 	public final Version getOSVersion() {
@@ -601,6 +707,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The operating system service pack, if any.
+	 *
+	 * @return the OS service pack
 	 */
 	@Override
 	public final String getOSServicePack() {
@@ -608,7 +716,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The culture name of the underlying operating system installation
+	 * The culture name of the underlying operating system installation.
+	 *
+	 * @return the OS culture name
 	 */
 	@Override
 	public final String getOSCultureName() {
@@ -617,6 +727,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The processor architecture of the operating system.
+	 *
+	 * @return the OS architecture
 	 */
 	@Override
 	public final ProcessorArchitecture getOSArchitecture() {
@@ -625,6 +737,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The boot mode of the operating system.
+	 *
+	 * @return the OS boot mode
 	 */
 	@Override
 	public final OSBootMode getOSBootMode() {
@@ -632,7 +746,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The OS Platform code, nearly always 1 indicating Windows NT
+	 * The OS Platform code, nearly always 1 indicating Windows NT.
+	 *
+	 * @return the OS platform code
 	 */
 	@Override
 	public final int getOSPlatformCode() {
@@ -642,6 +758,8 @@ public class SessionSummary implements ISessionSummary {
 	/**
 	 * The OS product type code, used to differentiate specific editions of various
 	 * operating systems.
+	 *
+	 * @return the OS product type
 	 */
 	@Override
 	public final int getOSProductType() {
@@ -651,6 +769,8 @@ public class SessionSummary implements ISessionSummary {
 	/**
 	 * The OS Suite Mask, used to differentiate specific editions of various
 	 * operating systems.
+	 *
+	 * @return the OS suite mask
 	 */
 	@Override
 	public final int getOSSuiteMask() {
@@ -660,6 +780,8 @@ public class SessionSummary implements ISessionSummary {
 	/**
 	 * The well known operating system family name, like Windows Vista or Windows
 	 * Server 2003.
+	 *
+	 * @return the OS family name
 	 */
 	@Override
 	public final String getOSFamilyName() {
@@ -669,6 +791,8 @@ public class SessionSummary implements ISessionSummary {
 	/**
 	 * The edition of the operating system without the family name, such as
 	 * Workstation or Standard Server.
+	 *
+	 * @return the OS edition name
 	 */
 	@Override
 	public final String getOSEditionName() {
@@ -676,7 +800,9 @@ public class SessionSummary implements ISessionSummary {
 	}
 
 	/**
-	 * The well known OS name and edition name
+	 * The well known OS name and edition name.
+	 *
+	 * @return the OS full name
 	 */
 	@Override
 	public final String getOSFullName() {
@@ -685,7 +811,9 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The well known OS name, edition name, and service pack like Windows XP
-	 * Professional Service Pack 3
+	 * Professional Service Pack 3.
+	 *
+	 * @return the OS full name with service pack
 	 */
 	@Override
 	public final String getOSFullNameWithServicePack() {
@@ -694,6 +822,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The version of the .NET runtime that the application domain is running as.
+	 *
+	 * @return the runtime version
 	 */
 	@Override
 	public final Version getRuntimeVersion() {
@@ -702,6 +832,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The processor architecture the process is running as.
+	 *
+	 * @return the runtime architecture
 	 */
 	@Override
 	public final ProcessorArchitecture getRuntimeArchitecture() {
@@ -710,6 +842,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The current application culture name.
+	 *
+	 * @return the current culture name
 	 */
 	@Override
 	public final String getCurrentCultureName() {
@@ -718,6 +852,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The current user interface culture name.
+	 *
+	 * @return the current UI culture name
 	 */
 	@Override
 	public final String getCurrentUICultureName() {
@@ -726,6 +862,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The number of megabytes of installed memory in the host computer.
+	 *
+	 * @return the memory MB
 	 */
 	@Override
 	public final int getMemoryMB() {
@@ -734,6 +872,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The number of physical processor sockets in the host computer.
+	 *
+	 * @return the processors
 	 */
 	@Override
 	public final int getProcessors() {
@@ -742,6 +882,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The total number of processor cores in the host computer.
+	 *
+	 * @return the processor cores
 	 */
 	@Override
 	public final int getProcessorCores() {
@@ -750,6 +892,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * Indicates if the session was run in a user interactive mode.
+	 *
+	 * @return the user interactive
 	 */
 	@Override
 	public final boolean getUserInteractive() {
@@ -759,6 +903,8 @@ public class SessionSummary implements ISessionSummary {
 	/**
 	 * Indicates if the session was run through terminal server. Only applies to
 	 * User Interactive sessions.
+	 *
+	 * @return the terminal server
 	 */
 	@Override
 	public final boolean getTerminalServer() {
@@ -767,6 +913,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The number of pixels wide of the virtual desktop.
+	 *
+	 * @return the screen width
 	 */
 	@Override
 	public final int getScreenWidth() {
@@ -775,6 +923,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The number of pixels tall for the virtual desktop.
+	 *
+	 * @return the screen height
 	 */
 	@Override
 	public final int getScreenHeight() {
@@ -783,6 +933,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The number of bits of color depth.
+	 *
+	 * @return the color depth
 	 */
 	@Override
 	public final int getColorDepth() {
@@ -791,6 +943,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The complete command line used to execute the process including arguments.
+	 *
+	 * @return the command line
 	 */
 	@Override
 	public final String getCommandLine() {
@@ -799,12 +953,19 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * The final status of the session.
+	 *
+	 * @return the status
 	 */
 	@Override
 	public final SessionStatus getStatus() {
 		return this.sessionStatus;
 	}
 
+	/**
+	 * Sets the status.
+	 *
+	 * @param value the new status
+	 */
 	public final void setStatus(SessionStatus value) {
 		this.sessionStatus = value;
 	}
@@ -817,12 +978,19 @@ public class SessionSummary implements ISessionSummary {
 	 * of the latest file loaded are used. This means the count of items may exceed
 	 * the actual number of matching messages in the messages collection if earlier
 	 * files are missing.
+	 *
+	 * @return the message count
 	 */
 	@Override
 	public final int getMessageCount() {
 		return this.messageCount;
 	}
 
+	/**
+	 * Sets the message count.
+	 *
+	 * @param value the new message count
+	 */
 	public final void setMessageCount(int value) {
 		this.messageCount = value;
 	}
@@ -835,12 +1003,19 @@ public class SessionSummary implements ISessionSummary {
 	 * of the latest file loaded are used. This means the count of items may exceed
 	 * the actual number of matching messages in the messages collection if earlier
 	 * files are missing.
+	 *
+	 * @return the critical count
 	 */
 	@Override
 	public final int getCriticalCount() {
 		return this.criticalCount;
 	}
 
+	/**
+	 * Sets the critical count.
+	 *
+	 * @param value the new critical count
+	 */
 	public final void setCriticalCount(int value) {
 		this.criticalCount = value;
 	}
@@ -853,12 +1028,19 @@ public class SessionSummary implements ISessionSummary {
 	 * of the latest file loaded are used. This means the count of items may exceed
 	 * the actual number of matching messages in the messages collection if earlier
 	 * files are missing.
+	 *
+	 * @return the error count
 	 */
 	@Override
 	public final int getErrorCount() {
 		return this.errorCount;
 	}
 
+	/**
+	 * Sets the error count.
+	 *
+	 * @param value the new error count
+	 */
 	public final void setErrorCount(int value) {
 		this.errorCount = value;
 	}
@@ -871,18 +1053,27 @@ public class SessionSummary implements ISessionSummary {
 	 * of the latest file loaded are used. This means the count of items may exceed
 	 * the actual number of matching messages in the messages collection if earlier
 	 * files are missing.
+	 *
+	 * @return the warning count
 	 */
 	@Override
 	public final int getWarningCount() {
 		return this.warningCount;
 	}
 
+	/**
+	 * Sets the warning count.
+	 *
+	 * @param value the new warning count
+	 */
 	public final void setWarningCount(int value) {
 		this.warningCount = value;
 	}
 
 	/**
 	 * A collection of application specific properties.
+	 *
+	 * @return the properties
 	 */
 	@Override
 	public final Map<String, String> getProperties() {
@@ -891,8 +1082,8 @@ public class SessionSummary implements ISessionSummary {
 
 	/**
 	 * Generates a reasonable default caption for the provided session that has no
-	 * caption
-	 * 
+	 * caption.
+	 *
 	 * @param sessionSummary The session summary object to generate a default
 	 *                       caption for
 	 * @return The default caption
@@ -919,17 +1110,27 @@ public class SessionSummary implements ISessionSummary {
 		return defaultCaption;
 	}
 
+	/**
+	 * Gets the packet.
+	 *
+	 * @return the packet
+	 */
 	public final SessionSummaryPacket getPacket() {
 		return this.packet;
 	}
 
+	/**
+	 * Gets the privacy enabled.
+	 *
+	 * @return the privacy enabled
+	 */
 	public final boolean getPrivacyEnabled() {
 		return this.privacyEnabled;
 	}
 
 	/**
-	 * Inspect the provided packet to update relevant statistics
-	 * 
+	 * Inspect the provided packet to update relevant statistics.
+	 *
 	 * @param packet A Log message packet to count
 	 */
 	public final void updateMessageStatistics(LogMessagePacket packet) {
@@ -963,12 +1164,24 @@ public class SessionSummary implements ISessionSummary {
 		this.warningCount = 0;
 	}
 
+	/**
+	 * Gets the agent version safe.
+	 *
+	 * @return the agent version safe
+	 */
 	private static Version getAgentVersionSafe() {
 		Version version = new Version(4, 0);
 
 		return version;
 	}
 
+	/**
+	 * Gets the computer id safe.
+	 *
+	 * @param product the product
+	 * @param configuration the configuration
+	 * @return the computer id safe
+	 */
 	private static UUID getComputerIdSafe(String product, AgentConfiguration configuration) {
 		UUID computerId = null; // we can't fail, this is a good default value since upstream items will treat
 								// it as a "don't know"
@@ -1013,6 +1226,9 @@ public class SessionSummary implements ISessionSummary {
 		return computerId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.session.ISessionSummary#isLive()
+	 */
 	@Override
 	public boolean isLive() {
 		return isLive;

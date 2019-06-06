@@ -13,12 +13,27 @@ import com.onloupe.core.serialization.monitor.IDisplayable;
 import com.onloupe.core.serialization.monitor.ThreadInfoPacket;
 import com.onloupe.core.util.TypeUtils;
 
+
+/**
+ * The Class ThreadInfo.
+ */
 public class ThreadInfo extends Observable implements IDisplayable {
+	
+	/** The packet. */
 	private ThreadInfoPacket packet;
+	
+	/** The thread instance. */
 	private volatile int threadInstance; // Used to distinguish threads with the same name.
+	
+	/** The caption. */
 	private volatile String caption;
+	
+	/** The description. */
 	private volatile String description;
 
+	/**
+	 * Instantiates a new thread info.
+	 */
 	public ThreadInfo() {
 		this.packet = new ThreadInfoPacket();
 		this.packet.setThreadIndex(ThreadToken.getCurrentThreadIndex()); // Each ThreadInfo we create gets a unique
@@ -32,10 +47,20 @@ public class ThreadInfo extends Observable implements IDisplayable {
 		// pass through
 	}
 
+	/**
+	 * Instantiates a new thread info.
+	 *
+	 * @param packet the packet
+	 */
 	public ThreadInfo(ThreadInfoPacket packet) {
 		this.packet = packet;
 	}
 
+	/**
+	 * Instantiates a new thread info.
+	 *
+	 * @param threadName the thread name
+	 */
 	public ThreadInfo(String threadName) {		
 		this.packet = new ThreadInfoPacket();
 		this.packet.setThreadIndex(ThreadToken.getCurrentThreadIndex());
@@ -52,6 +77,12 @@ public class ThreadInfo extends Observable implements IDisplayable {
 		}
 	}
 	
+	/**
+	 * Instantiates a new thread info.
+	 *
+	 * @param threadId the thread id
+	 * @param threadName the thread name
+	 */
 	public ThreadInfo(long threadId, String threadName) {
 		this.packet = new ThreadInfoPacket();
 		this.packet.setThreadIndex(ThreadToken.getCurrentThreadIndex());
@@ -59,6 +90,9 @@ public class ThreadInfo extends Observable implements IDisplayable {
 		this.packet.setThreadName(threadName);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.IDisplayable#getCaption()
+	 */
 	@Override
 	public final String getCaption() {
 		if (this.caption == null) {
@@ -79,6 +113,9 @@ public class ThreadInfo extends Observable implements IDisplayable {
 		return this.caption;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.IDisplayable#getDescription()
+	 */
 	@Override
 	public final String getDescription() {
 		if (this.description == null) {
@@ -107,25 +144,47 @@ public class ThreadInfo extends Observable implements IDisplayable {
 		return this.description;
 	}
 
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public final UUID getId() {
 		return this.packet.getID();
 	}
 
+	/**
+	 * Gets the thread id.
+	 *
+	 * @return the thread id
+	 */
 	public final long getThreadId() {
 		return this.packet.getThreadId();
 	}
 
+	/**
+	 * Gets the thread index.
+	 *
+	 * @return the thread index
+	 */
 	public final long getThreadIndex() {
 		return this.packet.getThreadIndex();
 	}
 
 	/**
-	 * A uniquifier for display purposes (set by Analyst)
+	 * A uniquifier for display purposes (set by Analyst).
+	 *
+	 * @return the thread instance
 	 */
 	public final int getThreadInstance() {
 		return this.threadInstance;
 	}
 
+	/**
+	 * Sets the thread instance.
+	 *
+	 * @param value the new thread instance
+	 */
 	public final void setThreadInstance(int value) {
 		if (this.threadInstance != value) {
 			this.threadInstance = value;
@@ -134,10 +193,20 @@ public class ThreadInfo extends Observable implements IDisplayable {
 		}
 	}
 
+	/**
+	 * Gets the thread name.
+	 *
+	 * @return the thread name
+	 */
 	public final String getThreadName() {
 		return this.packet.getThreadName();
 	}
 
+	/**
+	 * Sets the thread name.
+	 *
+	 * @param value the new thread name
+	 */
 	public final void setThreadName(String value) {
 		if (!this.packet.getThreadName().equals(value)) {
 			this.packet.setThreadName(value);
@@ -147,22 +216,47 @@ public class ThreadInfo extends Observable implements IDisplayable {
 		}
 	}
 
+	/**
+	 * Gets the domain id.
+	 *
+	 * @return the domain id
+	 */
 	public final int getDomainId() {
 		return this.packet.getDomainId();
 	}
 
+	/**
+	 * Gets the domain name.
+	 *
+	 * @return the domain name
+	 */
 	public final String getDomainName() {
 		return this.packet.getDomainName();
 	}
 
+	/**
+	 * Checks if is background.
+	 *
+	 * @return true, if is background
+	 */
 	public final boolean isBackground() {
 		return this.packet.isBackground();
 	}
 
+	/**
+	 * Checks if is thread pool thread.
+	 *
+	 * @return true, if is thread pool thread
+	 */
 	public final boolean isThreadPoolThread() {
 		return this.packet.isThreadPoolThread();
 	}
 
+	/**
+	 * Gets the packet.
+	 *
+	 * @return the packet
+	 */
 	public final ThreadInfoPacket getPacket() {
 		return this.packet;
 	}
@@ -171,6 +265,8 @@ public class ThreadInfo extends Observable implements IDisplayable {
 	 * Is the thread this instance is about still active in memory? Only legitimate
 	 * within the session where the thread was running. Do not query this for
 	 * playback outside the original running session.
+	 *
+	 * @return true, if is still alive
 	 */
 	public final boolean isStillAlive() {
 		return ThreadToken.isThreadStillAlive(getThreadIndex());
@@ -201,6 +297,11 @@ public class ThreadInfo extends Observable implements IDisplayable {
 		return ThreadToken.getCurrentThreadIndex();
 	}
 
+	/**
+	 * Send property changed.
+	 *
+	 * @param propertyName the property name
+	 */
 	private void sendPropertyChanged(String propertyName) {
 		setChanged();
 		notifyObservers(new PropertyChangedEventArgs(propertyName));
@@ -305,16 +406,26 @@ public class ThreadInfo extends Observable implements IDisplayable {
 	 * A class to help detect when a managed thread no longer exists.
 	 */
 	private static class ThreadToken {
+		
+		/** The t thread token. */
 		private static ThreadLocal<ThreadToken> tThreadToken = new ThreadLocal<>();
 
+		/** The latest thread index. */
 		private static AtomicInteger latestThreadIndex = new AtomicInteger();
+		
+		/** The Constant threadTokenMap. */
 		private static final Map<Long, WeakReference> threadTokenMap = new HashMap<Long, WeakReference>();
+		
+		/** The Constant mapLock. */
 		private static final Object mapLock = new Object(); // Lock for ThreadTokenMap.
 
+		/** The Thread index. */
 		private long _ThreadIndex;
 
 		/**
 		 * This class can not be instantiated elsewhere.
+		 *
+		 * @param threadIndex the thread index
 		 */
 		private ThreadToken(long threadIndex) {
 			this._ThreadIndex = threadIndex;
@@ -322,6 +433,8 @@ public class ThreadInfo extends Observable implements IDisplayable {
 
 		/**
 		 * Get the unique-within-this-session ThreadIndex value.
+		 *
+		 * @return the thread index
 		 */
 		private long getThreadIndex() {
 			return this._ThreadIndex;

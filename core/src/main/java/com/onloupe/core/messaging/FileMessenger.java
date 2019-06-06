@@ -26,49 +26,92 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
+
+/**
+ * The Class FileMessenger.
+ */
 public class FileMessenger extends MessengerBase {
+	
+	/** The Constant LOG_CATEGORY. */
 	private static final String LOG_CATEGORY = MessengerBase.LOG_CATEGORY + ".File Messenger";
 
+	/** The Constant LOG_EXTENSION. */
 	public static final String LOG_EXTENSION = "glf";
+	
+	/** The Constant PACKAGE_EXTENSION. */
 	public static final String PACKAGE_EXTENSION = "glp";
+	
+	/** The Constant SESSION_LOCK_FOLDER_NAME. */
 	public static final String SESSION_LOCK_FOLDER_NAME = "RunningSessions";
 
+	/** The Constant _RandomGenerator. */
 	private static final Random _RandomGenerator = new Random(); // static is important so multiple instances created
 																	// close together get different values
 
-	private boolean closed;
+	/** The closed. */
+																	private boolean closed;
 	
+	/** The repository folder. */
 	private String repositoryFolder;
+	
+	/** The session lock folder. */
 	private String sessionLockFolder;
+	
+	/** The current session file. */
 	private int currentSessionFile;
+	
+	/** The file expiration. */
 	private LocalDateTime fileExpiration = LocalDateTime.MIN;
 
+	/** The current file. */
 	private RandomAccessFile currentFile;
+	
+	/** The current serializer. */
 	private GLFWriter currentSerializer;
+	
+	/** The maintainer. */
 	private RepositoryMaintenance maintainer;
+	
+	/** The session file lock. */
 	private InterprocessLock sessionFileLock;
 
+	/** The max local disk usage. */
 	private int maxLocalDiskUsage;
+	
+	/** The max local file age. */
 	private int maxLocalFileAge;
+	
+	/** The max file size bytes. */
 	private long maxFileSizeBytes;
+	
+	/** The max log duration seconds. */
 	private long maxLogDurationSeconds;
+	
+	/** The repository maintenance enabled. */
 	private boolean repositoryMaintenanceEnabled;
+	
+	/** The repository maintenance requested. */
 	private boolean repositoryMaintenanceRequested;
+	
+	/** The repository maintenance scheduled date time. */
 	private OffsetDateTime repositoryMaintenanceScheduledDateTime; // once maintenance has been requested, when we will
 																	// do it.
 
-	public FileMessenger() {
+	/**
+																	 * Instantiates a new file messenger.
+																	 */
+																	public FileMessenger() {
 		super("File", true);
 
 	}
 
 	/**
 	 * Creates the appropriate start of a session file name for a
-	 * product/application
-	 * 
-	 * @param productName
-	 * @param applicationName
-	 * @return
+	 * product/application.
+	 *
+	 * @param productName the product name
+	 * @param applicationName the application name
+	 * @return the string
 	 */
 	public static String sessionFileNamePrefix(String productName, String applicationName) {
 		return FileSystemTools.sanitizeFileName(String.format("%1$s %2$s", productName, applicationName));
@@ -81,11 +124,12 @@ public class FileMessenger extends MessengerBase {
 	 * Code in this method is protected by a Queue Lock. This method is called with
 	 * the Message Dispatch thread exclusively. Some commands (Shutdown, Flush) are
 	 * handled by MessengerBase and redirected into specific method calls.
-	 * 
+	 *
 	 * @param command              The MessagingCommand enum value of this command.
-	 * @param state
+	 * @param state the state
 	 * @param writeThrough         Whether write-through (synchronous) behavior was
 	 *                             requested.
+	 * @param maintenanceModeRequested the maintenance mode requested
 	 * @return Specifies whether maintenance mode has been requested and the type (source) of that request.
 	 */
 	@Override
@@ -105,8 +149,9 @@ public class FileMessenger extends MessengerBase {
 	 * This method will be called exactly once before any call to OnFlush or OnWrite
 	 * is made. Code in this method is protected by a Thread Lock. This method is
 	 * called with the Message Dispatch thread exclusively.
-	 * 
-	 * @throws IOException
+	 *
+	 * @param configuration the configuration
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void onInitialize(IMessengerConfiguration configuration) throws IOException {
@@ -181,8 +226,8 @@ public class FileMessenger extends MessengerBase {
 	 * 
 	 * Code in this method is protected by a Queue Lock. This method is called with
 	 * the Message Dispatch thread exclusively.
-	 * 
-	 * @throws IOException
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void onFlush() throws IOException {
@@ -242,10 +287,9 @@ public class FileMessenger extends MessengerBase {
 	 * This method is not called with any active locks to allow messages to continue
 	 * to queue during maintenance. This method is called with the Message Dispatch
 	 * thread exclusively.
-	 * 
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws IOException
+	 *
+	 * @throws Exception the exception
+	 * @throws SecurityException the security exception
 	 */
 	@Override
 	protected void onMaintenance() throws Exception {
@@ -262,6 +306,8 @@ public class FileMessenger extends MessengerBase {
 	 * 
 	 * Code in this method is protected by a Queue Lock. This method is called with
 	 * the Message Dispatch thread exclusively.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void onClose() throws IOException {
@@ -274,7 +320,8 @@ public class FileMessenger extends MessengerBase {
 	/**
 	 * Get the unique lock for the active session, to be held until the session
 	 * exits.
-	 * 
+	 *
+	 * @return the session file lock
 	 */
 	private void getSessionFileLock() {
 		if (this.sessionFileLock != null) {
@@ -331,6 +378,9 @@ public class FileMessenger extends MessengerBase {
 	/**
 	 * Schedule repository maintenance to happen at the next opportunity if
 	 * maintenance is enabled.
+	 *
+	 * @param minDelaySec the min delay sec
+	 * @param maxDelaySec the max delay sec
 	 */
 	private void scheduleRepositoryMaintenance(int minDelaySec, int maxDelaySec) {
 		if (!this.repositoryMaintenanceEnabled || getExiting()) {
@@ -353,6 +403,12 @@ public class FileMessenger extends MessengerBase {
 		}
 	}
 
+	/**
+	 * Close file.
+	 *
+	 * @param isLastFile the is last file
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void closeFile(boolean isLastFile) throws IOException {
 		// close any existing serializer
 		if (this.currentSerializer != null) {
@@ -388,10 +444,9 @@ public class FileMessenger extends MessengerBase {
 	 * Open a new output file.
 	 * 
 	 * Any existing file will be closed.
-	 * 
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws IOException
+	 *
+	 * @throws Exception the exception
+	 * @throws SecurityException the security exception
 	 */
 	private void openFile() throws Exception {
 		// clear the existing file pointer to make sure if we fail, it's gone.
@@ -428,6 +483,11 @@ public class FileMessenger extends MessengerBase {
 		this.fileExpiration = LocalDateTime.now().plusSeconds(this.maxLogDurationSeconds);
 	}
 
+	/**
+	 * Make file name.
+	 *
+	 * @return the string
+	 */
 	private String makeFileName() {
 		String fileName = String.format("%s_%s-%s.%s",
 				sessionFileNamePrefix(getPublisher().getSessionSummary().getProduct(),
@@ -439,6 +499,9 @@ public class FileMessenger extends MessengerBase {
 		return FileSystemTools.sanitizeFileName(fileName);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.messaging.MessengerBase#onWrite(com.onloupe.core.messaging.IMessengerPacket, boolean, com.onloupe.core.messaging.MessengerBase.MaintenanceModeRequest)
+	 */
 	@Override
 	protected MaintenanceModeRequest onWrite(IMessengerPacket packet, boolean writeThrough, MaintenanceModeRequest maintenanceModeRequested) throws Exception {
 		// Do we have a serializer opened?

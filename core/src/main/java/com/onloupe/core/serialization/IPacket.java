@@ -2,6 +2,7 @@ package com.onloupe.core.serialization;
 
 import java.util.List;
 
+
 /**
  * This is the key interface objects implement to be serializable by Gibraltar.
  * 
@@ -21,13 +22,15 @@ public interface IPacket {
 
 	/**
 	 * Write the field definitions to the packet definition provided.
-	 * @param blankDefinition
+	 *
+	 * @param blankDefinition the blank definition
 	 */
 	void writePacketDefinition(PacketDefinition blankDefinition);
 
 	/**
-	 * Write out all of the fields for the current packet
-	 * 
+	 * Write out all of the fields for the current packet.
+	 *
+	 * @param definition the definition
 	 * @param packet     The serialized packet to populate with data
 	 */
 	void writeFields(PacketDefinition definition, SerializedPacket packet);

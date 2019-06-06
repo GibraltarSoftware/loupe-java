@@ -17,29 +17,50 @@ import com.onloupe.core.serialization.PacketWriter;
 import com.onloupe.core.util.IOUtils;
 import com.onloupe.model.session.SessionStatus;
 
+
+/**
+ * The Class GLFWriter.
+ */
 public class GLFWriter implements Closeable {
+	
+	/** The Constant BUFFER_FLUSH_THRESHOLD. */
 	private static final int BUFFER_FLUSH_THRESHOLD = 16 * 1024;
 
+	/** The file channel. */
 	private FileChannel fileChannel;
+	
+	/** The output stream. */
 	private DataOutputStream outputStream;
+	
+	/** The packet writer. */
 	private PacketWriter packetWriter;
+	
+	/** The file header. */
 	private FileHeader fileHeader;
+	
+	/** The session summary. */
 	private SessionSummary sessionSummary;
+	
+	/** The session header. */
 	private SessionHeader sessionHeader;
+	
+	/** The auto flush. */
 	private boolean autoFlush;
+	
+	/** The previous buffer size. */
 	private int previousBufferSize;
 
 	/**
 	 * Initialize the GLF writer for the provided session which has already been
 	 * recorded.
-	 * 
+	 *
 	 * @param file           The file stream to write the session file into (should
 	 *                       be empty)
 	 * @param sessionSummary This constructor is designed for use with sessions that
 	 *                       have already been completed and closed.
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws IOException
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public GLFWriter(RandomAccessFile file, SessionSummary sessionSummary)
 			throws NoSuchMethodException, SecurityException, IOException {
@@ -49,17 +70,17 @@ public class GLFWriter implements Closeable {
 	/**
 	 * Initialize the GLF writer for the provided session which has already been
 	 * recorded.
-	 * 
+	 *
 	 * @param file           The file stream to write the session file into (should
 	 *                       be empty)
-	 * @param sessionSummary
+	 * @param sessionSummary the session summary
 	 * @param majorVersion   Major version of the serialization protocol
 	 * @param minorVersion   Minor version of the serialization protocol This
 	 *                       constructor is designed for use with sessions that have
 	 *                       already been completed and closed.
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws IOException
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public GLFWriter(RandomAccessFile file, SessionSummary sessionSummary, int majorVersion, int minorVersion)
 			throws NoSuchMethodException, SecurityException, IOException {
@@ -68,12 +89,12 @@ public class GLFWriter implements Closeable {
 
 	/**
 	 * Initialize the GLF writer for storing information about the current live
-	 * session
-	 * 
+	 * session.
+	 *
 	 * @param file           The file stream to write the session file into (should
 	 *                       be empty)
-	 * @param sessionSummary
-	 * @param fileSequence
+	 * @param sessionSummary the session summary
+	 * @param fileSequence the file sequence
 	 * @param fileStartTime  Used during initial collection to indicate the real
 	 *                       time this file became the active file. The file header
 	 *                       is configured with a copy of the session summary,
@@ -81,9 +102,9 @@ public class GLFWriter implements Closeable {
 	 *                       session. For live data collection the caller should
 	 *                       supply the file start time to reflect the true time
 	 *                       period covered by this file.
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws IOException
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public GLFWriter(RandomAccessFile file, SessionSummary sessionSummary, int fileSequence,
 			OffsetDateTime fileStartTime) throws NoSuchMethodException, SecurityException, IOException {
@@ -93,12 +114,12 @@ public class GLFWriter implements Closeable {
 
 	/**
 	 * Initialize the GLF writer for storing information about the current live
-	 * session
-	 * 
+	 * session.
+	 *
 	 * @param file           The file stream to write the session file into (should
 	 *                       be empty)
-	 * @param sessionSummary
-	 * @param fileSequence
+	 * @param sessionSummary the session summary
+	 * @param fileSequence the file sequence
 	 * @param fileStartTime  Used during initial collection to indicate the real
 	 *                       time this file became the active file.
 	 * @param majorVersion   Major version of the serialization protocol
@@ -108,9 +129,9 @@ public class GLFWriter implements Closeable {
 	 *                       the session. For live data collection the caller should
 	 *                       supply the file start time to reflect the true time
 	 *                       period covered by this file.
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 * @throws IOException
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public GLFWriter(RandomAccessFile file, SessionSummary sessionSummary, int fileSequence,
 			OffsetDateTime fileStartTime, int majorVersion, int minorVersion)
@@ -149,6 +170,12 @@ public class GLFWriter implements Closeable {
 		this.packetWriter = new PacketWriter(this.outputStream, majorVersion, minorVersion);
 	}
 
+	/**
+	 * Write.
+	 *
+	 * @param packet the packet
+	 * @throws Exception the exception
+	 */
 	public void write(IPacket packet) throws Exception {
 		this.packetWriter.write(packet);
 
@@ -160,14 +187,29 @@ public class GLFWriter implements Closeable {
 
 	}
 
+	/**
+	 * Gets the auto flush.
+	 *
+	 * @return the auto flush
+	 */
 	public final boolean getAutoFlush() {
 		return this.autoFlush;
 	}
 
+	/**
+	 * Sets the auto flush.
+	 *
+	 * @param value the new auto flush
+	 */
 	public final void setAutoFlush(boolean value) {
 		this.autoFlush = value;
 	}
 
+	/**
+	 * Flush.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public final void flush() throws IOException {
 		updateSessionHeader();
 		this.packetWriter.getOutputStream().flush();
@@ -175,8 +217,10 @@ public class GLFWriter implements Closeable {
 
 	/**
 	 * Update the session file with the latest session summary information.
-	 * 
-	 * @throws IOException
+	 *
+	 * @param sourceFile the source file
+	 * @param updateFile the update file
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static void updateSessionHeader(GLFReader sourceFile, RandomAccessFile updateFile) throws IOException {
 		long originalPosition = updateFile.getFilePointer();
@@ -189,14 +233,19 @@ public class GLFWriter implements Closeable {
 		}
 	}
 
+	/**
+	 * Gets the session header.
+	 *
+	 * @return the session header
+	 */
 	public final SessionHeader getSessionHeader() {
 		return this.sessionHeader;
 	}
 
 	/**
 	 * Update the session file with the latest session summary information.
-	 * 
-	 * @throws IOException
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private void updateSessionHeader() throws IOException {
 		// The file includes up through now (after all, we're flushing it to disk)
@@ -233,8 +282,10 @@ public class GLFWriter implements Closeable {
 	/**
 	 * Performs application-defined tasks associated with freeing, releasing, or
 	 * resetting managed resources.
+	 * 
+	 * 
 	 *
-	 * <filterpriority>2</filterpriority>
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	public final void close() throws IOException {
@@ -242,6 +293,12 @@ public class GLFWriter implements Closeable {
 		close(false); // Ah, we didn't have a clean end, so don't set the last-file marker
 	}
 
+	/**
+	 * Close.
+	 *
+	 * @param isLastFile the is last file
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void close(boolean isLastFile) throws IOException {
 		// set our session end date in our header - this doesn't imply that we're clean
 		// or anything, just that this is the end.

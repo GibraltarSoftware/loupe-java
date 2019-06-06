@@ -5,9 +5,25 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
+/**
+ * The Interface SampledMetricClass.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface SampledMetricClass {
+	
+	/**
+	 * Namespace.
+	 *
+	 * @return the string
+	 */
 	String namespace();
+	
+	/**
+	 * Category name.
+	 *
+	 * @return the string
+	 */
 	String categoryName();
 }

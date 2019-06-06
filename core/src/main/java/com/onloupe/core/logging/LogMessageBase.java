@@ -9,6 +9,7 @@ import com.onloupe.core.util.LogSystems;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
+
 /**
  * Base class for log message template classes.
  * 
@@ -21,18 +22,41 @@ import com.onloupe.model.log.LogMessageSeverity;
  * Trace Listener and external Gibraltar log API.
  */
 public abstract class LogMessageBase {
+	
+	/** The severity. */
 	private LogMessageSeverity severity;
+	
+	/** The log system. */
 	private String logSystem;
+	
+	/** The category name. */
 	private String categoryName;
+	
+	/** The message source provider. */
 	private IMessageSourceProvider messageSourceProvider;
 
+	/** The caption. */
 	private String caption;
+	
+	/** The description. */
 	private String description;
+	
+	/** The message args. */
 	private Object[] messageArgs;
+	
+	/** The details xml. */
 	private String detailsXml;
+	
+	/** The throwable. */
 	private Throwable throwable;
+	
+	/** The thread info. */
 	private ThreadInfo threadInfo;
+	
+	/** The write mode. */
 	private LogWriteMode writeMode = LogWriteMode.values()[0]; // queued-and-return or wait-for-commit
+	
+	/** The attribute to exception. */
 	private boolean attributeToException;
 
 	/**
@@ -54,7 +78,7 @@ public abstract class LogMessageBase {
 	/**
 	 * Base constructor for log message template classes where the message should be
 	 * attributed to the exception.
-	 * 
+	 *
 	 * @param severity             The severity of the log message.
 	 * @param logSystem            The name of the logging system the message was
 	 *                             issued through, such as "Trace" or "Gibraltar".
@@ -71,8 +95,9 @@ public abstract class LogMessageBase {
 	 * @param attributeToException True if the call stack from where the exception
 	 *                             was thrown should be used for log message
 	 *                             attribution
-	 * @param exception            When attributeToException is used, this exception
-	 *                             object is used to determine the calling location
+	 * @param throwable the throwable
+	 * @param threadInfo the thread info
+	 * @param exclusions the exclusions
 	 */
 	protected LogMessageBase(LogMessageSeverity severity, String logSystem, String categoryName, int skipFrames,
 			boolean localOrigin, boolean attributeToException, Throwable throwable, ThreadInfo threadInfo, Set<String> exclusions) {
@@ -96,16 +121,52 @@ public abstract class LogMessageBase {
 		}
 	}
 
+	/**
+	 * Instantiates a new log message base.
+	 *
+	 * @param severity the severity
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param element the element
+	 * @param localOrigin the local origin
+	 * @param attributeToException the attribute to exception
+	 * @param throwable the throwable
+	 */
 	protected LogMessageBase(LogMessageSeverity severity, String logSystem, String categoryName, StackTraceElement element,
 			boolean localOrigin, boolean attributeToException, Throwable throwable) {
 		this(severity, logSystem, categoryName, element, localOrigin, attributeToException, throwable, null);
 	}
 	
+	/**
+	 * Instantiates a new log message base.
+	 *
+	 * @param severity the severity
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param element the element
+	 * @param localOrigin the local origin
+	 * @param attributeToException the attribute to exception
+	 * @param throwable the throwable
+	 * @param exclusions the exclusions
+	 */
 	protected LogMessageBase(LogMessageSeverity severity, String logSystem, String categoryName, StackTraceElement element,
 			boolean localOrigin, boolean attributeToException, Throwable throwable, Set<String> exclusions) {
 		this(severity, logSystem, categoryName, element, localOrigin, attributeToException, throwable, null, exclusions);
 	}
 	
+	/**
+	 * Instantiates a new log message base.
+	 *
+	 * @param severity the severity
+	 * @param logSystem the log system
+	 * @param categoryName the category name
+	 * @param element the element
+	 * @param localOrigin the local origin
+	 * @param attributeToException the attribute to exception
+	 * @param throwable the throwable
+	 * @param threadInfo the thread info
+	 * @param exclusions the exclusions
+	 */
 	protected LogMessageBase(LogMessageSeverity severity, String logSystem, String categoryName, StackTraceElement element,
 			boolean localOrigin, boolean attributeToException, Throwable throwable, ThreadInfo threadInfo, Set<String> exclusions) {
 		this.severity = severity;
@@ -140,6 +201,8 @@ public abstract class LogMessageBase {
 
 	/**
 	 * The severity of the log message.
+	 *
+	 * @return the severity
 	 */
 	public final LogMessageSeverity getSeverity() {
 		return this.severity;
@@ -148,6 +211,8 @@ public abstract class LogMessageBase {
 	/**
 	 * The name of the logging system the message was issued through, such as
 	 * "Trace" or "Gibraltar".
+	 *
+	 * @return the log system
 	 */
 	public final String getLogSystem() {
 		return this.logSystem;
@@ -157,6 +222,8 @@ public abstract class LogMessageBase {
 	 * The logging category or application subsystem category that the log message
 	 * is associated with, such as "Trace", "Console", "Exception", or the logger
 	 * name in Log4Net.
+	 *
+	 * @return the category name
 	 */
 	public final String getCategoryName() {
 		return this.categoryName;
@@ -164,11 +231,18 @@ public abstract class LogMessageBase {
 
 	/**
 	 * A single line display caption. It will not be format-expanded.
+	 *
+	 * @return the caption
 	 */
 	public final String getCaption() {
 		return this.caption;
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	protected final void setCaption(String value) {
 		this.caption = value;
 	}
@@ -176,22 +250,36 @@ public abstract class LogMessageBase {
 	/**
 	 * Optional. A multiline description to use which can be a format string for for
 	 * the arguments. Can be null.
+	 *
+	 * @return the description
 	 */
 	public final String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * Sets the description.
+	 *
+	 * @param value the new description
+	 */
 	protected final void setDescription(String value) {
 		this.description = value;
 	}
 
 	/**
 	 * Optional additional args to match up with the formatting string.
+	 *
+	 * @return the message args
 	 */
 	public final Object[] getMessageArgs() {
 		return this.messageArgs;
 	}
 
+	/**
+	 * Sets the message args.
+	 *
+	 * @param value the new message args
+	 */
 	protected final void setMessageArgs(Object[] value) {
 		this.messageArgs = value;
 	}
@@ -199,45 +287,73 @@ public abstract class LogMessageBase {
 	/**
 	 * Optional. An XML document with extended details about the message. Can be
 	 * null.
+	 *
+	 * @return the details xml
 	 */
 	public final String getDetailsXml() {
 		return this.detailsXml;
 	}
 
+	/**
+	 * Sets the details xml.
+	 *
+	 * @param value the new details xml
+	 */
 	protected final void setDetailsXml(String value) {
 		this.detailsXml = value;
 	}
 
 	/**
 	 * An exception associated with this log message (or null for none).
+	 *
+	 * @return the exception
 	 */
 	public final Throwable getException() {
 		return this.throwable;
 	}
 
+	/**
+	 * Sets the exception.
+	 *
+	 * @param value the new exception
+	 */
 	protected final void setException(Throwable value) {
 		this.throwable = value;
 	}
 
 	/**
 	 * Record this log message based on where the exception was thrown, not where
-	 * this method was called
+	 * this method was called.
+	 *
+	 * @return the attribute to exception
 	 */
 	public final boolean getAttributeToException() {
 		return this.attributeToException;
 	}
 
+	/**
+	 * Sets the attribute to exception.
+	 *
+	 * @param value the new attribute to exception
+	 */
 	protected final void setAttributeToException(boolean value) {
 		this.attributeToException = value;
 	}
 
 	/**
 	 * Whether to queue-and-return or wait-for-commit.
+	 *
+	 * @return the write mode
 	 */
 	public final LogWriteMode getWriteMode() {
 		return this.writeMode;
 	}
 
+	/**
+	 * Sets the write mode.
+	 *
+	 * @param value the new write mode
+	 */
 	protected final void setWriteMode(LogWriteMode value) {
 		this.writeMode = value;
 	}

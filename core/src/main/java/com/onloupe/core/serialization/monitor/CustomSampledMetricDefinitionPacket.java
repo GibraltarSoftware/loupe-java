@@ -6,10 +6,13 @@ import com.onloupe.core.serialization.IPacket;
 import com.onloupe.core.serialization.PacketDefinition;
 import com.onloupe.core.serialization.SerializedPacket;
 
+
 /**
- * The serializeable representation of a custom sampled metric
+ * The serializeable representation of a custom sampled metric.
  */
 public class CustomSampledMetricDefinitionPacket extends SampledMetricDefinitionPacket implements IPacket {
+	
+	/** The metric sample type. */
 	private MetricSampleType metricSampleType;
 
 	/**
@@ -55,9 +58,9 @@ public class CustomSampledMetricDefinitionPacket extends SampledMetricDefinition
 	}
 
 	/**
-	 * Compares this object to the provided comparison object
-	 * 
-	 * @param other
+	 * Compares this object to the provided comparison object.
+	 *
+	 * @param other the other
 	 * @return Zero if objects are the same object, -1 or 1 to indicate relative
 	 *         order (see CompareTo for more information)
 	 */
@@ -69,11 +72,10 @@ public class CustomSampledMetricDefinitionPacket extends SampledMetricDefinition
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -118,18 +120,25 @@ public class CustomSampledMetricDefinitionPacket extends SampledMetricDefinition
 	 * 
 	 * The counter type determines what math needs to be run to determine the
 	 * correct value when comparing two samples.
+	 *
+	 * @return the metric sample type
 	 */
 	public final MetricSampleType getMetricSampleType() {
 		return this.metricSampleType;
 	}
 
+	/**
+	 * Sets the metric sample type.
+	 *
+	 * @param value the new metric sample type
+	 */
 	protected final void setMetricSampleType(MetricSampleType value) {
 		this.metricSampleType = value;
 	}
 
 	/**
-	 * Generate a display caption for the supplied sample metric type
-	 * 
+	 * Generate a display caption for the supplied sample metric type.
+	 *
 	 * @param metricSampleType The sample metric type to make a caption for
 	 * @return An end-user display caption
 	 */
@@ -173,8 +182,12 @@ public class CustomSampledMetricDefinitionPacket extends SampledMetricDefinition
 		return sampledMetricTypeCaption(getMetricSampleType());
 	}
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.SampledMetricDefinitionPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -184,6 +197,9 @@ public class CustomSampledMetricDefinitionPacket extends SampledMetricDefinition
 		definition.getFields().add("metricSampleType", FieldType.INT);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.SampledMetricDefinitionPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -191,6 +207,9 @@ public class CustomSampledMetricDefinitionPacket extends SampledMetricDefinition
 		packet.setField("metricSampleType", this.metricSampleType.getValue());
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.SampledMetricDefinitionPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");

@@ -35,6 +35,7 @@ import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.SampleType;
 import com.onloupe.model.metric.MemberType;
 
+
 /**
  * The definition of a user-defined sampled metric
  * 
@@ -44,30 +45,61 @@ import com.onloupe.model.metric.MemberType;
  * custom set of classes derived from SampledMetric (or derive from this class)
  */
 public final class SampledMetricDefinition implements IMetricDefinition {
+	
+	/** The lock. */
 	private final Object lock = new Object();
+	
+	/** The packet. */
 	private CustomSampledMetricDefinitionPacket packet;
 
+    /** The requires multiple samples. */
     private boolean requiresMultipleSamples;
+    
+    /** The bound. */
     private boolean bound;
+    
+    /** The bound type. */
     private Class boundType;
+    
+    /** The name bound. */
     private boolean nameBound;
+    
+    /** The name member name. */
     private String nameMemberName;
+    
+    /** The name member type. */
     private MemberType nameMemberType;
     
+	/** The metrics. */
 	private Map<String, SampledMetric> metrics = new HashMap<String, SampledMetric>();
 
+	/** The Constant supportedDataTypes. */
 	private static final java.lang.Class[] supportedDataTypes = new Class[] { Double.class, Float.class,
 			BigDecimal.class, Long.class, Integer.class, Short.class, LocalDateTime.class, OffsetDateTime.class,
 			Duration.class, int.class, long.class, short.class, float.class, double.class };
 
+	/** The Constant definitions. */
 	private static final MetricDefinitionCollection definitions = Log.getMetricDefinitions();
+	
+	/** The Constant dataTypeSupported. */
 	private static final Map<java.lang.Class, Boolean> dataTypeSupported = initTypeSupportedDictionary();
+	
+	/** The Constant inheritanceMap. */
 	// Array of all inherited types (that have attributes), by type.
 	private static final Map<java.lang.Class, Class[]> inheritanceMap = new HashMap<java.lang.Class, Class[]>();
+	
+	/** The Constant definitionsMap. */
 	// LOCKED List of definitions by specific bound type.
 	private static final Map<java.lang.Class, List<SampledMetricDefinition>> definitionsMap = new HashMap<java.lang.Class, List<SampledMetricDefinition>>();
+	
+	/** The Constant dictionaryLock. */
 	private static final Object dictionaryLock = new Object(); // Lock for the DefinitionMap dictionary.
 
+	/**
+	 * Inits the type supported dictionary.
+	 *
+	 * @return the hash map
+	 */
 	private static HashMap<java.lang.Class, Boolean> initTypeSupportedDictionary() {
 		// We need to initialize our type-supported dictionary up front....
 		HashMap<java.lang.Class, Boolean> dataTypeSupported = new HashMap<java.lang.Class, Boolean>(
@@ -110,7 +142,7 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 
 	/**
 	 * Find or create a sampled metric definition from the specified parameters.
-	 * 
+	 *
 	 * @param metricsSystem The metrics capture system label.
 	 * @param categoryName  The name of the category with which this definition is
 	 *                      associated.
@@ -133,14 +165,15 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 *                      Multiple metric instances can then be created (each with
 	 *                      its own instance name) from the same metric definition.
 	 * 
-	 *                      <exception caption="" cref="ArgumentNullException">The
+	 *                      @throws NullPointerException The
 	 *                      provided metricsSystem, categoryName, or counterName was
 	 *                      null.
-	 *                      <exception caption="" cref="ArgumentException">There is
+	 *                      @throws IllegalArgumentException There is
 	 *                      already a metric definition for the same key, but it is
 	 *                      not a sampled metric.&lt;br /&gt;-or-&lt;br /&gt; There
 	 *                      is already a sampled metric definition for the same key
 	 *                      but it uses an incompatible sampling type.
+	 * @return the sampled metric definition
 	 */
 	public static SampledMetricDefinition register(String metricsSystem, String categoryName, String counterName,
 			SamplingType samplingType, String unitCaption, String metricCaption, String description) {
@@ -205,27 +238,12 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * not define any valid sampled metrics. Also see AddOrGet() to find or create
 	 * sampled metrics definitions for a specific Type, without digging into
 	 * inheritance or interfaces of that Type.
-	 * 
+	 *
 	 * @param userInstanceObject A Type or an instance defining sampled metrics by
 	 *                           attributes on itself and/or its interfaces and/or
 	 *                           inherited types.
 	 * @return An array of zero or more sampled metric definitions found for the
 	 *         provided object or Type.
-	 * @exception ArgumentException The specified Type does not have a SampledMetric
-	 *                              attribute, so it can't be used to define sampled
-	 *                              metrics.<br />
-	 *                              - or -<br />
-	 *                              The specified Type does not have a usable
-	 *                              SampledMetric attribute, so it can't be used to
-	 *                              define sampled metrics.<br />
-	 *                              - or -<br />
-	 *                              The specified Type's SampledMetric attribute has
-	 *                              an empty metric namespace which is not allowed,
-	 *                              so no metrics can be defined under it.<br />
-	 *                              - or -<br />
-	 *                              The specified Type's SampledMetric attribute has
-	 *                              an empty metric category name which is not
-	 *                              allowed, so no metrics can be defined under it.
 	 */
 	public static SampledMetricDefinition[] registerAll(Object userInstanceObject) {
 		ArrayList<SampledMetricDefinition> definitions = new ArrayList<SampledMetricDefinition>();
@@ -359,29 +377,11 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * to the specified bound Type of this definition <b>can</b> be sampled from
 	 * these specific sampled metric definitions. Also see AddOrGetDefinitions() to
 	 * find and return all definitions in the inheritance chain of a type or object.
-	 * 
+	 *
 	 * @param userObjectType A specific Type with attributes defining a group of
 	 *                       sampled metrics.
 	 * @return The group of sampled metric definitions (as an array) determined by
 	 *         attributes on the given Type.
-	 * @exception ArgumentNullException The userObjectType was null
-	 * @exception ArgumentException     The specified Type does not have a
-	 *                                  SampledMetric attribute, so it can't be used
-	 *                                  to define sampled metrics.<br />
-	 *                                  - or -<br />
-	 *                                  The specified Type does not have a usable
-	 *                                  SampledMetric attribute, so it can't be used
-	 *                                  to define sampled metrics.<br />
-	 *                                  - or -<br />
-	 *                                  The specified Type's SampledMetric attribute
-	 *                                  has an empty metric namespace which is not
-	 *                                  allowed, so no metrics can be defined under
-	 *                                  it.<br />
-	 *                                  - or -<br />
-	 *                                  The specified Type's SampledMetric attribute
-	 *                                  has an empty metric category name which is
-	 *                                  not allowed, so no metrics can be defined
-	 *                                  under it.
 	 */
 	public static SampledMetricDefinition[] registerType(java.lang.Class userObjectType) {
 		if (userObjectType == null) {
@@ -407,7 +407,7 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * assignable to the specified bound Type of this definition <b>can</b> be
 	 * sampled from this specific sampled metric definition. Also see
 	 * AddOrGetDefinitions() to find and return an array of definitions.
-	 * 
+	 *
 	 * @param userObjectType A specific Type with attributes defining sampled
 	 *                       metrics including the specified counter name.
 	 * @param counterName    The counterName of a specific sampled metric to find or
@@ -415,21 +415,6 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 *                       specified Type.
 	 * @return The single sampled metric definition selected by counter name and
 	 *         determined by attributes on the given Type.
-	 * @exception ArgumentException The specified Type does not have a SampledMetric
-	 *                              attribute, so it can't be used to define sampled
-	 *                              metrics.<br />
-	 *                              - or -<br />
-	 *                              The specified Type does not have a usable
-	 *                              SampledMetric attribute, so it can't be used to
-	 *                              define sampled metrics.<br />
-	 *                              - or -<br />
-	 *                              The specified Type's SampledMetric attribute has
-	 *                              an empty metric namespace which is not allowed,
-	 *                              so no metrics can be defined under it.<br />
-	 *                              - or -<br />
-	 *                              The specified Type's SampledMetric attribute has
-	 *                              an empty metric category name which is not
-	 *                              allowed, so no metrics can be defined under it.
 	 */
 	public static SampledMetricDefinition register(java.lang.Class userObjectType, String counterName) {
 		if (userObjectType == null) {
@@ -474,7 +459,7 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * must directly define an sampled metric, but valid objects of a type
 	 * assignable to the specified bound Type of this definition <b>can</b> be
 	 * sampled from these specific sampled metric definitions.
-	 * 
+	 *
 	 * @param userObjectType A specific Type with attributes defining an sampled
 	 *                       metric.
 	 * @param counterName    The counterName of a specific sampled metric to find or
@@ -483,21 +468,6 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 *                       null to swallow errors.
 	 * @return The single sampled metric definition determined by attributes on the
 	 *         given Type.
-	 * @exception ArgumentException The specified Type does not have a SampledMetric
-	 *                              attribute, so it can't be used to define sampled
-	 *                              metrics.<br />
-	 *                              - or -<br />
-	 *                              The specified Type does not have a usable
-	 *                              SampledMetric attribute, so it can't be used to
-	 *                              define sampled metrics.<br />
-	 *                              - or -<br />
-	 *                              The specified Type's SampledMetric attribute has
-	 *                              an empty metric namespace which is not allowed,
-	 *                              so no metrics can be defined under it.<br />
-	 *                              - or -<br />
-	 *                              The specified Type's SampledMetric attribute has
-	 *                              an empty metric category name which is not
-	 *                              allowed, so no metrics can be defined under it.
 	 */
 	public static SampledMetricDefinition[] registerGroup(java.lang.Class userObjectType, String counterName) {
 		if (userObjectType == null) {
@@ -923,6 +893,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 
 	/**
 	 * The intended method of interpreting the sampled counter value.
+	 *
+	 * @return the sampling type
 	 */
 	public SamplingType getSamplingType() {
 		return SamplingType.forValue(this.packet.getMetricSampleType().getValue());
@@ -931,6 +903,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	/**
 	 * Indicates whether a final value can be determined from just one sample or if
 	 * two comparable samples are required.
+	 *
+	 * @return the requires multiple samples
 	 */
 	public boolean getRequiresMultipleSamples() {
 		return this.requiresMultipleSamples;
@@ -944,11 +918,18 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * of the same type that was used to generate the data binding. It isn't
 	 * necessary that the same object be used, just that it be a compatible type to
 	 * the original type used to establish the binding.
+	 *
+	 * @return true, if is bound
 	 */
 	public boolean isBound() {
 		return this.bound;
 	}
 
+	/**
+	 * Sets the checks if is bound.
+	 *
+	 * @param value the new checks if is bound
+	 */
 	public void setIsBound(boolean value) {
 		this.bound = value;
 	}
@@ -958,11 +939,18 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * 
 	 * When creating new metrics or metric samples, this data type must be provided
 	 * in bound mode.
+	 *
+	 * @return the bound type
 	 */
 	public java.lang.Class getBoundType() {
 		return this.boundType;
 	}
 
+	/**
+	 * Sets the bound type.
+	 *
+	 * @param value the new bound type
+	 */
 	public void setBoundType(java.lang.Class value) {
 		this.boundType = value;
 	}
@@ -971,15 +959,17 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * The set of custom sampled metrics that use this definition.
 	 * 
 	 * All metrics with the same definition are of the same object type.
+	 *
+	 * @return the metrics
 	 */
 	protected Map<String, SampledMetric> getMetrics() {
 		return metrics;
 	}
 	
 	/**
-	 * Retrieves the specified metric instance, or creates it if it doesn't exist
-	 * 
-	 * @param instanceName
+	 * Retrieves the specified metric instance, or creates it if it doesn't exist.
+	 *
+	 * @param instanceName the instance name
 	 * @return The custom sampled metric object.
 	 */
 	public SampledMetric addOrGetMetric(String instanceName) {
@@ -1096,13 +1086,13 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * metrics at the same time, it is faster to create each of the samples and
 	 * write them with one call to Log.Write instead of writing them out
 	 * individually. To do this, you can use CreateMetricSample
-	 * 
+	 *
 	 * @param instanceName The instance name to use, or blank or null for the
 	 *                     default metric.
 	 * @param rawValue     The raw data value
-	 * @param rawTimeStamp The exact date and time the raw value was determined
 	 * @param baseValue    The reference value to compare against for come counter
 	 *                     types
+	 * @param rawTimeStamp The exact date and time the raw value was determined
 	 */
 	public void writeSample(String instanceName, double rawValue, double baseValue, OffsetDateTime rawTimeStamp) {
 		// Find the right metric sample instance, creating it if we have to.
@@ -1134,21 +1124,11 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * determine a metric instance name from the user data object automatically,
 	 * with an optional fall-back instance name.
 	 * </p>
-	 * 
+	 *
 	 * @param instanceName The instance name to use, or null or empty for the
 	 *                     default metric instance.
 	 * @param metricData   A data object to sample, compatible with the binding type
 	 *                     of this definition.
-	 * @exception ArgumentNullException The provided metricData object is null
-	 * @exception ArgumentException     This sampled metric definition is not bound
-	 *                                  to sample automatically from a user data
-	 *                                  object. A different overload must be used to
-	 *                                  specify the data value(s) directly.<br />
-	 *                                  - or -<br />
-	 *                                  The provided user data object type is not
-	 *                                  assignable to this sampled metric's bound
-	 *                                  type and can not be sampled automatically
-	 *                                  for this metric definition.
 	 */
 	public void writeSample(String instanceName, Object metricData) {
 		if (metricData == null) {
@@ -1189,22 +1169,12 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * name parameter will be used as a fall-back. The determined metric instance
 	 * will be created if it does not already exist.
 	 * </p>
-	 * 
+	 *
 	 * @param metricData           A data object to sample, compatible with the
 	 *                             binding type of this definition.
 	 * @param fallbackInstanceName The instance name to fall back on if this
 	 *                             definition does not specify an instance name
 	 *                             binding (may be null).
-	 * @exception ArgumentNullException The provided metricData object is null
-	 * @exception ArgumentException     This sampled metric definition is not bound
-	 *                                  to sample automatically from a user data
-	 *                                  object. A different overload must be used to
-	 *                                  specify the data value(s) directly.<br />
-	 *                                  - or -<br />
-	 *                                  The provided user data object type is not
-	 *                                  assignable to this sampled metric's bound
-	 *                                  type and can not be sampled automatically
-	 *                                  for this metric definition.
 	 */
 	public void writeSample(Object metricData, String fallbackInstanceName) {
 		if (metricData == null) {
@@ -1258,19 +1228,9 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * will be created if it does not already exist. See the overloads with an
 	 * instanceName parameter to specify a particular metric instance name.
 	 * </p>
-	 * 
+	 *
 	 * @param metricData A data object to sample, compatible with the binding type
 	 *                   of this definition.
-	 * @exception ArgumentNullException The provided metricData object is null
-	 * @exception ArgumentException     This sampled metric definition is not bound
-	 *                                  to sample automatically from a user data
-	 *                                  object. A different overload must be used to
-	 *                                  specify the data value(s) directly.<br />
-	 *                                  - or -<br />
-	 *                                  The provided user data object type is not
-	 *                                  assignable to this sampled metric's bound
-	 *                                  type and can not be sampled automatically
-	 *                                  for this metric definition.
 	 */
 	public void writeSample(Object metricData) {
 		writeSample(metricData, null);
@@ -1360,7 +1320,9 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * 
 	 * Many sample types require multiple samples to determine an output value
 	 * because they work with the change between two points.
-	 * 
+	 *
+	 * @param samplingType the sampling type
+	 * @return true, if successful
 	 */
 	public static boolean sampledMetricTypeRequiresMultipleSamples(SamplingType samplingType) {
 		boolean multipleRequired;
@@ -1386,11 +1348,18 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * 
 	 * When true, the Name Member Name and Name Member Type properties are
 	 * available.
+	 *
+	 * @return the name bound
 	 */
 	public boolean getNameBound() {
 		return this.nameBound;
 	}
 
+	/**
+	 * Sets the name bound.
+	 *
+	 * @param value the new name bound
+	 */
 	public void setNameBound(boolean value) {
 		this.nameBound = value;
 	}
@@ -1399,11 +1368,18 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * The name of the member to invoke to determine the metric instance name.
 	 * 
 	 * This property is only valid when NameBound is true.
+	 *
+	 * @return the name member name
 	 */
 	public String getNameMemberName() {
 		return this.nameMemberName;
 	}
 
+	/**
+	 * Sets the name member name.
+	 *
+	 * @param value the new name member name
+	 */
 	public void setNameMemberName(String value) {
 		this.nameMemberName = value;
 	}
@@ -1413,25 +1389,34 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * (field, method, or property)
 	 * 
 	 * This property is only valid when NameBound is true.
+	 *
+	 * @return the name member type
 	 */
 	public MemberType getNameMemberType() {
 		return this.nameMemberType;
 	}
 
+	/**
+	 * Sets the name member type.
+	 *
+	 * @param value the new name member type
+	 */
 	public void setNameMemberType(MemberType value) {
 		this.nameMemberType = value;
 	}
 
 	/**
 	 * Get the lock object for this sampled metric definition.
+	 *
+	 * @return the lock
 	 */
 	public Object getLock() {
 		return this.lock;
 	}
 
 	/**
-	 * Set the binding for the primary sampling data value (numerator);
-	 * 
+	 * Set the binding for the primary sampling data value (numerator);.
+	 *
 	 * @param member The MemberInfo of the member to bind to.
 	 */
 	private void setDataBinding(AccessibleObject member) {
@@ -1453,10 +1438,20 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 */
 	private NameValuePair<MemberType> dataBinding;
 
+	/**
+	 * Gets the data binding.
+	 *
+	 * @return the data binding
+	 */
 	public NameValuePair<MemberType> getDataBinding() {
 		return this.dataBinding;
 	}
 
+	/**
+	 * Sets the data binding.
+	 *
+	 * @param value the new data binding
+	 */
 	private void setDataBinding(NameValuePair<MemberType> value) {
 		this.dataBinding = value;
 	}
@@ -1466,6 +1461,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * binding.
 	 * 
 	 * If true, the other binding-related properties are available.
+	 *
+	 * @return the data bound
 	 */
 	public boolean getDataBound() {
 		return (getDataBinding() != null);
@@ -1475,6 +1472,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * The type of member that this value is bound to (field, property or method).
 	 * 
 	 * This property is only valid if Bound is true.
+	 *
+	 * @return the data member type
 	 */
 	public MemberType getDataMemberType() {
 		return getDataBound() ? getDataBinding().getValue() : MemberType.UNBOUND;
@@ -1484,14 +1483,16 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * The name of the member that this value is bound to.
 	 * 
 	 * This property is only valid if Bound is true.
+	 *
+	 * @return the data member name
 	 */
 	public String getDataMemberName() {
 		return getDataBound() ? getDataBinding().getName() : null;
 	}
 
 	/**
-	 * Set the binding for the secondary sampling data value (divisor);
-	 * 
+	 * Set the binding for the secondary sampling data value (divisor);.
+	 *
 	 * @param member The MemberInfo of the member to bind to.
 	 */
 	private void setDivisorBinding(AccessibleObject member) {
@@ -1513,10 +1514,20 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 */
 	private NameValuePair<MemberType> divisorBinding;
 
+	/**
+	 * Gets the divisor binding.
+	 *
+	 * @return the divisor binding
+	 */
 	public NameValuePair<MemberType> getDivisorBinding() {
 		return this.divisorBinding;
 	}
 
+	/**
+	 * Sets the divisor binding.
+	 *
+	 * @param value the new divisor binding
+	 */
 	private void setDivisorBinding(NameValuePair<MemberType> value) {
 		this.divisorBinding = value;
 	}
@@ -1526,6 +1537,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * binding.
 	 * 
 	 * If true, the other binding-related properties are available.
+	 *
+	 * @return the divisor bound
 	 */
 	public boolean getDivisorBound() {
 		return (getDivisorBinding() != null);
@@ -1535,6 +1548,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * The type of member that the divisor is bound to (field, property or method).
 	 * 
 	 * This property is only valid if Bound is true.
+	 *
+	 * @return the divisor member type
 	 */
 	public MemberType getDivisorMemberType() {
 		return getDivisorBound() ? getDivisorBinding().getValue() : MemberType.UNBOUND;
@@ -1544,6 +1559,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * The name of the member that the divisor is bound to.
 	 * 
 	 * This property is only valid if Bound is true.
+	 *
+	 * @return the divisor member name
 	 */
 	public String getDivisorMemberName() {
 		return getDivisorBound() ? getDivisorBinding().getName() : null;
@@ -1558,6 +1575,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * across different sessions, which could have different actual definitions due
 	 * to changing user code. See the Key property to identify a metric definition
 	 * across different sessions.
+	 *
+	 * @return the id
 	 */
 	@Override
 	public UUID getId() {
@@ -1571,6 +1590,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * The Key is the combination of metrics capture system label, category name,
 	 * and counter name to uniquely identify a specific metric definition. It can
 	 * also identify the same definition across different sessions.
+	 *
+	 * @return the key
 	 */
 	@Override
 	public String getKey() {
@@ -1580,6 +1601,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	/**
 	 * A short display string for this metric definition, suitable for end-user
 	 * display.
+	 *
+	 * @return the caption
 	 */
 	@Override
 	public String getCaption() {
@@ -1590,6 +1613,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	/**
 	 * A description of what is tracked by this metric, suitable for end-user
 	 * display.
+	 *
+	 * @return the description
 	 */
 	@Override
 	public String getDescription() {
@@ -1599,6 +1624,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 
 	/**
 	 * The recommended default display interval for graphing.
+	 *
+	 * @return the interval
 	 */
 	@Override
 	public SamplingInterval getInterval() {
@@ -1608,6 +1635,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	/**
 	 * The display caption for the units this metric's values represent, or null for
 	 * unit-less values.
+	 *
+	 * @return the unit caption
 	 */
 	public String getUnitCaption() {
 		return this.packet.getUnitCaption();
@@ -1622,6 +1651,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * groups will fall under separate namespaces and not require category names to
 	 * be globally unique across third party libraries linked by an application.
 	 * Pick your own label which will uniquely identify your library or namespace.
+	 *
+	 * @return the metrics system
 	 */
 	@Override
 	public String getMetricsSystem() {
@@ -1631,6 +1662,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	/**
 	 * The category of this metric for display purposes. This can be a period
 	 * delimited string to represent a variable height hierarchy.
+	 *
+	 * @return the category name
 	 */
 	@Override
 	public String getCategoryName() {
@@ -1639,6 +1672,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 
 	/**
 	 * The display name of this metric (unique within the category name).
+	 *
+	 * @return the counter name
 	 */
 	@Override
 	public String getCounterName() {
@@ -1648,6 +1683,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	/**
 	 * The sample type of the metric. Indicates whether the metric represents
 	 * discrete events or a continuous value.
+	 *
+	 * @return the sample type
 	 */
 	@Override
 	public SampleType getSampleType() {
@@ -1657,6 +1694,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	/**
 	 * Indicates that this sampled metric definition has been registered and can not
 	 * be altered (always true for sampled metric definitions).
+	 *
+	 * @return true, if is read only
 	 */
 	@Override
 	public boolean isReadOnly() {
@@ -1689,13 +1728,12 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	/**
 	 * Determines whether the collection of all metric definitions contains an
 	 * element with the specified key.
-	 * 
+	 *
 	 * @param key The Key of the event metric definition to check (composed of the
 	 *            metrics system, category name, and counter name combined as a
 	 *            single string).
 	 * @return true if the collection contains an element with the key; otherwise,
 	 *         false.
-	 * @exception ArgumentNullException The provided key was null.
 	 */
 	public static boolean containsKey(String key) {
 		// protect ourself from a null before we do the trim (or we'll get an odd user
@@ -1711,15 +1749,13 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	/**
 	 * Determines whether the collection of all metric definitions contains an
 	 * element with the specified key.
-	 * 
+	 *
 	 * @param metricsSystem The metrics capture system label.
 	 * @param categoryName  The name of the category with which this definition is
 	 *                      associated.
 	 * @param counterName   The name of the definition within the category.
 	 * @return true if the collection contains an element with the key; otherwise,
 	 *         false.
-	 * @exception ArgumentNullException The provided metricsSystem, categoryName, or
-	 *                                  counterName was null.
 	 */
 	public static boolean containsKey(String metricsSystem, String categoryName, String counterName) {
 		// gateway to our alternate inner dictionary
@@ -1775,7 +1811,7 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * method returns true. If the Id key is found but is not a
 	 * SampledMetricDefinition, an ArgumentException is thrown to signal a usage
 	 * inconsistency in your code.
-	 * 
+	 *
 	 * @param key   The Key of the sampled metric definition to get (composed of the
 	 *              metrics system, category name, and counter name combined as a
 	 *              single string).
@@ -1785,10 +1821,6 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 *         if a SampledMetricDefinition is registered with the given Key, or
 	 *         throws an exception if the registered definition is not a
 	 *         SampledMetricDefinition.
-	 * @exception ArgumentNullException The provided key was null.
-	 * @exception ArgumentException     The metric definition found for the
-	 *                                  specified key is not a sampled metric
-	 *                                  definition.
 	 */
 	public static boolean tryGetValue(String key, OutObject<SampledMetricDefinition> value) {
 		// protect ourself from a null before we do the trim (or we'll get an odd user
@@ -1825,7 +1857,7 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * method returns true. If the Id key is found but is not a
 	 * SampledMetricDefinition, an ArgumentException is thrown to signal a usage
 	 * inconsistency in your code.
-	 * 
+	 *
 	 * @param metricsSystem The metrics capture system label of the definition to
 	 *                      look up.
 	 * @param categoryName  The name of the category with which the definition is
@@ -1837,11 +1869,6 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 *         if a SampledMetricDefinition is registered with the given Key, or
 	 *         throws an exception if the registered definition is not a
 	 *         SampledMetricDefinition.
-	 * @exception ArgumentNullException The provided metricsSystem, categoryName, or
-	 *                                  counterName was null.
-	 * @exception ArgumentException     The metric definition found for the
-	 *                                  specified key is not a sampled metric
-	 *                                  definition.
 	 */
 	public static boolean tryGetValue(String metricsSystem, String categoryName, String counterName,
 			OutObject<SampledMetricDefinition> value) {
@@ -1885,7 +1912,7 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * must directly define the sampled metric, but valid objects of a type
 	 * assignable to the specified bound Type of this definition <b>can</b> be
 	 * sampled from the specific sampled metric definition found.
-	 * 
+	 *
 	 * @param userObjectType A specific Type with attributes defining one or more
 	 *                       sampled metrics.
 	 * @param counterName    The counter name of the desired individual sampled
@@ -1899,11 +1926,6 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 *         SampledMetricDefinition is registered with the given Key, or throws
 	 *         an exception if the registered definition found is not a
 	 *         SampledMetricDefinition.
-	 * @exception ArgumentNullException The userObjectType or counterName was null
-	 *                                  or empty.
-	 * @exception ArgumentException     The metric definition found for the
-	 *                                  specified key is not a sampled metric
-	 *                                  definition.
 	 */
 	public static boolean tryGetValue(java.lang.Class userObjectType, String counterName,
 			OutObject<SampledMetricDefinition> value) {
@@ -1981,8 +2003,8 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 
 	/**
 	 * Determines if the provided object is identical to this object.
-	 * 
-	 * @param obj The object to compare this object to
+	 *
+	 * @param other the other
 	 * @return True if the other object is also a MetricDefinition and represents
 	 *         the same data.
 	 */
@@ -2002,6 +2024,9 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 		return (getId().equals(otherDef.getId()));
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.metrics.IMetricDefinition#getName()
+	 */
 	@Override
 	public String getName() {
 		return this.packet.getName();
@@ -2009,6 +2034,10 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	
 	/**
 	 * Creates builder to build {@link builder}.
+	 *
+	 * @param metricsSystem the metrics system
+	 * @param categoryName the category name
+	 * @param counterName the counter name
 	 * @return created builder
 	 */
 	public static Builder builder(String metricsSystem, String categoryName, String counterName) {
@@ -2018,40 +2047,90 @@ public final class SampledMetricDefinition implements IMetricDefinition {
 	 * Builder to build {@link builder}.
 	 */
 	public static final class Builder {
+		
+		/** The metrics system. */
 		private String metricsSystem;
+		
+		/** The category name. */
 		private String categoryName;
+		
+		/** The counter name. */
 		private String counterName;
+		
+		/** The sampling type. */
 		private SamplingType samplingType;
+		
+		/** The unit caption. */
 		private String unitCaption;
+		
+		/** The metric caption. */
 		private String metricCaption;
+		
+		/** The description. */
 		private String description;
 
+		/**
+		 * Instantiates a new builder.
+		 *
+		 * @param metricsSystem the metrics system
+		 * @param categoryName the category name
+		 * @param counterName the counter name
+		 */
 		private Builder(String metricsSystem, String categoryName, String counterName) {
 			this.metricsSystem = metricsSystem;
 			this.categoryName = categoryName;
 			this.counterName = counterName;
 		}
 
+		/**
+		 * Sampling type.
+		 *
+		 * @param samplingType the sampling type
+		 * @return the builder
+		 */
 		public Builder samplingType(SamplingType samplingType) {
 			this.samplingType = samplingType;
 			return this;
 		}
 
+		/**
+		 * Unit caption.
+		 *
+		 * @param unitCaption the unit caption
+		 * @return the builder
+		 */
 		public Builder unitCaption(String unitCaption) {
 			this.unitCaption = unitCaption;
 			return this;
 		}
 
+		/**
+		 * Metric caption.
+		 *
+		 * @param metricCaption the metric caption
+		 * @return the builder
+		 */
 		public Builder metricCaption(String metricCaption) {
 			this.metricCaption = metricCaption;
 			return this;
 		}
 
+		/**
+		 * Description.
+		 *
+		 * @param description the description
+		 * @return the builder
+		 */
 		public Builder description(String description) {
 			this.description = description;
 			return this;
 		}
 
+		/**
+		 * Builds the.
+		 *
+		 * @return the sampled metric definition
+		 */
 		public SampledMetricDefinition build() {
 			return register(metricsSystem, categoryName, counterName, samplingType, unitCaption, metricCaption,
 					description);

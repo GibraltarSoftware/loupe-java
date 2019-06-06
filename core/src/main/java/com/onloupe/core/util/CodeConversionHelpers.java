@@ -1,11 +1,23 @@
 package com.onloupe.core.util;
 
+
+/**
+ * The Class CodeConversionHelpers.
+ */
 public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'Substring' when 'start' is a
 	// method
 	// call or calculated value to ensure that 'start' is obtained just once.
+	/**
+	 * Substring.
+	 *
+	 * @param string the string
+	 * @param start the start
+	 * @param length the length
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String substring(String string, int start, int length) {
 		if (length < 0)
@@ -16,6 +28,12 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET static string method 'IsNullOrEmpty'.
+	/**
+	 * Checks if is null or empty.
+	 *
+	 * @param string the string
+	 * @return true, if is null or empty
+	 */
 	// ------------------------------------------------------------------------------------
 	public static boolean isNullOrEmpty(String string) {
 		return string == null || string.length() == 0;
@@ -23,6 +41,12 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET static string method 'IsNullOrWhiteSpace'.
+	/**
+	 * Checks if is null or white space.
+	 *
+	 * @param string the string
+	 * @return true, if is null or white space
+	 */
 	// ------------------------------------------------------------------------------------
 	public static boolean isNullOrWhiteSpace(String string) {
 		if (string == null)
@@ -39,6 +63,13 @@ public class CodeConversionHelpers {
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET static string method 'Join' (2 parameter
 	// version).
+	/**
+	 * Join.
+	 *
+	 * @param separator the separator
+	 * @param stringArray the string array
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String join(String separator, String[] stringArray) {
 		if (stringArray == null)
@@ -50,6 +81,15 @@ public class CodeConversionHelpers {
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET static string method 'Join' (4 parameter
 	// version).
+	/**
+	 * Join.
+	 *
+	 * @param separator the separator
+	 * @param stringArray the string array
+	 * @param startIndex the start index
+	 * @param count the count
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String join(String separator, String[] stringArray, int startIndex, int count) {
 		String result = "";
@@ -70,6 +110,13 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'Remove' (1 parameter version).
+	/**
+	 * Removes the.
+	 *
+	 * @param string the string
+	 * @param start the start
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String remove(String string, int start) {
 		return string.substring(0, start);
@@ -77,6 +124,14 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'Remove' (2 parameter version).
+	/**
+	 * Removes the.
+	 *
+	 * @param string the string
+	 * @param start the start
+	 * @param count the count
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String remove(String string, int start, int count) {
 		return string.substring(0, start) + string.substring(start + count);
@@ -84,6 +139,13 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'TrimEnd'.
+	/**
+	 * Trim end.
+	 *
+	 * @param string the string
+	 * @param charsToTrim the chars to trim
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String trimEnd(String string, Character... charsToTrim) {
 		if (string == null || charsToTrim == null)
@@ -114,6 +176,13 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'TrimStart'.
+	/**
+	 * Trim start.
+	 *
+	 * @param string the string
+	 * @param charsToTrim the chars to trim
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String trimStart(String string, Character... charsToTrim) {
 		if (string == null || charsToTrim == null)
@@ -144,6 +213,13 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'Trim' when arguments are used.
+	/**
+	 * Trim.
+	 *
+	 * @param string the string
+	 * @param charsToTrim the chars to trim
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String trim(String string, Character... charsToTrim) {
 		return trimEnd(trimStart(string, charsToTrim), charsToTrim);
@@ -153,6 +229,13 @@ public class CodeConversionHelpers {
 	// This method is used for string equality comparisons when the option
 	// 'Use helper 'stringsEqual' method to handle null strings' is selected
 	// (The Java String 'equals' method can't be called on a null instance).
+	/**
+	 * Strings equal.
+	 *
+	 * @param s1 the s 1
+	 * @param s2 the s 2
+	 * @return true, if successful
+	 */
 	// ------------------------------------------------------------------------------------
 	public static boolean stringsEqual(String s1, String s2) {
 		if (s1 == null && s2 == null)
@@ -163,6 +246,13 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'PadRight' (1 parameter version).
+	/**
+	 * Pad right.
+	 *
+	 * @param string the string
+	 * @param totalWidth the total width
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String padRight(String string, int totalWidth) {
 		return padRight(string, totalWidth, ' ');
@@ -170,6 +260,14 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'PadRight' (2 parameter version).
+	/**
+	 * Pad right.
+	 *
+	 * @param string the string
+	 * @param totalWidth the total width
+	 * @param paddingChar the padding char
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String padRight(String string, int totalWidth, char paddingChar) {
 		StringBuilder sb = new StringBuilder(string);
@@ -183,6 +281,13 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'PadLeft' (1 parameter version).
+	/**
+	 * Pad left.
+	 *
+	 * @param string the string
+	 * @param totalWidth the total width
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String padLeft(String string, int totalWidth) {
 		return padLeft(string, totalWidth, ' ');
@@ -190,6 +295,14 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'PadLeft' (2 parameter version).
+	/**
+	 * Pad left.
+	 *
+	 * @param string the string
+	 * @param totalWidth the total width
+	 * @param paddingChar the padding char
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String padLeft(String string, int totalWidth, char paddingChar) {
 		StringBuilder sb = new StringBuilder("");
@@ -204,6 +317,13 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string constructor which repeats a character.
+	/**
+	 * Repeat char.
+	 *
+	 * @param charToRepeat the char to repeat
+	 * @param count the count
+	 * @return the string
+	 */
 	// ------------------------------------------------------------------------------------
 	public static String repeatChar(char charToRepeat, int count) {
 		String newString = "";
@@ -215,6 +335,15 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'LastIndexOf' (char version).
+	/**
+	 * Last index of.
+	 *
+	 * @param string the string
+	 * @param value the value
+	 * @param startIndex the start index
+	 * @param count the count
+	 * @return the int
+	 */
 	// ------------------------------------------------------------------------------------
 	public static int lastIndexOf(String string, char value, int startIndex, int count) {
 		int leftMost = startIndex + 1 - count;
@@ -229,6 +358,15 @@ public class CodeConversionHelpers {
 
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'LastIndexOf' (string version).
+	/**
+	 * Last index of.
+	 *
+	 * @param string the string
+	 * @param value the value
+	 * @param startIndex the start index
+	 * @param count the count
+	 * @return the int
+	 */
 	// ------------------------------------------------------------------------------------
 	public static int lastIndexOf(String string, String value, int startIndex, int count) {
 		int leftMost = startIndex + 1 - count;
@@ -244,6 +382,13 @@ public class CodeConversionHelpers {
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'IndexOfAny' (1 parameter
 	// version).
+	/**
+	 * Index of any.
+	 *
+	 * @param string the string
+	 * @param anyOf the any of
+	 * @return the int
+	 */
 	// ------------------------------------------------------------------------------------
 	public static int indexOfAny(String string, char[] anyOf) {
 		int lowestIndex = -1;
@@ -265,6 +410,14 @@ public class CodeConversionHelpers {
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'IndexOfAny' (2 parameter
 	// version).
+	/**
+	 * Index of any.
+	 *
+	 * @param string the string
+	 * @param anyOf the any of
+	 * @param startIndex the start index
+	 * @return the int
+	 */
 	// ------------------------------------------------------------------------------------
 	public static int indexOfAny(String string, char[] anyOf, int startIndex) {
 		int indexInSubstring = indexOfAny(string.substring(startIndex), anyOf);
@@ -277,6 +430,15 @@ public class CodeConversionHelpers {
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'IndexOfAny' (3 parameter
 	// version).
+	/**
+	 * Index of any.
+	 *
+	 * @param string the string
+	 * @param anyOf the any of
+	 * @param startIndex the start index
+	 * @param count the count
+	 * @return the int
+	 */
 	// ------------------------------------------------------------------------------------
 	public static int indexOfAny(String string, char[] anyOf, int startIndex, int count) {
 		int endIndex = startIndex + count;
@@ -290,6 +452,13 @@ public class CodeConversionHelpers {
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'LastIndexOfAny' (1 parameter
 	// version).
+	/**
+	 * Last index of any.
+	 *
+	 * @param string the string
+	 * @param anyOf the any of
+	 * @return the int
+	 */
 	// ------------------------------------------------------------------------------------
 	public static int lastIndexOfAny(String string, char[] anyOf) {
 		int highestIndex = -1;
@@ -309,6 +478,14 @@ public class CodeConversionHelpers {
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'LastIndexOfAny' (2 parameter
 	// version).
+	/**
+	 * Last index of any.
+	 *
+	 * @param string the string
+	 * @param anyOf the any of
+	 * @param startIndex the start index
+	 * @return the int
+	 */
 	// ------------------------------------------------------------------------------------
 	public static int lastIndexOfAny(String string, char[] anyOf, int startIndex) {
 		String substring = string.substring(0, startIndex + 1);
@@ -322,6 +499,15 @@ public class CodeConversionHelpers {
 	// ------------------------------------------------------------------------------------
 	// This method replaces the .NET string method 'LastIndexOfAny' (3 parameter
 	// version).
+	/**
+	 * Last index of any.
+	 *
+	 * @param string the string
+	 * @param anyOf the any of
+	 * @param startIndex the start index
+	 * @param count the count
+	 * @return the int
+	 */
 	// ------------------------------------------------------------------------------------
 	public static int lastIndexOfAny(String string, char[] anyOf, int startIndex, int count) {
 		int leftMost = startIndex + 1 - count;

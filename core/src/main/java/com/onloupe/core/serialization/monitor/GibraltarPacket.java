@@ -11,29 +11,48 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * The Class GibraltarPacket.
+ */
 public abstract class GibraltarPacket implements IMessengerPacket {
+	
+	/** The sequence. */
 	private long sequence;
+	
+	/** The time stamp. */
 	private OffsetDateTime timeStamp;
 
 	/**
 	 * The increasing sequence number of all packets for this session to be used as
 	 * an absolute order sort.
+	 *
+	 * @return the sequence
 	 */
 	@Override
 	public final long getSequence() {
 		return this.sequence;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.messaging.IMessengerPacket#setSequence(long)
+	 */
 	@Override
 	public final void setSequence(long value) {
 		this.sequence = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.messaging.IMessengerPacket#getTimestamp()
+	 */
 	@Override
 	public final OffsetDateTime getTimestamp() {
 		return this.timeStamp;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.messaging.IMessengerPacket#setTimestamp(java.time.OffsetDateTime)
+	 */
 	@Override
 	public final void setTimestamp(OffsetDateTime value) {
 		this.timeStamp = value;
@@ -42,11 +61,10 @@ public abstract class GibraltarPacket implements IMessengerPacket {
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -57,11 +75,10 @@ public abstract class GibraltarPacket implements IMessengerPacket {
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(GibraltarPacket other) {
 		// Careful - can be null
@@ -72,6 +89,7 @@ public abstract class GibraltarPacket implements IMessengerPacket {
 		return ((getSequence() == other.getSequence()) && getTimestamp().equals(other.getTimestamp()));
 	}
 
+	/** The Constant VERSION. */
 	private static final int VERSION = 1;
 
 	/**
@@ -85,6 +103,9 @@ public abstract class GibraltarPacket implements IMessengerPacket {
 		return new ArrayList<>();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.IPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		definition.setVersion(VERSION);
@@ -92,17 +113,29 @@ public abstract class GibraltarPacket implements IMessengerPacket {
 		definition.getFields().add("TimeStamp", this.timeStamp.getClass());
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.IPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		packet.setField("Sequence", this.sequence);
 		packet.setField("TimeStamp", this.timeStamp);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.IPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");
 	}
 
+	/**
+	 * Read fields fast.
+	 *
+	 * @param reader the reader
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	protected void readFieldsFast(IFieldReader reader) throws IOException {
 		this.sequence = reader.readLong();
 		this.timeStamp = reader.readDateTimeOffset();

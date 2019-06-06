@@ -4,15 +4,24 @@ import java.util.Properties;
 
 import com.onloupe.core.util.TypeUtils;
 
+
 /**
- * File Messenger Configuration
+ * File Messenger Configuration.
  */
 public final class SessionFileConfiguration implements IMessengerConfiguration {
 
+	/**
+	 * Instantiates a new session file configuration.
+	 */
 	public SessionFileConfiguration() {
 
 	}
 	
+	/**
+	 * Instantiates a new session file configuration.
+	 *
+	 * @param props the props
+	 */
 	protected SessionFileConfiguration(Properties props) {
 		setEnabled(Boolean.valueOf(props.getProperty("SessionFile.Enabled", String.valueOf(enabled))));
 		setAutoFlushInterval(Integer.valueOf(props.getProperty("SessionFile.AutoFlushInterval", String.valueOf(autoFlushInterval))));
@@ -28,6 +37,11 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 		setFolder(props.getProperty("SessionFile.Folder"));
 	}
 	
+	/**
+	 * Instantiates a new session file configuration.
+	 *
+	 * @param builder the builder
+	 */
 	private SessionFileConfiguration(Builder builder) {
 		this.autoFlushInterval = builder.autoFlushInterval;
 		this.folder = builder.folder;
@@ -52,10 +66,20 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private int autoFlushInterval = 15;
 
+	/**
+	 * Gets the auto flush interval.
+	 *
+	 * @return the auto flush interval
+	 */
 	public int getAutoFlushInterval() {
 		return this.autoFlushInterval;
 	}
 
+	/**
+	 * Sets the auto flush interval.
+	 *
+	 * @param value the new auto flush interval
+	 */
 	public void setAutoFlushInterval(int value) {
 		this.autoFlushInterval = value;
 	}
@@ -68,10 +92,20 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private String folder;
 
+	/**
+	 * Gets the folder.
+	 *
+	 * @return the folder
+	 */
 	public String getFolder() {
 		return this.folder;
 	}
 
+	/**
+	 * Sets the folder.
+	 *
+	 * @param value the new folder
+	 */
 	public void setFolder(String value) {
 		this.folder = value;
 	}
@@ -85,10 +119,20 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private int indexUpdateInterval = 15;
 
+	/**
+	 * Gets the index update interval.
+	 *
+	 * @return the index update interval
+	 */
 	public int getIndexUpdateInterval() {
 		return this.indexUpdateInterval;
 	}
 
+	/**
+	 * Sets the index update interval.
+	 *
+	 * @param value the new index update interval
+	 */
 	public void setIndexUpdateInterval(int value) {
 		this.indexUpdateInterval = value;
 	}
@@ -105,10 +149,20 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private int maxFileSize = 20;
 
+	/**
+	 * Gets the max file size.
+	 *
+	 * @return the max file size
+	 */
 	public int getMaxFileSize() {
 		return this.maxFileSize;
 	}
 
+	/**
+	 * Sets the max file size.
+	 *
+	 * @param value the new max file size
+	 */
 	public void setMaxFileSize(int value) {
 		this.maxFileSize = value;
 	}
@@ -123,10 +177,20 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private int maxFileDuration = 1440;
 
+	/**
+	 * Gets the max file duration.
+	 *
+	 * @return the max file duration
+	 */
 	public int getMaxFileDuration() {
 		return this.maxFileDuration;
 	}
 
+	/**
+	 * Sets the max file duration.
+	 *
+	 * @param value the new max file duration
+	 */
 	public void setMaxFileDuration(int value) {
 		this.maxFileDuration = value;
 	}
@@ -141,10 +205,20 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private boolean enableFilePruning = true;
 
+	/**
+	 * Gets the enable file pruning.
+	 *
+	 * @return the enable file pruning
+	 */
 	public boolean getEnableFilePruning() {
 		return this.enableFilePruning;
 	}
 
+	/**
+	 * Sets the enable file pruning.
+	 *
+	 * @param value the new enable file pruning
+	 */
 	public void setEnableFilePruning(boolean value) {
 		this.enableFilePruning = value;
 	}
@@ -165,10 +239,20 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private int maxLocalDiskUsage = 150;
 
+	/**
+	 * Gets the max local disk usage.
+	 *
+	 * @return the max local disk usage
+	 */
 	public int getMaxLocalDiskUsage() {
 		return this.maxLocalDiskUsage;
 	}
 
+	/**
+	 * Sets the max local disk usage.
+	 *
+	 * @param value the new max local disk usage
+	 */
 	public void setMaxLocalDiskUsage(int value) {
 		this.maxLocalDiskUsage = value;
 	}
@@ -188,10 +272,20 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private int maxLocalFileAge = 90;
 
+	/**
+	 * Gets the max local file age.
+	 *
+	 * @return the max local file age
+	 */
 	public int getMaxLocalFileAge() {
 		return this.maxLocalFileAge;
 	}
 
+	/**
+	 * Sets the max local file age.
+	 *
+	 * @param value the new max local file age
+	 */
 	public void setMaxLocalFileAge(int value) {
 		this.maxLocalFileAge = value;
 	}
@@ -205,10 +299,20 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private int minimumFreeDisk = 200;
 
+	/**
+	 * Gets the minimum free disk.
+	 *
+	 * @return the minimum free disk
+	 */
 	public int getMinimumFreeDisk() {
 		return this.minimumFreeDisk;
 	}
 
+	/**
+	 * Sets the minimum free disk.
+	 *
+	 * @param value the new minimum free disk
+	 */
 	public void setMinimumFreeDisk(int value) {
 		this.minimumFreeDisk = value;
 	}
@@ -224,11 +328,17 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private boolean forceSynchronous = false;
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.configuration.IMessengerConfiguration#getForceSynchronous()
+	 */
 	@Override
 	public boolean getForceSynchronous() {
 		return this.forceSynchronous;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.configuration.IMessengerConfiguration#setForceSynchronous(boolean)
+	 */
 	@Override
 	public void setForceSynchronous(boolean value) {
 		this.forceSynchronous = value;
@@ -245,11 +355,17 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private int maxQueueLength = 2000;
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.configuration.IMessengerConfiguration#getMaxQueueLength()
+	 */
 	@Override
 	public int getMaxQueueLength() {
 		return this.maxQueueLength;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.configuration.IMessengerConfiguration#setMaxQueueLength(int)
+	 */
 	@Override
 	public void setMaxQueueLength(int value) {
 		this.maxQueueLength = value;
@@ -263,18 +379,24 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 */
 	private boolean enabled = true;
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.configuration.IMessengerConfiguration#getEnabled()
+	 */
 	@Override
 	public boolean getEnabled() {
 		return this.enabled;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.configuration.IMessengerConfiguration#setEnabled(boolean)
+	 */
 	@Override
 	public void setEnabled(boolean value) {
 		this.enabled = value;
 	}
 
 	/**
-	 * Normalize the configuration
+	 * Normalize the configuration.
 	 */
 	public void sanitize() {
 		if (TypeUtils.isBlank(getFolder())) {
@@ -334,82 +456,186 @@ public final class SessionFileConfiguration implements IMessengerConfiguration {
 	 * Builder to build {@link SessionFileConfiguration}.
 	 */
 	public static final class Builder {
+		
+		/** The auto flush interval. */
 		private int autoFlushInterval;
+		
+		/** The folder. */
 		private String folder;
+		
+		/** The index update interval. */
 		private int indexUpdateInterval;
+		
+		/** The max file size. */
 		private int maxFileSize;
+		
+		/** The max file duration. */
 		private int maxFileDuration;
+		
+		/** The enable file pruning. */
 		private boolean enableFilePruning;
+		
+		/** The max local disk usage. */
 		private int maxLocalDiskUsage;
+		
+		/** The max local file age. */
 		private int maxLocalFileAge;
+		
+		/** The minimum free disk. */
 		private int minimumFreeDisk;
+		
+		/** The force synchronous. */
 		private boolean forceSynchronous;
+		
+		/** The max queue length. */
 		private int maxQueueLength;
+		
+		/** The enabled. */
 		private boolean enabled;
 
+		/**
+		 * Instantiates a new builder.
+		 */
 		private Builder() {
 		}
 
+		/**
+		 * Auto flush interval.
+		 *
+		 * @param autoFlushInterval the auto flush interval
+		 * @return the builder
+		 */
 		public Builder autoFlushInterval(int autoFlushInterval) {
 			this.autoFlushInterval = autoFlushInterval;
 			return this;
 		}
 
+		/**
+		 * Folder.
+		 *
+		 * @param folder the folder
+		 * @return the builder
+		 */
 		public Builder folder(String folder) {
 			this.folder = folder;
 			return this;
 		}
 
+		/**
+		 * Index update interval.
+		 *
+		 * @param indexUpdateInterval the index update interval
+		 * @return the builder
+		 */
 		public Builder indexUpdateInterval(int indexUpdateInterval) {
 			this.indexUpdateInterval = indexUpdateInterval;
 			return this;
 		}
 
+		/**
+		 * Max file size.
+		 *
+		 * @param maxFileSize the max file size
+		 * @return the builder
+		 */
 		public Builder maxFileSize(int maxFileSize) {
 			this.maxFileSize = maxFileSize;
 			return this;
 		}
 
+		/**
+		 * Max file duration.
+		 *
+		 * @param maxFileDuration the max file duration
+		 * @return the builder
+		 */
 		public Builder maxFileDuration(int maxFileDuration) {
 			this.maxFileDuration = maxFileDuration;
 			return this;
 		}
 
+		/**
+		 * Enable file pruning.
+		 *
+		 * @param enableFilePruning the enable file pruning
+		 * @return the builder
+		 */
 		public Builder enableFilePruning(boolean enableFilePruning) {
 			this.enableFilePruning = enableFilePruning;
 			return this;
 		}
 
+		/**
+		 * Max local disk usage.
+		 *
+		 * @param maxLocalDiskUsage the max local disk usage
+		 * @return the builder
+		 */
 		public Builder maxLocalDiskUsage(int maxLocalDiskUsage) {
 			this.maxLocalDiskUsage = maxLocalDiskUsage;
 			return this;
 		}
 
+		/**
+		 * Max local file age.
+		 *
+		 * @param maxLocalFileAge the max local file age
+		 * @return the builder
+		 */
 		public Builder maxLocalFileAge(int maxLocalFileAge) {
 			this.maxLocalFileAge = maxLocalFileAge;
 			return this;
 		}
 
+		/**
+		 * Minimum free disk.
+		 *
+		 * @param minimumFreeDisk the minimum free disk
+		 * @return the builder
+		 */
 		public Builder minimumFreeDisk(int minimumFreeDisk) {
 			this.minimumFreeDisk = minimumFreeDisk;
 			return this;
 		}
 
+		/**
+		 * Force synchronous.
+		 *
+		 * @param forceSynchronous the force synchronous
+		 * @return the builder
+		 */
 		public Builder forceSynchronous(boolean forceSynchronous) {
 			this.forceSynchronous = forceSynchronous;
 			return this;
 		}
 
+		/**
+		 * Max queue length.
+		 *
+		 * @param maxQueueLength the max queue length
+		 * @return the builder
+		 */
 		public Builder maxQueueLength(int maxQueueLength) {
 			this.maxQueueLength = maxQueueLength;
 			return this;
 		}
 
+		/**
+		 * Enabled.
+		 *
+		 * @param enabled the enabled
+		 * @return the builder
+		 */
 		public Builder enabled(boolean enabled) {
 			this.enabled = enabled;
 			return this;
 		}
 
+		/**
+		 * Builds the.
+		 *
+		 * @return the session file configuration
+		 */
 		public SessionFileConfiguration build() {
 			return new SessionFileConfiguration(this);
 		}

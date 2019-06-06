@@ -1,16 +1,16 @@
 package com.onloupe.core.util;
 
+
+/**
+ * The Class LogSystems.
+ */
 public class LogSystems {
 
-	/**
-	 * The log system name for Gibraltar
-	 */
+	/** The log system name for Gibraltar. */
 	public static final String LOUPE = "Loupe";
 
 	
-	/**
-	 * The log system name for Gibraltar
-	 */
+	/** The log system name for Gibraltar. */
 	public static final String GIBRALTAR = "Gibraltar";
 
 	/**

@@ -22,23 +22,32 @@ import com.onloupe.core.util.IOUtils;
 import com.onloupe.core.util.TypeUtils;
 import com.onloupe.model.log.LogMessageSeverity;
 
+
 /**
  * Monitors the discovery directory of the local file system for discovery file
  * changes.
  */
 public class LocalServerDiscoveryFileMonitor extends Observable {
+	
+	/** The lock. */
 	private final Object lock = new Object();
+	
+	/** The discovery files. */
 	private final Map<String, LocalServerDiscoveryFile> discoveryFiles = new HashMap<String, LocalServerDiscoveryFile>();
 
+	/** The active thread. */
 	private volatile boolean activeThread = false; // indicates if we have an active thread pool request
 
+	/** The discovery path. */
 	private Path discoveryPath;
+	
+	/** The watch service. */
 	private WatchService watchService;
 
 	/**
-	 * Begin monitoring for file changes
-	 * 
-	 * @throws IOException
+	 * Begin monitoring for file changes.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void start() throws IOException {
 		synchronized (this.lock) {
@@ -73,7 +82,7 @@ public class LocalServerDiscoveryFileMonitor extends Observable {
 	}
 
 	/**
-	 * Stop monitoring for file changes
+	 * Stop monitoring for file changes.
 	 */
 	public final void stop() {
 		synchronized (this.lock) {
@@ -86,6 +95,9 @@ public class LocalServerDiscoveryFileMonitor extends Observable {
 		}
 	}
 
+	/**
+	 * Do monitor.
+	 */
 	// warnings shouldn't matter, because we *know* this watcher generates type path
 	@SuppressWarnings("unchecked")
 	private void doMonitor() {
@@ -123,9 +135,9 @@ public class LocalServerDiscoveryFileMonitor extends Observable {
 	}
 
 	/**
-	 * Raises the FileChanged event
-	 * 
-	 * @param e
+	 * Raises the FileChanged event.
+	 *
+	 * @param e the e
 	 */
 	protected void onFileChanged(LocalServerDiscoveryFileEventArgs e) {
 		setChanged();
@@ -133,15 +145,21 @@ public class LocalServerDiscoveryFileMonitor extends Observable {
 	}
 
 	/**
-	 * Raises the FileDeleted event
-	 * 
-	 * @param e
+	 * Raises the FileDeleted event.
+	 *
+	 * @param e the e
 	 */
 	protected void onFileDeleted(LocalServerDiscoveryFileEventArgs e) {
 		setChanged();
 		notifyObservers(e);
 	}
 
+	/**
+	 * Check raise changed event.
+	 *
+	 * @param fullPath the full path
+	 * @param kind the kind
+	 */
 	private void checkRaiseChangedEvent(String fullPath, Kind<Path> kind) {
 		LocalServerDiscoveryFileEventArgs eventArgs = null;
 		synchronized (this.lock) {
@@ -176,6 +194,11 @@ public class LocalServerDiscoveryFileMonitor extends Observable {
 		}
 	}
 
+	/**
+	 * Check raise deleted event.
+	 *
+	 * @param fullPath the full path
+	 */
 	private void checkRaiseDeletedEvent(String fullPath) {
 		LocalServerDiscoveryFileEventArgs eventArgs = null;
 		synchronized (this.lock) {
@@ -193,6 +216,11 @@ public class LocalServerDiscoveryFileMonitor extends Observable {
 		}
 	}
 
+	/**
+	 * Checks if is active thread.
+	 *
+	 * @return true, if is active thread
+	 */
 	public boolean isActiveThread() {
 		return this.activeThread;
 	}

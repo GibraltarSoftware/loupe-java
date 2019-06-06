@@ -21,18 +21,34 @@ import com.onloupe.core.serialization.monitor.ThreadInfoPacket;
 import com.onloupe.core.server.NetworkConnectionOptions;
 import com.onloupe.model.log.LogMessageSeverity;
 
+
 /**
- * Used by the agent to write session data to a network socket
+ * Used by the agent to write session data to a network socket.
  */
 public class NetworkWriter extends NetworkClient {
+	
+	/** The lock. */
 	private final Object lock = new Object();
+	
+	/** The messenger. */
 	private NetworkMessenger messenger;
+	
+	/** The sequence offset. */
 	private long sequenceOffset;
+	
+	/** The channel id. */
 	private UUID channelId;
+	
+	/** The repository id. */
 	private UUID repositoryId;
 
 	/**
-	 * Create a new network writer for a remote server
+	 * Create a new network writer for a remote server.
+	 *
+	 * @param messenger the messenger
+	 * @param options the options
+	 * @param repositoryId the repository id
+	 * @param channelId the channel id
 	 */
 
 	public NetworkWriter(NetworkMessenger messenger, NetworkConnectionOptions options, java.util.UUID repositoryId,
@@ -40,6 +56,15 @@ public class NetworkWriter extends NetworkClient {
 		this(messenger, options, repositoryId, channelId, 0);
 	}
 
+	/**
+	 * Instantiates a new network writer.
+	 *
+	 * @param messenger the messenger
+	 * @param options the options
+	 * @param repositoryId the repository id
+	 * @param channelId the channel id
+	 * @param sequenceOffset the sequence offset
+	 */
 	public NetworkWriter(NetworkMessenger messenger, NetworkConnectionOptions options, UUID repositoryId,
 			UUID channelId, long sequenceOffset) {
 		this(messenger, options, repositoryId, channelId, sequenceOffset, FileHeader.defaultMajorVersion,
@@ -47,7 +72,15 @@ public class NetworkWriter extends NetworkClient {
 	}
 
 	/**
-	 * Create a new network writer for a remote server
+	 * Create a new network writer for a remote server.
+	 *
+	 * @param messenger the messenger
+	 * @param options the options
+	 * @param repositoryId the repository id
+	 * @param channelId the channel id
+	 * @param sequenceOffset the sequence offset
+	 * @param majorVersion the major version
+	 * @param minorVersion the minor version
 	 */
 	public NetworkWriter(NetworkMessenger messenger, NetworkConnectionOptions options, UUID repositoryId,
 			UUID channelId, long sequenceOffset, int majorVersion, int minorVersion) {
@@ -67,7 +100,12 @@ public class NetworkWriter extends NetworkClient {
 	}
 
 	/**
-	 * Create a new network writer for a connected socket
+	 * Create a new network writer for a connected socket.
+	 *
+	 * @param messenger the messenger
+	 * @param socket the socket
+	 * @param repositoryId the repository id
+	 * @param channelId the channel id
 	 */
 
 	public NetworkWriter(NetworkMessenger messenger, Socket socket, java.util.UUID repositoryId,
@@ -75,6 +113,15 @@ public class NetworkWriter extends NetworkClient {
 		this(messenger, socket, repositoryId, channelId, 0);
 	}
 
+	/**
+	 * Instantiates a new network writer.
+	 *
+	 * @param messenger the messenger
+	 * @param socket the socket
+	 * @param repositoryId the repository id
+	 * @param channelId the channel id
+	 * @param sequenceOffset the sequence offset
+	 */
 	public NetworkWriter(NetworkMessenger messenger, Socket socket, UUID repositoryId, UUID channelId,
 			long sequenceOffset) {
 		this(messenger, socket, repositoryId, channelId, sequenceOffset, FileHeader.defaultMajorVersion,
@@ -82,7 +129,15 @@ public class NetworkWriter extends NetworkClient {
 	}
 
 	/**
-	 * Create a new network writer for a connected socket
+	 * Create a new network writer for a connected socket.
+	 *
+	 * @param messenger the messenger
+	 * @param socket the socket
+	 * @param repositoryId the repository id
+	 * @param channelId the channel id
+	 * @param sequenceOffset the sequence offset
+	 * @param majorVersion the major version
+	 * @param minorVersion the minor version
 	 */
 	public NetworkWriter(NetworkMessenger messenger, Socket socket, UUID repositoryId, UUID channelId,
 			long sequenceOffset, int majorVersion, int minorVersion) {
@@ -102,10 +157,10 @@ public class NetworkWriter extends NetworkClient {
 	}
 
 	/**
-	 * Write the provided packet to the client stream (synchronously)
-	 * 
+	 * Write the provided packet to the client stream (synchronously).
+	 *
 	 * @param packets Throws exceptions if there is a connection failure.
-	 * @throws NoSuchMethodException
+	 * @throws NoSuchMethodException the no such method exception
 	 */
 	public final void write(IMessengerPacket[] packets) throws NoSuchMethodException {
 		synchronized (this.lock) {
@@ -120,10 +175,10 @@ public class NetworkWriter extends NetworkClient {
 	}
 
 	/**
-	 * Write the provided packet to the client stream (synchronously)
-	 * 
-	 * @param packet
-	 * @throws NoSuchMethodException
+	 * Write the provided packet to the client stream (synchronously).
+	 *
+	 * @param packet the packet
+	 * @throws NoSuchMethodException the no such method exception
 	 */
 	public final void write(IMessengerPacket packet) throws NoSuchMethodException {
 		synchronized (this.lock) {
@@ -140,9 +195,9 @@ public class NetworkWriter extends NetworkClient {
 
 	/**
 	 * Indicates if we can write the specified packet.
-	 * 
-	 * @param packet
-	 * @return
+	 *
+	 * @param packet the packet
+	 * @return true, if successful
 	 */
 	public static boolean canWritePacket(IMessengerPacket packet) {
 		// we don't send across all types - just a few we understand.
@@ -152,11 +207,11 @@ public class NetworkWriter extends NetworkClient {
 	}
 
 	/**
-	 * Implemented to complete the protocol connection
-	 * 
+	 * Implemented to complete the protocol connection.
+	 *
 	 * @return True if a connection was successfully established, false otherwise.
-	 * @throws NoSuchMethodException
-	 * @throws IOException
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected boolean connect() throws NoSuchMethodException, IOException {
@@ -199,9 +254,9 @@ public class NetworkWriter extends NetworkClient {
 	}
 
 	/**
-	 * Implemented to transfer data on an established connection
-	 * 
-	 * @throws IOException
+	 * Implemented to transfer data on an established connection.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void transferData() throws IOException {
@@ -221,12 +276,18 @@ public class NetworkWriter extends NetworkClient {
 		} while (nextPacket != null);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.messaging.network.NetworkClient#canRetry()
+	 */
 	@Override
 	protected boolean canRetry() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.messaging.network.NetworkClient#retryDelay()
+	 */
 	@Override
 	protected Integer retryDelay() {
 		// TODO Auto-generated method stub

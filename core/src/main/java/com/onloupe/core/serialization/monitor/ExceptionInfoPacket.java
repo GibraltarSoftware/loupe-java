@@ -9,16 +9,38 @@ import com.onloupe.model.data.IExceptionInfo;
 
 import java.util.List;
 
+
+/**
+ * The Class ExceptionInfoPacket.
+ */
 public class ExceptionInfoPacket extends GibraltarPacket implements IPacket, IExceptionInfo {
+	
+	/** The type name. */
 	private String typeName;
+	
+	/** The message. */
 	private String message;
+	
+	/** The source. */
 	private String source;
+	
+	/** The stack trace. */
 	private String stackTrace;
+	
+	/** The inner exception. */
 	private IExceptionInfo innerException; // not serialized as such.
 
+	/**
+	 * Instantiates a new exception info packet.
+	 */
 	public ExceptionInfoPacket() {
 	}
 
+	/**
+	 * Instantiates a new exception info packet.
+	 *
+	 * @param throwable the throwable
+	 */
 	public ExceptionInfoPacket(Throwable throwable) {
 		this.typeName = throwable.getClass().getName();
 		this.message = throwable.getMessage();
@@ -26,47 +48,87 @@ public class ExceptionInfoPacket extends GibraltarPacket implements IPacket, IEx
 		this.stackTrace = TypeUtils.getStackTrace(throwable);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.data.IExceptionInfo#getTypeName()
+	 */
 	@Override
 	public final String getTypeName() {
 		return this.typeName;
 	}
 
+	/**
+	 * Sets the type name.
+	 *
+	 * @param value the new type name
+	 */
 	public final void setTypeName(String value) {
 		this.typeName = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.data.IExceptionInfo#getMessage()
+	 */
 	@Override
 	public final String getMessage() {
 		return this.message;
 	}
 
+	/**
+	 * Sets the message.
+	 *
+	 * @param value the new message
+	 */
 	public final void setMessage(String value) {
 		this.message = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.data.IExceptionInfo#getSource()
+	 */
 	@Override
 	public final String getSource() {
 		return this.source;
 	}
 
+	/**
+	 * Sets the source.
+	 *
+	 * @param value the new source
+	 */
 	public final void setSource(String value) {
 		this.source = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.data.IExceptionInfo#getStackTrace()
+	 */
 	@Override
 	public final String getStackTrace() {
 		return this.stackTrace;
 	}
 
+	/**
+	 * Sets the stack trace.
+	 *
+	 * @param value the new stack trace
+	 */
 	public final void setStackTrace(String value) {
 		this.stackTrace = value;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.model.data.IExceptionInfo#getInnerException()
+	 */
 	@Override
 	public final IExceptionInfo getInnerException() {
 		return this.innerException;
 	}
 
+	/**
+	 * Sets the inner exception.
+	 *
+	 * @param value the new inner exception
+	 */
 	public final void setInnerException(IExceptionInfo value) {
 		this.innerException = value;
 	}
@@ -74,11 +136,10 @@ public class ExceptionInfoPacket extends GibraltarPacket implements IPacket, IEx
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -89,11 +150,10 @@ public class ExceptionInfoPacket extends GibraltarPacket implements IPacket, IEx
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	public final boolean equals(ExceptionInfoPacket other) {
 		// Careful - can be null
@@ -139,8 +199,12 @@ public class ExceptionInfoPacket extends GibraltarPacket implements IPacket, IEx
 		return myHash;
 	}
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -153,6 +217,9 @@ public class ExceptionInfoPacket extends GibraltarPacket implements IPacket, IEx
 		definition.getFields().add("StackTrace", FieldType.STRING);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -163,11 +230,17 @@ public class ExceptionInfoPacket extends GibraltarPacket implements IPacket, IEx
 		packet.setField("StackTrace", getStackTrace());
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public final void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarPacket#getRequiredPackets()
+	 */
 	@Override
 	public final List<IPacket> getRequiredPackets() {
 		// we depend on nothing

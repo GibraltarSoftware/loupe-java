@@ -29,26 +29,39 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+
+/**
+ * The Class NetworkMessenger.
+ */
 public class NetworkMessenger extends MessengerBase implements Observer {
-	/**
-	 * The log category to use for messages in this messenger
-	 */
+	
+	/** The log category to use for messages in this messenger. */
 	public static final String LOG_CATEGORY = "Loupe.Network.Messenger";
 
+	/** The Constant DEFAULT_BUFFER_SIZE. */
 	private static final int DEFAULT_BUFFER_SIZE = 1000;
+	
+	/** The Buffer size. */
 	private int _BufferSize = DEFAULT_BUFFER_SIZE;
 
 	// NOTE TO MAINTAINERS: Locking is granular based on the connection role on the
+	/** The buffer. */
 	// following collections, be warned!
 	private final ConcurrentLinkedQueue<IMessengerPacket> buffer = new ConcurrentLinkedQueue<IMessengerPacket>(); // LOCKED
 																													// BY
 																													// ACTIVE
+																													/** The pending clients. */
 																													// CLIENTS
 	private final ArrayList<NetworkWriter> pendingClients = new ArrayList<NetworkWriter>();
+	
+	/** The active clients. */
 	private final ArrayList<NetworkWriter> activeClients = new ArrayList<NetworkWriter>();
+	
+	/** The dead clients. */
 	private final ArrayList<NetworkWriter> deadClients = new ArrayList<NetworkWriter>();
 
 	// if we allow local connections this is the index of the ones we're currently
+	/** The local proxy connections. */
 	// tracking.
 	private final Map<String, LiveSessionPublisher> localProxyConnections = new HashMap<String, LiveSessionPublisher>(); // lock
 																															// this
@@ -56,20 +69,33 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 																															// data
 																															// integrity
 
-	private LocalServerDiscoveryFileMonitor discoveryFileMonitor;
+	/** The discovery file monitor. */
+																															private LocalServerDiscoveryFileMonitor discoveryFileMonitor;
 
+	/** The active remote connection attempt. */
 	private volatile boolean activeRemoteConnectionAttempt; // for making sure we only do one server connection attempt
+																
+																/** The hub connection. */
 																// at a time
 	private HubConnection hubConnection; // our one and only server connection, if enabled
+	
+	/** The client. */
 	private LiveSessionPublisher client;
+	
+	/** The enable outbound. */
 	private boolean enableOutbound;
+	
+	/** The connection options. */
 	private NetworkConnectionOptions connectionOptions;
+	
+	/** The closed. */
 	private boolean closed;
 
+	/** The hub configuration expiration. */
 	private OffsetDateTime hubConfigurationExpiration; // LOCKED BY LOCK
 	
 	/**
-	 * Create a new network messenger
+	 * Create a new network messenger.
 	 */
 	public NetworkMessenger() {
 		super("Network", false);
@@ -78,19 +104,31 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	/**
 	 * The list of cached packets that should be in every stream before any other
 	 * packet.
+	 *
+	 * @return the header packets
 	 */
 	public final ICachedMessengerPacket[] getHeaderPackets() {
 		return getPublisher().getHeaderPackets();
 	}
 
 	/**
-	 * Create a new outbound live viewer to the default server
+	 * Create a new outbound live viewer to the default server.
+	 *
+	 * @param repositoryId the repository id
+	 * @param channelId the channel id
 	 */
 
 	public final void StartLiveView(java.util.UUID repositoryId, java.util.UUID channelId) {
 		startLiveView(repositoryId, channelId, 0);
 	}
 
+	/**
+	 * Start live view.
+	 *
+	 * @param repositoryId the repository id
+	 * @param channelId the channel id
+	 * @param sequenceOffset the sequence offset
+	 */
 	public final void startLiveView(UUID repositoryId, UUID channelId, long sequenceOffset) {
 		if (this.connectionOptions != null) {
 			startLiveView(this.connectionOptions, repositoryId, channelId, sequenceOffset);
@@ -98,7 +136,11 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	}
 
 	/**
-	 * Create a new outbound live viewer to the default server
+	 * Create a new outbound live viewer to the default server.
+	 *
+	 * @param options the options
+	 * @param repositoryId the repository id
+	 * @param channelId the channel id
 	 */
 
 	public final void startLiveView(NetworkConnectionOptions options, java.util.UUID repositoryId,
@@ -106,6 +148,14 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 		startLiveView(options, repositoryId, channelId, 0);
 	}
 
+	/**
+	 * Start live view.
+	 *
+	 * @param options the options
+	 * @param repositoryId the repository id
+	 * @param channelId the channel id
+	 * @param sequenceOffset the sequence offset
+	 */
 	public final void startLiveView(NetworkConnectionOptions options, UUID repositoryId, UUID channelId,
 			long sequenceOffset) {
 
@@ -120,10 +170,9 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	}
 
 	/**
-	 * Send the matching sessions to the server
-	 * 
-	 * @param sendSessionCommand
-	 * @throws IOException
+	 * Send the matching sessions to the server.
+	 *
+	 * @param sendSessionCommand the send session command
 	 */
 	public final void sendToServer(SendSessionCommandMessage sendSessionCommand) {
 		try {
@@ -144,9 +193,9 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	}
 
 	/**
-	 * Send the latest summary to the server
-	 * 
-	 * @throws IOException
+	 * Send the latest summary to the server.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public final void sendSummary() throws IOException {
 		// We don't want to use locks so we need to do a point-in-time copy and then
@@ -170,9 +219,9 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	}
 
 	/**
-	 * Send the latest summary to the specified publisher
-	 * 
-	 * @throws IOException
+	 * Send the latest summary to the specified publisher.
+	 *
+	 * @param publisher the publisher
 	 */
 	private void sendSummary(LiveSessionPublisher publisher) {
 		try {
@@ -190,6 +239,12 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 		}
 	}
 
+	/**
+	 * Activate writer.
+	 *
+	 * @param writer the writer
+	 * @param sequenceOffset the sequence offset
+	 */
 	public final void activateWriter(NetworkWriter writer, long sequenceOffset) {
 		// dump the queue to it....
 		try {
@@ -286,8 +341,9 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	 * This method will be called exactly once before any call to OnFlush or OnWrite
 	 * is made. Code in this method is protected by a Thread Lock. This method is
 	 * called with the Message Dispatch thread exclusively.
-	 * 
-	 * @throws IOException
+	 *
+	 * @param configuration the configuration
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void onInitialize(IMessengerConfiguration configuration) throws IOException {
@@ -333,8 +389,8 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	 * 
 	 * Code in this method is protected by a Queue Lock. This method is called with
 	 * the Message Dispatch thread exclusively.
-	 * 
-	 * @throws IOException
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Override
 	protected void onClose() throws IOException {
@@ -403,6 +459,9 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 		this.closed = true;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.messaging.MessengerBase#onCommand(com.onloupe.core.messaging.MessagingCommand, java.lang.Object, boolean, com.onloupe.core.messaging.MessengerBase.MaintenanceModeRequest)
+	 */
 	protected MaintenanceModeRequest onCommand(MessagingCommand command, Object state, boolean writeThrough, MaintenanceModeRequest maintenanceRequested) throws IOException {
 		switch (command) {
 		case OPEN_REMOTE_VIEWER:
@@ -427,8 +486,11 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	 * 
 	 * Code in this method is protected by a Queue Lock This method is called with
 	 * the Message Dispatch thread exclusively.
-	 * 
-	 * @throws NoSuchMethodException
+	 *
+	 * @param packet the packet
+	 * @param writeThrough the write through
+	 * @param maintenanceRequested the maintenance requested
+	 * @return the maintenance mode request
 	 */
 	protected MaintenanceModeRequest onWrite(IMessengerPacket packet, boolean writeThrough, MaintenanceModeRequest maintenanceRequested) {
 		if (this.closed) // we act like we're closed as soon as we receive exit mode, so we will still
@@ -465,6 +527,9 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 		return maintenanceRequested;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.messaging.MessengerBase#onFlush()
+	 */
 	@Override
 	protected void onFlush() throws IOException {
 		attemptRemoteConnectionAsync();
@@ -472,6 +537,9 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 		sendSummary();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.messaging.MessengerBase#onMaintenance()
+	 */
 	@Override
 	protected void onMaintenance() throws Exception {
 		dropDeadConnections();
@@ -479,6 +547,11 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 		attemptRemoteConnectionAsync();
 	}
 
+	/**
+	 * Cache packet.
+	 *
+	 * @param packet the packet
+	 */
 	private void cachePacket(IMessengerPacket packet) {
 		// Make sure this is actually a message, not null.
 		if (packet == null) {
@@ -531,7 +604,6 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	 * 
 	 * Intended for asynchronous execution from the thread pool.
 	 * 
-	 * @throws IOException
 	 */
 	private void asyncEnsureRemoteConnection() {
 		// The outer try/finally is to guarantee in all possible cases we clear the
@@ -648,9 +720,9 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	}
 
 	/**
-	 * Closes all outbound connections related to the current live agent client
-	 * 
-	 * @throws IOException
+	 * Closes all outbound connections related to the current live agent client.
+	 *
+	 * @param deadClient the dead client
 	 */
 	private void closeClient(LiveSessionPublisher deadClient) {
 		if (deadClient == null) {
@@ -694,7 +766,6 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	/**
 	 * Dispose any connections that we discovered are no longer valid.
 	 * 
-	 * @throws IOException
 	 */
 	private void dropDeadConnections() {
 		NetworkWriter[] deadClients = null;
@@ -717,9 +788,9 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	}
 
 	/**
-	 * Register a new writer for all events
-	 * 
-	 * @param newWriter
+	 * Register a new writer for all events.
+	 *
+	 * @param newWriter the new writer
 	 */
 	private void registerWriter(NetworkWriter newWriter) {
 		newWriter.addObserver(this);
@@ -729,10 +800,9 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 	}
 
 	/**
-	 * Unregister the writer from all events and dispose it
-	 * 
-	 * @param writer
-	 * @throws IOException
+	 * Unregister the writer from all events and dispose it.
+	 *
+	 * @param writer the writer
 	 */
 	private void unregisterWriter(NetworkWriter writer) {
 		writer.deleteObserver(this);
@@ -751,6 +821,11 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 		writer.close();
 	}
 
+	/**
+	 * Discovery file monitor on file changed.
+	 *
+	 * @param e the e
+	 */
 	private void discoveryFileMonitorOnFileChanged(LocalServerDiscoveryFileEventArgs e) {
 		LiveSessionPublisher target;
 
@@ -767,6 +842,11 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 		}
 	}
 
+	/**
+	 * Discovery file monitor on file deleted.
+	 *
+	 * @param e the e
+	 */
 	private void discoveryFileMonitorOnFileDeleted(LocalServerDiscoveryFileEventArgs e) {
 		LiveSessionPublisher victim;
 
@@ -781,6 +861,11 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 		closeClient(victim);
 	}
 
+	/**
+	 * Network writer closed.
+	 *
+	 * @param writer the writer
+	 */
 	private void networkWriterClosed(NetworkWriter writer) {
 		if (!Log.getSilentMode()) {
 			Log.write(LogMessageSeverity.VERBOSE, LOG_CATEGORY, "Remote network viewer connection closed",
@@ -796,6 +881,11 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 		}
 	}
 
+	/**
+	 * Network writer failed.
+	 *
+	 * @param writer the writer
+	 */
 	private void networkWriterFailed(NetworkWriter writer) {
 		if (!Log.getSilentMode()) {
 			Log.write(LogMessageSeverity.INFORMATION, LOG_CATEGORY, "Remote network viewer connection failed",
@@ -810,6 +900,9 @@ public class NetworkMessenger extends MessengerBase implements Observer {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o instanceof LocalServerDiscoveryFileMonitor) {

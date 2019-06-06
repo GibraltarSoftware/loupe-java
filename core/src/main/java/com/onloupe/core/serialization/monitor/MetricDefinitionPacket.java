@@ -11,30 +11,49 @@ import com.onloupe.model.metric.MetricSampleInterval;
 
 import java.util.List;
 
+
 /**
  * Defines a metric that has been captured. Specific metrics extend this class.
  * Each time a metric is captured, a MetricSample is recorded.
  */
 public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPacket, IDisplayable {
-	/**
-	 * A global default sampling interval for display if no-one attempts to override
-	 * it
-	 */
+	
+	/** A global default sampling interval for display if no-one attempts to override it. */
 	private static final MetricSampleInterval DEFAULT_INTERVAL = MetricSampleInterval.MINUTE;
 
 	// our metric definition data (this gets written out)
 
+	/** The name. */
 	private String name;
+	
+	/** The interval. */
 	private MetricSampleInterval interval;
+	
+	/** The metric type name. */
 	private String metricTypeName;
+	
+	/** The category name. */
 	private String categoryName;
+	
+	/** The counter name. */
 	private String counterName;
+	
+	/** The persisted. */
 	private boolean persisted;
+	
+	/** The is live. */
 	private boolean isLive;
+	
+	/** The sample type. */
 	private SampleType sampleType;
+	
+	/** The caption. */
 	private String caption;
+	
+	/** The description. */
 	private String description;
 
+	/** The read only. */
 	// internal tracking information (this does NOT get written out)
 	private boolean readOnly;
 
@@ -112,11 +131,18 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 	 * 
 	 * The name is for comparing the same definition in different sessions. They
 	 * will have the same name but not the same Id.
+	 *
+	 * @return the name
 	 */
 	public final String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Sets the name.
+	 *
+	 * @param value the new name
+	 */
 	private void setName(String value) {
 		this.name = value;
 	}
@@ -124,6 +150,8 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 	/**
 	 * A short display string for this metric definition, suitable for end-user
 	 * display.
+	 *
+	 * @return the caption
 	 */
 	@Override
 	public final String getCaption() {
@@ -135,6 +163,11 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 		return this.caption;
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param value the new caption
+	 */
 	public final void setCaption(String value) {
 		// We want to get rid of any leading/trailing white space, but make sure they
 		// aren't setting us to a null object
@@ -148,12 +181,19 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 	/**
 	 * A description of what is tracked by this metric, suitable for end-user
 	 * display.
+	 *
+	 * @return the description
 	 */
 	@Override
 	public final String getDescription() {
 		return this.description;
 	}
 
+	/**
+	 * Sets the description.
+	 *
+	 * @param value the new description
+	 */
 	public final void setDescription(String value) {
 		// We want to get rid of any leading/trailing white space, but make sure they
 		// aren't setting us to a null object
@@ -166,11 +206,18 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 
 	/**
 	 * The recommended default display interval for graphing.
+	 *
+	 * @return the interval
 	 */
 	public final MetricSampleInterval getInterval() {
 		return this.interval;
 	}
 
+	/**
+	 * Sets the interval.
+	 *
+	 * @param value the new interval
+	 */
 	public final void setInterval(MetricSampleInterval value) {
 		this.interval = value;
 	}
@@ -183,11 +230,18 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 	 * not require category names to be globally unique. If you are creating a new
 	 * metric, pick your own metric type that will uniquely idenify your library or
 	 * namespace.
+	 *
+	 * @return the metric type name
 	 */
 	public final String getMetricTypeName() {
 		return this.metricTypeName;
 	}
 
+	/**
+	 * Sets the metric type name.
+	 *
+	 * @param value the new metric type name
+	 */
 	private void setMetricTypeName(String value) {
 		this.metricTypeName = value;
 	}
@@ -195,33 +249,54 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 	/**
 	 * The category of this metric for display purposes. Category is the top
 	 * displayed hierarchy.
+	 *
+	 * @return the category name
 	 */
 	public final String getCategoryName() {
 		return this.categoryName;
 	}
 
+	/**
+	 * Sets the category name.
+	 *
+	 * @param value the new category name
+	 */
 	private void setCategoryName(String value) {
 		this.categoryName = value;
 	}
 
 	/**
 	 * The display name of this metric (unique within the category name).
+	 *
+	 * @return the counter name
 	 */
 	public final String getCounterName() {
 		return this.counterName;
 	}
 
+	/**
+	 * Sets the counter name.
+	 *
+	 * @param value the new counter name
+	 */
 	private void setCounterName(String value) {
 		this.counterName = value;
 	}
 
 	/**
 	 * Indicates whether the metric packet has been written to the log stream yet.
+	 *
+	 * @return the persisted
 	 */
 	public final boolean getPersisted() {
 		return this.persisted;
 	}
 
+	/**
+	 * Sets the persisted.
+	 *
+	 * @param value the new persisted
+	 */
 	private void setPersisted(boolean value) {
 		this.persisted = value;
 	}
@@ -234,11 +309,18 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 	 * read-only, however it's possible for some child objects to be read-only even
 	 * if a definition is not. When read only, no new metrics can be added however
 	 * display values can be changed.
+	 *
+	 * @return true, if is read only
 	 */
 	public final boolean isReadOnly() {
 		return this.readOnly;
 	}
 
+	/**
+	 * Sets the checks if is read only.
+	 *
+	 * @param value the new checks if is read only
+	 */
 	public final void setIsReadOnly(boolean value) {
 		// this is really a latch
 		if (value) {
@@ -254,11 +336,18 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 	 * source such as a file. This flag indiciates whether this metric definition is
 	 * for playback purposes (it represents previously recorded data) or is part of
 	 * the active metric capture capability of the current process.
+	 *
+	 * @return true, if is live
 	 */
 	public final boolean isLive() {
 		return this.isLive;
 	}
 
+	/**
+	 * Sets the checks if is live.
+	 *
+	 * @param value the new checks if is live
+	 */
 	private void setIsLive(boolean value) {
 		this.isLive = value;
 	}
@@ -266,11 +355,18 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 	/**
 	 * The sample type of the metric. Indicates whether the metric represents
 	 * discrete events or a continuous value.
+	 *
+	 * @return the sample type
 	 */
 	public final SampleType getSampleType() {
 		return this.sampleType;
 	}
 
+	/**
+	 * Sets the sample type.
+	 *
+	 * @param value the new sample type
+	 */
 	private void setSampleType(SampleType value) {
 		this.sampleType = value;
 	}
@@ -297,11 +393,10 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 	/**
 	 * Indicates whether the current object is equal to another object of the same
 	 * type.
-	 * 
-	 * @return true if the current object is equal to the <paramref name="other" />
-	 *         parameter; otherwise, false.
-	 * 
+	 *
 	 * @param other An object to compare with this object.
+	 * @return true if the current object is equal to the 
+	 *         parameter; otherwise, false.
 	 */
 	@Override
 	public boolean equals(Object other) {
@@ -368,6 +463,7 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 		return myHash;
 	}
 
+	/** The Constant SERIALIZATION_VERSION. */
 	private static final int SERIALIZATION_VERSION = 1;
 
 	/**
@@ -380,6 +476,9 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 		return super.getRequiredPackets();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#writePacketDefinition(com.onloupe.core.serialization.PacketDefinition)
+	 */
 	@Override
 	public void writePacketDefinition(PacketDefinition definition) {
 		super.writePacketDefinition(definition.getParentIPacket());
@@ -395,6 +494,9 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 		definition.getFields().add("Interval", FieldType.INT);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#writeFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void writeFields(PacketDefinition definition, SerializedPacket packet) {
 		super.writeFields(definition.getParentIPacket(), packet.getParentIPacket());
@@ -411,6 +513,9 @@ public class MetricDefinitionPacket extends GibraltarCachedPacket implements IPa
 		setPersisted(true);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.onloupe.core.serialization.monitor.GibraltarCachedPacket#readFields(com.onloupe.core.serialization.PacketDefinition, com.onloupe.core.serialization.SerializedPacket)
+	 */
 	@Override
 	public void readFields(PacketDefinition definition, SerializedPacket packet) {
 		throw new UnsupportedOperationException("Deserialization of agent data is not supported");
