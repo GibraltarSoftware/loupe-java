@@ -22,7 +22,7 @@ appenders and what one would use to extend Loupe.
 
 #### Central Repository ####
 
-Loupe is readily available at [The Central Repository](https://mvnrepository.com/artifact/com.onloupe)!
+Loupe is readily available at <a href="https://mvnrepository.com/artifact/com.onloupe" target="_blank">The Central Repository</a>!
 
 Supported build automation tools include:
 * Maven
