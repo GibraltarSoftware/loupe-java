@@ -20,7 +20,22 @@ appenders and what one would use to extend Loupe.
 
 ### Download Loupe ###
 
-To add Loupe to your application, first use GIT to clone our repository:
+#### Central Repository ####
+
+Loupe is readily available at <a href="https://mvnrepository.com/artifact/com.onloupe" target="_blank">The Central Repository</a>!
+
+Supported build automation tools include:
+* Maven
+* Gradle
+* SBT
+* Ivy
+* Grape
+* Leiningen
+* Buildr
+
+#### Manual / Local Repository ####
+
+To add Loupe to your application manually, first use GIT to clone our repository:
 
     https://github.com/GibraltarSoftware/loupe-java.git
     
@@ -28,39 +43,29 @@ or
 
     git@github.com:GibraltarSoftware/loupe-java.git
 
-### Add Loupe to your application ###
-
-Loupe can be added to your application in a variety of ways, documented below. 
-
-#### Using your Local Maven Repository ####
-
-Loupe will soon be available in Maven Central. Until then, we recommend deploying Loupe to your local maven repository.
-
-##### Deploy Loupe to your repository #####
-
-Navigate to the root of the parent project folder, you will see a POM file. Execute:
+While Loupe can be retrieved from Central by a variety of build automation tools, it is itself built using Maven. Navigate to the root of the parent project folder, you will see a POM file. Execute:
 
     mvn clean install
 
 This will deploy Loupe to your local Maven repository.
 
-##### Install Loupe in your application #####
+### Install Loupe in your application ###
 
-Add the following dependency to your application's pom.xml:
+#### Install Loupe using Maven ####
+
+Add the following dependency (logback support for example, see full inventory to select an appropriate module) to your pom.xml:
 
 		<dependency>
 			<groupId>com.onloupe</groupId>
 			<artifactId>loupe-logback-support</artifactId>
-			<version><...version indicated...></version>
+			<version><...desired version...></version>
 		</dependency>
 
-The version number will be evident in the parent POM file of Loupe.
+Execute the necessary commands to build your application in Maven.
 
-Execute the necessary commands to build the application in Maven.
+#### Install Loupe manually ####
 
-#### Build and deploy Loupe manually ####
-
-If you do not wish to use Maven, Loupe can be built and deployed manually.
+If you do not wish to use Maven in your application, Loupe can be built and deployed manually.
 
 ##### Build Loupe #####
 
