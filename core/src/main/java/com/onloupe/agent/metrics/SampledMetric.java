@@ -384,7 +384,8 @@ public final class SampledMetric {
 			} else if (dataBinding.getValue().equals(MemberType.METHOD)) {
 				Method method = userDataType.getMethod(dataBinding.getName());
 				method.setAccessible(true);
-				numerator = (double)method.invoke(metricData);
+				Object output = method.invoke(metricData);
+				numerator = Double.parseDouble(output.toString());
 			}
 
 			if (SampledMetricDefinition.requiresDivisor(getSamplingType())) {
@@ -400,7 +401,8 @@ public final class SampledMetric {
 				} else if (divisorBinding.getValue().equals(MemberType.METHOD)) {
 					Method method = userDataType.getMethod(divisorBinding.getName());
 					method.setAccessible(true);
-					rawDivisor = (double)method.invoke(metricData);
+					Object output = method.invoke(metricData);
+					rawDivisor = Double.parseDouble(output.toString());
 				}
 				
 				writeSample(numerator, rawDivisor); // Write the pair of values.
