@@ -410,8 +410,6 @@ public final class SampledMetric {
 				writeSample(numerator.doubleValue()); // Write the single data value.
 			}
 		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-
 			// We can't write this sample if we got an error reading the data.
 		}
 	}
