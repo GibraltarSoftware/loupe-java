@@ -339,6 +339,26 @@ public class TypeUtils {
 		}
 		return 0d;
 	}
+	
+	public static double strictDouble(Object value) {		
+		if (value != null) {
+			if (Double.class.isAssignableFrom(value.getClass()))
+				return (double) value;
+			if (value instanceof Short)
+				return ((Short) value).doubleValue();
+			if (value instanceof Integer)
+				return ((Integer) value).doubleValue();
+			if (value instanceof Long)
+				return ((Long) value).doubleValue();
+			if (value instanceof Float)
+				return ((Float) value).doubleValue();
+			if (value instanceof BigDecimal)
+				return ((BigDecimal) value).doubleValue();
+			if (value instanceof BigInteger)
+				return ((BigInteger) value).doubleValue();
+		}
+		throw new IllegalArgumentException("Argument " + value + " is not a parseable double.");
+	}
 
 	/**
 	 * Safe UUID.
@@ -386,4 +406,5 @@ public class TypeUtils {
 		}
 		throw new IndexOutOfBoundsException("Unsupported type " + type == null ? null : type.getName());
 	}
+	
 }
