@@ -522,7 +522,8 @@ public final class EventMetricDefinition implements IMetricDefinition {
 							}
 
 							// What about mappings to values?
-							if (curMember.isAnnotationPresent(com.onloupe.agent.metrics.annotation.EventMetricValues.class)) {
+							if (curMember.isAnnotationPresent(com.onloupe.agent.metrics.annotation.EventMetricValue.class) ||
+									curMember.isAnnotationPresent(com.onloupe.agent.metrics.annotation.EventMetricValues.class)) {
 								// What type of value does this member give? It'll be the same for every value
 								// attribute on it!
 								java.lang.Class curType = getTypeOfMember(curMember);
