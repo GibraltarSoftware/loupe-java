@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.onloupe</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0.1</version>
+		<version>1.0.2</version>
 	</parent>
 	<artifactId>loupe-log4j2-support</artifactId>
 
@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>com.onloupe</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
